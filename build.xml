@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="paypalimporter" default="all" basedir=".">
+
+  <property name="src"         value="src"/>
+  <property name="test"        value="test"/>
+  <property name="lib"         value="lib"/>
+  <property name="build"       value="bin"/>
+  <property name="dist"        value="dist"/>
+  <property name="docs"        value="docs"/>
+  <property name="log"         value="logs"/>
+  <property name="privkeyfile" value="${src}/priv_key"/>
+  <property name="pubkeyfile"  value="${src}/pub_key"/>
+  <property name="privkeyid"   value="99"/>
+  <property name="debug"       value="on"/>
+  <property name="optimize"    value="on"/>
+  <property name="descriptor.file"
+      value="${src}/com/moneydance/modules/features/paypalimporter/meta_info.dict"/>
+  <property name="jar.file"
+      value="${dist}/paypalimporter.mxt"/>
+
+  <available file="${privkeyfile}" property="privkeyfile.present"/>
+
+  <taskdef resource="checkstyletask.properties"
+    classpath="${lib}/checkstyle-5.6-all.jar"/>
+
+  <taskdef resource="proguard/ant/task.properties"
+         classpath="${lib}/proguard-4.9.jar" />
+
+  <path id="compile.classpath">
+        <pathelement path="${lib}/moneydance.jar"/>
+        <pathelement path="${lib}/commons-lang-2.6.jar"/>
+        <pathelement path="${lib}/commons-lang3-3.1.jar"/>
+        <pathelement path="${lib}/commons-configuration-1.9.jar"/>
+        <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
+        <pathelement path="${lib}/jgoodies-forms-1.7.1.jar"/>
+        <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
+        <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
+        <pathelement path="${lib}/merchantsdk-2.2.98.jar"/>
+        <pathelement path="${lib}/paypal-core-1.1.1.jar"/>
+        <pathelement path="${lib}/prompt.jar"/>
+        <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
+  </path>
+
+  <path id="test.classpath">
+    <pathelement path="${lib}/moneydance.jar"/>
+    <pathelement path="${lib}/commons-configuration-1.9.jar"/>
+    <pathelement path="${lib}/commons-lang-2.6.jar"/>
+    <pathelement path="${lib}/commons-lang3-3.1.jar"/>
+    <pathelement path="${lib}/commons-logging-1.1.2.jar"/>
+    <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
+    <pathelement path="${lib}/jgoodies-forms-1.7.1.jar"/>
+    <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
+    <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
+    <pathelement path="${lib}/jmockit-coverage.jar"/>
+    <pathelement path="${lib}/jmockit.jar"/>
+    <pathelement path="${lib}/junit-4.11.jar"/>
+    <pathelement path="${lib}/merchantsdk-2.2.98.jar"/>
+    <pathelement path="${lib}/paypal-core-1.1.1.jar"/>
+    <pathelement path="${lib}/prompt.jar"/>
+    <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
+    <pathelement path="${lib}/slf4j-simple-1.7.5.jar"/>
+    <pathelement path="${build}"/>
+  </path>
+
+  <path id="manifest.classpath">
+    <pathelement path="${lib}/moneydance.jar"/>
+  </path>
+
+  <path id="sign.classpath">
+    <pathelement path="${lib}/moneydance.jar"/>
+    <pathelement path="${lib}/extadmin.jar"/>
+  </path>
+
+
+  <!-- Wipe the slate clean, to be used before starting the build process. -->
+  <target name="init">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <mkdir  dir="${build}"/>
+    <mkdir  dir="${dist}"/>
+  </target>   
+
+
+  <target name="checkstyle"
+          description="Generates a report of code convention violations.">
+    <delete>
+      <fileset dir="${docs}/checkstyle-report" includes="**/*"/>
+    </delete>
+
+    <checkstyle config="${docs}/paypalimporter_checks.xml" failOnViolation="false">
+	  <fileset dir="${src}" includes="**/*.java"/>
+	  <formatter type="xml" tofile="${docs}/checkstyle_report.xml"/>
+	</checkstyle>
+
+    <xslt in="${docs}/checkstyle_report.xml"
+          out="${docs}/checkstyle-report/index.html"
+          style="${docs}/checkstyle-noframes-sorted.xsl"/>
+  </target>
+
+
+  <target name="test" depends="compile"
+      description="Executes JUnit's test suite and generates an HTML report
+using JMockit Coverage.">
+
+    <javac source="1.6"
+           target="1.6"
+           srcdir="${test}"
+           destdir="${build}"
+           debug="${debug}"
+           optimize="${optimize}"
+           classpathref="test.classpath"
+           includeantruntime="true"
+           includes="com/moneydance/modules/features/paypalimporter/**"
+  	       bootclasspath="${boot.classpath}"/>
+
+    <copy todir="${build}">
+      <fileset dir="${src}" includes="
+        com/moneydance/modules/features/paypalimporter/meta_info.dict
+        com/moneydance/modules/features/paypalimporter/resources/*"/>
+    </copy>
+
+    <junit printsummary="yes" haltonfailure="yes" fork="yes">
+      <classpath refid="test.classpath"/>
+      <test name="com.moneydance.modules.features.paypalimporter.AllTests"/>
+      <sysproperty key="jmockit-coverage-excludes"
+                   value=".*AllTests|.*Stub.*|.*Mock.*"/>
+      <sysproperty key="jmockit-coverage-outputDir"
+                   value="${docs}/coverage-report"/>
+    </junit>
+  </target>
+
+
+  <target name="genkeys" description="Generates a passphrase-protected key pair.">
+    <java classpathref="sign.classpath"
+          classname="com.moneydance.admin.KeyAdmin">
+      <arg value="genkey"/>
+      <arg value="${privkeyfile}"/>
+      <arg value="${pubkeyfile}"/>
+    </java>
+  </target>
+
+
+  <target name="audit" depends="init" description="Creates a compressed file
+for the audition process. The zip file contains all files required to build
+and deploy a new version.">
+
+    <!-- Extract build version from descriptor -->
+    <loadfile srcfile="${descriptor.file}" property="build.version">
+      <filterchain>
+        <striplinebreaks/>
+        <linecontains>
+          <contains value="module_build"/>
+        </linecontains>
+        <tokenfilter>
+           <replaceregex pattern=".*&quot;(\d+)&quot;.*" replace="\1"/>
+        </tokenfilter>
+      </filterchain>
+    </loadfile>
+
+    <echo message="Building version ${build.version} for auditing"/>
+
+    <property name="zip.file" value="${dist}/paypalimporter-v${build.version}.zip"/>
+
+    <zip destfile="${zip.file}">
+       <zipfileset dir="." defaultexcludes="yes">
+         <include name="**/*"/>
+         <exclude name="**/${build}"/>
+         <exclude name="**/${build}/**/*"/>
+         <exclude name="**/${dist}"/>
+         <exclude name="**/${dist}/**/*"/>
+         <exclude name="**/${docs}"/>
+         <exclude name="**/${docs}/**/*"/>
+         <exclude name="**/${log}"/>
+         <exclude name="**/${log}/**/*"/>
+       </zipfileset>
+    </zip>
+  </target>
+
+
+  <target name="compile" depends="init">
+	    <javac source="1.6"
+	           target="1.6"
+	           srcdir="${src}"
+	           destdir="${build}"
+	           debug="${debug}"
+	           optimize="${optimize}"
+	           classpathref="compile.classpath"
+	           includeantruntime="true"
+	           includes="com/moneydance/modules/features/paypalimporter/**"
+	           bootclasspath="${boot.classpath}"/>
+  </target>
+
+
+  <target name="paypalimporter" depends="compile" description="Builds a new version.">
+
+    <manifestclasspath property="jar.classpath"
+                       jarfile="${jar.file}">
+      <classpath refid="manifest.classpath"/>
+    </manifestclasspath>
+
+    <jar jarfile="${build}/external-libs.jar">
+        <zipgroupfileset dir="${lib}">
+            <include name="commons-lang-2.6.jar"/>
+            <include name="commons-lang3-3.1.jar"/>
+            <include name="commons-configuration-1.9.jar"/>
+            <include name="jgoodies-common-1.6.0.jar"/>
+            <include name="jgoodies-forms-1.7.1.jar"/>
+            <include name="jgoodies-validation-2.5.0.jar"/>
+            <include name="commons-logging-1.1.2.jar"/>
+            <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
+            <include name="merchantsdk-2.2.98.jar"/>
+            <include name="paypal-core-1.1.1.jar"/>
+            <include name="prompt.jar"/>
+            <include name="slf4j-api-1.7.5.jar"/>
+            <include name="slf4j-nop-1.7.5.jar"/>
+        </zipgroupfileset>
+    </jar>
+
+    <!-- Wait for one second to avoid getting warnings about the
+         files having modification dates in the future. -->
+    <sleep seconds="1"/>
+
+    <!-- run the timestamp task -->
+    <tstamp>
+      <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
+    </tstamp>
+
+    <jar destfile="${jar.file}">
+      <fileset dir="" includes="NOTICE"/>
+      <fileset dir="" includes="COPYING"/>
+      <fileset dir="" includes="LICENSE"/>
+      <fileset dir="${src}" includes="
+    com/moneydance/modules/features/paypalimporter/meta_info.dict
+    com/moneydance/modules/features/paypalimporter/resources/*"/>
+      <fileset dir="${build}"
+         includes="com/moneydance/modules/features/paypalimporter/**"/>
+
+      <manifest>
+        <attribute name="Class-Path"
+            value="${jar.classpath}"/>
+        <attribute name="Built-By"
+            value="${user.name}" />
+        <attribute name="Built-Date"
+            value="${TODAY}"/>
+      </manifest>
+
+      <zipfileset src="${build}/external-libs.jar">
+        <exclude name="*"/>
+        <exclude name="META-INF/**/*"/>
+      </zipfileset>
+    </jar>
+
+    <move file="${jar.file}" tofile="${build}/paypalimporter.jar"/>
+    
+    <proguard configuration="proguard.cfg" forceprocessing="true">
+        <injar  location="${build}/paypalimporter.jar" />
+        <outjar location="${build}/proguard-paypalimporter.jar" />
+    </proguard>
+
+    <move file="${build}/proguard-paypalimporter.jar" tofile="${jar.file}"/>
+
+    <antcall target="sign" />
+
+  </target>
+
+
+  <target name="sign" if="privkeyfile.present" description="Signs an MXT
+file with a private key that must already exist.">
+
+    <java classpathref="sign.classpath"
+          classname="com.moneydance.admin.KeyAdmin">
+      <arg value="signextjar"/>
+      <arg value="${privkeyfile}"/>
+      <arg value="${privkeyid}"/>
+      <arg value="paypalimporter"/>
+      <arg line="${jar.file}"/>
+    </java>
+
+    <move file="s-paypalimporter.mxt" tofile="${jar.file}"/>
+  </target>
+
+
+  <target name="javadoc" description="Creates Javadoc documentation with
+references to external documentations.">
+
+    <delete>
+      <fileset dir="${docs}/api" includes="**/*"/>
+    </delete>
+
+    <javadoc packagenames="com.moneydance.modules.features.paypalimporter.*"
+             classpathref="compile.classpath"
+             sourcepath="${src}"
+             excludepackagenames=""
+             defaultexcludes="true"
+             destdir="${docs}/api"
+             access="protected"
+             author="true"
+             version="true"
+             use="true"
+             windowtitle="PayPal Importer for Moneydance"
+             linksource="true"
+             verbose="no">
+      <doctitle><![CDATA[<h1>PayPal Importer for Moneydance</h1>]]></doctitle>
+      <link href="http://download.oracle.com/javase/6/docs/api/"/>
+      <link href="http://moneydance.com/dev/apidoc/"/>
+      <link href="http://www.dmurph.com/jgoogleanalyticstracker/"/>
+      <link href="http://www.slf4j.org/apidocs/"/>
+      <link href="http://commons.apache.org/configuration/apidocs/"/>
+      <link href="http://commons.apache.org/lang/api-3.1/"/>
+      <link href="http://commons.apache.org/lang/api-2.6/"/>
+      <link href="http://commons.apache.org/logging/apidocs/"/>
+      <footer><![CDATA[
+      	<a href="https://github.com/my-flow/paypalimporter">
+      	 PayPal Importer on GitHub
+        </a>
+      ]]></footer>
+    </javadoc>
+  </target>
+
+
+  <target name="all" depends="paypalimporter"/>
+
+</project>
