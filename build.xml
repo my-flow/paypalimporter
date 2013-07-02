@@ -306,8 +306,8 @@ references to external documentations.">
       <link href="http://www.dmurph.com/jgoogleanalyticstracker/"/>
       <link href="http://www.slf4j.org/apidocs/"/>
       <link href="http://commons.apache.org/configuration/apidocs/"/>
-      <link href="http://commons.apache.org/lang/api-3.1/"/>
-      <link href="http://commons.apache.org/lang/api-2.6/"/>
+      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.1/"/>
+      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
       <link href="http://commons.apache.org/logging/apidocs/"/>
       <footer><![CDATA[
       	<a href="https://github.com/my-flow/paypalimporter">
