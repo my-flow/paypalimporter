@@ -31,8 +31,6 @@ import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.Util;
 import com.moneydance.apps.md.model.time.DateRangeOption;
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.service.TransactionSearchService;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -54,7 +52,7 @@ public final class TransactionSearchServiceTest {
         new StubContextFactory();
         this.service = new ServiceMock(
                 Helper.INSTANCE.getInputStreamFromResource(
-                        "com/moneydance/modules/features/paypal/resources/sdk_config.properties"));
+                        "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
     }
 
 

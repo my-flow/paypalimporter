@@ -28,8 +28,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.service.CheckCurrencyService;
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -51,7 +49,7 @@ public final class CheckCurrencyServiceTest {
         new StubContextFactory();
         this.service = new ServiceMock(
                 Helper.INSTANCE.getInputStreamFromResource(
-                        "com/moneydance/modules/features/paypal/resources/sdk_config.properties"));
+                        "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
     }
 
     @Test

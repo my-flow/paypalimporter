@@ -41,7 +41,7 @@ public final class ServiceProvider {
      * The resource in the JAR file to read the settings from.
      */
     private static final String PROPERTIES_RESOURCE =
-            "com/moneydance/modules/features/paypal/resources/"
+            "com/moneydance/modules/features/paypalimporter/resources/"
                     + "sdk_config.properties";
 
     private final ExecutorService executorService;

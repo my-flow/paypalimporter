@@ -23,25 +23,19 @@
 			<attribute name="javadoc_location" value="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jgoodies-forms-1.7.1.jar" sourcepath="lib/jgoodies-forms-1.7.1-javadoc.jar">
+	<classpathentry kind="lib" path="lib/jgoodies-forms-1.7.1.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalForMoneydance/lib/jgoodies-forms-1.7.1-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalImporter/lib/jgoodies-forms-1.7.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jgoodies-common-1.6.0.jar"/>
 	<classpathentry kind="lib" path="lib/jgoodies-validation-2.5.0.jar" sourcepath="lib/jgoodies-validation-2.5.0-javadoc.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalForMoneydance/lib/jgoodies-validation-2.5.0-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalImporter/lib/jgoodies-validation-2.5.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/prompt.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/merchantsdk-2.2.98.jar" sourcepath="lib/merchantsdk-2.2.98-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalForMoneydance/lib/merchantsdk-2.2.98-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/paypal-core-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.5.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://www.slf4j.org/apidocs/"/>
@@ -50,6 +44,12 @@
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/jmockit-coverage.jar"/>
 	<classpathentry kind="lib" path="lib/jmockit.jar"/>
+	<classpathentry kind="lib" path="lib/merchantsdk-2.4.103.jar" sourcepath="lib/merchantsdk-2.4.103-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalImporter/lib/merchantsdk-2.4.103-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/paypal-core-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>

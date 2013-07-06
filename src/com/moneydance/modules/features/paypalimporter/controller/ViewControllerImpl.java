@@ -160,14 +160,14 @@ public final class ViewControllerImpl implements ViewController {
             final CurrencyCodeType currencyCode,
             final boolean isPrimaryCurrency) {
         this.prefs.setUsername(this.inputData.getUsername());
-        this.prefs.setPassword(this.inputData.getPassword(true));
+        this.prefs.setPassword(this.inputData.getPassword(false));
         this.prefs.setSignature(this.inputData.getSignature());
         this.prefs.setAccountId(this.inputData.getAccountId());
 
         RootAccount rootAccount = this.context.getRootAccount();
         this.serviceProvider.callTransactionSearchService(
                 this.inputData.getUsername(),
-                this.inputData.getPassword(false),
+                this.inputData.getPassword(true),
                 this.inputData.getSignature(),
                 this.inputData.getDateRange(),
                 currencyCode,
