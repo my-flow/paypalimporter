@@ -19,6 +19,8 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import com.jgoodies.validation.view.ValidationComponentUtils;
@@ -99,6 +101,15 @@ implements ActionListener, WindowListener {
                     inputData.getDateRange().getStartDateInt());
             this.dateRanger.setEndDate(
                     inputData.getDateRange().getEndDateInt());
+        }
+
+        // preset focus
+        if (StringUtils.isEmpty(this.txtUsername.getText())) {
+            this.txtUsername.requestFocus();
+        } else if (ArrayUtils.isEmpty(this.txtPassword.getPassword())) {
+            this.txtPassword.requestFocus();
+        } else if (StringUtils.isEmpty(this.txtSignature.getText())) {
+            this.txtSignature.requestFocus();
         }
     }
 

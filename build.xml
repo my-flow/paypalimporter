@@ -46,13 +46,13 @@
     <pathelement path="${lib}/commons-configuration-1.9.jar"/>
     <pathelement path="${lib}/commons-lang-2.6.jar"/>
     <pathelement path="${lib}/commons-lang3-3.1.jar"/>
-    <pathelement path="${lib}/commons-logging-1.1.2.jar"/>
+    <pathelement path="${lib}/commons-logging-1.1.3.jar"/>
     <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
     <pathelement path="${lib}/jgoodies-forms-1.7.1.jar"/>
     <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
     <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
-    <pathelement path="${lib}/jmockit-coverage.jar"/>
-    <pathelement path="${lib}/jmockit.jar"/>
+    <pathelement path="${lib}/jmockit-coverage-1.3.jar"/>
+    <pathelement path="${lib}/jmockit-1.3.jar"/>
     <pathelement path="${lib}/junit-4.11.jar"/>
     <pathelement path="${lib}/merchantsdk-2.4.103.jar"/>
     <pathelement path="${lib}/paypal-core-1.4.3.jar"/>
@@ -206,7 +206,7 @@ and deploy a new version.">
             <include name="jgoodies-common-1.6.0.jar"/>
             <include name="jgoodies-forms-1.7.1.jar"/>
             <include name="jgoodies-validation-2.5.0.jar"/>
-            <include name="commons-logging-1.1.2.jar"/>
+            <include name="commons-logging-1.1.3.jar"/>
             <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
             <include name="merchantsdk-2.4.103.jar"/>
             <include name="paypal-core-1.4.3.jar"/>
