@@ -227,7 +227,6 @@ and deploy a new version.">
 
     <jar destfile="${jar.file}">
       <fileset dir="" includes="NOTICE"/>
-      <fileset dir="" includes="COPYING"/>
       <fileset dir="" includes="LICENSE"/>
       <fileset dir="${src}" includes="
     com/moneydance/modules/features/paypalimporter/meta_info.dict
