@@ -5,16 +5,19 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import javax.swing.DefaultComboBoxModel;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
-import com.moneydance.modules.features.paypalimporter.presentation.WizardController;
 
 /**
  * @author Florian J. Breunig
@@ -32,6 +35,51 @@ public final class WizardControllerTest {
     @Test
     public void testSetInputData() {
         this.wizardController.setInputData(new MutableInputData(null, null, null, -1));
+        assertThat(this.wizardController.txtUsername.getText(), is(""));
+        assertThat(String.valueOf(this.wizardController.txtPassword.getPassword()), is(""));
+        assertThat(this.wizardController.txtSignature.getText(), is(""));
+    }
+
+    @Test
+    public void testSetInputDataFocusOnUsername() {
+        MutableInputData inputData = new MutableInputData(null, null, null, -1);
+        inputData.fill(null, null, "mock signature", -1, new DateRange());
+        this.wizardController.setInputData(inputData);
+        this.wizardController.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertThat(this.wizardController.txtUsername.isFocusOwner(), is(true));
+    }
+
+    @Test
+    public void testSetInputDataFocusOnPassword() {
+        this.wizardController.setInputData(
+                new MutableInputData("mock username", null, "mock signature", -1));
+        this.wizardController.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertThat(this.wizardController.txtPassword.isFocusOwner(), is(true));
+    }
+
+    @Test
+    public void testSetInputDataFocusOnSignature() {
+        final char[] password = {'s', 't', 'u', 'b', ' ',
+                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        this.wizardController.setInputData(
+                new MutableInputData("mock username", password, null, -1));
+        this.wizardController.setVisible(true);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertThat(this.wizardController.txtSignature.isFocusOwner(), is(true));
     }
 
     @Test

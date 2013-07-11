@@ -91,25 +91,31 @@ implements ActionListener, WindowListener {
         Validate.notNull(inputData, "input data must not be null");
 
         this.txtUsername.setText(inputData.getUsername());
+
+        String password = null;
         if (inputData.getPassword(false) != null) {
-            this.txtPassword.setText(
-                    String.valueOf(inputData.getPassword(true)));
+            password = String.valueOf(inputData.getPassword(true));
         }
+        this.txtPassword.setText(password);
+
         this.txtSignature.setText(inputData.getSignature());
+
+        int startDate = 0;
+        int endDate = 0;
         if (inputData.getDateRange() != null) {
-            this.dateRanger.setStartDate(
-                    inputData.getDateRange().getStartDateInt());
-            this.dateRanger.setEndDate(
-                    inputData.getDateRange().getEndDateInt());
+            startDate = inputData.getDateRange().getStartDateInt();
+            endDate = inputData.getDateRange().getEndDateInt();
         }
+        this.dateRanger.setStartDate(startDate);
+        this.dateRanger.setEndDate(endDate);
 
         // preset focus
         if (StringUtils.isEmpty(this.txtUsername.getText())) {
-            this.txtUsername.requestFocus();
+            this.txtUsername.requestFocusInWindow();
         } else if (ArrayUtils.isEmpty(this.txtPassword.getPassword())) {
-            this.txtPassword.requestFocus();
+            this.txtPassword.requestFocusInWindow();
         } else if (StringUtils.isEmpty(this.txtSignature.getText())) {
-            this.txtSignature.requestFocus();
+            this.txtSignature.requestFocusInWindow();
         }
     }
 
