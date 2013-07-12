@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.Main;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.util.UiUtil;
 
@@ -23,15 +22,15 @@ import com.moneydance.util.UiUtil;
  */
 final class ConsoleRunner {
 
-    static {
-        Helper.INSTANCE.loadLoggerConfiguration();
-    }
-
     /**
      * Static initialization of class-dependent logger.
      */
     private static final Logger LOG =
             Logger.getLogger(ConsoleRunner.class.getName());
+
+    static {
+        Helper.INSTANCE.loadLoggerConfiguration();
+    }
 
     /**
      * Restrictive constructor.

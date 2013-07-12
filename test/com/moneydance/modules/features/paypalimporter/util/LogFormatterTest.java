@@ -13,8 +13,6 @@ import java.util.logging.LogRecord;
 
 import org.junit.Test;
 
-import com.moneydance.modules.features.paypalimporter.util.LogFormatter;
-
 /**
  * @author Florian J. Breunig
  */

@@ -11,9 +11,6 @@ import org.junit.Test;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.controller.AbstractRequestHandler;
-import com.moneydance.modules.features.paypalimporter.controller.CheckCurrencyRequestHandler;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
@@ -32,8 +29,7 @@ public final class CheckCurrencyRequestHandlerTest {
         this.handler = new CheckCurrencyRequestHandler(
                 viewController,
                 factory.getContext().getRootAccount(),
-                -1,
-                null);
+                -1);
     }
 
     @Test

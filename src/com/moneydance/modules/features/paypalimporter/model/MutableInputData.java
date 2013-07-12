@@ -24,6 +24,7 @@ public final class MutableInputData implements InputData {
     private DateRange dateRange;
 
     public MutableInputData() {
+        // default constructor
     }
 
     public MutableInputData(

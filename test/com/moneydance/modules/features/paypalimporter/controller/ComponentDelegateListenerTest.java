@@ -11,8 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.controller.ComponentDelegateListener;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 
 /**
  * @author Florian J. Breunig

@@ -11,7 +11,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 
 /**
  * @author Florian J. Breunig

@@ -24,6 +24,9 @@ public final class WizardHandler extends WizardController {
 
     private static final long serialVersionUID = 1L;
 
+    private final Observer observer;
+    private final MutableInputData mutableInputData;
+
     /**
      * @author Florian J. Breunig
      */
@@ -32,9 +35,6 @@ public final class WizardHandler extends WizardController {
         CANCEL,
         PROCEED;
     }
-
-    private final Observer observer;
-    private final MutableInputData mutableInputData;
 
     public WizardHandler(
             final Frame owner,

@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -53,7 +54,7 @@ public final class CheckCurrencyServiceTest {
     }
 
     @Test
-    public void testCallSuccessfulEmpty() throws Exception {
+    public void testCallSuccessfulEmpty() {
         this.service.setAck(AckCodeType.SUCCESS);
         this.service.setBalanceHoldings(Collections.<BasicAmountType>emptyList());
 
@@ -61,13 +62,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), nullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), nullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallSuccessfulFilled() throws Exception {
+    public void testCallSuccessfulFilled() {
         this.service.setAck(AckCodeType.SUCCESSWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -80,13 +85,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFail() throws Exception {
+    public void testCallFail() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -97,13 +106,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailUnknownHostException() throws Exception {
+    public void testCallFailUnknownHostException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -115,13 +128,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailSocketException() throws Exception {
+    public void testCallFailSocketException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -133,13 +150,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailIOException() throws Exception {
+    public void testCallFailIOException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -151,13 +172,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailSSLException() throws Exception {
+    public void testCallFailSSLException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -169,13 +194,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailInvalidCredentialException() throws Exception {
+    public void testCallFailInvalidCredentialException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -187,13 +216,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailHttpErrorException() throws Exception {
+    public void testCallFailHttpErrorException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -205,13 +238,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailInvalidResponseDataException() throws Exception {
+    public void testCallFailInvalidResponseDataException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -223,13 +260,18 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+
     }
 
     @Test
-    public void testCallFailClientActionRequiredException() throws Exception {
+    public void testCallFailClientActionRequiredException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -241,13 +283,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailMissingCredentialException() throws Exception {
+    public void testCallFailMissingCredentialException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -259,13 +305,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailOAuthException() throws Exception {
+    public void testCallFailOAuthException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -277,13 +327,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailInterruptedException() throws Exception {
+    public void testCallFailInterruptedException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -295,13 +349,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailParserConfigurationException() throws Exception {
+    public void testCallFailParserConfigurationException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -313,13 +371,17 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
-    public void testCallFailSAXException() throws Exception {
+    public void testCallFailSAXException() {
         this.service.setAck(AckCodeType.FAILUREWITHWARNING);
         ErrorType errorType = new ErrorType();
         errorType.setErrorCode("mock error code");
@@ -331,8 +393,12 @@ public final class CheckCurrencyServiceTest {
                 new CheckCurrencyService(
                         this.service,
                         Locale.US);
-        ServiceResult<CurrencyCodeType> serviceResult = callable.call();
-        assertThat(serviceResult, notNullValue());
-        assertThat(serviceResult.getErrorMessage(), notNullValue());
+        try {
+            ServiceResult<CurrencyCodeType> serviceResult = callable.call();
+            assertThat(serviceResult, notNullValue());
+            assertThat(serviceResult.getErrorMessage(), notNullValue());
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 }

@@ -17,13 +17,19 @@ import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 /**
  * @author Florian J. Breunig
  */
 public final class MockServiceResultFactory {
+
+    /**
+     * Restrictive constructor.
+     */
+    private MockServiceResultFactory() {
+        // Prevents this class from being instantiated from the outside.
+    }
 
     public static <V> ServiceResult<V> createFailedServiceResult() {
         String errorMessage = "stub error message";

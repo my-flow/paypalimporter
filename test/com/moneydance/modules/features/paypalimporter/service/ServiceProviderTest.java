@@ -18,9 +18,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.Util;
 import com.moneydance.apps.md.model.time.DateRangeOption;
-import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
-import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
 /**
  * @author Florian J. Breunig

@@ -113,11 +113,11 @@ public final class ViewControllerImpl implements ViewController {
 
     @Override
     public void cancel() {
-        if (this.inputData != null) {
+        if (this.inputData == null) {
+            this.wizard.setVisible(false);
+        } else {
             this.serviceProvider.shutdownNow();
             this.unlock(null, null);
-        } else {
-            this.wizard.setVisible(false);
         }
     }
 
@@ -144,8 +144,7 @@ public final class ViewControllerImpl implements ViewController {
                 new CheckCurrencyRequestHandler(
                         this,
                         this.context.getRootAccount(),
-                        this.inputData.getAccountId(),
-                        this.wizard));
+                        this.inputData.getAccountId()));
     }
 
     @Override
@@ -176,8 +175,7 @@ public final class ViewControllerImpl implements ViewController {
                         this,
                         rootAccount,
                         this.inputData.getAccountId(),
-                        currencyType,
-                        this.wizard));
+                        currencyType));
         this.inputData = null;
     }
 

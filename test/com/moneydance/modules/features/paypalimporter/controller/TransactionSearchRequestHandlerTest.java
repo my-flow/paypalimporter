@@ -11,9 +11,6 @@ import org.junit.Test;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.controller.AbstractRequestHandler;
-import com.moneydance.modules.features.paypalimporter.controller.TransactionSearchRequestHandler;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
@@ -33,8 +30,7 @@ public final class TransactionSearchRequestHandlerTest {
                 viewController,
                 factory.getContext().getRootAccount(),
                 -1,
-                factory.getContext().getRootAccount().getCurrencyType(),
-                null);
+                factory.getContext().getRootAccount().getCurrencyType());
     }
 
     @Test

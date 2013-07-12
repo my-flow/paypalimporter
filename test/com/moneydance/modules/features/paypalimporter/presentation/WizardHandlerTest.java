@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
-import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
+
 /**
  * @author Florian J. Breunig
  */

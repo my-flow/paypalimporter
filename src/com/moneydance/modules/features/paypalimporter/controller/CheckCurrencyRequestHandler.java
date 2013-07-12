@@ -5,7 +5,6 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import java.awt.Component;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
@@ -30,8 +29,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
     CheckCurrencyRequestHandler(
             final ViewController argViewController,
             final RootAccount argRootAccount,
-            final int argAccountNum,
-            final Component parentComponent) {
+            final int argAccountNum) {
         super(argViewController);
 
         Validate.notNull(argRootAccount, "root account must not be null");

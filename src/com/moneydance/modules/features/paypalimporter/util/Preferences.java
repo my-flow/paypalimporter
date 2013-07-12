@@ -29,13 +29,6 @@ public final class Preferences {
     private RootAccount rootAccount;
     private PayPalOnlineService profile;
 
-    /**
-     * The constructor must be called exactly once before using the only
-     * instance of this class.
-     */
-    Preferences() {
-    }
-
     void setContext(final FeatureModuleContext context) {
         this.userPreferences = ((com.moneydance.apps.md.controller.Main)
                 context).getPreferences();

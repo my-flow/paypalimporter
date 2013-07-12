@@ -13,8 +13,6 @@ import org.junit.Test;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.model.RootAccount;
-import com.moneydance.modules.features.paypalimporter.integration.OnlineServiceFactory;
-import com.moneydance.modules.features.paypalimporter.integration.PayPalOnlineService;
 
 /**
  * @author Florian J. Breunig

@@ -18,6 +18,8 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
  */
 public final class InputDataValidator implements Validator<InputData> {
 
+    private final Localizable localizable;
+
     /**
      * @author Florian J. Breunig
      */
@@ -27,8 +29,6 @@ public final class InputDataValidator implements Validator<InputData> {
         SIGNATURE,
         DATERANGE;
     }
-
-    private final Localizable localizable;
 
     public InputDataValidator() {
         this.localizable = Helper.INSTANCE.getLocalizable();

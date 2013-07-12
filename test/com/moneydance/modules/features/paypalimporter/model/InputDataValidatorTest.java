@@ -15,9 +15,6 @@ import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
-import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
 
 /**
  * @author Florian J. Breunig

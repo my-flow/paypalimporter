@@ -8,8 +8,6 @@ package com.moneydance.modules.features.paypalimporter.util;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.moneydance.modules.features.paypalimporter.util.Tracker;
-
 /**
  * @author Florian J. Breunig
  */

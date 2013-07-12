@@ -26,10 +26,6 @@ import com.moneydance.modules.features.paypalimporter.util.Tracker;
  */
 public final class Main extends FeatureModule implements Observer {
 
-    static {
-        Helper.INSTANCE.loadLoggerConfiguration();
-    }
-
     /**
      * Static initialization of class-dependent logger.
      */
@@ -37,9 +33,12 @@ public final class Main extends FeatureModule implements Observer {
 
     private final Preferences    prefs;
     private final Settings       settings;
-    private       Localizable    localizable;
     private       Tracker        tracker;
     private       ViewController viewController;
+
+    static {
+        Helper.INSTANCE.loadLoggerConfiguration();
+    }
 
     /**
      * Standard constructor must be available in the Moneydance context.
@@ -53,7 +52,6 @@ public final class Main extends FeatureModule implements Observer {
     @Override
     public void init() {
         Helper.INSTANCE.addObserver(this);
-        this.localizable = Helper.INSTANCE.getLocalizable();
         this.tracker = Helper.INSTANCE.getTracker(this.getBuild());
 
         if (this.prefs.isFirstRun()) {
@@ -64,11 +62,12 @@ public final class Main extends FeatureModule implements Observer {
 
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
+        Localizable localizable = Helper.INSTANCE.getLocalizable();
         this.getContext().registerFeature(
                 this,
                 this.settings.getStartWizardSuffix(),
                 null, // buttonImage
-                this.localizable.getLabelButtonText());
+                localizable.getLabelButtonText());
     }
 
     @Override

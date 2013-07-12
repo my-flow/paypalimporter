@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.moneydance.apps.md.model.AccountListener;
-import com.moneydance.modules.features.paypalimporter.controller.AccountDelegateListener;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 
 /**
  * @author Florian J. Breunig

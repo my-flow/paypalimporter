@@ -14,8 +14,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-
 /**
  * @author Florian J. Breunig
  */

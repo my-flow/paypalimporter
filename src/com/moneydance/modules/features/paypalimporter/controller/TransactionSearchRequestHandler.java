@@ -5,7 +5,6 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import java.awt.Component;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,8 +53,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             final ViewController argViewController,
             final RootAccount argRootAccount,
             final int argAccountNum,
-            final CurrencyType argCurrencyType,
-            final Component parentComponent) {
+            final CurrencyType argCurrencyType) {
 
         super(argViewController);
         Validate.notNull(argRootAccount, "root account must not be null");

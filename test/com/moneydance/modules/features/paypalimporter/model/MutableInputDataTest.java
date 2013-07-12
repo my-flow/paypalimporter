@@ -13,9 +13,6 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
-
 /**
  * @author Florian J. Breunig
  */
