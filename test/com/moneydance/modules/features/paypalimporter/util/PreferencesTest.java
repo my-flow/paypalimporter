@@ -7,6 +7,7 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Observable;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.apps.md.model.RootAccount;
 
 /**
  * @author Florian J. Breunig
@@ -124,11 +126,21 @@ public final class PreferencesTest {
     }
 
     @Test
-    public void testSetPassword() {
+    public void testSetPasswordStorePin() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        this.factory.getContext().getRootAccount().setParameter(RootAccount.STORE_PINS_PARAM, true);
         this.prefs.setPassword(password);
         assertThat(String.valueOf(this.prefs.getPassword()), is(String.valueOf(password)));
+    }
+
+    @Test
+    public void testSetPasswordStoreDoNotPin() {
+        final char[] password = {'s', 't', 'u', 'b', ' ',
+                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        this.factory.getContext().getRootAccount().setParameter(RootAccount.STORE_PINS_PARAM, false);
+        this.prefs.setPassword(password);
+        assertThat(this.prefs.getPassword(), nullValue());
     }
 
     @Test

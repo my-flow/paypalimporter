@@ -6,6 +6,7 @@
 package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -59,15 +60,24 @@ public final class PayPalOnlineServiceTest {
     public void testSetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(password);
+        this.service.setPassword(this.rootAccount, password);
     }
 
     @Test
-    public void testGetPassword() {
+    public void testGetPasswordStorePin() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(password);
+        this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, true);
+        this.service.setPassword(this.rootAccount, password);
         assertThat(String.valueOf(this.service.getPassword()), is(String.valueOf(password)));
+    }
+
+    public void testGetPasswordDoNotStorePin() {
+        final char[] password = {'s', 't', 'u', 'b', ' ',
+                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, false);
+        this.service.setPassword(this.rootAccount, password);
+        assertThat(this.service.getPassword(), nullValue());
     }
 
     @Test

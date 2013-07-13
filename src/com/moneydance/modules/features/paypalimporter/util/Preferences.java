@@ -134,7 +134,7 @@ public final class Preferences {
     }
 
     public void setPassword(final char[] password) {
-        this.getPayPalOnlineService().setPassword(password);
+        this.getPayPalOnlineService().setPassword(this.rootAccount, password);
     }
 
     public char[] getPassword() {
