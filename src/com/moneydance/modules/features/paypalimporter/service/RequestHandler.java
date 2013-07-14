@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
@@ -10,5 +8,5 @@ package com.moneydance.modules.features.paypalimporter.service;
  * @param <V>
  */
 public interface RequestHandler<V> {
-    void serviceCallFinished(final ServiceResult<V> v);
+    void serviceCallFinished(final ServiceResult<V> serviceResult);
 }

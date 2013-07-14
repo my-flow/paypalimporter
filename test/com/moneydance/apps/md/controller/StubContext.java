@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.apps.md.controller;
 
@@ -35,6 +33,7 @@ public final class StubContext extends Main {
     private       UserPreferences userPreferences;
 
     StubContext(final FeatureModule argFeatureModule) {
+        super();
         this.featureModule = argFeatureModule;
         try {
             this.initializeApp();

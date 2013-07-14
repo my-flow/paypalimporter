@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 import java.io.PrintWriter;
@@ -21,9 +19,9 @@ public final class LogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
-        sb.append(new Date(record.getMillis()))
+        stringBuilder.append(new Date(record.getMillis()))
         .append(' ')
         .append(record.getLevel().getLocalizedName())
         .append(": ")
@@ -31,13 +29,13 @@ public final class LogFormatter extends Formatter {
         .append(LINE_SEPARATOR);
 
         if (record.getThrown() != null) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            record.getThrown().printStackTrace(pw);
-            pw.close();
-            sb.append(sw.toString());
+            StringWriter stringWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stringWriter);
+            record.getThrown().printStackTrace(printWriter);
+            printWriter.close();
+            stringBuilder.append(stringWriter.toString());
         }
 
-        return sb.toString();
+        return stringBuilder.toString();
     }
 }

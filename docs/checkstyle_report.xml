@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.6">
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/Main.java">
+<error line="15" severity="warning" message="Line is longer than 80 characters (found 84)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/AbstractRequestHandler.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/AccountDelegateListener.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/CheckCurrencyRequestHandler.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/ComponentDelegateListener.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/TransactionSearchRequestHandler.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/ViewController.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/ViewControllerImpl.java">
+<error line="27" severity="warning" message="Line is longer than 80 characters (found 81)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/controller/package-info.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/domain/CurrencyMapper.java">
+<error line="27" column="4" severity="warning" message="&apos;;&apos; is preceded with whitespace." source="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/domain/package-info.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/integration/OnlineServiceFactory.java">
+<error line="24" column="4" severity="warning" message="&apos;;&apos; is preceded with whitespace." source="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/integration/PayPalOnlineService.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/integration/package-info.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/model/InputData.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/model/InputDataValidator.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/model/MutableInputData.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/model/package-info.java">
+<error line="6" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/package-info.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/presentation/HelpButton.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/presentation/WizardController.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/presentation/WizardHandler.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/presentation/WizardLayout.java">
+<error line="50" column="24" severity="warning" message="Variable &apos;panelBuilder&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="51" column="28" severity="warning" message="Variable &apos;dateRanger&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="52" column="22" severity="warning" message="Variable &apos;txtUsername&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="53" column="26" severity="warning" message="Variable &apos;btnHelp&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="54" column="26" severity="warning" message="Variable &apos;txtPassword&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="55" column="22" severity="warning" message="Variable &apos;txtSignature&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="56" column="26" severity="warning" message="Variable &apos;rdBtnExistingAcct&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="57" column="21" severity="warning" message="Variable &apos;comboBoxAccts&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="58" column="26" severity="warning" message="Variable &apos;rdBtnNewAcct&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="59" column="22" severity="warning" message="Variable &apos;comboBoxDateRange&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="60" column="19" severity="warning" message="Variable &apos;btnProceed&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="61" column="19" severity="warning" message="Variable &apos;btnCancel&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="62" column="24" severity="warning" message="Variable &apos;progressBar&apos; must be private and have accessor methods." source="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck"/>
+<error line="106" column="65" severity="warning" message="&apos;9&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="113" column="64" severity="warning" message="&apos;11&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="119" column="66" severity="warning" message="&apos;11&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="128" column="49" severity="warning" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="129" column="44" severity="warning" message="&apos;7&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="138" column="43" severity="warning" message="&apos;11&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="148" column="48" severity="warning" message="&apos;11&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="151" column="57" severity="warning" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="153" column="48" severity="warning" message="&apos;5&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="167" column="28" severity="warning" message="&apos;5&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="178" column="28" severity="warning" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+<error line="179" column="41" severity="warning" message="&apos;3&apos; is a magic number." source="com.puppycrawl.tools.checkstyle.checks.coding.MagicNumberCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/presentation/package-info.java">
+<error line="6" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/CheckCurrencyService.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/RequestHandler.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/ServiceProvider.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/ServiceResult.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/TransactionSearchService.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/service/package-info.java">
+<error line="6" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocStyleCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/Helper.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/Localizable.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/LogFormatter.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/Preferences.java">
+<error line="15" severity="warning" message="Line is longer than 80 characters (found 87)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+<error line="16" severity="warning" message="Line is longer than 80 characters (found 86)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/Settings.java">
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/Tracker.java">
+<error line="82" severity="warning" message="Line is longer than 80 characters (found 81)." source="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck"/>
+</file>
+<file name="/Users/fbreunig/Workspace/paypalimporter/develop/src/com/moneydance/modules/features/paypalimporter/util/package-info.java">
+</file>
+</checkstyle>

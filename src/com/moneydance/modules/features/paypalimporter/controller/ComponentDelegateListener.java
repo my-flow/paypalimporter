@@ -1,3 +1,6 @@
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
+
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import java.awt.event.ComponentAdapter;
@@ -26,6 +29,7 @@ final class ComponentDelegateListener extends ComponentAdapter {
     ComponentDelegateListener(
             final FeatureModuleContext argContext,
             final ViewController argViewController) {
+        super();
         Validate.notNull(argContext, "context must not be null");
         Validate.notNull(argViewController,
                 "view controller must not be null");

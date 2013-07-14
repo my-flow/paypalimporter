@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
@@ -61,14 +59,16 @@ public final class MutableInputData implements InputData {
 
     @Override
     public char[] getPassword(final boolean clear) {
+        char[] result;
         if (this.password == null) {
-            return null;
+            result = null;
+        } else {
+            result = Arrays.copyOf(this.password, this.password.length);
+            if (clear) {
+                Arrays.fill(this.password, '\0');
+            }
         }
-        final char[] ret = Arrays.copyOf(this.password, this.password.length);
-        if (clear) {
-            Arrays.fill(this.password, '\0');
-        }
-        return ret;
+        return result;
     }
 
     @Override

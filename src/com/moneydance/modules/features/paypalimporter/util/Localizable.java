@@ -1,15 +1,13 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -122,7 +120,8 @@ public enum Localizable {
         final String templateString = this.resourceBundle.getString(
                 "error_message_service_call_failed");
 
-        Map<String, String> valuesMap = new HashMap<String, String>(1);
+        Map<String, String> valuesMap =
+                new ConcurrentHashMap<String, String>(1);
         valuesMap.put("error.message", errorMessage);
         StrSubstitutor sub = new StrSubstitutor(valuesMap);
 

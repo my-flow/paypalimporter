@@ -1,13 +1,12 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -25,7 +24,7 @@ public final class LogFormatterTest {
         LogRecord logRecord = new LogRecord(Level.CONFIG, "stub message");
         assertThat(logFormatter.format(logRecord), notNullValue());
 
-        logRecord.setThrown(new Exception());
+        logRecord.setThrown(new IOException());
         assertThat(logFormatter.format(logRecord), notNullValue());
     }
 

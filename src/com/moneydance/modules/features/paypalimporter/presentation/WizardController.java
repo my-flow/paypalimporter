@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -71,7 +69,7 @@ implements ActionListener, WindowListener {
                 new PropertyChangeListener() {
             @Override
             public void propertyChange(
-                    final PropertyChangeEvent propertychangeevent) {
+                    final PropertyChangeEvent propertyChangeEvent) {
                 refreshListener.actionPerformed(null);
             }
         };
@@ -101,14 +99,12 @@ implements ActionListener, WindowListener {
 
         this.txtSignature.setText(inputData.getSignature());
 
-        int startDate = 0;
-        int endDate = 0;
         if (inputData.getDateRange() != null) {
-            startDate = inputData.getDateRange().getStartDateInt();
-            endDate = inputData.getDateRange().getEndDateInt();
+            this.dateRanger.setStartDate(
+                    inputData.getDateRange().getStartDateInt());
+            this.dateRanger.setEndDate(
+                    inputData.getDateRange().getEndDateInt());
         }
-        this.dateRanger.setStartDate(startDate);
-        this.dateRanger.setEndDate(endDate);
 
         // preset focus
         if (StringUtils.isEmpty(this.txtUsername.getText())) {

@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -20,6 +18,7 @@ final class HelpButton extends JButton {
     private static final long serialVersionUID = 1L;
 
     HelpButton() {
+        super();
         final Image image = Helper.INSTANCE.getHelpImage();
         this.setIcon(new ImageIcon(image));
         this.setContentAreaFilled(false);

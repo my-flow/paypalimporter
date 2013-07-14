@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -80,7 +78,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         if (useAccount == null) {
             LOG.info("Creating new account");
 
-            // ESCA-JAVA0166: Account.makeAccount throws general exception
+            // ESCA-JAVA0166: Account.makeAccount throws generic exception
             try {
                 useAccount = Account.makeAccount(
                         Account.ACCOUNT_TYPE_BANK,
@@ -162,7 +160,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         txn.setAmount(amount);
         txn.setTotalAmount(amount);
         txn.setName(description);
-        txn.setMemo(memo.toString());
+        txn.setMemo(memo);
         txn.setFITxnId(fitxnid);
         txn.setDatePosted(date);
         txn.setDateInitiated(date);

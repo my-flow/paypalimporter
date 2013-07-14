@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter;
 
@@ -44,6 +42,7 @@ public final class Main extends FeatureModule implements Observer {
      * Standard constructor must be available in the Moneydance context.
      */
     public Main() {
+        super();
         LOG.info("Initializing extension in Moneydance's application context.");
         this.prefs       = Helper.INSTANCE.getPreferences();
         this.settings    = Helper.INSTANCE.getSettings();

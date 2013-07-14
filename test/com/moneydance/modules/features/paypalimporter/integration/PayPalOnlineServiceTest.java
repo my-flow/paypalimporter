@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
@@ -72,6 +70,7 @@ public final class PayPalOnlineServiceTest {
         assertThat(String.valueOf(this.service.getPassword()), is(String.valueOf(password)));
     }
 
+    @Test
     public void testGetPasswordDoNotStorePin() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};

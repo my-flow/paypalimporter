@@ -23,6 +23,10 @@
   <taskdef resource="checkstyletask.properties"
     classpath="${lib}/checkstyle-5.6-all.jar"/>
 
+  <taskdef name="pmd"
+    classname="net.sourceforge.pmd.ant.PMDTask"
+	classpath="lib/pmd-5.0.4.jar;lib/jaxen-1.1.1.jar;lib/asm-3.2.jar"/>
+
   <taskdef resource="proguard/ant/task.properties"
          classpath="${lib}/proguard-4.9.jar" />
 
@@ -81,7 +85,7 @@
   </target>   
 
 
-  <target name="checkstyle"
+  <target name="checkstyle-report"
           description="Generates a report of code convention violations.">
     <delete>
       <fileset dir="${docs}/checkstyle-report" includes="**/*"/>
@@ -98,9 +102,44 @@
   </target>
 
 
+  <target name="pmd-report"
+    description="Runs a set of static code analysis rules and generates a list
+      of problems found.">
+
+    <delete>
+      <fileset dir="${docs}/pmd-report" includes="**/*"/>
+    </delete>
+
+    <pmd shortFilenames="true">
+      <ruleset>java-basic</ruleset>
+      <ruleset>java-braces</ruleset>
+      <ruleset>java-clone</ruleset>
+      <ruleset>java-codesize</ruleset>
+      <ruleset>java-comments</ruleset>
+      <ruleset>java-design</ruleset>
+      <ruleset>java-empty</ruleset>
+      <ruleset>java-finalizers</ruleset>
+      <ruleset>java-imports</ruleset>
+      <ruleset>java-logging-jakarta-commons</ruleset>
+      <ruleset>java-migrating</ruleset>
+      <ruleset>java-naming</ruleset>
+      <ruleset>java-strictexception</ruleset>
+      <ruleset>java-strings</ruleset>
+      <ruleset>java-sunsecure</ruleset>
+      <ruleset>java-typeresolution</ruleset>
+      <ruleset>java-unnecessary</ruleset>
+      <ruleset>java-unusedcode</ruleset>
+
+      <fileset dir="${src}" includes="**/*.java"/>
+      <formatter type="html" toFile="${docs}/pmd-report/pmd-report.html"/>
+    </pmd>
+
+  </target>
+
+
   <target name="test" depends="compile"
-      description="Executes JUnit's test suite and generates an HTML report
-using JMockit Coverage.">
+    description="Executes JUnit's test suite and generates an HTML report
+      using JMockit Coverage.">
 
     <javac source="1.6"
            target="1.6"
@@ -279,8 +318,8 @@ file with a private key that must already exist.">
   </target>
 
 
-  <target name="javadoc" description="Creates Javadoc documentation with
-references to external documentations.">
+  <target name="api-report" description="Creates Javadoc documentation with
+    references to external documentations.">
 
     <delete>
       <fileset dir="${docs}/api" includes="**/*"/>

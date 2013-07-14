@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -61,7 +59,7 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public void update(final Observable o, final Object arg) {
+    public void update(final Observable observable, final Object arg) {
         WizardHandler.ExecutedAction action =
                 (WizardHandler.ExecutedAction) arg;
         switch (action) {
@@ -76,7 +74,7 @@ public final class ViewControllerImpl implements ViewController {
             break;
         default:
             throw new IllegalArgumentException(
-                    String.format("case %s not defined", o));
+                    String.format("case %s not defined", observable));
         }
     }
 
@@ -217,9 +215,12 @@ public final class ViewControllerImpl implements ViewController {
     private MoneydanceGUI getMoneydanceGUI() {
         // Using undocumented feature.
         Main main = (Main) this.context;
-        if (main != null) {
-            return (MoneydanceGUI) main.getUI();
+        MoneydanceGUI result;
+        if (main == null) {
+            result = null;
+        } else {
+            result = (MoneydanceGUI) main.getUI();
         }
-        return null;
+        return result;
     }
 }

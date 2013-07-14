@@ -10,10 +10,7 @@
 
 # project specific
 bin
-docs/api
-docs/checkstyle-report
-docs/coverage-report
-docs/pmd-report
+docs/*
 dist
 logs
 src/priv_key

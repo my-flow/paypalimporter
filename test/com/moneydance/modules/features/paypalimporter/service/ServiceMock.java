@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
@@ -71,53 +69,29 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
         if (this.unknownHostException != null) {
             throw this.unknownHostException;
-        }
-
-        if (this.socketException != null) {
+        } else if (this.socketException != null) {
             throw this.socketException;
-        }
-
-        if (this.ioException != null) {
+        } else if (this.ioException != null) {
             throw this.ioException;
-        }
-
-        if (this.sslConfigurationException != null) {
+        } else if (this.sslConfigurationException != null) {
             throw this.sslConfigurationException;
-        }
-
-        if (this.invalidCredentialException != null) {
+        } else if (this.invalidCredentialException != null) {
             throw this.invalidCredentialException;
-        }
-
-        if (this.httpErrorException != null) {
+        } else if (this.httpErrorException != null) {
             throw this.httpErrorException;
-        }
-
-        if (this.invalidResponseDataException != null) {
+        } else if (this.invalidResponseDataException != null) {
             throw this.invalidResponseDataException;
-        }
-
-        if (this.clientActionRequiredException != null) {
+        } else if (this.clientActionRequiredException != null) {
             throw this.clientActionRequiredException;
-        }
-
-        if (this.missingCredentialException != null) {
+        } else if (this.missingCredentialException != null) {
             throw this.missingCredentialException;
-        }
-
-        if (this.oAuthException != null) {
+        } else if (this.oAuthException != null) {
             throw this.oAuthException;
-        }
-
-        if (this.interruptedException != null) {
+        } else if (this.interruptedException != null) {
             throw this.interruptedException;
-        }
-
-        if (this.parserConfigurationException != null) {
+        } else if (this.parserConfigurationException != null) {
             throw this.parserConfigurationException;
-        }
-
-        if (this.saxException != null) {
+        } else if (this.saxException != null) {
             throw this.saxException;
         }
 
@@ -138,53 +112,29 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
         if (this.unknownHostException != null) {
             throw this.unknownHostException;
-        }
-
-        if (this.socketException != null) {
+        } else if (this.socketException != null) {
             throw this.socketException;
-        }
-
-        if (this.ioException != null) {
+        } else if (this.ioException != null) {
             throw this.ioException;
-        }
-
-        if (this.sslConfigurationException != null) {
+        } else if (this.sslConfigurationException != null) {
             throw this.sslConfigurationException;
-        }
-
-        if (this.invalidCredentialException != null) {
+        } else if (this.invalidCredentialException != null) {
             throw this.invalidCredentialException;
-        }
-
-        if (this.httpErrorException != null) {
+        } else if (this.httpErrorException != null) {
             throw this.httpErrorException;
-        }
-
-        if (this.invalidResponseDataException != null) {
+        } else if (this.invalidResponseDataException != null) {
             throw this.invalidResponseDataException;
-        }
-
-        if (this.clientActionRequiredException != null) {
+        } else if (this.clientActionRequiredException != null) {
             throw this.clientActionRequiredException;
-        }
-
-        if (this.missingCredentialException != null) {
+        } else if (this.missingCredentialException != null) {
             throw this.missingCredentialException;
-        }
-
-        if (this.oAuthException != null) {
+        } else if (this.oAuthException != null) {
             throw this.oAuthException;
-        }
-
-        if (this.interruptedException != null) {
+        } else if (this.interruptedException != null) {
             throw this.interruptedException;
-        }
-
-        if (this.parserConfigurationException != null) {
+        } else if (this.parserConfigurationException != null) {
             throw this.parserConfigurationException;
-        }
-
-        if (this.saxException != null) {
+        } else if (this.saxException != null) {
             throw this.saxException;
         }
 

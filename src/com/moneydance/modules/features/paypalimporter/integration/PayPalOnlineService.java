@@ -1,7 +1,5 @@
-/*
- * PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
- * Copyright (C) 2013 Florian J. Breunig. All rights reserved.
- */
+// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
+// Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
@@ -93,10 +91,13 @@ public final class PayPalOnlineService {
     public char[] getPassword() {
         Object authObj = this.onlineService.getCachedAuthentication(
                 this.authKey);
+        char[] result;
         if (authObj == null) {
-            return null;
+            result = null;
+        } else {
+            result = ((String) authObj).toCharArray();
         }
-        return ((String) authObj).toCharArray();
+        return result;
     }
 
     public void setSignature(final String signature) {
