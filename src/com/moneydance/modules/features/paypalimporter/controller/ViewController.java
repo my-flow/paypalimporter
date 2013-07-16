@@ -11,7 +11,7 @@ import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
 
 /**
- * @author Florian J. Breunig, Florian.Breunig@my-flow.com
+ * @author Florian J. Breunig
  */
 public interface ViewController extends Observer {
 

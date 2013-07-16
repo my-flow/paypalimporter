@@ -122,7 +122,7 @@ class WizardLayout extends JDialog {
         builder.appendI15d(
                 String.format("%s%s",
                         mdGUI.getStr("import_into_acct"),
-                        mdGUI.getStr("labelColon")),
+                        localizer.getString("label_colon")),
                         this.rdBtnExistingAcct, 3);
         builder.append(this.comboBoxAccts, 7);
         MnemonicUtils.configure(
@@ -130,7 +130,7 @@ class WizardLayout extends JDialog {
                 String.format(
                         "%s%s",
                         mdGUI.getStr("existing_account"),
-                        mdGUI.getStr("labelColon")));
+                        localizer.getString("label_colon")));
 
         builder.leadingColumnOffset(2);
         builder.append(this.rdBtnNewAcct, 11);
@@ -177,7 +177,7 @@ class WizardLayout extends JDialog {
         builder.append(this.btnProceed, 3);
         MnemonicUtils.configure(
                 this.btnProceed,
-                mdGUI.getStr("import"));
+                localizer.getString("label_import_button"));
         this.panelBuilder = builder;
 
         this.setContentPane(this.panelBuilder.getPanel());

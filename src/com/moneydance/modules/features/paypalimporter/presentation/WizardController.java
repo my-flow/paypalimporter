@@ -11,6 +11,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
@@ -33,6 +35,12 @@ import com.moneydance.modules.features.paypalimporter.util.Helper;
  */
 class WizardController extends WizardLayout
 implements ActionListener, WindowListener {
+
+    /**
+     * Static initialization of class-dependent logger.
+     */
+    private static final Logger LOG = Logger.getLogger(
+            WizardController.class.getName());
 
     private static final long serialVersionUID = 1L;
 
@@ -76,7 +84,12 @@ implements ActionListener, WindowListener {
 
         this.rdBtnExistingAcct.addActionListener(refreshListener);
         this.rdBtnNewAcct.addActionListener(refreshListener);
-        this.dateRanger.addPropertyChangeListener(propertyChangeListener);
+        try {
+            this.dateRanger.addPropertyChangeListener(propertyChangeListener);
+        } catch (NoSuchMethodError e) {
+            // ignore exception in older versions of Moneydance
+            LOG.log(Level.INFO, e.getMessage(), e);
+        }
 
         this.btnProceed.addActionListener(this);
         this.btnCancel.addActionListener(this);

@@ -3,9 +3,13 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import java.awt.Component;
 import java.awt.Frame;
 import java.util.Observable;
 import java.util.logging.Logger;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
@@ -81,6 +85,23 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     @SuppressWarnings("deprecation")
     public void startWizard() {
+
+        if (this.context.getRootAccount() == null) {
+            // this condition can only be true in Moneydance 2008
+            // and older versions
+
+            final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
+            final Component parentComponent = mdGUI.getTopLevelFrame();
+            final Object errorLabel = new JLabel(
+                    this.localizable.getErrorMessageRootAccountNull());
+            JOptionPane.showMessageDialog(
+                    parentComponent,
+                    errorLabel,
+                    null, // no title
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         Helper.INSTANCE.setChanged();
         Helper.INSTANCE.notifyObservers(Boolean.TRUE);
 
