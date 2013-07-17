@@ -24,16 +24,16 @@ import org.jdesktop.xswingx.PromptSupport;
 import com.jgoodies.common.internal.ResourceBundleLocalizer;
 import com.jgoodies.common.internal.StringLocalizer;
 import com.jgoodies.common.swing.MnemonicUtils;
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.factories.Borders;
-import com.jgoodies.forms.factories.CC;
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.Sizes;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+import com.moneydance.modules.features.paypalimporter.forms.builder.DefaultFormBuilder;
+import com.moneydance.modules.features.paypalimporter.forms.builder.PanelBuilder;
+import com.moneydance.modules.features.paypalimporter.forms.factories.Borders;
+import com.moneydance.modules.features.paypalimporter.forms.factories.CC;
+import com.moneydance.modules.features.paypalimporter.forms.layout.CellConstraints;
+import com.moneydance.modules.features.paypalimporter.forms.layout.FormLayout;
+import com.moneydance.modules.features.paypalimporter.forms.layout.RowSpec;
+import com.moneydance.modules.features.paypalimporter.forms.layout.Sizes;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 /**
