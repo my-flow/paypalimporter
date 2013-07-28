@@ -3,15 +3,15 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
-import java.util.Locale;
-
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.UserPreferences;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.integration.OnlineServiceFactory;
 import com.moneydance.modules.features.paypalimporter.integration.PayPalOnlineService;
+
+import java.util.Locale;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * This preferences class contains the values the user can control in the

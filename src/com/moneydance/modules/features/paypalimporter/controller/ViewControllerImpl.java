@@ -3,16 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import java.awt.Component;
-import java.awt.Frame;
-import java.util.Observable;
-import java.util.logging.Logger;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
@@ -32,6 +22,16 @@ import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Tracker;
+
+import java.awt.Component;
+import java.awt.Frame;
+import java.util.Observable;
+import java.util.logging.Logger;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
  * @author Florian J. Breunig

@@ -6,15 +6,15 @@ package com.moneydance.modules.features.paypalimporter.presentation;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
+
 import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
 
 /**
  * @author Florian J. Breunig
@@ -24,7 +24,7 @@ public final class WizardHandlerTest {
     private WizardHandler wizardHandler;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubMoneydanceGUIFactory factory = new StubMoneydanceGUIFactory(new StubContextFactory());
         this.wizardHandler = new WizardHandler(
                 null,

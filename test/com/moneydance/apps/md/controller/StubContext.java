@@ -3,14 +3,14 @@
 
 package com.moneydance.apps.md.controller;
 
+import com.moneydance.apps.md.extensionapi.AccountEditor;
+import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.apps.md.view.HomePageView;
+
 import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.moneydance.apps.md.extensionapi.AccountEditor;
-import com.moneydance.apps.md.model.RootAccount;
-import com.moneydance.apps.md.view.HomePageView;
 
 /**
  * This test stub simulates a context in stand-alone mode. It provides canned

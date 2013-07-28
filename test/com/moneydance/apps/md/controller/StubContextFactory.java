@@ -3,10 +3,6 @@
 
 package com.moneydance.apps.md.controller;
 
-import java.util.logging.Logger;
-
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyTable;
 import com.moneydance.apps.md.model.CurrencyType;
@@ -16,6 +12,10 @@ import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
+
+import java.util.logging.Logger;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author Florian J. Breunig

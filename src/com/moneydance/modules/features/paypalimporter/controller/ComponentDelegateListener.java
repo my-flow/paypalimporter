@@ -3,14 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.controller.FeatureModuleContext;
+import com.moneydance.apps.md.model.AccountListener;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.Validate;
-
-import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.apps.md.model.AccountListener;
 
 /**
  * @author Florian J. Breunig

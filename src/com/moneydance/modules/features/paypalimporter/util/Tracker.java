@@ -3,16 +3,16 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
+import com.dmurph.tracking.AnalyticsConfigData;
+import com.dmurph.tracking.JGoogleAnalyticsTracker;
+import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
+
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 import java.util.logging.Logger;
-
-import com.dmurph.tracking.AnalyticsConfigData;
-import com.dmurph.tracking.JGoogleAnalyticsTracker;
-import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
 
 /**
  * @author Florian J. Breunig
@@ -77,7 +77,8 @@ public final class Tracker {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(
                             Tracker.this.prefs.getProxyUsername(),
-                            Tracker.this.prefs.getProxyPassword().toCharArray());
+                            Tracker.this.prefs.getProxyPassword()
+                            .toCharArray());
                 }
             });
         }

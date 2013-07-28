@@ -7,15 +7,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.apps.md.controller.Util;
+import com.moneydance.apps.md.model.time.DateRangeOption;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.time.DateRangeOption;
 
 /**
  * @author Florian J. Breunig
@@ -25,7 +25,7 @@ public final class ServiceProviderTest {
     private ServiceProvider serviceProvider;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         new StubContextFactory();
         this.serviceProvider = new ServiceProvider();
     }

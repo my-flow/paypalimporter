@@ -2,6 +2,7 @@
 // Copyright (C) 2013 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -19,21 +20,30 @@ public final class LogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        final StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder(7);
 
         stringBuilder.append(new Date(record.getMillis()))
         .append(' ')
-        .append(record.getLevel().getLocalizedName())
-        .append(": ")
+        .append(record.getLevel().getLocalizedName());
+
+        stringBuilder.append(": ")
         .append(this.formatMessage(record))
         .append(LINE_SEPARATOR);
 
         if (record.getThrown() != null) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
-            record.getThrown().printStackTrace(printWriter);
-            printWriter.close();
-            stringBuilder.append(stringWriter.toString());
+            try {
+                record.getThrown().printStackTrace(printWriter);
+                stringBuilder.append(stringWriter.toString());
+            } finally {
+                printWriter.close();
+                try {
+                    stringWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return stringBuilder.toString();

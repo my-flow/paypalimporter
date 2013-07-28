@@ -3,9 +3,9 @@
 
 package com.moneydance.apps.md.controller;
 
-import org.apache.commons.lang.Validate;
-
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+
+import org.apache.commons.lang.Validate;
 
 /**
  * @author Florian J. Breunig

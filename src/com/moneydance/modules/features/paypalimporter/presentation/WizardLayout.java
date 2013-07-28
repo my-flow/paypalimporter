@@ -3,6 +3,21 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.jgoodies.common.internal.ResourceBundleLocalizer;
+import com.jgoodies.common.internal.StringLocalizer;
+import com.jgoodies.common.swing.MnemonicUtils;
+import com.moneydance.apps.md.view.gui.DateRangeChooser;
+import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+import com.moneydance.modules.features.paypalimporter.forms.builder.DefaultFormBuilder;
+import com.moneydance.modules.features.paypalimporter.forms.builder.PanelBuilder;
+import com.moneydance.modules.features.paypalimporter.forms.factories.Borders;
+import com.moneydance.modules.features.paypalimporter.forms.factories.CC;
+import com.moneydance.modules.features.paypalimporter.forms.layout.CellConstraints;
+import com.moneydance.modules.features.paypalimporter.forms.layout.FormLayout;
+import com.moneydance.modules.features.paypalimporter.forms.layout.RowSpec;
+import com.moneydance.modules.features.paypalimporter.forms.layout.Sizes;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.ResourceBundle;
@@ -21,21 +36,6 @@ import javax.swing.WindowConstants;
 import org.apache.commons.lang3.Validate;
 import org.jdesktop.xswingx.PromptSupport;
 
-import com.jgoodies.common.internal.ResourceBundleLocalizer;
-import com.jgoodies.common.internal.StringLocalizer;
-import com.jgoodies.common.swing.MnemonicUtils;
-import com.moneydance.apps.md.view.gui.DateRangeChooser;
-import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.forms.builder.DefaultFormBuilder;
-import com.moneydance.modules.features.paypalimporter.forms.builder.PanelBuilder;
-import com.moneydance.modules.features.paypalimporter.forms.factories.Borders;
-import com.moneydance.modules.features.paypalimporter.forms.factories.CC;
-import com.moneydance.modules.features.paypalimporter.forms.layout.CellConstraints;
-import com.moneydance.modules.features.paypalimporter.forms.layout.FormLayout;
-import com.moneydance.modules.features.paypalimporter.forms.layout.RowSpec;
-import com.moneydance.modules.features.paypalimporter.forms.layout.Sizes;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
-
 /**
  * @author Florian J. Breunig
  */
@@ -45,19 +45,19 @@ class WizardLayout extends JDialog {
 
     private static final RowSpec GAP_ROW = RowSpec.createGap(Sizes.DLUX9);
 
-    final PanelBuilder panelBuilder;
-    final DateRangeChooser dateRanger;
-    final JTextField txtUsername;
-    final AbstractButton btnHelp;
-    final JPasswordField txtPassword;
-    final JTextField txtSignature;
-    final AbstractButton rdBtnExistingAcct;
-    final JComboBox comboBoxAccts;
-    final AbstractButton rdBtnNewAcct;
-    final JComponent comboBoxDateRange;
-    final JButton btnProceed;
-    final JButton btnCancel;
-    final JProgressBar progressBar;
+    protected final PanelBuilder panelBuilder;
+    protected final DateRangeChooser dateRanger;
+    protected final JTextField txtUsername;
+    protected final AbstractButton btnHelp;
+    protected final JPasswordField txtPassword;
+    protected final JTextField txtSignature;
+    protected final AbstractButton rdBtnExistingAcct;
+    protected final JComboBox comboBoxAccts;
+    protected final AbstractButton rdBtnNewAcct;
+    protected final JComponent comboBoxDateRange;
+    protected final JButton btnProceed;
+    protected final JButton btnCancel;
+    protected final JProgressBar progressBar;
 
     /**
      * Create the frame.

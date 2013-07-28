@@ -3,16 +3,16 @@
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
-import java.util.Date;
-
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.apps.md.model.OnlineInfo;
 import com.moneydance.apps.md.model.OnlineService;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
+
+import java.util.Date;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author Florian J. Breunig

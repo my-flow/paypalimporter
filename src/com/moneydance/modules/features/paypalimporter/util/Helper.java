@@ -3,6 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
+import com.moneydance.apps.md.controller.FeatureModuleContext;
+
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -24,8 +26,6 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
 import org.apache.commons.lang3.Validate;
-
-import com.moneydance.apps.md.controller.FeatureModuleContext;
 
 /**
  * This helper class provides public convenience methods.

@@ -3,11 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter;
 
-import java.awt.Image;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Logger;
-
 import com.moneydance.apps.md.controller.FeatureModule;
 import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 import com.moneydance.modules.features.paypalimporter.controller.ViewControllerImpl;
@@ -17,9 +12,14 @@ import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
+import java.awt.Image;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Logger;
+
 /**
  * The main class of the extension, instantiated by Moneydance's class loader.
- *
+ * 
  * @author Florian J. Breunig
  */
 public final class Main extends FeatureModule implements Observer {

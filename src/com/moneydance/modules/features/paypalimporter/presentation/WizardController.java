@@ -3,6 +3,13 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.jgoodies.validation.view.ValidationComponentUtils;
+import com.moneydance.apps.md.view.gui.DateRangeChooser;
+import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+import com.moneydance.modules.features.paypalimporter.model.InputData;
+import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -23,13 +30,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import com.jgoodies.validation.view.ValidationComponentUtils;
-import com.moneydance.apps.md.view.gui.DateRangeChooser;
-import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
-
 /**
  * @author Florian J. Breunig
  */
@@ -45,7 +45,7 @@ implements ActionListener, WindowListener {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("deprecation")
-    WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
+    protected WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
         super(owner, mdGUI,
                 Helper.INSTANCE.getLocalizable().getResourceBundle());
 

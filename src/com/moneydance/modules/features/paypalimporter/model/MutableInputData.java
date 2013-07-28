@@ -3,12 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter.model;
 
+import com.moneydance.apps.md.controller.DateRange;
+
 import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import com.moneydance.apps.md.controller.DateRange;
 
 /**
  * @author Florian J. Breunig

@@ -3,14 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
 import java.util.Observable;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 /**
  * @author Florian J. Breunig

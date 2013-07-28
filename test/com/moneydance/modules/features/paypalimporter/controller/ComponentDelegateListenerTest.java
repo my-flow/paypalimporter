@@ -3,12 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+
 import java.awt.event.ComponentAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
 
 /**
  * @author Florian J. Breunig
@@ -18,7 +18,7 @@ public final class ComponentDelegateListenerTest {
     private ComponentAdapter componentAdapter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         ViewController viewController = new ViewControllerMock();
 

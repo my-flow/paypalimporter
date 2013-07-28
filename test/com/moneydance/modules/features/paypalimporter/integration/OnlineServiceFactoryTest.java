@@ -7,10 +7,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Test;
-
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.model.RootAccount;
+
+import org.junit.Test;
 
 /**
  * @author Florian J. Breunig

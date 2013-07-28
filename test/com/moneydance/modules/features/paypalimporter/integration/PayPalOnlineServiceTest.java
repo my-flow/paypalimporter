@@ -7,11 +7,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.model.RootAccount;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Florian J. Breunig
@@ -22,7 +22,7 @@ public final class PayPalOnlineServiceTest {
     private RootAccount rootAccount;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.rootAccount = new StubContextFactory().getContext().getRootAccount();
         this.service = OnlineServiceFactory.getService(this.rootAccount);
     }

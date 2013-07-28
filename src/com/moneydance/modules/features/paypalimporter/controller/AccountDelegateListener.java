@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.AccountListener;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author Florian J. Breunig

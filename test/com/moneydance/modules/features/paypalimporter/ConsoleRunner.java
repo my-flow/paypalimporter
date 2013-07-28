@@ -3,13 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.util.UiUtil;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class is used to run the extension as a stand-alone application from

@@ -3,12 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 /**
  * @author Florian J. Breunig

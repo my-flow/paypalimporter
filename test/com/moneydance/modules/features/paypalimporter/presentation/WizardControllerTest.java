@@ -6,16 +6,16 @@ package com.moneydance.modules.features.paypalimporter.presentation;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import javax.swing.DefaultComboBoxModel;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
+
+import javax.swing.DefaultComboBoxModel;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Florian J. Breunig
@@ -25,7 +25,7 @@ public final class WizardControllerTest {
     private WizardController wizardController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubMoneydanceGUIFactory factory = new StubMoneydanceGUIFactory(new StubContextFactory());
         this.wizardController = new WizardController(null, factory.getMoneydanceGUI());
     }

@@ -3,6 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -14,8 +16,6 @@ import java.util.Locale;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
-
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 /**
  * @author Florian J. Breunig

@@ -3,14 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
-import java.util.Iterator;
-
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.AccountUtil;
 import com.moneydance.apps.md.model.OnlineService;
 import com.moneydance.apps.md.model.RootAccount;
+
+import java.util.Iterator;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author Florian J. Breunig
@@ -46,10 +46,11 @@ public final class PayPalOnlineService {
             return;
         }
 
+        Account nextAccount;
         for (Iterator<Account> iterator =
                 AccountUtil.getAccountIterator(rootAccount);
                 iterator.hasNext();) {
-            final Account nextAccount = iterator.next();
+            nextAccount = iterator.next();
             if (nextAccount.getBankingFI() != null
                     && nextAccount.getBankingFI().isSameAs(
                             this.onlineService.getServiceId())) {

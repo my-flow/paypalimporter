@@ -3,17 +3,17 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import java.util.List;
-
-import org.apache.commons.lang3.Validate;
-
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapper;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
+
+import java.util.List;
+
+import org.apache.commons.lang3.Validate;
+
+import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
  * @author Florian J. Breunig

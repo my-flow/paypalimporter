@@ -3,17 +3,17 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.moneydance.apps.md.model.Account;
+import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+import com.moneydance.modules.features.paypalimporter.model.InputData;
+import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
+
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Observer;
 
 import org.apache.commons.lang3.Validate;
-
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
 
 /**
  * @author Florian J. Breunig
@@ -47,9 +47,9 @@ public final class WizardHandler extends WizardController {
 
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
-        if (actionEvent.getSource() == this.btnHelp) {
+        if (actionEvent.getSource().equals(this.btnHelp)) {
             this.observer.update(null, ExecutedAction.SHOW_HELP);
-        } else if (actionEvent.getSource() == this.btnProceed) {
+        } else if (actionEvent.getSource().equals(this.btnProceed)) {
 
             int accountNum = -1;
             if (this.rdBtnExistingAcct.isSelected()) {
@@ -67,7 +67,7 @@ public final class WizardHandler extends WizardController {
 
             this.observer.update(null, ExecutedAction.PROCEED);
 
-        } else if (actionEvent.getSource() == this.btnCancel) {
+        } else if (actionEvent.getSource().equals(this.btnCancel)) {
             this.observer.update(null, ExecutedAction.CANCEL);
         }
     }

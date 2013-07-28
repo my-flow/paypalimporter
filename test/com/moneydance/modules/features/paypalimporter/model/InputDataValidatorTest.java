@@ -6,23 +6,23 @@ package com.moneydance.modules.features.paypalimporter.model;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * @author Florian J. Breunig
  */
-final public class InputDataValidatorTest {
+public final class InputDataValidatorTest {
 
     private Validator<InputData> validator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         new StubContextFactory();
         this.validator = new InputDataValidator();
     }

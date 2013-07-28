@@ -3,12 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import org.apache.commons.lang3.Validate;
-
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author Florian J. Breunig
@@ -19,7 +19,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     private final ViewController viewController;
     private final Localizable localizable;
 
-    AbstractRequestHandler(final ViewController argViewController) {
+    protected AbstractRequestHandler(final ViewController argViewController) {
         Validate.notNull(argViewController, "view controller must not be null");
         this.viewController = argViewController;
         this.localizable = Helper.INSTANCE.getLocalizable();

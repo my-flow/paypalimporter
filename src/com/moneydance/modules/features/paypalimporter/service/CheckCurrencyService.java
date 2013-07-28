@@ -3,6 +3,16 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.paypal.exception.ClientActionRequiredException;
+import com.paypal.exception.HttpErrorException;
+import com.paypal.exception.InvalidCredentialException;
+import com.paypal.exception.InvalidResponseDataException;
+import com.paypal.exception.MissingCredentialException;
+import com.paypal.exception.SSLConfigurationException;
+import com.paypal.sdk.exceptions.OAuthException;
+
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -11,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,16 +36,6 @@ import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-
-import com.moneydance.modules.features.paypalimporter.util.Helper;
-import com.moneydance.modules.features.paypalimporter.util.Localizable;
-import com.paypal.exception.ClientActionRequiredException;
-import com.paypal.exception.HttpErrorException;
-import com.paypal.exception.InvalidCredentialException;
-import com.paypal.exception.InvalidResponseDataException;
-import com.paypal.exception.MissingCredentialException;
-import com.paypal.exception.SSLConfigurationException;
-import com.paypal.sdk.exceptions.OAuthException;
 
 /**
  * @author Florian J. Breunig
@@ -100,30 +101,43 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
             }
 
         } catch (UnknownHostException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
         } catch (SocketException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
         } catch (IOException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (SSLConfigurationException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (InvalidCredentialException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (HttpErrorException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (InvalidResponseDataException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (ClientActionRequiredException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (MissingCredentialException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (OAuthException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (InterruptedException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (ParserConfigurationException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         } catch (SAXException e) {
+            LOG.log(Level.WARNING, e.getMessage(), e);
             errorMessage = e.getLocalizedMessage();
         }
 

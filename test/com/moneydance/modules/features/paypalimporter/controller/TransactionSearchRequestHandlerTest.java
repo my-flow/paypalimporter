@@ -3,14 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
+import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
 /**
  * @author Florian J. Breunig
@@ -20,7 +20,7 @@ public final class TransactionSearchRequestHandlerTest {
     private AbstractRequestHandler<PaymentTransactionSearchResultType> handler;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         ViewController viewController = new ViewControllerMock();
 

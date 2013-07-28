@@ -24,7 +24,7 @@ public final class LogFormatterTest {
         LogRecord logRecord = new LogRecord(Level.CONFIG, "stub message");
         assertThat(logFormatter.format(logRecord), notNullValue());
 
-        logRecord.setThrown(new IOException());
+        logRecord.setThrown(new IOException("test exception"));
         assertThat(logFormatter.format(logRecord), notNullValue());
     }
 

@@ -3,6 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
+import com.moneydance.apps.md.controller.Util;
+import com.moneydance.apps.md.model.CurrencyTable;
+import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.CurrencyUtil;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -11,11 +16,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.Validate;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-
-import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.CurrencyTable;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.CurrencyUtil;
 
 /**
  * @author Florian J. Breunig

@@ -3,8 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
+import com.moneydance.apps.md.controller.DateRange;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.paypal.core.Constants;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Callable;
@@ -15,14 +21,11 @@ import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
-
-import com.moneydance.apps.md.controller.DateRange;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
-import com.moneydance.modules.features.paypalimporter.util.Preferences;
-import com.paypal.core.Constants;
 
 /**
  * @author Florian J. Breunig
@@ -158,7 +161,19 @@ public final class ServiceProvider {
                     serviceResult = new ServiceResult<V>(
                             e.getLocalizedMessage());
                 } finally {
-                    requestHandler.serviceCallFinished(serviceResult);
+                    final ServiceResult<V> finalResult = serviceResult;
+                    try {
+                        SwingUtilities.invokeAndWait(new Runnable() {
+                            @Override
+                            public void run() {
+                                requestHandler.serviceCallFinished(finalResult);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        LOG.log(Level.WARNING, "Thread interrupted", e);
+                    } catch (InvocationTargetException e) {
+                        LOG.log(Level.WARNING, "Exception thrown", e);
+                    }
                 }
             }
         };

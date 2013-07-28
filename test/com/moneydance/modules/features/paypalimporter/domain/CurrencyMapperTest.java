@@ -6,16 +6,16 @@ package com.moneydance.modules.features.paypalimporter.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.CurrencyUtil;
+
 import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.CurrencyUtil;
 
 /**
  * @author Florian J. Breunig
@@ -25,7 +25,7 @@ public final class CurrencyMapperTest {
     private StubContextFactory factory;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.factory = new StubContextFactory();
     }
 

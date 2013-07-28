@@ -3,6 +3,15 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.model.Account;
+import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.OnlineTxn;
+import com.moneydance.apps.md.model.OnlineTxnList;
+import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
+
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,14 +25,6 @@ import org.apache.commons.lang3.Validate;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.OnlineTxnList;
-import com.moneydance.apps.md.model.RootAccount;
-import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
-
 /**
  * @author Florian J. Breunig
  */
@@ -36,7 +37,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
     private static final Logger LOG = Logger.getLogger(
             TransactionSearchRequestHandler.class.getName());
 
-    private static final long MULTIPLIER = 100;
+    private static final BigDecimal MULTIPLIER = BigDecimal.valueOf(100);
     private static final int PROTOCOL_TYPE = OnlineTxn.PROTO_TYPE_OFX;
     private static final String KEY_ACCOUNT_URL = "account_url";
 
@@ -89,7 +90,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
                 this.rootAccount.addSubAccount(useAccount);
             } catch (Exception e) {
                 LOG.log(Level.WARNING, e.getMessage(), e);
-                throw new IllegalStateException(e);
+                throw new IllegalStateException("Could not create account", e);
             }
         }
 
@@ -148,8 +149,8 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
                 result.getTransactionID(),
                 result.getType());
 
-        final long amount = (long) (Double.parseDouble(grossAmount)
-                * MULTIPLIER);
+        final long amount = new BigDecimal(grossAmount).multiply(
+                MULTIPLIER).longValueExact();
 
         final String description = result.getPayerDisplayName();
 

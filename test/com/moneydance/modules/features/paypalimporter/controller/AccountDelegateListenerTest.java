@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.model.AccountListener;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import com.moneydance.apps.md.model.AccountListener;
 
 /**
  * @author Florian J. Breunig
@@ -16,7 +16,7 @@ public final class AccountDelegateListenerTest {
     private AccountListener accountListener;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ViewController viewController = new ViewControllerMock();
         this.accountListener = new AccountDelegateListener(viewController);
     }
