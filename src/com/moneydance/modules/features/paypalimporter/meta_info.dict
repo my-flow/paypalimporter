@@ -1,7 +1,7 @@
 {
   "vendor" = "Florian J. Breunig"
   "module_build" = "1"
-  "vendor.url" = "http://my-flow.github.io/paypalimporter/"
-  "module_name" = "PayPal Importer for Moneydance"
-  "desc" = "PayPal Importer imports transactions from PayPal into Moneydance. This plugin requires Java 6 to function, see the Moneydance About window to determine what version of Java you are using."
+  "vendor.url" = "https://github.com/my-flow/paypalimporter/"
+  "module_name" = "PayPal Importer"
+  "desc" = "PayPal Importer imports transactions from PayPal Premier or Business accounts into Moneydance."
 }
