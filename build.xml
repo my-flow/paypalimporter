@@ -17,6 +17,9 @@
       value="${src}/com/moneydance/modules/features/paypalimporter/meta_info.dict"/>
   <property name="jar.file"
       value="${dist}/paypalimporter.mxt"/>
+  <property file="user.properties" />
+
+
 
   <available file="${privkeyfile}" property="privkeyfile.present"/>
 
@@ -302,9 +305,7 @@ and deploy a new version.">
   </target>
 
 
-  <target name="sign" if="privkeyfile.present" description="Signs an MXT
-file with a private key that must already exist.">
-
+  <target name="sign" if="privkeyfile.present" description="Signs an MXT file with a private key that must already exist.">
     <java classpathref="sign.classpath"
           classname="com.moneydance.admin.KeyAdmin">
       <arg value="signextjar"/>
