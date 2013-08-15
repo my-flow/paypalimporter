@@ -4,9 +4,11 @@
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
+import java.util.Collections;
 import java.util.Observable;
 
 import org.junit.Before;
@@ -51,7 +53,10 @@ public final class ViewControllerImplTest {
 
     @Test
     public void testTransactionsImported() {
-        this.viewController.transactionsImported(new StubContextFactory()
-        .getContext().getRootAccount().getSubAccount(0));
+        this.viewController.transactionsImported(Collections.<OnlineTxn> emptyList(),
+        null,
+        new StubContextFactory()
+        .getContext().getRootAccount().getSubAccount(0),
+        null);
     }
 }

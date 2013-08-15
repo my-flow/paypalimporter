@@ -22,11 +22,13 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     protected AbstractRequestHandler(final ViewController argViewController) {
         Validate.notNull(argViewController, "view controller must not be null");
         this.viewController = argViewController;
-        this.localizable = Helper.INSTANCE.getLocalizable();
+        this.localizable = Helper.getLocalizable();
     }
 
     @Override
-    public void serviceCallFinished(final ServiceResult<V> serviceResult) {
+    public final void serviceCallFinished(
+            final ServiceResult<V> serviceResult) {
+
         if (serviceResult.getResults() != null) {
             this.serviceCallSucceeded(serviceResult);
         }

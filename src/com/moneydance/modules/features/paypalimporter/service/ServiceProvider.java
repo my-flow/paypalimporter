@@ -3,7 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.paypal.core.Constants;
@@ -11,7 +10,7 @@ import com.paypal.core.Constants;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -45,8 +44,8 @@ public final class ServiceProvider {
             "com/moneydance/modules/features/paypalimporter/resources/"
                     + "sdk_config.properties";
 
-    private final ExecutorService executorService;
     private final Preferences prefs;
+    private ExecutorService executorService;
 
     public ServiceProvider() {
         this.executorService = Executors.newSingleThreadExecutor();
@@ -70,9 +69,9 @@ public final class ServiceProvider {
             final String username,
             final char[] password,
             final String signature,
-            final DateRange dateRange,
+            final Date startDate,
+            final Date endDate,
             final CurrencyCodeType currencyCode,
-            final boolean isPrimaryCurrency,
             final RequestHandler<PaymentTransactionSearchResultType>
             requestHandler) {
 
@@ -80,15 +79,18 @@ public final class ServiceProvider {
         callable = new TransactionSearchService(
                 this.createService(username, password, signature),
                 currencyCode,
-                isPrimaryCurrency,
-                dateRange,
+                startDate,
+                endDate,
                 this.prefs.getLocale());
 
         this.createAndExecuteFutureTask(callable, requestHandler);
     }
 
-    public List<Runnable> shutdownNow() {
-        return this.executorService.shutdownNow();
+    public void shutdownNow() {
+        synchronized (this) {
+            this.executorService.shutdownNow();
+            this.executorService = Executors.newSingleThreadExecutor();
+        }
     }
 
     private PayPalAPIInterfaceServiceService createService(
@@ -98,8 +100,7 @@ public final class ServiceProvider {
         final Properties config = new Properties();
         try {
             InputStream inputStream =
-                    Helper.INSTANCE.getInputStreamFromResource(
-                            PROPERTIES_RESOURCE);
+                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
             config.load(inputStream);
         } catch (IllegalArgumentException e) {
             LOG.log(Level.WARNING, e.getMessage(), e);

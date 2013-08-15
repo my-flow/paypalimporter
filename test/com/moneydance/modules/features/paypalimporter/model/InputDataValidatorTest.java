@@ -28,20 +28,9 @@ public final class InputDataValidatorTest {
     }
 
     @Test
-    public void testValidateAllEmpty() {
-        InputData inputData = new MutableInputData();
-        ValidationResult result = this.validator.validate(inputData);
-        assertThat(result.hasErrors(), is(true));
-        assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.USERNAME),  is(true));
-        assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.PASSWORD),  is(true));
-        assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.SIGNATURE), is(true));
-        assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.DATERANGE), is(true));
-    }
-
-    @Test
     public void testValidateUsername() {
         final String username  = "mock username";
-        InputData inputData = new MutableInputData(username, null, null, -1);
+        InputData inputData = new InputData(username, null, null, -1);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.USERNAME), is(false));
@@ -51,7 +40,7 @@ public final class InputDataValidatorTest {
     public void testValidatePassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        InputData inputData = new MutableInputData(null, password, null, -1);
+        InputData inputData = new InputData(null, password, null, -1);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.PASSWORD), is(false));
@@ -60,7 +49,7 @@ public final class InputDataValidatorTest {
     @Test
     public void testValidateSignature() {
         final String signature  = "mock signature";
-        InputData inputData = new MutableInputData(null, null, signature, -1);
+        InputData inputData = new InputData(null, null, signature, -1);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.SIGNATURE), is(false));
@@ -69,9 +58,8 @@ public final class InputDataValidatorTest {
     @Test
     public void testValidateDateRange() {
         final DateRange dateRange = new DateRange(0,  1);
-        MutableInputData mutableInputData = new MutableInputData();
-        mutableInputData.fill(null, null, null, -1, dateRange);
-        ValidationResult result = this.validator.validate(mutableInputData);
+        InputData inputData = new InputData(null, null, null, -1, dateRange);
+        ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.DATERANGE), is(false));
     }

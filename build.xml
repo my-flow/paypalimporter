@@ -38,6 +38,7 @@
         <pathelement path="${lib}/commons-lang-2.6.jar"/>
         <pathelement path="${lib}/commons-lang3-3.1.jar"/>
         <pathelement path="${lib}/commons-configuration-1.9.jar"/>
+        <pathelement path="${lib}/jcip-annotations.jar"/>
         <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
         <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
         <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
@@ -54,6 +55,7 @@
     <pathelement path="${lib}/commons-lang-2.6.jar"/>
     <pathelement path="${lib}/commons-lang3-3.1.jar"/>
     <pathelement path="${lib}/commons-logging-1.1.3.jar"/>
+    <pathelement path="${lib}/jcip-annotations.jar"/>
     <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
     <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
     <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
@@ -245,6 +247,7 @@ and deploy a new version.">
             <include name="commons-lang-2.6.jar"/>
             <include name="commons-lang3-3.1.jar"/>
             <include name="commons-configuration-1.9.jar"/>
+            <include name="jcip-annotations.jar"/>
             <include name="jgoodies-common-1.6.0.jar"/>
             <include name="jgoodies-forms-moneydance-1.7.1.jar"/>
             <include name="jgoodies-validation-2.5.0.jar"/>

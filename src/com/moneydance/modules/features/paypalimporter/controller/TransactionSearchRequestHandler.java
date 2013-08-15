@@ -4,17 +4,18 @@
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
 import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.apps.md.model.OnlineTxnList;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -27,6 +28,10 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * @author Florian J. Breunig
+ *
+ * The handler class converts incoming transactions after a successful service
+ * call. The same instance can be used for multiple service calls and returns
+ * a cumulative result list of <code>OnlineTxn</code>s.
  */
 final class TransactionSearchRequestHandler
 extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
@@ -38,35 +43,19 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             TransactionSearchRequestHandler.class.getName());
 
     private static final BigDecimal MULTIPLIER = BigDecimal.valueOf(100);
-    private static final int PROTOCOL_TYPE = OnlineTxn.PROTO_TYPE_OFX;
-    private static final String KEY_ACCOUNT_URL = "account_url";
 
-    private final RootAccount rootAccount;
-    private final int accountNum;
-    private final CurrencyType currencyType;
+    private final Account account;
     private final DateFormat dateFormat;
-    private final String nameNewAccount;
-    private final String urlNewAccount;
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
-            final RootAccount argRootAccount,
-            final int argAccountNum,
-            final CurrencyType argCurrencyType) {
+            final RootAccount argAccount) {
 
         super(argViewController);
-        Validate.notNull(argRootAccount, "root account must not be null");
-        Validate.notNull(argCurrencyType,
-                "currency type account must not be null");
-        this.rootAccount = argRootAccount;
-        this.accountNum = argAccountNum;
-        this.currencyType = argCurrencyType;
+        Validate.notNull(argAccount, "account must not be null");
+        this.account = argAccount;
         this.dateFormat = new SimpleDateFormat(
-                Helper.INSTANCE.getSettings().getDatePattern(), Locale.US);
-        this.nameNewAccount =
-                Helper.INSTANCE.getLocalizable().getNameNewAccount();
-        this.urlNewAccount =
-                Helper.INSTANCE.getLocalizable().getUrlNewAccount();
+                Settings.getDatePattern(), Locale.US);
     }
 
     @Override
@@ -74,43 +63,35 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             final ServiceResult<PaymentTransactionSearchResultType>
             serviceResult) {
 
-        Account useAccount = this.rootAccount.getAccountById(
-                this.accountNum);
-        if (useAccount == null) {
-            LOG.info("Creating new account");
-
-            // ESCA-JAVA0166: Account.makeAccount throws generic exception
-            try {
-                useAccount = Account.makeAccount(
-                        Account.ACCOUNT_TYPE_BANK,
-                        this.nameNewAccount,
-                        this.currencyType,
-                        this.rootAccount);
-                useAccount.setParameter(KEY_ACCOUNT_URL, this.urlNewAccount);
-                this.rootAccount.addSubAccount(useAccount);
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, e.getMessage(), e);
-                throw new IllegalStateException("Could not create account", e);
-            }
-        }
-
-        List<PaymentTransactionSearchResultType> txns =
+        final List<PaymentTransactionSearchResultType> txns =
                 serviceResult.getResults();
-        OnlineTxnList txnList = useAccount.getDownloadedTxns();
+        final OnlineTxnList txnList = this.account.getDownloadedTxns();
+        final List<OnlineTxn> resultList =
+                new ArrayList<OnlineTxn>(txns.size());
+        long startDateLong = Long.MAX_VALUE;
+
         for (PaymentTransactionSearchResultType result : txns) {
             try {
-                OnlineTxn txn = txnList.newTxn();
-                this.handleResultType(txn, result);
-                txnList.addNewTxn(txn);
+                resultList.add(this.createNewOnlineTxn(txnList, result));
+                long timestamp = this.dateFormat.parse(
+                        result.getTimestamp()).getTime();
+                if (timestamp < startDateLong) {
+                    startDateLong = timestamp;
+                }
             } catch (ParseException e) {
                 LOG.log(Level.WARNING, e.getMessage(), e);
             }
         }
-        this.getViewController().transactionsImported(useAccount);
+
+        this.getViewController().transactionsImported(
+                resultList,
+                new Date(startDateLong),
+                null,
+                serviceResult.getErrorCode());
     }
 
-    private void handleResultType(
-            final OnlineTxn txn,
+    private OnlineTxn createNewOnlineTxn(
+            final OnlineTxnList txnList,
             final PaymentTransactionSearchResultType result)
                     throws ParseException {
 
@@ -157,14 +138,16 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         final long date = this.dateFormat.parse(
                 result.getTimestamp()).getTime();
 
-        txn.setProtocolType(PROTOCOL_TYPE);
-        txn.setAmount(amount);
-        txn.setTotalAmount(amount);
-        txn.setName(description);
-        txn.setMemo(memo);
-        txn.setFITxnId(fitxnid);
-        txn.setDatePosted(date);
-        txn.setDateInitiated(date);
-        txn.setDateAvailable(date);
+        final OnlineTxn onlineTxn = txnList.newTxn();
+        onlineTxn.setProtocolType(OnlineTxn.PROTO_TYPE_OFX);
+        onlineTxn.setAmount(amount);
+        onlineTxn.setTotalAmount(amount);
+        onlineTxn.setName(description);
+        onlineTxn.setMemo(memo);
+        onlineTxn.setFITxnId(fitxnid);
+        onlineTxn.setDatePosted(date);
+        onlineTxn.setDateInitiated(date);
+        onlineTxn.setDateAvailable(date);
+        return onlineTxn;
     }
 }

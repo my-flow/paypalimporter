@@ -5,6 +5,7 @@ package com.moneydance.modules.features.paypalimporter;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.UiUtil;
 
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ final class ConsoleRunner {
             Logger.getLogger(ConsoleRunner.class.getName());
 
     static {
-        Helper.INSTANCE.loadLoggerConfiguration();
+        Helper.loadLoggerConfiguration();
     }
 
     /**
@@ -71,7 +72,7 @@ final class ConsoleRunner {
         main.init();
 
         try {
-            main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
+            main.invoke(Settings.getStartWizardSuffix());
         } catch (Exception e) {
             LOG.log(Level.WARNING, e.getMessage(), e);
         }

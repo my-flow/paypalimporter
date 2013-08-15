@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +55,7 @@ public final class MainTest {
     @Test
     public void testInvokeString() {
         this.main.invoke("");
-        this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
+        this.main.invoke(Settings.getStartWizardSuffix());
     }
 
     @Test

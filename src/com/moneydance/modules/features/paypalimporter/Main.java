@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  * The main class of the extension, instantiated by Moneydance's class loader.
- * 
+ *
  * @author Florian J. Breunig
  */
 public final class Main extends FeatureModule implements Observer {
@@ -30,12 +30,11 @@ public final class Main extends FeatureModule implements Observer {
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private final Preferences    prefs;
-    private final Settings       settings;
     private       Tracker        tracker;
     private       ViewController viewController;
 
     static {
-        Helper.INSTANCE.loadLoggerConfiguration();
+        Helper.loadLoggerConfiguration();
     }
 
     /**
@@ -45,7 +44,6 @@ public final class Main extends FeatureModule implements Observer {
         super();
         LOG.info("Initializing extension in Moneydance's application context.");
         this.prefs       = Helper.INSTANCE.getPreferences();
-        this.settings    = Helper.INSTANCE.getSettings();
     }
 
     @Override
@@ -61,28 +59,28 @@ public final class Main extends FeatureModule implements Observer {
 
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
-        Localizable localizable = Helper.INSTANCE.getLocalizable();
+        Localizable localizable = Helper.getLocalizable();
         this.getContext().registerFeature(
                 this,
-                this.settings.getStartWizardSuffix(),
+                Settings.getStartWizardSuffix(),
                 null, // buttonImage
                 localizable.getLabelButtonText());
     }
 
     @Override
     public String getName() {
-        return this.settings.getExtensionName();
+        return Settings.getExtensionName();
     }
 
     @Override
     public Image getIconImage() {
-        return Helper.INSTANCE.getIconImage();
+        return Settings.getIconImage();
     }
 
     @Override
     public void invoke(final String uri) {
         LOG.config(String.format("invoke %s", uri));
-        if (this.settings.getStartWizardSuffix().equals(uri)) {
+        if (Settings.getStartWizardSuffix().equals(uri)) {
             this.getViewController().startWizard();
         }
     }

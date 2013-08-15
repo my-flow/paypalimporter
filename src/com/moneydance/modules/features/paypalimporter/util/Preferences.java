@@ -23,6 +23,8 @@ import org.apache.commons.lang3.Validate;
  */
 public final class Preferences {
 
+    private static final String KEY_FIRST_RUN = "paypalimporter.first_run";
+
     private UserPreferences userPreferences;
     private RootAccount rootAccount;
     private PayPalOnlineService profile;
@@ -57,22 +59,16 @@ public final class Preferences {
     }
 
     public void setAllWritablePreferencesToNull() {
-        this.getUserPreferences().setSetting(
-                "paypal.first_run",
-                (String) null);
+        this.getUserPreferences().setSetting(KEY_FIRST_RUN, (String) null);
         OnlineServiceFactory.removeService(this.rootAccount);
     }
 
     public void setFirstRun(final boolean firstRun) {
-        this.getUserPreferences().setSetting(
-                "paypal.first_run",
-                firstRun);
+        this.getUserPreferences().setSetting(KEY_FIRST_RUN, firstRun);
     }
 
     public boolean isFirstRun() {
-        return this.getUserPreferences().getBoolSetting(
-                "paypal.first_run",
-                true);
+        return this.getUserPreferences().getBoolSetting(KEY_FIRST_RUN, true);
     }
 
     public String getFullVersion() {
@@ -153,5 +149,25 @@ public final class Preferences {
 
     public int getAccountId() {
         return this.getPayPalOnlineService().getAccountId();
+    }
+
+    public void setUsedImportCombination(
+            final String username,
+            final int accountId) {
+
+        if (username != null && accountId >= 0) {
+            this.getPayPalOnlineService().setUsedImportCombination(
+                    username, accountId);
+        }
+    }
+
+    public boolean hasUsedImportCombination(
+            final String username,
+            final int accountId) {
+
+        return username != null && accountId >= 0
+                && this.getPayPalOnlineService().hasUsedImportCombination(
+                        username,
+                        accountId);
     }
 }

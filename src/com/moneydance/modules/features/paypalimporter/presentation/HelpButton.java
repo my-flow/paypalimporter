@@ -3,23 +3,26 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * @author Florian J. Breunig
  */
+@Immutable
 final class HelpButton extends JButton {
 
     private static final long serialVersionUID = 1L;
 
     HelpButton() {
         super();
-        final Image image = Helper.INSTANCE.getHelpImage();
+        final Image image =  Settings.getHelpImage();
         this.setIcon(new ImageIcon(image));
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);

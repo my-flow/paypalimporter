@@ -11,6 +11,7 @@ import com.moneydance.apps.md.model.RootAccount;
 import java.util.Iterator;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author Florian J. Breunig
@@ -21,6 +22,8 @@ public final class PayPalOnlineService {
             OnlineService.DEFAULT_REQ_REALM);
     private static final String KEY_ACCOUNT = String.format("acct_%s",
             OnlineService.DEFAULT_REQ_REALM);
+    private static final int INITIAL_NON_ZERO_ODD_NUMBER = 17;
+    private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 37;
 
     private final OnlineService onlineService;
     private final String authKey;
@@ -115,5 +118,29 @@ public final class PayPalOnlineService {
 
     public int getAccountId() {
         return this.onlineService.getTable().getInt(KEY_ACCOUNT, -1);
+    }
+
+    public void setUsedImportCombination(
+            final String username,
+            final int accountId) {
+        this.onlineService.getTable().put(
+                buildHashCode(username, accountId), true);
+    }
+
+    public boolean hasUsedImportCombination(
+            final String username,
+            final int accountId) {
+        return this.onlineService.getTable().getBoolean(
+                buildHashCode(username, accountId), false);
+    }
+
+    private static String buildHashCode(
+            final String username,
+            final int accountId) {
+        return String.format("%d", new HashCodeBuilder(
+                INITIAL_NON_ZERO_ODD_NUMBER, MULTIPLIER_NON_ZERO_ODD_NUMBER)
+        .append(username)
+        .append(accountId)
+        .toHashCode());
     }
 }

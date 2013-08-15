@@ -46,11 +46,10 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("deprecation")
     protected WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
-        super(owner, mdGUI,
-                Helper.INSTANCE.getLocalizable().getResourceBundle());
+        super(owner, mdGUI, Helper.getLocalizable().getResourceBundle());
 
         // preset ESC close operation
-        Helper.INSTANCE.installEscapeCloseOperation(this);
+        Helper.installEscapeCloseOperation(this);
 
         // preset button groupings
         final ButtonGroup accountGroup = new ButtonGroup();
@@ -99,6 +98,10 @@ implements ActionListener, WindowListener {
         this.refresh(true, null);
     }
 
+    public boolean isLoading() {
+        return !this.txtUsername.isEnabled();
+    }
+
     public final void setInputData(final InputData inputData) {
         Validate.notNull(inputData, "input data must not be null");
 
@@ -139,7 +142,7 @@ implements ActionListener, WindowListener {
     public final void refresh(final boolean initialize, final Boolean loading) {
         final boolean isLoading;
         if (loading == null) {
-            isLoading = !this.txtUsername.isEnabled();
+            isLoading = this.isLoading();
         } else {
             isLoading = loading.booleanValue();
         }

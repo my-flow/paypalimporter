@@ -3,10 +3,9 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.apps.md.controller.DateRange;
-import com.moneydance.apps.md.controller.Util;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -21,6 +20,7 @@ import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
@@ -53,10 +53,7 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
     private static final Logger LOG = Logger.getLogger(
             TransactionSearchService.class.getName());
 
-    private static final PaymentTransactionClassCodeType PRIMARY_TXN_CLASS =
-            PaymentTransactionClassCodeType.ALL;
-
-    private static final PaymentTransactionClassCodeType SECONDARY_TXN_CLASS =
+    private static final PaymentTransactionClassCodeType TXN_CLASS =
             PaymentTransactionClassCodeType.BALANCEAFFECTING;
 
     private static final AckCodeType[] ACK_CODES =
@@ -65,29 +62,30 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
     private final Localizable localizable;
     private final PayPalAPIInterfaceServiceService service;
     private final CurrencyCodeType currencyCode;
-    private final boolean isPrimaryCurrency;
-    private final DateRange dateRange;
+    private final Date startDate;
+    private final Date endDate;
     private final Locale errorLocale;
     private final DateFormat dateFormat;
 
     public TransactionSearchService(
             final PayPalAPIInterfaceServiceService argService,
             final CurrencyCodeType argCurrencyCode,
-            final boolean argIsPrimaryCurrency,
-            final DateRange argDateRange,
+            final Date argStartDate,
+            final Date argEndDate,
             final Locale argErrorLocale) {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+        this.localizable = Helper.getLocalizable();
         Validate.notNull(argService, "service must not be null");
         Validate.notNull(argCurrencyCode, "currency code must not be null");
-        Validate.notNull(argDateRange, "date range must not be null");
+        Validate.notNull(argStartDate, "start date must not be null");
+        Validate.notNull(argEndDate, "end date must not be null");
         Validate.notNull(argErrorLocale, "error locale must not be null");
         this.service = argService;
         this.currencyCode = argCurrencyCode;
-        this.isPrimaryCurrency = argIsPrimaryCurrency;
-        this.dateRange = argDateRange;
+        this.startDate = argStartDate;
+        this.endDate = argEndDate;
         this.errorLocale = argErrorLocale;
         this.dateFormat = new SimpleDateFormat(
-                Helper.INSTANCE.getSettings().getDatePattern(), Locale.US);
+                Settings.getDatePattern(), Locale.US);
     }
 
     @Override
@@ -100,20 +98,10 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         TransactionSearchRequestType txnType =
                 new TransactionSearchRequestType();
         txnType.setCurrencyCode(this.currencyCode);
+        txnType.setTransactionClass(TXN_CLASS);
 
-        PaymentTransactionClassCodeType transactionClass;
-        if (this.isPrimaryCurrency) {
-            transactionClass = PRIMARY_TXN_CLASS;
-        } else {
-            transactionClass = SECONDARY_TXN_CLASS;
-        }
-        txnType.setTransactionClass(transactionClass);
-
-        txnType.setStartDate(this.dateFormat.format(
-                Util.convertIntDateToLong(this.dateRange.getStartDateInt())));
-
-        txnType.setEndDate(this.dateFormat.format(
-                Util.convertIntDateToLong(this.dateRange.getEndDateInt())));
+        txnType.setStartDate(this.dateFormat.format(this.startDate));
+        txnType.setEndDate(this.dateFormat.format(this.endDate));
 
         txnType.setErrorLanguage(this.errorLocale.toString());
 

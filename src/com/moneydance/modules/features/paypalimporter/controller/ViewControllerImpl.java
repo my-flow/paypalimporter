@@ -9,25 +9,31 @@ import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.Main;
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.apps.md.view.gui.AccountListModel;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
-import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
+import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 import java.util.logging.Logger;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -56,7 +62,7 @@ public final class ViewControllerImpl implements ViewController {
             final FeatureModuleContext argContext,
             final Tracker argTracker) {
         this.prefs           = Helper.INSTANCE.getPreferences();
-        this.localizable     = Helper.INSTANCE.getLocalizable();
+        this.localizable     = Helper.getLocalizable();
         this.tracker         = argTracker;
         this.context         = argContext;
         this.serviceProvider = new ServiceProvider();
@@ -118,7 +124,7 @@ public final class ViewControllerImpl implements ViewController {
         }
         this.wizard.pack();
 
-        final InputData newUserData = new MutableInputData(
+        final InputData newUserData = new InputData(
                 this.prefs.getUsername(),
                 this.prefs.getPassword(),
                 this.prefs.getSignature(),
@@ -132,11 +138,11 @@ public final class ViewControllerImpl implements ViewController {
 
     @Override
     public void cancel() {
-        if (this.inputData == null) {
-            this.wizard.setVisible(false);
-        } else {
-            this.serviceProvider.shutdownNow();
+        this.serviceProvider.shutdownNow();
+        if (this.wizard.isLoading()) {
             this.unlock(null, null);
+        } else {
+            this.wizard.setVisible(false);
         }
     }
 
@@ -176,30 +182,79 @@ public final class ViewControllerImpl implements ViewController {
     public void currencyChecked(
             final CurrencyType currencyType,
             final CurrencyCodeType currencyCode,
-            final boolean isPrimaryCurrency) {
+            final List<CurrencyCodeType> currencyCodes) {
+
         this.prefs.setUsername(this.inputData.getUsername());
         this.prefs.setPassword(this.inputData.getPassword(false));
         this.prefs.setSignature(this.inputData.getSignature());
         this.prefs.setAccountId(this.inputData.getAccountId());
 
-        RootAccount rootAccount = this.context.getRootAccount();
-        this.serviceProvider.callTransactionSearchService(
-                this.inputData.getUsername(),
-                this.inputData.getPassword(true),
-                this.inputData.getSignature(),
-                this.inputData.getDateRange(),
-                currencyCode,
-                isPrimaryCurrency,
-                new TransactionSearchRequestHandler(
-                        this,
-                        rootAccount,
-                        this.inputData.getAccountId(),
-                        currencyType));
-        this.inputData = null;
+        if (currencyCodes.size() >= 0
+                && !this.prefs.hasUsedImportCombination(
+                        this.inputData.getUsername(),
+                        this.inputData.getAccountId())) {
+
+            final String message =
+                    this.localizable.getQuestionMessageMultipleCurrencies(
+                            currencyCode.name(),
+                            currencyCodes.toArray());
+            final Object confirmationLabel = new JLabel(message);
+            final Image image = Settings.getIconImage();
+            Icon icon  = null;
+            if (image != null) {
+                icon = new ImageIcon(image);
+            }
+            final Object[] options = {
+                    "Continue",
+                    "Cancel"
+            };
+
+            final int choice = JOptionPane.showOptionDialog(
+                    this.wizard,
+                    confirmationLabel,
+                    null, // no title
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    icon,
+                    options,
+                    options[0]);
+
+            if (choice == JOptionPane.OK_OPTION) {
+                LOG.info(String.format("Continue"));
+                this.prefs.setUsedImportCombination(
+                        this.inputData.getUsername(),
+                        this.inputData.getAccountId());
+                this.importTransactions(currencyType, currencyCode);
+            } else {
+                LOG.info(String.format("Cancel"));
+                this.unlock(null, null);
+            }
+        } else {
+            this.importTransactions(currencyType, currencyCode);
+        }
+    }
+
+    private void importTransactions(
+            final CurrencyType currencyType,
+            final CurrencyCodeType currencyCode) {
+
+        TransactionSearchIterator iter = new TransactionSearchIterator(
+                this,
+                this.context.getRootAccount(),
+                this.serviceProvider,
+                this.inputData,
+                currencyType,
+                currencyCode);
+        iter.callTransactionSearchService();
     }
 
     @Override
-    public void transactionsImported(final Account account) {
+    public void transactionsImported(
+            final List<OnlineTxn> onlineTxns,
+            final Date argStartDate,
+            final Account account,
+            final String errorCode) {
+
         this.prefs.assignBankingFI(account.getAccountNum());
 
         this.unlock(null, null);

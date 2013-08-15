@@ -6,7 +6,6 @@ package com.moneydance.modules.features.paypalimporter.presentation;
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.model.MutableInputData;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -23,7 +22,7 @@ public final class WizardHandler extends WizardController {
     private static final long serialVersionUID = 1L;
 
     private final Observer observer;
-    private final MutableInputData mutableInputData;
+    private InputData inputData;
 
     /**
      * @author Florian J. Breunig
@@ -42,7 +41,7 @@ public final class WizardHandler extends WizardController {
         Validate.notNull(mdGUI, "Moneydance GUI must not be null");
         Validate.notNull(argObserver, "observer must not be null");
         this.observer = argObserver;
-        this.mutableInputData = new MutableInputData();
+        this.inputData = new InputData(null,  null,  null,  -1);
     }
 
     @Override
@@ -58,7 +57,7 @@ public final class WizardHandler extends WizardController {
                 accountNum = account.getAccountNum();
             }
 
-            this.mutableInputData.fill(
+            this.inputData = new InputData(
                     this.txtUsername.getText(),
                     this.txtPassword.getPassword(),
                     this.txtSignature.getText(),
@@ -73,7 +72,7 @@ public final class WizardHandler extends WizardController {
     }
 
     public InputData getInputData() {
-        return this.mutableInputData;
+        return this.inputData;
     }
 
     @Override

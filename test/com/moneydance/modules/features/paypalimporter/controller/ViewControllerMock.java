@@ -5,7 +5,10 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.OnlineTxn;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -44,12 +47,16 @@ final class ViewControllerMock implements ViewController {
     public void currencyChecked(
             final CurrencyType currencyType,
             final CurrencyCodeType currencyCode,
-            final boolean isPrimaryCurrency) {
+            final List<CurrencyCodeType> currencyCodes) {
         // ignore
     }
 
     @Override
-    public void transactionsImported(final Account account) {
+    public void transactionsImported(
+            final List<OnlineTxn> onlineTxns,
+            final Date argStartDate,
+            final Account account,
+            final String errorCode) {
         // ignore
     }
 

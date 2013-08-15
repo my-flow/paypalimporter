@@ -32,18 +32,16 @@ public final class Tracker {
     private final JGoogleAnalyticsTracker analyticsTracker;
 
     Tracker(final int argBuild) {
-        Settings settings = Helper.INSTANCE.getSettings();
-
         this.prefs       = Helper.INSTANCE.getPreferences();
         this.fullVersion = String.format("Moneydance %s",
                 this.prefs.getFullVersion());
         this.build       = String.format("%s v%d",
-                settings.getExtensionName(),
+                Settings.getExtensionName(),
                 argBuild);
 
         JGoogleAnalyticsTracker.setProxy(this.getProxy());
         AnalyticsConfigData config = new AnalyticsConfigData(
-                settings.getTrackingCode());
+                Settings.getTrackingCode());
         this.analyticsTracker = new JGoogleAnalyticsTracker(
                 config,
                 GoogleAnalyticsVersion.V_4_7_2);
@@ -90,11 +88,11 @@ public final class Tracker {
      */
     public enum EventName {
 
-        INSTALL(Helper.INSTANCE.getSettings().getEventActionInstall()),
+        INSTALL(Settings.getEventActionInstall()),
 
-        DISPLAY(Helper.INSTANCE.getSettings().getEventActionDisplay()),
+        DISPLAY(Settings.getEventActionDisplay()),
 
-        UNINSTALL(Helper.INSTANCE.getSettings().getEventActionUninstall());
+        UNINSTALL(Settings.getEventActionUninstall());
 
         private final String eventString;
 

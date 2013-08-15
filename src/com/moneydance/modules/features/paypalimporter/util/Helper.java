@@ -67,11 +67,7 @@ public enum Helper {
         return this.prefs;
     }
 
-    public Settings getSettings() {
-        return Settings.INSTANCE;
-    }
-
-    public Localizable getLocalizable() {
+    public static Localizable getLocalizable() {
         return Localizable.INSTANCE;
     }
 
@@ -98,13 +94,13 @@ public enum Helper {
 
     public void setContext(final FeatureModuleContext context) {
         this.getPreferences().setContext(context);
-        this.getLocalizable().update();
+        Helper.getLocalizable().update();
     }
 
-    public void loadLoggerConfiguration() {
+    public static void loadLoggerConfiguration() {
         try {
-            InputStream inputStream = this.getInputStreamFromResource(
-                    this.getSettings().getLoggingPropertiesResource());
+            InputStream inputStream = Helper.getInputStreamFromResource(
+                    Settings.getLoggingPropertiesResource());
             LogManager.getLogManager().readConfiguration(inputStream);
 
         } catch (SecurityException e) {
@@ -114,7 +110,7 @@ public enum Helper {
         }
     }
 
-    public InputStream getInputStreamFromResource(
+    public static InputStream getInputStreamFromResource(
             final String resource) {
         ClassLoader cloader     = Helper.class.getClassLoader();
         InputStream inputStream = cloader.getResourceAsStream(resource);
@@ -122,14 +118,13 @@ public enum Helper {
         return inputStream;
     }
 
-    public Image getIconImage() {
+    static Image getImage(final String resource) {
         Image image = null;
         try {
             LOG.config(String.format("Loading icon %s from resource.",
-                    this.getSettings().getIconResource()));
-            InputStream inputStream =
-                    Helper.INSTANCE.getInputStreamFromResource(
-                            this.getSettings().getIconResource());
+                    resource));
+            InputStream inputStream = Helper.getInputStreamFromResource(
+                    resource);
             image = ImageIO.read(inputStream);
         } catch (IllegalArgumentException e) {
             LOG.log(Level.WARNING, e.getMessage(), e);
@@ -139,24 +134,7 @@ public enum Helper {
         return image;
     }
 
-    public Image getHelpImage() {
-        Image image = null;
-        try {
-            LOG.config(String.format("Loading icon %s from resource.",
-                    this.getSettings().getHelpResource()));
-            InputStream inputStream =
-                    Helper.INSTANCE.getInputStreamFromResource(
-                            this.getSettings().getHelpResource());
-            image = ImageIO.read(inputStream);
-        } catch (IllegalArgumentException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
-        } catch (IOException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
-        }
-        return image;
-    }
-
-    public void installEscapeCloseOperation(final JDialog dialog) {
+    public static void installEscapeCloseOperation(final JDialog dialog) {
         Action dispatchClosing = new AbstractAction() {
             private static final long serialVersionUID = 1L;
 

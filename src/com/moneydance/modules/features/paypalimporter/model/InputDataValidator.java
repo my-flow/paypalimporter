@@ -29,7 +29,7 @@ public final class InputDataValidator implements Validator<InputData> {
     }
 
     public InputDataValidator() {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+        this.localizable = Helper.getLocalizable();
     }
 
     @Override

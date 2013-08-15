@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 /**
@@ -30,17 +31,15 @@ public enum Localizable {
             Localizable.class.getName());
 
     private final Preferences     prefs;
-    private final Settings        settings;
     private       ResourceBundle  resourceBundle;
 
     Localizable() {
         this.prefs = Helper.INSTANCE.getPreferences();
-        this.settings = Helper.INSTANCE.getSettings();
     }
 
     public void update() {
         this.resourceBundle = ResourceBundle.getBundle(
-                this.settings.getLocalizableResource(),
+                Settings.getLocalizableResource(),
                 this.prefs.getLocale());
     }
 
@@ -82,6 +81,24 @@ public enum Localizable {
             LOG.log(Level.INFO, "Could not parse help URL", e);
             return null;
         }
+    }
+
+    /**
+     * @return the question when multiple currencies are available
+     */
+    public String getQuestionMessageMultipleCurrencies(
+            final String currency,
+            final Object[] currencies) {
+        final String templateString = this.resourceBundle.getString(
+                "question_message_multiple_currencies");
+
+        Map<String, String> valuesMap =
+                new ConcurrentHashMap<String, String>(2);
+        valuesMap.put("currency", currency);
+        valuesMap.put("currencies", StringUtils.join(currencies, ", "));
+        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+
+        return sub.replace(templateString);
     }
 
     /**

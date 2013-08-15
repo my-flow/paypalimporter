@@ -79,10 +79,9 @@ public final class StubContextFactory {
     }
 
     public StubContextFactory addOnlineService() {
-        final Settings settings = Helper.INSTANCE.getSettings();
         final StreamTable table = new StreamTable(1);
         OnlineInfo onlineInfo = this.context.getRootAccount().getOnlineInfo();
-        table.put(KEY_SERVICE_TYPE, settings.getServiceType());
+        table.put(KEY_SERVICE_TYPE, Settings.getServiceType());
         OnlineService onlineService = new OnlineService(
                 onlineInfo,
                 table);

@@ -7,10 +7,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.time.DateRangeOption;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -23,7 +20,9 @@ import com.paypal.sdk.exceptions.OAuthException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
@@ -45,17 +44,27 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 public final class TransactionSearchServiceTest {
 
     private ServiceMock service;
+    private Date startDate;
+    private Date endDate;
 
     @Before
     public void setUp() {
         new StubContextFactory();
         try {
             this.service = new ServiceMock(
-                    Helper.INSTANCE.getInputStreamFromResource(
+                    Helper.getInputStreamFromResource(
                             "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
         } catch (IOException e) {
             Assert.fail(e.getMessage());
         }
+
+        Calendar startCal = Calendar.getInstance();
+        startCal.add(Calendar.DATE, -1);
+        this.startDate = startCal.getTime();
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.add(Calendar.DATE, -1);
+        this.endDate = endCal.getTime();
     }
 
 
@@ -68,10 +77,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -95,8 +103,8 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        new DateRange(),
+                        this.startDate,
+                        this.endDate,
                         Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
@@ -119,10 +127,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -145,10 +152,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        false,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -171,10 +177,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -197,10 +202,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        false,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -223,10 +227,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -249,10 +252,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -275,10 +277,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -301,10 +302,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -327,10 +327,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -353,10 +352,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -379,10 +377,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -405,10 +402,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -431,10 +427,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -457,10 +452,9 @@ public final class TransactionSearchServiceTest {
                 new TransactionSearchService(
                         this.service,
                         CurrencyCodeType.USD,
-                        true,
-                        Util.calculateDateRange(
-                                DateRangeOption.DR_LAST_12_MONTHS),
-                                Locale.US);
+                        this.startDate,
+                        this.endDate,
+                        Locale.US);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());

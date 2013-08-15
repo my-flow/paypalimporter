@@ -3,7 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,7 +73,7 @@ public final class MockServiceResultFactory {
                 new PaymentTransactionSearchResultType();
 
         DateFormat dateFormat = new SimpleDateFormat(
-                Helper.INSTANCE.getSettings().getDatePattern(), Locale.US);
+                Settings.getDatePattern(), Locale.US);
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         BasicAmountType grossAmount = new BasicAmountType();
@@ -92,7 +92,7 @@ public final class MockServiceResultFactory {
                 new PaymentTransactionSearchResultType();
 
         DateFormat dateFormat = new SimpleDateFormat(
-                Helper.INSTANCE.getSettings().getDatePattern(), Locale.US);
+                Settings.getDatePattern(), Locale.US);
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         // gross amount is missing

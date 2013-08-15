@@ -57,11 +57,9 @@ extends AbstractRequestHandler<CurrencyCodeType> {
                 CurrencyMapper.getCurrencyCodeFromCurrencyType(
                         currencyType,
                         currencyCodes);
-        boolean isPrimaryCurrency = currencyCodes.size() > 1
-                && currencyCode.equals(currencyCodes.get(0));
         this.getViewController().currencyChecked(
                 currencyType,
                 currencyCode,
-                isPrimaryCurrency);
+                currencyCodes);
     }
 }

@@ -3,13 +3,12 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.time.DateRangeOption;
+
+import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,15 +48,21 @@ public final class ServiceProviderTest {
 
     @Test
     public void testCallTransactionSearchService() {
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DATE, -1);
+
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.add(Calendar.DATE, +1);
+
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.serviceProvider.callTransactionSearchService(
                 "mock username",
                 password,
                 "mock signature",
-                Util.calculateDateRange(DateRangeOption.DR_LAST_12_MONTHS),
+                yesterday.getTime(),
+                tomorrow.getTime(),
                 CurrencyCodeType.USD,
-                true,
                 new RequestHandler<PaymentTransactionSearchResultType>() {
                     @Override
                     public void serviceCallFinished(
@@ -69,7 +74,7 @@ public final class ServiceProviderTest {
 
     @Test
     public void testShutdownNow() {
-        assertThat(this.serviceProvider.shutdownNow().isEmpty(), is(true));
+        this.serviceProvider.shutdownNow();
     }
 
 }

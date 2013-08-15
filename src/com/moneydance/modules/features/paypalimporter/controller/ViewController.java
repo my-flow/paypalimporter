@@ -5,7 +5,10 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
+import com.moneydance.apps.md.model.OnlineTxn;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Observer;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -32,10 +35,13 @@ public interface ViewController extends Observer {
     void currencyChecked(
             final CurrencyType currencyType,
             final CurrencyCodeType currencyCode,
-            final boolean isPrimaryCurrency);
+            final List<CurrencyCodeType> currencyCodes);
 
     void transactionsImported(
-            final Account account);
+            final List<OnlineTxn> onlineTxns,
+            final Date argStartDate,
+            final Account account,
+            final String errorCode);
 
     void showHelp();
 
