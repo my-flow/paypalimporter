@@ -79,17 +79,10 @@ public final class PayPalOnlineService {
                 null);
     }
 
-    public void setPassword(
-            final RootAccount rootAccount,
-            final char[] password) {
-
-        if (rootAccount.getBooleanParameter(
-                RootAccount.STORE_PINS_PARAM,
-                false)) {
-            this.onlineService.cacheAuthentication(
-                    this.authKey,
-                    String.valueOf(password));
-        }
+    public void setPassword(final char[] password) {
+        this.onlineService.cacheAuthentication(
+                this.authKey,
+                String.valueOf(password));
     }
 
     public char[] getPassword() {

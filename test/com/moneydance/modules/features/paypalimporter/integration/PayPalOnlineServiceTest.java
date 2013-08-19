@@ -58,7 +58,7 @@ public final class PayPalOnlineServiceTest {
     public void testSetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(this.rootAccount, password);
+        this.service.setPassword(password);
     }
 
     @Test
@@ -66,7 +66,7 @@ public final class PayPalOnlineServiceTest {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, true);
-        this.service.setPassword(this.rootAccount, password);
+        this.service.setPassword(password);
         assertThat(String.valueOf(this.service.getPassword()), is(String.valueOf(password)));
     }
 
@@ -75,7 +75,7 @@ public final class PayPalOnlineServiceTest {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, false);
-        this.service.setPassword(this.rootAccount, password);
+        this.service.setPassword(password);
         assertThat(this.service.getPassword(), nullValue());
     }
 
