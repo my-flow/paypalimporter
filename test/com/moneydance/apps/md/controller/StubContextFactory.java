@@ -10,7 +10,6 @@ import com.moneydance.apps.md.model.OnlineInfo;
 import com.moneydance.apps.md.model.OnlineService;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
-import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 
 import java.util.logging.Logger;
@@ -81,7 +80,7 @@ public final class StubContextFactory {
     public StubContextFactory addOnlineService() {
         final StreamTable table = new StreamTable(1);
         OnlineInfo onlineInfo = this.context.getRootAccount().getOnlineInfo();
-        table.put(KEY_SERVICE_TYPE, Settings.getServiceType());
+        table.put(KEY_SERVICE_TYPE, Helper.INSTANCE.getSettings().getServiceType());
         OnlineService onlineService = new OnlineService(
                 onlineInfo,
                 table);

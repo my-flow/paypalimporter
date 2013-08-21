@@ -6,6 +6,7 @@ package com.moneydance.modules.features.paypalimporter.integration;
 import com.moneydance.apps.md.model.OnlineInfo;
 import com.moneydance.apps.md.model.OnlineService;
 import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 
@@ -16,12 +17,17 @@ import org.apache.commons.lang3.Validate;
 /**
  * @author Florian J. Breunig
  */
-public enum OnlineServiceFactory {
-
-    ; // no instances
+public final class OnlineServiceFactory {
 
     private static final String SERVICE_ID = createServiceId();
     private static final String KEY_SERVICE_TYPE = "type";
+
+    /**
+     * Restrictive constructor.
+     */
+    private OnlineServiceFactory() {
+        // Prevents this class from being instantiated from the outside.
+    }
 
     public static PayPalOnlineService getService(
             final RootAccount rootAccount) {
@@ -64,17 +70,18 @@ public enum OnlineServiceFactory {
 
     private static void setUpOnlineService(final OnlineService onlineService) {
         final StreamTable table = new StreamTable(1);
-        table.put(KEY_SERVICE_TYPE, Settings.getServiceType());
+        final Settings settings = Helper.INSTANCE.getSettings();
+        table.put(KEY_SERVICE_TYPE, settings.getServiceType());
         onlineService.mergeDataTables(table);
-        onlineService.setFIId(Settings.getFIId());
-        onlineService.setFIOrg(Settings.getFIOrg());
-        onlineService.setFIName(Settings.getFIName());
-        onlineService.setFIAddress1(Settings.getFIAddress());
-        onlineService.setFICity(Settings.getFICity());
-        onlineService.setFIState(Settings.getFIState());
-        onlineService.setFIZip(Settings.getFIZip());
-        onlineService.setFICountry(Settings.getFICountry());
-        onlineService.setFIUrl(Settings.getFIUrl());
+        onlineService.setFIId(settings.getFIId());
+        onlineService.setFIOrg(settings.getFIOrg());
+        onlineService.setFIName(settings.getFIName());
+        onlineService.setFIAddress1(settings.getFIAddress());
+        onlineService.setFICity(settings.getFICity());
+        onlineService.setFIState(settings.getFIState());
+        onlineService.setFIZip(settings.getFIZip());
+        onlineService.setFICountry(settings.getFICountry());
+        onlineService.setFIUrl(settings.getFIUrl());
         onlineService.setDateUpdated(new Date().getTime());
     }
 }

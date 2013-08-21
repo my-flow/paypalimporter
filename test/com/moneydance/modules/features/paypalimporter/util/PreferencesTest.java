@@ -5,11 +5,9 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.RootAccount;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -29,12 +27,6 @@ public final class PreferencesTest {
     public void setUp() {
         this.prefs = new Preferences();
         this.factory = new StubContextFactory();
-        this.prefs.setContext(this.factory.getContext());
-    }
-
-    @Test
-    public void testGetUserPreferences() {
-        this.prefs = new Preferences();
         Helper.INSTANCE.addObserver(new Observer() {
             @Override
             public void update(final Observable observable,
@@ -42,10 +34,12 @@ public final class PreferencesTest {
                 PreferencesTest.this.prefs.setContext(PreferencesTest.this.factory.getContext());
             }
         });
-        this.prefs.getLocale();
+    }
 
+    @Test
+    public void testGetUserPreferences() {
         this.prefs = new Preferences();
-        this.prefs.getLocale();
+        assertThat(this.prefs.getLocale(), notNullValue());
     }
 
     @Test
@@ -114,59 +108,43 @@ public final class PreferencesTest {
     @Test
     public void testSetUsername() {
         final String username = "stub username";
-        this.prefs.setUsername(username);
-        assertThat(this.prefs.getUsername(), is(username));
+        this.prefs.setUsername(0, username);
+        assertThat(this.prefs.getUsername(-1), is(username));
     }
 
     @Test
     public void testGetUsername() {
-        this.prefs.getUsername();
+        this.prefs.getUsername(-1);
     }
 
     @Test
-    public void testSetPasswordStorePin() {
+    public void testSetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.factory.getContext().getRootAccount().setParameter(RootAccount.STORE_PINS_PARAM, true);
-        this.prefs.setPassword(password);
-        assertThat(String.valueOf(this.prefs.getPassword()), is(String.valueOf(password)));
-    }
-
-    @Test
-    public void testSetPasswordStoreDoNotPin() {
-        final char[] password = {'s', 't', 'u', 'b', ' ',
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.factory.getContext().getRootAccount().setParameter(RootAccount.STORE_PINS_PARAM, false);
-        this.prefs.setPassword(password);
-        assertThat(this.prefs.getPassword(), nullValue());
+        this.prefs.setPassword(0, password);
+        assertThat(String.valueOf(this.prefs.getPassword(0)), is(String.valueOf(password)));
     }
 
     @Test
     public void testGetPassword() {
-        this.prefs.getPassword();
+        this.prefs.getPassword(0);
     }
 
     @Test
     public void testSetSignature() {
         final String signature = "stub signature";
-        this.prefs.setSignature(signature);
-        assertThat(this.prefs.getSignature(), is(signature));
+        this.prefs.setSignature(0, signature);
+        assertThat(this.prefs.getSignature(0), is(signature));
     }
 
     @Test
     public void testGetSignature() {
-        this.prefs.getSignature();
+        this.prefs.getSignature(0);
     }
 
     @Test
-    public void testSetAccountId() {
-        final int accountId = 0;
-        this.prefs.setAccountId(accountId);
-        assertThat(this.prefs.getAccountId(), is(accountId));
-    }
-
-    @Test
-    public void testGetAccountId() {
-        this.prefs.getAccountId();
+    public void testHasUsedCombination() {
+        final String username = "stub username";
+        assertThat(this.prefs.hasUsedCombination(0, username), is(false));
     }
 }

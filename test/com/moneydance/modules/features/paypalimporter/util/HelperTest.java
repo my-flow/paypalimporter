@@ -20,7 +20,7 @@ public final class HelperTest {
 
     @Test
     public void testGetLocalizable() {
-        assertThat(Helper.getLocalizable(), notNullValue());
+        assertThat(Helper.INSTANCE.getLocalizable(), notNullValue());
     }
 
     @Test
@@ -31,7 +31,7 @@ public final class HelperTest {
     @Test
     public void testGetInputStreamFromResource() {
         assertThat(Helper.getInputStreamFromResource(
-                Settings.getLoggingPropertiesResource()),
+                Helper.INSTANCE.getSettings().getLoggingPropertiesResource()),
                 notNullValue());
     }
 }

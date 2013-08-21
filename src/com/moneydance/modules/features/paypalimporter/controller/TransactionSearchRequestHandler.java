@@ -8,16 +8,14 @@ import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.apps.md.model.OnlineTxnList;
 import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Settings;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,8 +52,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         super(argViewController);
         Validate.notNull(argAccount, "account must not be null");
         this.account = argAccount;
-        this.dateFormat = new SimpleDateFormat(
-                Settings.getDatePattern(), Locale.US);
+        this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
     }
 
     @Override

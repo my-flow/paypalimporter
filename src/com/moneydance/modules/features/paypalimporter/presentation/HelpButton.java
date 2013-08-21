@@ -3,7 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
-import com.moneydance.modules.features.paypalimporter.util.Settings;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.awt.Image;
 
@@ -22,7 +22,7 @@ final class HelpButton extends JButton {
 
     HelpButton() {
         super();
-        final Image image =  Settings.getHelpImage();
+        final Image image =  Helper.INSTANCE.getSettings().getHelpImage();
         this.setIcon(new ImageIcon(image));
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);

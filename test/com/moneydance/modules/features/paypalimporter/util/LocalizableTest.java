@@ -6,8 +6,6 @@ package com.moneydance.modules.features.paypalimporter.util;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,14 +18,7 @@ public final class LocalizableTest {
 
     @Before
     public void setUp() {
-        new StubContextFactory();
-        this.localizable = Localizable.INSTANCE;
-        this.localizable.update();
-    }
-
-    @Test
-    public void testUpdate() {
-        this.localizable.update();
+        this.localizable = Helper.INSTANCE.getLocalizable();
     }
 
     @Test

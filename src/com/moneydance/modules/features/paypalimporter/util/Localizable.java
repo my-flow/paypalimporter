@@ -5,11 +5,10 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -20,33 +19,17 @@ import org.apache.commons.lang3.text.StrSubstitutor;
  *
  * @author Florian J. Breunig
  */
-public enum Localizable {
+public final class Localizable {
 
-    INSTANCE;
+    private final ResourceBundle resourceBundle;
 
-    /**
-     * Static initialization of class-dependent logger.
-     */
-    private static final Logger LOG = Logger.getLogger(
-            Localizable.class.getName());
-
-    private final Preferences     prefs;
-    private       ResourceBundle  resourceBundle;
-
-    Localizable() {
-        this.prefs = Helper.INSTANCE.getPreferences();
-    }
-
-    public void update() {
+    Localizable(final String localizableResource, final Locale locale) {
         this.resourceBundle = ResourceBundle.getBundle(
-                Settings.getLocalizableResource(),
-                this.prefs.getLocale());
+                localizableResource,
+                locale);
     }
 
     public ResourceBundle getResourceBundle() {
-        if (this.resourceBundle == null) {
-            this.update();
-        }
         return this.resourceBundle;
     }
 
@@ -55,6 +38,13 @@ public enum Localizable {
      */
     public String getLabelButtonText() {
         return this.resourceBundle.getString("label_button_text");
+    }
+
+    /**
+     * @return the name of the "Continue" button.
+     */
+    public String getLabelContinueButton() {
+        return this.resourceBundle.getString("label_continue_button");
     }
 
     /**
@@ -78,8 +68,7 @@ public enum Localizable {
         try {
             return new URL(this.resourceBundle.getString("url_help"));
         } catch (MalformedURLException e) {
-            LOG.log(Level.INFO, "Could not parse help URL", e);
-            return null;
+            throw new IllegalStateException("Could not parse help URL", e);
         }
     }
 

@@ -4,7 +4,6 @@
 package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
@@ -44,62 +43,40 @@ public final class PayPalOnlineServiceTest {
 
     @Test
     public void testSetUsername() {
-        this.service.setUsername("mock username");
+        this.service.setUsername(0, "mock username");
     }
 
     @Test
     public void testGetUsername() {
         final String username = "mock username";
-        this.service.setUsername(username);
-        assertThat(this.service.getUsername(), is(username));
+        this.service.setUsername(0, username);
+        assertThat(this.service.getUsername(0), is(username));
     }
 
     @Test
     public void testSetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(password);
+        this.service.setPassword(0, password);
     }
 
     @Test
-    public void testGetPasswordStorePin() {
+    public void testGetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, true);
-        this.service.setPassword(password);
-        assertThat(String.valueOf(this.service.getPassword()), is(String.valueOf(password)));
-    }
-
-    @Test
-    public void testGetPasswordDoNotStorePin() {
-        final char[] password = {'s', 't', 'u', 'b', ' ',
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.rootAccount.setParameter(RootAccount.STORE_PINS_PARAM, false);
-        this.service.setPassword(password);
-        assertThat(this.service.getPassword(), nullValue());
+        this.service.setPassword(0, password);
+        assertThat(String.valueOf(this.service.getPassword(0)), is(String.valueOf(password)));
     }
 
     @Test
     public void testSetSignature() {
-        this.service.setSignature("mock signature");
+        this.service.setSignature(0, "mock signature");
     }
 
     @Test
     public void testGetSignature() {
         final String signature = "mock signature";
-        this.service.setSignature(signature);
-        assertThat(this.service.getSignature(), is(signature));
-    }
-
-    @Test
-    public void testSetAccountId() {
-        this.service.setAccountId(0);
-    }
-
-    @Test
-    public void testGetAccountId() {
-        final int accountId = 17;
-        this.service.setAccountId(accountId);
-        assertThat(this.service.getAccountId(), is(accountId));
+        this.service.setSignature(0, signature);
+        assertThat(this.service.getSignature(0), is(signature));
     }
 }

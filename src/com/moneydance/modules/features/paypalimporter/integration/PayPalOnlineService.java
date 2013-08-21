@@ -7,32 +7,27 @@ import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.AccountUtil;
 import com.moneydance.apps.md.model.OnlineService;
 import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author Florian J. Breunig
  */
 public final class PayPalOnlineService {
 
-    private static final String KEY_SIGNATURE = String.format("signature_%s",
-            OnlineService.DEFAULT_REQ_REALM);
-    private static final String KEY_ACCOUNT = String.format("acct_%s",
-            OnlineService.DEFAULT_REQ_REALM);
-    private static final int INITIAL_NON_ZERO_ODD_NUMBER = 17;
-    private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 37;
+    private static final Logger LOG = Logger
+            .getLogger(PayPalOnlineService.class.getName());
 
     private final OnlineService onlineService;
-    private final String authKey;
 
     PayPalOnlineService(final OnlineService argOnlineService) {
         Validate.notNull(argOnlineService, "online service must not be null");
         this.onlineService = argOnlineService;
-        this.authKey = String.format("%s--%s--",
-                this.onlineService.getFIOrg(), this.onlineService.getFIId());
     }
 
     public void assignToAccount(
@@ -66,29 +61,40 @@ public final class PayPalOnlineService {
         }
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(final int accountId, final String username) {
         this.onlineService.setUserId(
-                OnlineService.DEFAULT_REQ_REALM,
+                buildRealm(accountId),
                 null,
                 username);
+        this.onlineService.setMsgSetSignonRealm(
+                accountId,
+                buildRealm(accountId));
     }
 
-    public String getUsername() {
-        return this.onlineService.getUserId(
-                OnlineService.DEFAULT_REQ_REALM,
+    public String getUsername(final int accountId) {
+        String username = this.onlineService.getUserId(
+                buildRealm(accountId),
                 null);
+        if (StringUtils.isBlank(username) && this.getFirstRealm() != null) {
+            username = this.onlineService.getUserId(this.getFirstRealm(), null);
+        }
+        return username;
     }
 
-    public void setPassword(final char[] password) {
+    public void setPassword(final int accountId, final char[] password) {
         this.onlineService.cacheAuthentication(
-                this.authKey,
+                buildAuthKey(buildRealm(accountId)),
                 String.valueOf(password));
     }
 
-    public char[] getPassword() {
+    public char[] getPassword(final int accountId) {
         Object authObj = this.onlineService.getCachedAuthentication(
-                this.authKey);
+                buildAuthKey(buildRealm(accountId)));
         char[] result;
+        if (authObj == null && this.getFirstRealm() != null) {
+            authObj = this.onlineService.getCachedAuthentication(
+                    buildAuthKey(this.getFirstRealm()));
+        }
         if (authObj == null) {
             result = null;
         } else {
@@ -97,43 +103,45 @@ public final class PayPalOnlineService {
         return result;
     }
 
-    public void setSignature(final String signature) {
-        this.onlineService.getTable().put(KEY_SIGNATURE, signature);
-    }
-
-    public String getSignature() {
-        return this.onlineService.getTable().getStr(KEY_SIGNATURE, null);
-    }
-
-    public void setAccountId(final int accountId) {
-        this.onlineService.getTable().put(KEY_ACCOUNT, accountId);
-    }
-
-    public int getAccountId() {
-        return this.onlineService.getTable().getInt(KEY_ACCOUNT, -1);
-    }
-
-    public void setUsedImportCombination(
-            final String username,
-            final int accountId) {
+    public void setSignature(final int accountId, final String signature) {
         this.onlineService.getTable().put(
-                buildHashCode(username, accountId), true);
+                buildSignatureKey(buildRealm(accountId)),
+                signature);
     }
 
-    public boolean hasUsedImportCombination(
-            final String username,
-            final int accountId) {
-        return this.onlineService.getTable().getBoolean(
-                buildHashCode(username, accountId), false);
+    public String getSignature(final int accountId) {
+        String signature = this.onlineService.getTable().getStr(
+                buildSignatureKey(buildRealm(accountId)),
+                null);
+        if (signature == null && this.getFirstRealm() != null) {
+            signature = this.onlineService.getTable().getStr(
+                    buildSignatureKey(this.getFirstRealm()), null);
+        }
+        return signature;
     }
 
-    private static String buildHashCode(
-            final String username,
-            final int accountId) {
-        return String.format("%d", new HashCodeBuilder(
-                INITIAL_NON_ZERO_ODD_NUMBER, MULTIPLIER_NON_ZERO_ODD_NUMBER)
-        .append(username)
-        .append(accountId)
-        .toHashCode());
+    private String getFirstRealm() {
+        final String[] realms = this.onlineService.getRealms();
+        if (realms != null && realms.length > 0) {
+            LOG.config(String.format("realms[0]: %s", realms[0]));
+            return realms[0];
+        }
+        return null;
+    }
+
+    private static String buildRealm(final int accountId) {
+        if (accountId >= 0) {
+            return String.format("realm_%d", accountId);
+        }
+        return OnlineService.DEFAULT_REQ_REALM;
+    }
+
+    private static String buildAuthKey(final String realm) {
+        return String.format("%s:%s",
+                Helper.INSTANCE.getSettings().getFIId(), realm);
+    }
+
+    private static String buildSignatureKey(final String realm) {
+        return String.format("so_signature_%s", realm);
     }
 }

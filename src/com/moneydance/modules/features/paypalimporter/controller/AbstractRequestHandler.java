@@ -22,7 +22,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     protected AbstractRequestHandler(final ViewController argViewController) {
         Validate.notNull(argViewController, "view controller must not be null");
         this.viewController = argViewController;
-        this.localizable = Helper.getLocalizable();
+        this.localizable = Helper.INSTANCE.getLocalizable();
     }
 
     @Override
@@ -33,7 +33,9 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
             this.serviceCallSucceeded(serviceResult);
         }
         if (serviceResult.getErrorMessage() != null) {
-            this.serviceCallFailed(serviceResult.getErrorMessage());
+            this.serviceCallFailed(
+                    serviceResult.getErrorCode(),
+                    serviceResult.getErrorMessage());
         }
     }
 
@@ -43,10 +45,12 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     protected abstract void serviceCallSucceeded(
             final ServiceResult<V> serviceResult);
 
-    private void serviceCallFailed(final String message) {
+    private void serviceCallFailed(
+            final String errorCode, final String message) {
+
         final String labelMessage =
                 this.localizable.getErrorMessageServiceCallFailed(message);
-        this.viewController.unlock(labelMessage, null);
+        this.viewController.unlock(labelMessage, errorCode);
     }
 
     protected final ViewController getViewController() {

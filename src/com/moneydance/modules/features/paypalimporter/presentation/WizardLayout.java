@@ -16,7 +16,7 @@ import com.moneydance.modules.features.paypalimporter.forms.layout.CellConstrain
 import com.moneydance.modules.features.paypalimporter.forms.layout.FormLayout;
 import com.moneydance.modules.features.paypalimporter.forms.layout.RowSpec;
 import com.moneydance.modules.features.paypalimporter.forms.layout.Sizes;
-import com.moneydance.modules.features.paypalimporter.util.Settings;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -91,7 +91,7 @@ class WizardLayout extends JDialog {
 
         // add rows dynamically
         final FormLayout layout = new FormLayout(
-                Settings.getColumnSpecs());
+                Helper.INSTANCE.getSettings().getColumnSpecs());
 
         DefaultFormBuilder builder = new DefaultFormBuilder(
                 layout, localizer);

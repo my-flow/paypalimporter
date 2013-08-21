@@ -3,7 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.controller.Util;
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.CurrencyType;
 import com.moneydance.apps.md.model.OnlineTxn;
@@ -13,10 +12,8 @@ import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
-import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -25,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.time.DateUtils;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
@@ -41,7 +37,6 @@ final class TransactionSearchIterator implements ViewController {
     private static final Logger LOG = Logger.getLogger(
             TransactionSearchIterator.class.getName());
 
-    private static final long ONE_SECOND = 1000;
     private static final String KEY_ACCOUNT_URL = "account_url";
 
     private final ViewController viewController;
@@ -50,10 +45,10 @@ final class TransactionSearchIterator implements ViewController {
     private final InputData inputData;
     private final CurrencyType currencyType;
     private final CurrencyCodeType currencyCode;
-    private final Date startDate;
     private final RequestHandler<PaymentTransactionSearchResultType>
     requestHandler;
     private final List<OnlineTxn> resultList;
+    private final String errorCodeSearchWarning;
 
     TransactionSearchIterator(
             final ViewController argViewController,
@@ -78,22 +73,16 @@ final class TransactionSearchIterator implements ViewController {
         this.currencyType = argCurrencyType;
         this.currencyCode = argCurrencyCode;
 
-        this.startDate = DateUtils.truncate(
-                Util.convertIntDateToLong(
-                        this.inputData.getDateRange().getStartDateInt()),
-                        Calendar.DATE);
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
                 this.rootAccount);
         this.resultList = new ArrayList<OnlineTxn>();
+        this.errorCodeSearchWarning =
+                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
     }
 
     void callTransactionSearchService() {
-        final Date endDate = DateUtils.ceiling(
-                Util.convertIntDateToLong(
-                        this.inputData.getDateRange().getEndDateInt()),
-                        Calendar.DATE);
-        this.callTransactionSearchService(endDate);
+        this.callTransactionSearchService(this.inputData.getEndDate());
     }
 
     @Override
@@ -105,30 +94,37 @@ final class TransactionSearchIterator implements ViewController {
 
         this.resultList.addAll(argOnlineTxns);
 
-        if (Settings.getErrorCodeSearchWarning().equals(errorCode)) {
-            final Date endDate = new Date(argStartDate.getTime() - ONE_SECOND);
-            LOG.info(String.format("Imported until:  %s", argStartDate));
-            LOG.info(String.format("Next start date: %s", this.startDate));
-            LOG.info(String.format("Next end date:   %s", endDate));
-            this.callTransactionSearchService(endDate);
+        final Account account;
+        if (this.errorCodeSearchWarning.equals(errorCode)) {
+            LOG.info(String.format("Next start date: %s",
+                    this.inputData.getStartDate()));
+            LOG.info(String.format("Next end date:   %s", argStartDate));
+            account = null;
+            this.callTransactionSearchService(argStartDate);
         } else {
-            LOG.info("All transactions downloaded");
-            this.inputData.getPassword(true);
+            LOG.info(String.format(
+                    "All %d transactions downloaded", this.resultList.size()));
 
-            final Account useAccount = findOrCreateAccount(
+            account = findOrCreateAccount(
                     this.rootAccount,
                     this.inputData.getAccountId(),
                     this.currencyType);
-            final OnlineTxnList txnList = useAccount.getDownloadedTxns();
-            final ListIterator<OnlineTxn> iter = argOnlineTxns.listIterator(
-                    argOnlineTxns.size());
+            final OnlineTxnList txnList = account.getDownloadedTxns();
+            final ListIterator<OnlineTxn> iter = this.resultList.listIterator(
+                    this.resultList.size());
 
             while (iter.hasPrevious()) {
                 txnList.addNewTxn(iter.previous());
             }
+        }
+        this.viewController.transactionsImported(
+                this.resultList, argStartDate, account, errorCode);
+    }
 
-            this.viewController.transactionsImported(
-                    argOnlineTxns, null, useAccount, null);
+    @Override
+    public void unlock(final String text, final Object key) {
+        if (!this.errorCodeSearchWarning.equals(key)) {
+            this.viewController.unlock(text, key);
         }
     }
 
@@ -138,7 +134,7 @@ final class TransactionSearchIterator implements ViewController {
                 this.inputData.getUsername(),
                 this.inputData.getPassword(false),
                 this.inputData.getSignature(),
-                this.startDate,
+                this.inputData.getStartDate(),
                 endDate,
                 this.currencyCode,
                 this.requestHandler);
@@ -156,12 +152,12 @@ final class TransactionSearchIterator implements ViewController {
             try {
                 account = Account.makeAccount(
                         Account.ACCOUNT_TYPE_BANK,
-                        Helper.getLocalizable().getNameNewAccount(),
+                        Helper.INSTANCE.getLocalizable().getNameNewAccount(),
                         currencyType,
                         rootAccount);
                 account.setParameter(
                         KEY_ACCOUNT_URL,
-                        Helper.getLocalizable().getUrlNewAccount());
+                        Helper.INSTANCE.getLocalizable().getUrlNewAccount());
                 rootAccount.addSubAccount(account);
             } catch (Exception e) {
                 LOG.log(Level.WARNING, e.getMessage(), e);
@@ -174,27 +170,22 @@ final class TransactionSearchIterator implements ViewController {
 
     @Override
     public void update(final Observable observable, final Object arg) {
-        // ignore
+        this.viewController.update(observable, arg);
     }
 
     @Override
     public void startWizard() {
-        // ignore
+        this.viewController.startWizard();
     }
 
     @Override
     public void cancel() {
-        // ignore
+        this.viewController.cancel();
     }
 
     @Override
     public void proceed() {
-        // ignore
-    }
-
-    @Override
-    public void unlock(final String text, final Object key) {
-        // ignore
+        this.viewController.proceed();
     }
 
     @Override
@@ -207,11 +198,11 @@ final class TransactionSearchIterator implements ViewController {
 
     @Override
     public void showHelp() {
-        // ignore
+        this.viewController.showHelp();
     }
 
     @Override
     public void refreshAccounts(final int accountId) {
-        // ignore
+        this.viewController.refreshAccounts(accountId);
     }
 }

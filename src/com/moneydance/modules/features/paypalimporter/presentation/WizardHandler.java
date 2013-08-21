@@ -50,18 +50,18 @@ public final class WizardHandler extends WizardController {
             this.observer.update(null, ExecutedAction.SHOW_HELP);
         } else if (actionEvent.getSource().equals(this.btnProceed)) {
 
-            int accountNum = -1;
+            int accountId = -1;
             if (this.rdBtnExistingAcct.isSelected()) {
                 final Account account = (Account)
                         this.comboBoxAccts.getSelectedItem();
-                accountNum = account.getAccountNum();
+                accountId = account.getAccountNum();
             }
 
             this.inputData = new InputData(
                     this.txtUsername.getText(),
                     this.txtPassword.getPassword(),
                     this.txtSignature.getText(),
-                    accountNum,
+                    accountId,
                     this.dateRanger.getDateRange());
 
             this.observer.update(null, ExecutedAction.PROCEED);

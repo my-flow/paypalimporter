@@ -20,15 +20,20 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 /**
  * @author Florian J. Breunig
  */
-public enum CurrencyMapper {
-
-    ; // no instances
+public final class CurrencyMapper {
 
     /**
      * Static initialization of class-dependent logger.
      */
     private static final Logger LOG = Logger
             .getLogger(CurrencyMapper.class.getName());
+
+    /**
+     * Restrictive constructor.
+     */
+    private CurrencyMapper() {
+        // Prevents this class from being instantiated from the outside.
+    }
 
     public static CurrencyType getCurrencyTypeFromCurrencyCode(
             final CurrencyCodeType currencyCode,

@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    DateCalculatorTest.class,
     HelperTest.class,
     LocalizableTest.class,
     LogFormatterTest.class,

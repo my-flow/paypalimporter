@@ -12,59 +12,51 @@ import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.util.logging.Logger;
 
 /**
+ * A facade for dispatching Google Analytics tracking information.
+ *
  * @author Florian J. Breunig
  */
 public final class Tracker {
 
-    /**
-     * Static initialization of class-dependent logger.
-     */
-    private static final Logger LOG = Logger.getLogger(
-            Tracker.class.getName());
-
-    private final Preferences prefs;
     private final String fullVersion;
     private final String build;
 
     private final JGoogleAnalyticsTracker analyticsTracker;
 
-    Tracker(final int argBuild) {
-        this.prefs       = Helper.INSTANCE.getPreferences();
-        this.fullVersion = String.format("Moneydance %s",
-                this.prefs.getFullVersion());
-        this.build       = String.format("%s v%d",
-                Settings.getExtensionName(),
-                argBuild);
+    Tracker(final int argBuild,
+            final String argExtensionName,
+            final String argFullVersion,
+            final String argTrackingCode) {
+        this.fullVersion = String.format("Moneydance %s", argFullVersion);
+        this.build       = String.format("%s v%d", argExtensionName, argBuild);
 
-        JGoogleAnalyticsTracker.setProxy(this.getProxy());
-        AnalyticsConfigData config = new AnalyticsConfigData(
-                Settings.getTrackingCode());
+        JGoogleAnalyticsTracker.setProxy(Tracker.getProxy());
+        AnalyticsConfigData config = new AnalyticsConfigData(argTrackingCode);
         this.analyticsTracker = new JGoogleAnalyticsTracker(
                 config,
                 GoogleAnalyticsVersion.V_4_7_2);
     }
 
     public void track(final EventName eventName) {
-        LOG.config("trackEvent");
         this.analyticsTracker.trackEvent(
                 this.fullVersion,
                 eventName.toString(),
                 this.build);
     }
 
-    private Proxy getProxy() {
-        if (!this.prefs.hasProxy()) {
+    private static Proxy getProxy() {
+        final Preferences prefs = Helper.INSTANCE.getPreferences();
+        if (!prefs.hasProxy()) {
             return Proxy.NO_PROXY;
         }
 
         final SocketAddress socketAddress = new InetSocketAddress(
-                this.prefs.getProxyHost(),
-                this.prefs.getProxyPort());
+                prefs.getProxyHost(),
+                prefs.getProxyPort());
 
-        boolean authProxy = this.prefs.hasProxyAuthentication();
+        boolean authProxy = prefs.hasProxyAuthentication();
 
         Proxy.Type proxyType = Proxy.Type.HTTP;
 
@@ -74,9 +66,8 @@ public final class Tracker {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(
-                            Tracker.this.prefs.getProxyUsername(),
-                            Tracker.this.prefs.getProxyPassword()
-                            .toCharArray());
+                            prefs.getProxyUsername(),
+                            prefs.getProxyPassword().toCharArray());
                 }
             });
         }
@@ -88,11 +79,11 @@ public final class Tracker {
      */
     public enum EventName {
 
-        INSTALL(Settings.getEventActionInstall()),
+        INSTALL(Helper.INSTANCE.getSettings().getEventActionInstall()),
 
-        DISPLAY(Settings.getEventActionDisplay()),
+        DISPLAY(Helper.INSTANCE.getSettings().getEventActionDisplay()),
 
-        UNINSTALL(Settings.getEventActionUninstall());
+        UNINSTALL(Helper.INSTANCE.getSettings().getEventActionUninstall());
 
         private final String eventString;
 

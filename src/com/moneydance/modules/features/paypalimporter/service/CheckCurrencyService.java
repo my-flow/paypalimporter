@@ -59,7 +59,7 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
     public CheckCurrencyService(
             final PayPalAPIInterfaceServiceService argService,
             final Locale argErrorLocale) {
-        this.localizable = Helper.getLocalizable();
+        this.localizable = Helper.INSTANCE.getLocalizable();
         Validate.notNull(argService, "service must not be null");
         this.service = argService;
         Validate.notNull(argErrorLocale, "error locale must not be null");

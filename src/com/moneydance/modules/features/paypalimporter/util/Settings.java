@@ -4,9 +4,15 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.configuration.AbstractFileConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -14,23 +20,14 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
- * This configuration enum accesses all values that are read
+ * This configuration class accesses all values that are read
  * from a settings file in plain text. The settings file cannot be
- * modified at runtime, so the <code>Settings</code> enum is immutable.
+ * modified at runtime, so the <code>Settings</code> class is effectively
+ * immutable.
  *
  * @author Florian J. Breunig
  */
-public enum Settings {
-
-    INSTANCE;
-
-    /**
-     * Static initialization of class-dependent logger.
-     */
-    private static final Logger LOG =
-            Logger.getLogger(Settings.class.getName());
-
-    private static final Configuration CONFIG;
+public final class Settings {
 
     /**
      * The resource in the JAR file to read the settings from.
@@ -39,181 +36,224 @@ public enum Settings {
     = "com/moneydance/modules/features/paypalimporter/resources/"
             + "settings.properties";
 
-    static {
+    private final Configuration config;
+    private Image iconImage;
+    private DateFormat dateFormat;
+    private Date minDate;
+    private Image helpImage;
+
+    Settings() {
         final AbstractFileConfiguration abstractFileConfiguration =
                 new PropertiesConfiguration();
 
         try {
-            InputStream inputStream =
-                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
+            InputStream inputStream = Helper.getInputStreamFromResource(
+                    PROPERTIES_RESOURCE);
             abstractFileConfiguration.load(inputStream);
-        } catch (IllegalArgumentException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
         } catch (ConfigurationException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
-        CONFIG = abstractFileConfiguration;
+        this.config = abstractFileConfiguration;
     }
 
     /**
      * @return The descriptive name of this extension.
      */
-    public static String getExtensionName() {
-        return CONFIG.getString("extension_name");
+    public String getExtensionName() {
+        return this.config.getString("extension_name"); //$NON-NLS-1$
     }
 
     /**
      * @return The icon image that represents this extension.
      */
-    public static Image getIconImage() {
-        return Helper.getImage(CONFIG.getString("icon_resource"));
+    public Image getIconImage() {
+        if (this.iconImage == null) {
+            this.iconImage = getImage(
+                    this.config.getString("icon_resource")); //$NON-NLS-1$
+        }
+        return this.iconImage;
     }
 
     /**
      * @return The help image.
      */
-    public static Image getHelpImage() {
-        return Helper.getImage(CONFIG.getString("help_resource"));
+    public Image getHelpImage() {
+        if (this.helpImage == null) {
+            this.helpImage = getImage(
+                    this.config.getString("help_resource")); //$NON-NLS-1$
+        }
+        return this.helpImage;
     }
 
     /**
      * @return The resource that contains the configuration of the logger.
      */
-    public static String getLoggingPropertiesResource() {
-        return CONFIG.getString("logging_properties_resource");
+    public String getLoggingPropertiesResource() {
+        return this.config.getString(
+                "logging_properties_resource"); //$NON-NLS-1$
     }
 
     /**
      * @return The resource in the JAR file to read the language strings from.
      */
-    public static String getLocalizableResource() {
-        return CONFIG.getString("localizable_resource");
+    public String getLocalizableResource() {
+        return this.config.getString("localizable_resource"); //$NON-NLS-1$
     }
 
     /**
      * @return The suffix of the application event that lets the user start the
      *  import process.
      */
-    public static String getStartWizardSuffix() {
-        return CONFIG.getString("start_wizard_suffix");
+    public String getStartWizardSuffix() {
+        return this.config.getString("start_wizard_suffix"); //$NON-NLS-1$
     }
 
     /**
      * @return Tracking code for Google Analytics (aka "utmac").
      */
-    public static String getTrackingCode() {
-        return CONFIG.getString("tracking_code");
+    public String getTrackingCode() {
+        return this.config.getString("tracking_code"); //$NON-NLS-1$
     }
 
     /**
      * @return Event action for installation
      */
-    public static String getEventActionInstall() {
-        return CONFIG.getString("event_action_install");
+    public String getEventActionInstall() {
+        return this.config.getString("event_action_install"); //$NON-NLS-1$
     }
 
     /**
      * @return Event action for display
      */
-    public static String getEventActionDisplay() {
-        return CONFIG.getString("event_action_display");
+    public String getEventActionDisplay() {
+        return this.config.getString("event_action_display"); //$NON-NLS-1$
     }
 
     /**
      * @return Event action for removal
      */
-    public static String getEventActionUninstall() {
-        return CONFIG.getString("event_action_uninstall");
+    public String getEventActionUninstall() {
+        return this.config.getString("event_action_uninstall"); //$NON-NLS-1$
     }
 
     /**
      * @return Date format specific to PayPal
      */
-    public static String getDatePattern() {
-        return CONFIG.getString("date_pattern");
+    public DateFormat getDateFormat() {
+        if (this.dateFormat == null) {
+            this.dateFormat = new SimpleDateFormat(
+                    this.config.getString("date_pattern"), //$NON-NLS-1$
+                    Locale.US);
+        }
+        return this.dateFormat;
+    }
+
+    /**
+     * @return Earliest transaction date of the TransactionSearch API
+     */
+    public Date getMinDate() {
+        if (this.minDate == null) {
+            try {
+                this.minDate = this.getDateFormat().parse(
+                        this.config.getString("min_date")); //$NON-NLS-1$
+            } catch (ParseException e) {
+                throw new IllegalStateException(e.getMessage(), e);
+            }
+        }
+        return this.minDate;
     }
 
     /**
      * @return Error code for seach warning
      */
-    public static String getErrorCodeSearchWarning() {
-        return CONFIG.getString("error_code_search_warning");
+    public String getErrorCodeSearchWarning() {
+        return this.config.getString("error_code_search_warning"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX service type specific to PayPal
      */
-    public static String getServiceType() {
-        return CONFIG.getString("service_type");
+    public String getServiceType() {
+        return this.config.getString("service_type"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI Id specific to PayPal
      */
-    public static String getFIId() {
-        return CONFIG.getString("fi_id");
+    public String getFIId() {
+        return this.config.getString("fi_id"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI Org specific to PayPal
      */
-    public static String getFIOrg() {
-        return CONFIG.getString("fi_org");
+    public String getFIOrg() {
+        return this.config.getString("fi_org"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI Name specific to PayPal
      */
-    public static String getFIName() {
-        return CONFIG.getString("fi_name");
+    public String getFIName() {
+        return this.config.getString("fi_name"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI address specific to PayPal
      */
-    public static String getFIAddress() {
-        return CONFIG.getString("fi_address");
+    public String getFIAddress() {
+        return this.config.getString("fi_address"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI city specific to PayPal
      */
-    public static String getFICity() {
-        return CONFIG.getString("fi_city");
+    public String getFICity() {
+        return this.config.getString("fi_city"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI URL specific to PayPal
      */
-    public static String getFIUrl() {
-        return CONFIG.getString("fi_url");
+    public String getFIUrl() {
+        return this.config.getString("fi_url"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI state specific to PayPal
      */
-    public static String getFIState() {
-        return CONFIG.getString("fi_state");
+    public String getFIState() {
+        return this.config.getString("fi_state"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI zip specific to PayPal
      */
-    public static String getFIZip() {
-        return CONFIG.getString("fi_zip");
+    public String getFIZip() {
+        return this.config.getString("fi_zip"); //$NON-NLS-1$
     }
 
     /**
      * @return OFX FI country specific to PayPal
      */
-    public static String getFICountry() {
-        return CONFIG.getString("fi_country");
+    public String getFICountry() {
+        return this.config.getString("fi_country"); //$NON-NLS-1$
     }
 
     /**
      * @return Column specification for JGoodies FormLayout
      */
-    public static String getColumnSpecs() {
-        return CONFIG.getString("column_specs");
+    public String getColumnSpecs() {
+        return this.config.getString("column_specs"); //$NON-NLS-1$
+    }
+
+    private static Image getImage(final String resource) {
+        try {
+            InputStream inputStream = Helper.getInputStreamFromResource(
+                    resource);
+            return ImageIO.read(inputStream);
+        } catch (IOException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 }

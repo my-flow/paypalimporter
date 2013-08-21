@@ -5,7 +5,6 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
@@ -13,11 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -28,7 +24,7 @@ import javax.swing.KeyStroke;
 import org.apache.commons.lang3.Validate;
 
 /**
- * This helper class provides public convenience methods.
+ * This singleton provides public convenience methods.
  *
  * @author Florian J. Breunig
  */
@@ -39,11 +35,6 @@ public enum Helper {
      */
     INSTANCE;
 
-    /**
-     * Static initialization of class-dependent logger.
-     */
-    private static final Logger LOG = Logger.getLogger(Helper.class.getName());
-
     private static final KeyStroke ESCAPE_STROKE =
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
@@ -51,30 +42,44 @@ public enum Helper {
             "com.spodding.tackline.dispatch:WINDOW_CLOSING";
 
     private final HelperObservable observable;
-    private       Preferences prefs;
+    private final Settings settings;
+    private final Preferences prefs;
+    private       Localizable localizable;
     private       Tracker tracker;
 
     private Helper() {
         this.observable = new HelperObservable();
+        this.settings   = new Settings();
+        this.prefs      = new Preferences();
+    }
+
+    public Settings getSettings() {
+        return this.settings;
     }
 
     public Preferences getPreferences() {
-        synchronized (Helper.class) {
-            if (this.prefs == null) {
-                this.prefs = new Preferences();
-            }
-        }
         return this.prefs;
     }
 
-    public static Localizable getLocalizable() {
-        return Localizable.INSTANCE;
+    public Localizable getLocalizable() {
+        synchronized (Helper.class) {
+            if (this.localizable == null) {
+                this.localizable = new Localizable(
+                        this.settings.getLocalizableResource(),
+                        this.prefs.getLocale());
+            }
+        }
+        return this.localizable;
     }
 
     public Tracker getTracker(final int build) {
         synchronized (Helper.class) {
             if (this.tracker == null) {
-                this.tracker = new Tracker(build);
+                this.tracker = new Tracker(
+                        build,
+                        this.prefs.getFullVersion(),
+                        this.settings.getExtensionName(),
+                        this.settings.getTrackingCode());
             }
         }
         return this.tracker;
@@ -93,14 +98,14 @@ public enum Helper {
     }
 
     public void setContext(final FeatureModuleContext context) {
-        this.getPreferences().setContext(context);
-        Helper.getLocalizable().update();
+        this.prefs.setContext(context);
     }
 
     public static void loadLoggerConfiguration() {
         try {
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    Settings.getLoggingPropertiesResource());
+            InputStream inputStream = getInputStreamFromResource(
+                    Helper.INSTANCE.getSettings()
+                    .getLoggingPropertiesResource());
             LogManager.getLogManager().readConfiguration(inputStream);
 
         } catch (SecurityException e) {
@@ -116,22 +121,6 @@ public enum Helper {
         InputStream inputStream = cloader.getResourceAsStream(resource);
         Validate.notNull(inputStream, "Resource %s was not found.",  resource);
         return inputStream;
-    }
-
-    static Image getImage(final String resource) {
-        Image image = null;
-        try {
-            LOG.config(String.format("Loading icon %s from resource.",
-                    resource));
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    resource);
-            image = ImageIO.read(inputStream);
-        } catch (IllegalArgumentException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
-        } catch (IOException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
-        }
-        return image;
     }
 
     public static void installEscapeCloseOperation(final JDialog dialog) {

@@ -10,6 +10,9 @@ import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.model.CurrencyType;
 import com.moneydance.apps.md.model.CurrencyUtil;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 
 import org.junit.Before;
@@ -27,6 +30,23 @@ public final class CurrencyMapperTest {
     @Before
     public void setUp() {
         this.factory = new StubContextFactory();
+    }
+
+    @Test
+    public void testConstructorIsPrivate()
+            throws
+            SecurityException,
+            NoSuchMethodException,
+            IllegalArgumentException,
+            InstantiationException,
+            IllegalAccessException,
+            InvocationTargetException {
+
+        Constructor<CurrencyMapper> constructor =
+                CurrencyMapper.class.getDeclaredConstructor();
+        assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 
     @Test

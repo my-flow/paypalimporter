@@ -47,7 +47,7 @@ public final class CheckCurrencyServiceTest {
     public void setUp() throws IOException {
         new StubContextFactory();
         this.service = new ServiceMock(
-                Helper.INSTANCE.getInputStreamFromResource(
+                Helper.getInputStreamFromResource(
                         "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
     }
 

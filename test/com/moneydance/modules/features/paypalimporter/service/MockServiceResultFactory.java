@@ -3,15 +3,13 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Settings;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -72,8 +70,7 @@ public final class MockServiceResultFactory {
         PaymentTransactionSearchResultType resultType =
                 new PaymentTransactionSearchResultType();
 
-        DateFormat dateFormat = new SimpleDateFormat(
-                Settings.getDatePattern(), Locale.US);
+        DateFormat dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         BasicAmountType grossAmount = new BasicAmountType();
@@ -91,8 +88,7 @@ public final class MockServiceResultFactory {
         PaymentTransactionSearchResultType resultType =
                 new PaymentTransactionSearchResultType();
 
-        DateFormat dateFormat = new SimpleDateFormat(
-                Settings.getDatePattern(), Locale.US);
+        DateFormat dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         // gross amount is missing

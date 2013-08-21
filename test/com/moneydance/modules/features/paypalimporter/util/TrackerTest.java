@@ -15,7 +15,8 @@ public final class TrackerTest {
 
     @Before
     public void setUp() {
-        this.tracker = new Tracker(0);
+        this.tracker = new Tracker(0, "extension name", "full version",
+                "tracking code");
     }
 
     @Test

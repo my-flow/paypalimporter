@@ -30,6 +30,7 @@ public final class Main extends FeatureModule implements Observer {
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private final Preferences    prefs;
+    private final Settings       settings;
     private       Tracker        tracker;
     private       ViewController viewController;
 
@@ -43,7 +44,8 @@ public final class Main extends FeatureModule implements Observer {
     public Main() {
         super();
         LOG.info("Initializing extension in Moneydance's application context.");
-        this.prefs       = Helper.INSTANCE.getPreferences();
+        this.prefs = Helper.INSTANCE.getPreferences();
+        this.settings = Helper.INSTANCE.getSettings();
     }
 
     @Override
@@ -59,28 +61,28 @@ public final class Main extends FeatureModule implements Observer {
 
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
-        Localizable localizable = Helper.getLocalizable();
+        Localizable localizable = Helper.INSTANCE.getLocalizable();
         this.getContext().registerFeature(
                 this,
-                Settings.getStartWizardSuffix(),
+                this.settings.getStartWizardSuffix(),
                 null, // buttonImage
                 localizable.getLabelButtonText());
     }
 
     @Override
     public String getName() {
-        return Settings.getExtensionName();
+        return this.settings.getExtensionName();
     }
 
     @Override
     public Image getIconImage() {
-        return Settings.getIconImage();
+        return this.settings.getIconImage();
     }
 
     @Override
     public void invoke(final String uri) {
         LOG.config(String.format("invoke %s", uri));
-        if (Settings.getStartWizardSuffix().equals(uri)) {
+        if (this.settings.getStartWizardSuffix().equals(uri)) {
             this.getViewController().startWizard();
         }
     }

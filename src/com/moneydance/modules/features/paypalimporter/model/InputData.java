@@ -4,11 +4,15 @@
 package com.moneydance.modules.features.paypalimporter.model;
 
 import com.moneydance.apps.md.controller.DateRange;
+import com.moneydance.apps.md.controller.Util;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * @author Florian J. Breunig
@@ -19,8 +23,8 @@ public final class InputData {
     private final char[] password;
     private final String signature;
     private final int accountId;
-    private final int startDate;
-    private final int endDate;
+    private final int startDateInt;
+    private final int endDateInt;
 
     public InputData(
             final String argUsername,
@@ -47,11 +51,11 @@ public final class InputData {
         this.signature = argSignature;
         this.accountId = argAccountId;
         if (argDateRange == null) {
-            this.startDate = -1;
-            this.endDate = -1;
+            this.startDateInt = -1;
+            this.endDateInt = -1;
         } else {
-            this.startDate = argDateRange.getStartDateInt();
-            this.endDate = argDateRange.getEndDateInt();
+            this.startDateInt = argDateRange.getStartDateInt();
+            this.endDateInt = argDateRange.getEndDateInt();
         }
     }
 
@@ -80,9 +84,21 @@ public final class InputData {
         return this.accountId;
     }
 
+    public Date getStartDate() {
+        return DateUtils.truncate(
+                Util.convertIntDateToLong(this.startDateInt),
+                Calendar.DATE);
+    }
+
+    public Date getEndDate() {
+        return DateUtils.ceiling(
+                Util.convertIntDateToLong(this.endDateInt),
+                Calendar.DATE);
+    }
+
     public DateRange getDateRange() {
-        if (this.startDate >= 0 && this.endDate >= 0) {
-            return new DateRange(this.startDate, this.endDate);
+        if (this.startDateInt >= 0 && this.endDateInt >= 0) {
+            return new DateRange(this.startDateInt, this.endDateInt);
         }
         return null;
     }

@@ -119,55 +119,35 @@ public final class Preferences {
                 this.rootAccount, accountId);
     }
 
-    public void setUsername(final String username) {
-        this.getPayPalOnlineService().setUsername(username);
+    public void setUsername(final int accountId, final String username) {
+        this.getPayPalOnlineService().setUsername(accountId, username);
     }
 
-    public String getUsername() {
-        return this.getPayPalOnlineService().getUsername();
+    public String getUsername(final int accountId) {
+        return this.getPayPalOnlineService().getUsername(accountId);
     }
 
-    public void setPassword(final char[] password) {
-        this.getPayPalOnlineService().setPassword(password);
+    public void setPassword(final int accountId, final char[] password) {
+        this.getPayPalOnlineService().setPassword(accountId, password);
     }
 
-    public char[] getPassword() {
-        return this.getPayPalOnlineService().getPassword();
+    public char[] getPassword(final int accountId) {
+        return this.getPayPalOnlineService().getPassword(accountId);
     }
 
-    public void setSignature(final String signature) {
-        this.getPayPalOnlineService().setSignature(signature);
+    public void setSignature(final int accountId, final String signature) {
+        this.getPayPalOnlineService().setSignature(accountId, signature);
     }
 
-    public String getSignature() {
-        return this.getPayPalOnlineService().getSignature();
+    public String getSignature(final int accountId) {
+        return this.getPayPalOnlineService().getSignature(accountId);
     }
 
-    public void setAccountId(final int accountId) {
-        this.getPayPalOnlineService().setAccountId(accountId);
-    }
+    public boolean hasUsedCombination(
+            final int accountId,
+            final String username) {
 
-    public int getAccountId() {
-        return this.getPayPalOnlineService().getAccountId();
-    }
-
-    public void setUsedImportCombination(
-            final String username,
-            final int accountId) {
-
-        if (username != null && accountId >= 0) {
-            this.getPayPalOnlineService().setUsedImportCombination(
-                    username, accountId);
-        }
-    }
-
-    public boolean hasUsedImportCombination(
-            final String username,
-            final int accountId) {
-
-        return username != null && accountId >= 0
-                && this.getPayPalOnlineService().hasUsedImportCombination(
-                        username,
-                        accountId);
+        return username != null && username.equals(
+                this.getPayPalOnlineService().getUsername(accountId));
     }
 }

@@ -21,6 +21,7 @@ import java.beans.PropertyChangeListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.JLabel;
@@ -46,7 +47,8 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("deprecation")
     protected WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
-        super(owner, mdGUI, Helper.getLocalizable().getResourceBundle());
+        super(owner, mdGUI,
+                Helper.INSTANCE.getLocalizable().getResourceBundle());
 
         // preset ESC close operation
         Helper.installEscapeCloseOperation(this);
@@ -72,22 +74,22 @@ implements ActionListener, WindowListener {
                 WizardController.this.refresh(false, null);
             }
         };
-        final PropertyChangeListener propertyChangeListener =
-                new PropertyChangeListener() {
-            @Override
-            public void propertyChange(
-                    final PropertyChangeEvent propertyChangeEvent) {
-                refreshListener.actionPerformed(null);
-            }
-        };
-
         this.rdBtnExistingAcct.addActionListener(refreshListener);
         this.rdBtnNewAcct.addActionListener(refreshListener);
+
         try {
+            final PropertyChangeListener propertyChangeListener =
+                    new PropertyChangeListener() {
+                @Override
+                public void propertyChange(
+                        final PropertyChangeEvent propertyChangeEvent) {
+                    refreshListener.actionPerformed(null);
+                }
+            };
             this.dateRanger.addPropertyChangeListener(propertyChangeListener);
         } catch (NoSuchMethodError e) {
             // ignore exception in older versions of Moneydance
-            LOG.log(Level.INFO, e.getMessage(), e);
+            LOG.log(Level.FINE, e.getMessage(), e);
         }
 
         this.btnProceed.addActionListener(this);
@@ -131,6 +133,14 @@ implements ActionListener, WindowListener {
             this.txtSignature.requestFocusInWindow();
         }
     }
+
+    public final void setBoundedRangeModel(
+            final BoundedRangeModel boundedRangeModel) {
+
+        this.progressBar.setModel(boundedRangeModel);
+        this.progressBar.setIndeterminate(false);
+    }
+
 
     public final void setAccounts(final ComboBoxModel accountModel) {
         Validate.notNull(accountModel, "account model must not be null");
@@ -179,6 +189,7 @@ implements ActionListener, WindowListener {
         this.rdBtnNewAcct.setEnabled(!isLoading);
         this.btnProceed.setEnabled(!isLoading);
 
+        this.progressBar.setIndeterminate(true);
         this.progressBar.setVisible(isLoading);
     }
 
