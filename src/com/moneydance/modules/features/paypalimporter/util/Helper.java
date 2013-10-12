@@ -77,8 +77,8 @@ public enum Helper {
             if (this.tracker == null) {
                 this.tracker = new Tracker(
                         build,
-                        this.prefs.getFullVersion(),
                         this.settings.getExtensionName(),
+                        this.prefs.getFullVersion(),
                         this.settings.getTrackingCode());
             }
         }
