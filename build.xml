@@ -28,43 +28,43 @@
 
   <taskdef name="pmd"
     classname="net.sourceforge.pmd.ant.PMDTask"
-	classpath="lib/pmd-5.0.4.jar;lib/jaxen-1.1.1.jar;lib/asm-3.2.jar"/>
+	classpath="lib/pmd-5.0.5.jar;lib/jaxen-1.1.1.jar;lib/asm-3.2.jar;lib/commons-io-2.2.jar"/>
 
   <taskdef resource="proguard/ant/task.properties"
-         classpath="${lib}/proguard-4.9.jar" />
+         classpath="${lib}/proguard-4.10.jar" />
 
   <path id="compile.classpath">
         <pathelement path="${lib}/moneydance.jar"/>
         <pathelement path="${lib}/commons-lang-2.6.jar"/>
         <pathelement path="${lib}/commons-lang3-3.1.jar"/>
-        <pathelement path="${lib}/commons-configuration-1.9.jar"/>
+        <pathelement path="${lib}/commons-configuration-1.10.jar"/>
         <pathelement path="${lib}/jcip-annotations.jar"/>
-        <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
+        <pathelement path="${lib}/jgoodies-common-1.7.0.jar"/>
         <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
         <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
         <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
-        <pathelement path="${lib}/merchantsdk-2.4.103.jar"/>
-        <pathelement path="${lib}/paypal-core-1.4.3.jar"/>
+        <pathelement path="${lib}/merchantsdk-2.5.106.jar"/>
+        <pathelement path="${lib}/paypal-core-moneydance-1.5.0.jar"/>
         <pathelement path="${lib}/prompt.jar"/>
         <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
   </path>
 
   <path id="test.classpath">
     <pathelement path="${lib}/moneydance.jar"/>
-    <pathelement path="${lib}/commons-configuration-1.9.jar"/>
+    <pathelement path="${lib}/commons-configuration-1.10.jar"/>
     <pathelement path="${lib}/commons-lang-2.6.jar"/>
     <pathelement path="${lib}/commons-lang3-3.1.jar"/>
     <pathelement path="${lib}/commons-logging-1.1.3.jar"/>
     <pathelement path="${lib}/jcip-annotations.jar"/>
-    <pathelement path="${lib}/jgoodies-common-1.6.0.jar"/>
+    <pathelement path="${lib}/jgoodies-common-1.7.0.jar"/>
     <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
     <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
     <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
-    <pathelement path="${lib}/jmockit-coverage-1.3.jar"/>
-    <pathelement path="${lib}/jmockit-1.3.jar"/>
+    <pathelement path="${lib}/jmockit-coverage-1.5.jar"/>
+    <pathelement path="${lib}/jmockit-1.5.jar"/>
     <pathelement path="${lib}/junit-4.11.jar"/>
-    <pathelement path="${lib}/merchantsdk-2.4.103.jar"/>
-    <pathelement path="${lib}/paypal-core-1.4.3.jar"/>
+    <pathelement path="${lib}/merchantsdk-2.5.106.jar"/>
+    <pathelement path="${lib}/paypal-core-moneydance-1.5.0.jar"/>
     <pathelement path="${lib}/prompt.jar"/>
     <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
     <pathelement path="${lib}/slf4j-simple-1.7.5.jar"/>
@@ -246,15 +246,15 @@ and deploy a new version.">
         <zipgroupfileset dir="${lib}">
             <include name="commons-lang-2.6.jar"/>
             <include name="commons-lang3-3.1.jar"/>
-            <include name="commons-configuration-1.9.jar"/>
+            <include name="commons-configuration-1.10.jar"/>
             <include name="jcip-annotations.jar"/>
-            <include name="jgoodies-common-1.6.0.jar"/>
+            <include name="jgoodies-common-1.7.0.jar"/>
             <include name="jgoodies-forms-moneydance-1.7.1.jar"/>
             <include name="jgoodies-validation-2.5.0.jar"/>
             <include name="commons-logging-1.1.3.jar"/>
             <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
-            <include name="merchantsdk-2.4.103.jar"/>
-            <include name="paypal-core-1.4.3.jar"/>
+            <include name="merchantsdk-2.5.106.jar"/>
+            <include name="paypal-core-moneydance-1.5.0.jar"/>
             <include name="prompt.jar"/>
             <include name="slf4j-api-1.7.5.jar"/>
             <include name="slf4j-nop-1.7.5.jar"/>

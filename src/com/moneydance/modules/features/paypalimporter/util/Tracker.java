@@ -32,7 +32,9 @@ public final class Tracker {
         this.fullVersion = String.format("Moneydance %s", argFullVersion);
         this.build       = String.format("%s v%d", argExtensionName, argBuild);
 
-        JGoogleAnalyticsTracker.setProxy(Tracker.getProxy());
+        if (!Proxy.NO_PROXY.equals(Tracker.getProxy())) {
+            JGoogleAnalyticsTracker.setProxy(Tracker.getProxy());
+        }
         AnalyticsConfigData config = new AnalyticsConfigData(argTrackingCode);
         this.analyticsTracker = new JGoogleAnalyticsTracker(
                 config,
