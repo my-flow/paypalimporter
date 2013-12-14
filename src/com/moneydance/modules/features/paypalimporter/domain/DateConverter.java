@@ -61,11 +61,12 @@ public final class DateConverter {
                 Helper.INSTANCE.getSettings().getMinDate());
     }
 
-    private static int safeLongToInt(final long l) {
-        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+    private static int safeLongToInt(final long longValue) {
+        if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
             throw new IllegalArgumentException(String.format(
-                    "%d cannot be cast to int without changing its value.", l));
+                    "%d cannot be cast to int without changing its value.",
+                    longValue));
         }
-        return (int) l;
+        return (int) longValue;
     }
 }

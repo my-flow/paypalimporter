@@ -258,7 +258,7 @@ public final class ViewControllerImpl implements ViewController {
             final Account account,
             final String errorCode) {
 
-        if (onlineTxns.size() > 0) {
+        if (!onlineTxns.isEmpty()) {
             final Date endDate = DateUtils.ceiling(
                     Util.convertIntDateToLong(
                             onlineTxns.get(0).getDatePostedInt()),
