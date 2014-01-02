@@ -41,5 +41,5 @@ Documentation
 
 License
 -------
-Copyright (C) 2013 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2014 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.
