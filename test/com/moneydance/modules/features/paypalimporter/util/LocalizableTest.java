@@ -32,6 +32,11 @@ public final class LocalizableTest {
     }
 
     @Test
+    public void testGetLabelContinueButton() {
+        assertThat(this.localizable.getLabelContinueButton(), notNullValue());
+    }
+
+    @Test
     public void testGetNameNewAccount() {
         assertThat(this.localizable.getNameNewAccount(), notNullValue());
     }
@@ -44,6 +49,17 @@ public final class LocalizableTest {
     @Test
     public void testGetUrlHelp() {
         assertThat(this.localizable.getUrlHelp(), notNullValue());
+    }
+
+    @Test
+    public void testGetQuestionMessageMultipleCurrencies() {
+        assertThat(this.localizable.getQuestionMessageMultipleCurrencies(
+                "EUR", new Object[0]), notNullValue());
+    }
+
+    @Test
+    public void testGetErrorMessageRootAccountNull() {
+        assertThat(this.localizable.getErrorMessageRootAccountNull(), notNullValue());
     }
 
     @Test

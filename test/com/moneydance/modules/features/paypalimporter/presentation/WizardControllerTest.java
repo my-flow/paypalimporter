@@ -12,6 +12,8 @@ import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
 
 import org.junit.Before;
@@ -77,6 +79,12 @@ public final class WizardControllerTest {
             e.printStackTrace();
         }
         assertThat(this.wizardController.txtSignature.isFocusOwner(), is(true));
+    }
+
+    @Test
+    public void testSetBoundedRangeModel() {
+        final BoundedRangeModel model = new DefaultBoundedRangeModel();
+        this.wizardController.setBoundedRangeModel(model);
     }
 
     @Test

@@ -167,7 +167,7 @@
       <classpath refid="test.classpath"/>
       <test name="com.moneydance.modules.features.paypalimporter.AllTests"/>
       <sysproperty key="jmockit-coverage-excludes"
-                   value=".*AllTests|.*Stub.*|.*Mock.*"/>
+                   value=".*AllTests|.*Stub.*|.*Mock.*|.*ConsoleRunner.*"/>
       <sysproperty key="jmockit-coverage-outputDir"
                    value="${docs}/coverage-report"/>
     </junit>

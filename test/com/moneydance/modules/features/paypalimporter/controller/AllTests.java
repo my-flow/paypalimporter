@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
     AccountDelegateListenerTest.class,
     CheckCurrencyRequestHandlerTest.class,
     ComponentDelegateListenerTest.class,
+    TransactionSearchIteratorTest.class,
     TransactionSearchRequestHandlerTest.class,
     ViewControllerImplTest.class })
 public final class AllTests {
