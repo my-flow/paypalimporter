@@ -335,7 +335,7 @@ and deploy a new version.">
              excludepackagenames=""
              defaultexcludes="true"
              destdir="${docs}/api"
-             access="protected"
+             access="package"
              author="true"
              version="true"
              use="true"
