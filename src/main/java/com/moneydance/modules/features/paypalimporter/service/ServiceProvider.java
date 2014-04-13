@@ -27,6 +27,8 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
+ * Facade for initiating service calls. Also supports shutdown.
+ *
  * @author Florian J. Breunig
  */
 public final class ServiceProvider {
@@ -38,7 +40,7 @@ public final class ServiceProvider {
             ServiceProvider.class.getName());
 
     /**
-     * The resource in the JAR file to read the settings from.
+     * The resource in the JAR file or file system to read the properties from.
      */
     private static final String PROPERTIES_RESOURCE = "sdk_config.properties";
 
@@ -84,6 +86,9 @@ public final class ServiceProvider {
         this.createAndExecuteFutureTask(callable, requestHandler);
     }
 
+    /**
+     * Shuts down all running requests. Can be called anytime.
+     */
     public void shutdownNow() {
         synchronized (this) {
             this.executorService.shutdownNow();

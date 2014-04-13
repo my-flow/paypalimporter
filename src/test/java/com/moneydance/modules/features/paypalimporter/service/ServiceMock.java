@@ -145,135 +145,84 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
         return response;
     }
 
-    /**
-     * Setter for balanceHoldings
-     */
     public void setBalanceHoldings(
-            final List<BasicAmountType> balanceHoldings) {
-        this.balanceHoldings = balanceHoldings;
+            final List<BasicAmountType> argBalanceHoldings) {
+        this.balanceHoldings = argBalanceHoldings;
     }
 
-    /**
-     * Setter for paymentTransactions
-     */
     public void setPaymentTransactions(
-            final List<PaymentTransactionSearchResultType> paymentTransactions) {
-        this.paymentTransactions = paymentTransactions;
+            final List<PaymentTransactionSearchResultType> argPaymentTransactions) {
+        this.paymentTransactions = argPaymentTransactions;
     }
 
-    /**
-     * Setter for ack
-     */
-    public void setAck(final AckCodeType ack) {
-        this.ack = ack;
+    public void setAck(final AckCodeType argAck) {
+        this.ack = argAck;
     }
 
-    /**
-     * Setter for errors
-     */
-    public void setErrors(final List<ErrorType> errors) {
-        this.errors = errors;
+    public void setErrors(final List<ErrorType> argErrors) {
+        this.errors = argErrors;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setUnknownHostException(
-            final UnknownHostException unknownHostException) {
-        this.unknownHostException = unknownHostException;
+            final UnknownHostException argUnknownHostException) {
+        this.unknownHostException = argUnknownHostException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setSocketException(
-            final SocketException socketException) {
-        this.socketException = socketException;
+            final SocketException argSocketException) {
+        this.socketException = argSocketException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setIOException(
-            final IOException ioException) {
-        this.ioException = ioException;
+            final IOException argIoException) {
+        this.ioException = argIoException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setSSLConfigurationException(
-            final SSLConfigurationException sslConfigurationException) {
-        this.sslConfigurationException = sslConfigurationException;
+            final SSLConfigurationException argSslConfigurationException) {
+        this.sslConfigurationException = argSslConfigurationException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setInvalidCredentialException(
-            final InvalidCredentialException invalidCredentialException) {
-        this.invalidCredentialException = invalidCredentialException;
+            final InvalidCredentialException argInvalidCredentialException) {
+        this.invalidCredentialException = argInvalidCredentialException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setHttpErrorException(
-            final HttpErrorException httpErrorException) {
-        this.httpErrorException = httpErrorException;
+            final HttpErrorException argHttpErrorException) {
+        this.httpErrorException = argHttpErrorException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setInvalidResponseDataException(
-            final InvalidResponseDataException invalidResponseDataException) {
-        this.invalidResponseDataException = invalidResponseDataException;
+            final InvalidResponseDataException argInvalidResponseDataException) {
+        this.invalidResponseDataException = argInvalidResponseDataException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setClientActionRequiredException(
-            final ClientActionRequiredException clientActionRequiredException) {
-        this.clientActionRequiredException = clientActionRequiredException;
+            final ClientActionRequiredException argClientActionRequiredException) {
+        this.clientActionRequiredException = argClientActionRequiredException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setMissingCredentialException(
-            final MissingCredentialException missingCredentialException) {
-        this.missingCredentialException = missingCredentialException;
+            final MissingCredentialException argMissingCredentialException) {
+        this.missingCredentialException = argMissingCredentialException;
     }
 
-    /**
-     * Setter for Exception
-     */
-    public void setOAuthException(final OAuthException oAuthException) {
-        this.oAuthException = oAuthException;
+    public void setOAuthException(final OAuthException argOAuthException) {
+        this.oAuthException = argOAuthException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setInterruptedException(
-            final InterruptedException interruptedException) {
-        this.interruptedException = interruptedException;
+            final InterruptedException argInterruptedException) {
+        this.interruptedException = argInterruptedException;
     }
 
-    /**
-     * Setter for Exception
-     */
     public void setParserConfigurationException(
-            final ParserConfigurationException parserConfigurationException) {
-        this.parserConfigurationException = parserConfigurationException;
+            final ParserConfigurationException argParserConfigurationException) {
+        this.parserConfigurationException = argParserConfigurationException;
     }
 
-    /**
-     * Setter for Exception
-     */
-    public void setSAXException(final SAXException saxException) {
-        this.saxException = saxException;
+    public void setSAXException(final SAXException argSaxException) {
+        this.saxException = argSaxException;
     }
 }

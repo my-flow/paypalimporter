@@ -94,7 +94,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedWithSearchWarning() {
         this.iterator.transactionsImported(
-                Collections.<OnlineTxn> emptyList(),
+                Collections.<OnlineTxn>emptyList(),
                 new Date(Math.abs(System.currentTimeMillis() - RandomUtils.nextLong())),
                 null,
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
@@ -103,7 +103,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedNoSearchWarningEmpty() {
         this.iterator.transactionsImported(
-                Collections.<OnlineTxn> emptyList(),
+                Collections.<OnlineTxn>emptyList(),
                 null,
                 null,
                 null);

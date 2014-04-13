@@ -15,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
     CheckCurrencyServiceTest.class,
     ServiceProviderTest.class,
     ServiceResultTest.class,
-    TransactionSearchServiceTest.class})
+    TransactionSearchServiceTest.class })
 public final class AllTests {
     // no test cases
 }

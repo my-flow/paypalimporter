@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DateUtils;
 
 /**
+ * Data model of the user data. Effectively immutable.
+ *
  * @author Florian J. Breunig
  */
 public final class InputData {

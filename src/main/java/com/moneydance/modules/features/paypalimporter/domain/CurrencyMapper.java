@@ -18,6 +18,9 @@ import org.apache.commons.lang3.Validate;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
+ * This utility class contains domain-specific mappings between Moneydance's
+ * <code>CurrencyType</code> and PayPal's <code>CurrencyCodeType</code>.
+ *
  * @author Florian J. Breunig
  */
 public final class CurrencyMapper {
@@ -43,29 +46,28 @@ public final class CurrencyMapper {
 
         final String name = currencyCode.getValue();
         CurrencyType currencyType = table.getCurrencyByIDString(name);
-        if (currencyType != null) {
-            return currencyType;
-        }
 
-        currencyType = CurrencyUtil.createDefaultTable(null)
-                .getCurrencyByIDString(name);
         if (currencyType == null) {
-            // no existing currency type matches, so create a new one
-            currencyType = new CurrencyType(
-                    -1,
-                    name,
-                    name,
-                    1.0D,
-                    2,
-                    name,
-                    "",
-                    name,
-                    Util.convertDateToInt(
-                            Calendar.getInstance().getTime()),
-                            CurrencyType.CURRTYPE_CURRENCY,
-                            table);
+            currencyType = CurrencyUtil.createDefaultTable(null)
+                    .getCurrencyByIDString(name);
+            if (currencyType == null) {
+                // no existing currency type matches, so create a new one
+                currencyType = new CurrencyType(
+                        -1,
+                        name,
+                        name,
+                        1.0D,
+                        2,
+                        name,
+                        "",
+                        name,
+                        Util.convertDateToInt(
+                                Calendar.getInstance().getTime()),
+                                CurrencyType.CURRTYPE_CURRENCY,
+                                table);
+            }
+            table.addCurrencyType(currencyType);
         }
-        table.addCurrencyType(currencyType);
         return currencyType;
     }
 
@@ -88,7 +90,7 @@ public final class CurrencyMapper {
                         + " PayPal account currencies", accountCurrency));
             }
         } catch (IllegalArgumentException e) {
-            // Currency "bananas" is not supported by PayPal
+            // Currency "bananas" is not supported by PayPal ;-)
             LOG.log(Level.WARNING,
                     String.format("PayPal does not support account currency %s",
                             currencyType.getIDString()),

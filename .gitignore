@@ -11,7 +11,7 @@
 # project specific
 docs/*
 target
+lib/moneydance-source.jar
 logs
 src/main/config/priv_key
 src/main/config/pub_key
-/bin

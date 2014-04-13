@@ -37,7 +37,7 @@ public final class CheckCurrencyRequestHandlerTest {
         this.handler.serviceCallFinished(result);
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void testServiceCallSucceededEmptyResult() {
         ServiceResult<CurrencyCodeType> result =
                 MockServiceResultFactory.createEmptyServiceResult();

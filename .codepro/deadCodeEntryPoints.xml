@@ -19,6 +19,28 @@
 				handle="=PayPalForMoneydance/src&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~Main"/>
 		<explicit-entry-point
 				handle="=PayPalForMoneydance/src&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~getViewController"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/test\/java&lt;com.moneydance.modules.features.paypalimporter{ConsoleRunner.java[ConsoleRunner~main~\[QString;"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/test\/java&lt;com.moneydance.modules.features.paypalimporter{ConsoleRunner.java[ConsoleRunner~main~\[QString;["/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/test\/java&lt;com.moneydance.modules.features.paypalimporter{ConsoleRunner.java[ConsoleRunner~main~\[QString;[~run"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~invoke~QString;"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~getIconImage"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~update~QObservable;~QObject;"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~unload"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~cleanup"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~init"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~getName"/>
+		<explicit-entry-point
+				handle="=PayPalImporter/src\/main\/java&lt;com.moneydance.modules.features.paypalimporter{Main.java[Main~Main"/>
 	</explicit-entry-points>
 	<include-main
 			enabled="true"/>

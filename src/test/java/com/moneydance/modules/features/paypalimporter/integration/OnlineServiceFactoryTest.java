@@ -42,23 +42,23 @@ public final class OnlineServiceFactoryTest {
     @Test
     public void testGetService() {
         RootAccount rootAccount = new StubContextFactory().getContext().getRootAccount();
-        PayPalOnlineService service = OnlineServiceFactory.getService(rootAccount);
+        PayPalOnlineService service = OnlineServiceFactory.createService(rootAccount);
         assertThat(service, notNullValue());
-        assertThat(OnlineServiceFactory.getService(rootAccount), not(service));
+        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
     }
 
     @Test
     public void testRemoveService() {
         RootAccount rootAccount = new StubContextFactory().getContext().getRootAccount();
-        PayPalOnlineService service = OnlineServiceFactory.getService(rootAccount);
+        PayPalOnlineService service = OnlineServiceFactory.createService(rootAccount);
         assertThat(service, notNullValue());
         OnlineServiceFactory.removeService(rootAccount);
-        assertThat(OnlineServiceFactory.getService(rootAccount), not(service));
+        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
 
         rootAccount = new StubContextFactory().addOnlineService().getContext().getRootAccount();
-        service = OnlineServiceFactory.getService(rootAccount);
+        service = OnlineServiceFactory.createService(rootAccount);
         assertThat(service, notNullValue());
         OnlineServiceFactory.removeService(rootAccount);
-        assertThat(OnlineServiceFactory.getService(rootAccount), not(service));
+        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
     }
 }

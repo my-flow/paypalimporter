@@ -16,7 +16,7 @@ Building the extension
 ----------------------
 1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the 
 repository.
-2. `ant paypalimporter` compiles the extension (and signs it if an applicable key 
+2. `ant all` compiles the extension (and signs it if an applicable key 
 pair is found).
 
 Signing the extension

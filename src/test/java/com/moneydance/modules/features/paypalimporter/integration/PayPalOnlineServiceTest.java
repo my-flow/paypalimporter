@@ -23,7 +23,7 @@ public final class PayPalOnlineServiceTest {
     @Before
     public void setUp() {
         this.rootAccount = new StubContextFactory().getContext().getRootAccount();
-        this.service = OnlineServiceFactory.getService(this.rootAccount);
+        this.service = OnlineServiceFactory.createService(this.rootAccount);
     }
 
     @Test

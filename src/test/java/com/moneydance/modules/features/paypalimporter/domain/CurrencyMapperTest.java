@@ -35,9 +35,7 @@ public final class CurrencyMapperTest {
     @Test
     public void testConstructorIsPrivate()
             throws
-            SecurityException,
             NoSuchMethodException,
-            IllegalArgumentException,
             InstantiationException,
             IllegalAccessException,
             InvocationTargetException {
@@ -81,7 +79,7 @@ public final class CurrencyMapperTest {
         assertThat(currencyCodeType, is(CurrencyCodeType.USD));
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetCurrencyCodeFromCurrencyTypeWhenEmpty() {
         CurrencyMapper.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getRootAccount().getCurrencyTable().getBaseType(),

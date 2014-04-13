@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Utility class for date calculations.
+ *
  * @author Florian J. Breunig
  */
 public final class DateCalculator {

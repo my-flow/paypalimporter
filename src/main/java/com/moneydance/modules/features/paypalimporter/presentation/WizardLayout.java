@@ -37,6 +37,8 @@ import org.apache.commons.lang3.Validate;
 import org.jdesktop.xswingx.PromptSupport;
 
 /**
+ * This view class creates the static layout based on JGoodies Forms.
+ *
  * @author Florian J. Breunig
  */
 class WizardLayout extends JDialog {

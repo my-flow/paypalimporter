@@ -46,6 +46,8 @@ import org.apache.commons.lang3.time.DateUtils;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
+ * Default implementation of the control flow interface.
+ *
  * @author Florian J. Breunig
  */
 public final class ViewControllerImpl implements ViewController {
@@ -259,6 +261,7 @@ public final class ViewControllerImpl implements ViewController {
             final String errorCode) {
 
         if (!onlineTxns.isEmpty()) {
+            // refresh progress bar
             final Date endDate = DateUtils.ceiling(
                     Util.convertIntDateToLong(
                             onlineTxns.get(0).getDatePostedInt()),

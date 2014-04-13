@@ -108,6 +108,11 @@ public final class Main extends FeatureModule implements Observer {
         }
     }
 
+    /**
+     * Lazy initialization.
+     *
+     * @return the single instance of the view controller.
+     */
     private ViewController getViewController() {
         if (this.viewController == null) {
             this.viewController = new ViewControllerImpl(

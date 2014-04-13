@@ -16,6 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Decorator class for an <code>OnlineService</code> that saves user name,
+ * password, and signature.
+ *
  * @author Florian J. Breunig
  */
 public final class PayPalOnlineService {
@@ -30,6 +33,14 @@ public final class PayPalOnlineService {
         this.onlineService = argOnlineService;
     }
 
+    /**
+     * Assign this <code>PayPalOnlineService</code> to a Mondance
+     * <code>Account</code>. That means the credentials of a PayPal account
+     * will be assciated with a Moneydance account.
+     *
+     * @param rootAccount Global root account
+     * @param accountId Identifier of the account
+     */
     public void assignToAccount(
             final RootAccount rootAccount,
             final int accountId) {

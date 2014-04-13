@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * @author Florian J. Breunig
- * @param <V>
+ * @param <V> The type of result objects which a service returns.
  */
+@Immutable
 public final class ServiceResult<V> {
 
     private final List<V> results;

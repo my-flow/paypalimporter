@@ -11,8 +11,10 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Default implementation of the <code>RequestHandler</code> interface.
+ *
  * @author Florian J. Breunig
- * @param <V>
+ * @param <V> The type of result objects which the service returns.
  */
 abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
 
@@ -32,6 +34,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
         if (serviceResult.getResults() != null) {
             this.serviceCallSucceeded(serviceResult);
         }
+        // no "else" because the case "success + error message" might occur
         if (serviceResult.getErrorMessage() != null) {
             this.serviceCallFailed(
                     serviceResult.getErrorCode(),

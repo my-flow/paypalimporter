@@ -32,6 +32,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * This controller class adds dynamic behaviour to the static
+ * <code>WizardLayout</code> class such as updating and validating.
+ *
  * @author Florian J. Breunig
  */
 class WizardController extends WizardLayout
@@ -68,6 +71,7 @@ implements ActionListener, WindowListener {
         this.progressBar.setIndeterminate(true);
         this.getRootPane().setDefaultButton(this.btnProceed);
 
+        // register listeners
         final ActionListener refreshListener = new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -100,6 +104,9 @@ implements ActionListener, WindowListener {
         this.refresh(true, null);
     }
 
+    /**
+     * @return true iff the wizard is blocked due to loading.
+     */
     public boolean isLoading() {
         return !this.txtUsername.isEnabled();
     }
@@ -134,6 +141,11 @@ implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Update progress.
+     *
+     * @param boundedRangeModel Data source of the progress bar.
+     */
     public final void setBoundedRangeModel(
             final BoundedRangeModel boundedRangeModel) {
 
@@ -142,6 +154,11 @@ implements ActionListener, WindowListener {
     }
 
 
+    /**
+     * Update the list of accounts.
+     *
+     * @param accountModel Data source of the accounts combobox.
+     */
     public final void setAccounts(final ComboBoxModel accountModel) {
         Validate.notNull(accountModel, "account model must not be null");
         this.comboBoxAccts.setModel(accountModel);

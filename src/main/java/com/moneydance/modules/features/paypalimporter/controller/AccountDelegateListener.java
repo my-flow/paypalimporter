@@ -9,6 +9,8 @@ import com.moneydance.apps.md.model.AccountListener;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Listener / observer on Moneydance's list of accounts.
+ *
  * @author Florian J. Breunig
  */
 final class AccountDelegateListener implements AccountListener {

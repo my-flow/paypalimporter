@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Listener / observer on the main window.
+ *
  * @author Florian J. Breunig
  */
 final class ComponentDelegateListener extends ComponentAdapter {

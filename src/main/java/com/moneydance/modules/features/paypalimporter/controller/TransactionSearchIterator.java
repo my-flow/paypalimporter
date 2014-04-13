@@ -27,6 +27,23 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
+ * This controller class fetches the transactions iteratively by adjusting
+ * the date bounds and calling the transaction search service. It aggregates
+ * the results and imports the transactions all at once.
+ *
+ * The PayPal API delivers not more 100 transactions per service calls. If there
+ * are more than 100 transactions available, the PayPal API will return the
+ * newest 100 transactions together with a search warning.
+ *
+ * This class issues consecutive service calls. It starts with the newest 100
+ * transactions and calls the PayPal API repeatedly. It moves the date bounds
+ * into the past more and more. The received transactions are collected in a
+ * result list where the transactions received by the latest service call are
+ * appended, so the list contains the transactions in reverse order, from
+ * newest to oldest.
+ *
+ * Finally the result list gets reversed and attached the Moneydance account.
+ *
  * @author Florian J. Breunig
  */
 final class TransactionSearchIterator implements ViewController {
@@ -81,6 +98,9 @@ final class TransactionSearchIterator implements ViewController {
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
     }
 
+    /**
+     * Initiate consecutive service calls.
+     */
     void callTransactionSearchService() {
         this.callTransactionSearchService(this.inputData.getEndDate());
     }
@@ -92,16 +112,20 @@ final class TransactionSearchIterator implements ViewController {
             final Account argAccount,
             final String errorCode) {
 
-        this.resultList.addAll(argOnlineTxns);
+        this.resultList.addAll(argOnlineTxns); // aggregate all results
 
         final Account account;
         if (this.errorCodeSearchWarning.equals(errorCode)) {
+            // there are more transactions in the pipeline, so we need to
+            // adjust the date bounds and issue another service call.
             LOG.info(String.format("Next start date: %s",
                     this.inputData.getStartDate()));
             LOG.info(String.format("Next end date:   %s", argStartDate));
             account = null;
             this.callTransactionSearchService(argStartDate);
         } else {
+            // there are no more transactions in the pipeline, so we can
+            // start attaching the transactions all at once.
             LOG.info(String.format(
                     "All %d transactions downloaded", this.resultList.size()));
 
@@ -113,6 +137,8 @@ final class TransactionSearchIterator implements ViewController {
             final ListIterator<OnlineTxn> iter = this.resultList.listIterator(
                     this.resultList.size());
 
+            // import all transactions in reverse order,
+            // i.e. from oldest to newest
             while (iter.hasPrevious()) {
                 txnList.addNewTxn(iter.previous());
             }
@@ -128,6 +154,10 @@ final class TransactionSearchIterator implements ViewController {
         }
     }
 
+    /**
+     * @param endDate The adapted end date which must be an ealier date than
+     * the previous end date.
+     */
     private void callTransactionSearchService(final Date endDate) {
 
         this.serviceProvider.callTransactionSearchService(
@@ -147,6 +177,7 @@ final class TransactionSearchIterator implements ViewController {
 
         Account account = rootAccount.getAccountById(accountId);
         if (account == null) {
+            // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
             // ESCA-JAVA0166: Account.makeAccount throws generic exception
             try {

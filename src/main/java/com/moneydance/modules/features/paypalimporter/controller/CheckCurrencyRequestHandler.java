@@ -16,6 +16,8 @@ import org.apache.commons.lang3.Validate;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
+ * Callback class that handles currency checks.
+ *
  * @author Florian J. Breunig
  */
 final class CheckCurrencyRequestHandler
@@ -44,15 +46,21 @@ extends AbstractRequestHandler<CurrencyCodeType> {
         Validate.notEmpty(currencyCodes, "currency codes must not be empty");
 
         Account useAccount = this.rootAccount.getAccountById(this.accountNum);
+
+        // 1. determine the currency of the Moneydance account
         CurrencyType currencyType;
         if (useAccount == null) {
+            // no Moneydance account was found, so create a new Moneydance
+            // account later with the first currency of the PayPal account.
             currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
                     currencyCodes.get(0),
                     this.rootAccount.getCurrencyTable());
         } else {
+            // a Moneydance account was found, so take its currency
             currencyType = useAccount.getCurrencyType();
         }
 
+        // 2. determine the currency of the PayPal account
         CurrencyCodeType currencyCode =
                 CurrencyMapper.getCurrencyCodeFromCurrencyType(
                         currencyType,

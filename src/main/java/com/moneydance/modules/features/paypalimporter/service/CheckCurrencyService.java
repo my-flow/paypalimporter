@@ -38,6 +38,9 @@ import urn.ebay.apis.eBLBaseComponents.AckCodeType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
+ * This service checks the balances of a PayPal account in order to determine
+ * the available currencies.
+ *
  * @author Florian J. Breunig
  */
 public final class CheckCurrencyService

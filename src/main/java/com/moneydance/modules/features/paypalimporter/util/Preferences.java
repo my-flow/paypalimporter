@@ -34,7 +34,7 @@ public final class Preferences {
                 context).getPreferences();
         this.rootAccount = context.getRootAccount();
         if (this.rootAccount != null) {
-            this.profile = OnlineServiceFactory.getService(this.rootAccount);
+            this.profile = OnlineServiceFactory.createService(this.rootAccount);
         }
     }
 

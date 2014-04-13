@@ -15,6 +15,9 @@ import java.util.Date;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * Use this factory class in order to access and remove the
+ * <code>PayPalOnlineService</code> for a given <code>RootAccount</code>.
+ *
  * @author Florian J. Breunig
  */
 public final class OnlineServiceFactory {
@@ -29,7 +32,7 @@ public final class OnlineServiceFactory {
         // Prevents this class from being instantiated from the outside.
     }
 
-    public static PayPalOnlineService getService(
+    public static PayPalOnlineService createService(
             final RootAccount rootAccount) {
         Validate.notNull(rootAccount, "root account must not be null");
         final OnlineInfo onlineInfo = rootAccount.getOnlineInfo();

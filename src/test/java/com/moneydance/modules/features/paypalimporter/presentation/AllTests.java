@@ -13,7 +13,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     WizardControllerTest.class,
-    WizardHandlerTest.class})
+    WizardHandlerTest.class })
 public final class AllTests {
     // no test cases
 }

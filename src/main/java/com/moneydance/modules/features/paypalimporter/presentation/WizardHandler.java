@@ -15,6 +15,10 @@ import java.util.Observer;
 import org.apache.commons.lang3.Validate;
 
 /**
+ * This reactive class forwards UI events to its observers. The observers can
+ * identify the events based on the passed type of <code>ExecutedAction</code>
+ * (loose coupling).
+ *
  * @author Florian J. Breunig
  */
 public final class WizardHandler extends WizardController {
@@ -71,6 +75,9 @@ public final class WizardHandler extends WizardController {
         }
     }
 
+    /**
+     * @return latest user input.
+     */
     public InputData getInputData() {
         return this.inputData;
     }

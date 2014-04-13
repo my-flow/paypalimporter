@@ -65,7 +65,7 @@ public final class ViewControllerImplTest {
         this.viewController.currencyChecked(
                 this.account.getCurrencyType(),
                 CurrencyCodeType.USD,
-                Collections.<CurrencyCodeType> emptyList());
+                Collections.<CurrencyCodeType>emptyList());
     }
 
     @Test
@@ -83,7 +83,7 @@ public final class ViewControllerImplTest {
     public void testTransactionsImportedEmptyNoErrorCode() {
         this.viewController.startWizard();
         this.viewController.transactionsImported(
-                Collections.<OnlineTxn> emptyList(),
+                Collections.<OnlineTxn>emptyList(),
                 null,
                 this.account,
                 null);
@@ -92,7 +92,7 @@ public final class ViewControllerImplTest {
     @Test
     public void testTransactionsImportedEmptyWithErrorCode() {
         this.viewController.transactionsImported(
-                Collections.<OnlineTxn> emptyList(),
+                Collections.<OnlineTxn>emptyList(),
                 null,
                 this.account,
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
