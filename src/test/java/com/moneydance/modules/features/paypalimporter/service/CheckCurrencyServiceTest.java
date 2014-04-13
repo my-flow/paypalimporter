@@ -48,7 +48,7 @@ public final class CheckCurrencyServiceTest {
         new StubContextFactory();
         this.service = new ServiceMock(
                 Helper.getInputStreamFromResource(
-                        "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
+                        "sdk_config.properties"));
     }
 
     @Test

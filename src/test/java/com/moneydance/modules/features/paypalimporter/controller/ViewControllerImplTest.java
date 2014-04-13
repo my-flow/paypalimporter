@@ -30,12 +30,11 @@ public final class ViewControllerImplTest {
     @Before
     public void setUp() {
         StubContextFactory factory = new StubContextFactory();
-        this.account = factory.getContext().getRootAccount();
+        this.account = factory.getContext().getRootAccount().getSubAccount(0);
 
         this.viewController = new ViewControllerImpl(
                 factory.getContext(),
                 Helper.INSTANCE.getTracker(0));
-        this.viewController.startWizard();
     }
 
     @Test
@@ -45,23 +44,26 @@ public final class ViewControllerImplTest {
 
     @Test
     public void testCancel() {
+        this.viewController.startWizard();
         this.viewController.cancel();
     }
 
     @Test
     public void testProceed() {
+        this.viewController.startWizard();
         this.viewController.proceed();
     }
 
     @Test
     public void testUnlock() {
+        this.viewController.startWizard();
         this.viewController.unlock("stub text", "stub key");
     }
 
     @Test
     public void testCurrencyCheckedEmpty() {
         this.viewController.currencyChecked(
-                null,
+                this.account.getCurrencyType(),
                 CurrencyCodeType.USD,
                 Collections.<CurrencyCodeType> emptyList());
     }
@@ -72,13 +74,14 @@ public final class ViewControllerImplTest {
         currencyCodes.add(CurrencyCodeType.USD);
         currencyCodes.add(CurrencyCodeType.EUR);
         this.viewController.currencyChecked(
-                null,
+                this.account.getCurrencyType(),
                 CurrencyCodeType.USD,
                 currencyCodes);
     }
 
     @Test
     public void testTransactionsImportedEmptyNoErrorCode() {
+        this.viewController.startWizard();
         this.viewController.transactionsImported(
                 Collections.<OnlineTxn> emptyList(),
                 null,
@@ -97,6 +100,7 @@ public final class ViewControllerImplTest {
 
     @Test
     public void testTransactionsImportedFilled() {
+        this.viewController.startWizard();
         final List<OnlineTxn> onlineTxns = new LinkedList<OnlineTxn>();
         onlineTxns.add(this.account.getDownloadedTxns().newTxn());
         this.viewController.transactionsImported(
@@ -108,16 +112,19 @@ public final class ViewControllerImplTest {
 
     @Test
     public void testShowHelp() {
+        this.viewController.startWizard();
         this.viewController.showHelp();
     }
 
     @Test
     public void testRefreshAccounts() {
+        this.viewController.startWizard();
         this.viewController.refreshAccounts(-1);
     }
 
     @Test
     public void testUpdate() {
+        this.viewController.startWizard();
         for (WizardHandler.ExecutedAction action : WizardHandler.ExecutedAction.values()) {
             this.viewController.update(new Observable(), action);
         }

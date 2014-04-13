@@ -53,7 +53,7 @@ public final class TransactionSearchServiceTest {
         try {
             this.service = new ServiceMock(
                     Helper.getInputStreamFromResource(
-                            "com/moneydance/modules/features/paypalimporter/resources/sdk_config.properties"));
+                            "sdk_config.properties"));
         } catch (IOException e) {
             Assert.fail(e.getMessage());
         }

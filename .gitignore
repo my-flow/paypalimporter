@@ -9,9 +9,9 @@
 *.out
 
 # project specific
-bin
 docs/*
-dist
+target
 logs
-src/priv_key
-src/pub_key
+src/main/config/priv_key
+src/main/config/pub_key
+/bin
