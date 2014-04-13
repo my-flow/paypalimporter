@@ -3,19 +3,19 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
-import com.jgoodies.common.internal.ResourceBundleLocalizer;
-import com.jgoodies.common.internal.StringLocalizer;
+import com.jgoodies.common.internal.ResourceBundleAccessor;
+import com.jgoodies.common.internal.StringResourceAccessor;
 import com.jgoodies.common.swing.MnemonicUtils;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.forms.builder.DefaultFormBuilder;
-import com.moneydance.modules.features.paypalimporter.forms.builder.PanelBuilder;
-import com.moneydance.modules.features.paypalimporter.forms.factories.Borders;
-import com.moneydance.modules.features.paypalimporter.forms.factories.CC;
-import com.moneydance.modules.features.paypalimporter.forms.layout.CellConstraints;
-import com.moneydance.modules.features.paypalimporter.forms.layout.FormLayout;
-import com.moneydance.modules.features.paypalimporter.forms.layout.RowSpec;
-import com.moneydance.modules.features.paypalimporter.forms.layout.Sizes;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.builder.DefaultFormBuilder;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.builder.PanelBuilder;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.factories.Borders;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.factories.CC;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.CellConstraints;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.FormLayout;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.RowSpec;
+import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.Sizes;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.awt.Dimension;
@@ -73,7 +73,8 @@ class WizardLayout extends JDialog {
         this.dateRanger = new DateRangeChooser(mdGUI);
 
         Validate.notNull(resourceBundle, "resource bundle must not be null");
-        StringLocalizer localizer = new ResourceBundleLocalizer(resourceBundle);
+        StringResourceAccessor localizer = new ResourceBundleAccessor(
+                resourceBundle);
 
         this.setTitle(localizer.getString("title_wizard"));
 

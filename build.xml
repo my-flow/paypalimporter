@@ -24,50 +24,50 @@
   <available file="${privkeyfile}" property="privkeyfile.present"/>
 
   <taskdef resource="checkstyletask.properties"
-    classpath="${lib}/checkstyle-5.6-all.jar"/>
+    classpath="${lib}/checkstyle-5.7-all.jar"/>
 
   <taskdef name="pmd"
     classname="net.sourceforge.pmd.ant.PMDTask"
-	classpath="lib/pmd-5.0.5.jar;lib/jaxen-1.1.1.jar;lib/asm-3.2.jar;lib/commons-io-2.4.jar"/>
+	classpath="lib/pmd-5.1.0.jar;lib/jaxen-1.1.1.jar;lib/asm-5.0_BETA.jar;lib/commons-io-2.4.jar"/>
 
   <taskdef resource="proguard/ant/task.properties"
-         classpath="${lib}/proguard-4.10.jar" />
+         classpath="${lib}/proguard-4.11.jar" />
 
   <path id="compile.classpath">
         <pathelement path="${lib}/moneydance.jar"/>
         <pathelement path="${lib}/commons-lang-2.6.jar"/>
-        <pathelement path="${lib}/commons-lang3-3.1.jar"/>
+        <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
         <pathelement path="${lib}/commons-configuration-1.10.jar"/>
         <pathelement path="${lib}/jcip-annotations.jar"/>
-        <pathelement path="${lib}/jgoodies-common-1.7.0.jar"/>
-        <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
+        <pathelement path="${lib}/jgoodies-common-1.8.0.jar"/>
+        <pathelement path="${lib}/jgoodies-forms-moneydance-1.8.0.jar"/>
         <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
         <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
-        <pathelement path="${lib}/merchantsdk-2.5.106.jar"/>
+        <pathelement path="${lib}/merchantsdk-2.7.112.jar"/>
         <pathelement path="${lib}/paypal-core-moneydance-1.5.0.jar"/>
         <pathelement path="${lib}/prompt.jar"/>
-        <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
+        <pathelement path="${lib}/slf4j-api-1.7.7.jar"/>
   </path>
 
   <path id="test.classpath">
     <pathelement path="${lib}/moneydance.jar"/>
     <pathelement path="${lib}/commons-configuration-1.10.jar"/>
     <pathelement path="${lib}/commons-lang-2.6.jar"/>
-    <pathelement path="${lib}/commons-lang3-3.1.jar"/>
+    <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
     <pathelement path="${lib}/commons-logging-1.1.3.jar"/>
     <pathelement path="${lib}/jcip-annotations.jar"/>
-    <pathelement path="${lib}/jgoodies-common-1.7.0.jar"/>
-    <pathelement path="${lib}/jgoodies-forms-moneydance-1.7.1.jar"/>
+    <pathelement path="${lib}/jgoodies-common-1.8.0.jar"/>
+    <pathelement path="${lib}/jgoodies-forms-moneydance-1.8.0.jar"/>
     <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
     <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
     <pathelement path="${lib}/jmockit-coverage-1.5.jar"/>
     <pathelement path="${lib}/jmockit-1.5.jar"/>
     <pathelement path="${lib}/junit-4.11.jar"/>
-    <pathelement path="${lib}/merchantsdk-2.5.106.jar"/>
+    <pathelement path="${lib}/merchantsdk-2.7.112.jar"/>
     <pathelement path="${lib}/paypal-core-moneydance-1.5.0.jar"/>
     <pathelement path="${lib}/prompt.jar"/>
-    <pathelement path="${lib}/slf4j-api-1.7.5.jar"/>
-    <pathelement path="${lib}/slf4j-simple-1.7.5.jar"/>
+    <pathelement path="${lib}/slf4j-api-1.7.7.jar"/>
+    <pathelement path="${lib}/slf4j-simple-1.7.7.jar"/>
     <pathelement path="${build}"/>
   </path>
 
@@ -245,19 +245,19 @@ and deploy a new version.">
     <jar jarfile="${build}/external-libs.jar">
         <zipgroupfileset dir="${lib}">
             <include name="commons-lang-2.6.jar"/>
-            <include name="commons-lang3-3.1.jar"/>
+            <include name="commons-lang3-3.3.2.jar"/>
             <include name="commons-configuration-1.10.jar"/>
             <include name="jcip-annotations.jar"/>
-            <include name="jgoodies-common-1.7.0.jar"/>
-            <include name="jgoodies-forms-moneydance-1.7.1.jar"/>
+            <include name="jgoodies-common-1.8.0.jar"/>
+            <include name="jgoodies-forms-moneydance-1.8.0.jar"/>
             <include name="jgoodies-validation-2.5.0.jar"/>
             <include name="commons-logging-1.1.3.jar"/>
             <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
-            <include name="merchantsdk-2.5.106.jar"/>
+            <include name="merchantsdk-2.7.112.jar"/>
             <include name="paypal-core-moneydance-1.5.0.jar"/>
             <include name="prompt.jar"/>
-            <include name="slf4j-api-1.7.5.jar"/>
-            <include name="slf4j-nop-1.7.5.jar"/>
+            <include name="slf4j-api-1.7.7.jar"/>
+            <include name="slf4j-nop-1.7.7.jar"/>
         </zipgroupfileset>
     </jar>
 
@@ -348,7 +348,7 @@ and deploy a new version.">
       <link href="http://www.dmurph.com/jgoogleanalyticstracker/"/>
       <link href="http://www.slf4j.org/apidocs/"/>
       <link href="http://commons.apache.org/configuration/apidocs/"/>
-      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.1/"/>
+      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/"/>
       <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
       <link href="http://commons.apache.org/logging/apidocs/"/>
       <footer><![CDATA[
