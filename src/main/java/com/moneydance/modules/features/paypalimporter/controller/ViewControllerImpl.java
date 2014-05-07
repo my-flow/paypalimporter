@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BoundedRangeModel;
@@ -41,6 +42,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -77,28 +79,40 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public void update(final Observable observable, final Object arg) {
-        WizardHandler.ExecutedAction action =
-                (WizardHandler.ExecutedAction) arg;
-        switch (action) {
-        case SHOW_HELP:
-            this.showHelp();
-            break;
-        case CANCEL:
-            this.cancel();
-            break;
-        case PROCEED:
-            this.proceed();
-            break;
-        default:
-            throw new IllegalArgumentException(
-                    String.format("case %s not defined", observable));
-        }
+    public void startWizard() {
+        this.update(null, WizardHandler.ExecutedAction.START_WIZARD);
     }
 
     @Override
+    public void update(final Observable observable, final Object arg) {
+        try {
+            WizardHandler.ExecutedAction action =
+                    (WizardHandler.ExecutedAction) arg;
+            switch (action) {
+            case START_WIZARD:
+                this.initAndShowWizard();
+                break;
+            case SHOW_HELP:
+                this.showHelp();
+                break;
+            case CANCEL:
+                this.cancel();
+                break;
+            case PROCEED:
+                this.proceed();
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format("case %s not defined", observable));
+            }
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE, t.getMessage(), t);
+            this.tracker.track(ExceptionUtils.getStackTrace(t));
+        }
+    }
+
     @SuppressWarnings("deprecation")
-    public void startWizard() {
+    private void initAndShowWizard() {
 
         final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
 

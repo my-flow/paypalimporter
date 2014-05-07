@@ -32,6 +32,7 @@ public final class WizardHandler extends WizardController {
      * @author Florian J. Breunig
      */
     public enum ExecutedAction {
+        START_WIZARD,
         SHOW_HELP,
         CANCEL,
         PROCEED;

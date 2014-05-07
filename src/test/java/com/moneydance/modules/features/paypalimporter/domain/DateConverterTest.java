@@ -21,9 +21,7 @@ public final class DateConverterTest {
     @Test
     public void testConstructorIsPrivate()
             throws
-            SecurityException,
             NoSuchMethodException,
-            IllegalArgumentException,
             InstantiationException,
             IllegalAccessException,
             InvocationTargetException {

@@ -48,6 +48,13 @@ public final class Tracker {
                 this.build);
     }
 
+    public void track(final String eventName) {
+        this.analyticsTracker.trackEvent(
+                this.fullVersion,
+                eventName,
+                this.build);
+    }
+
     private static Proxy getProxy() {
         final Preferences prefs = Helper.INSTANCE.getPreferences();
         if (!prefs.hasProxy()) {
