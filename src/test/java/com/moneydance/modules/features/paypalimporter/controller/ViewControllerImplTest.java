@@ -3,9 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.moneydance.apps.md.controller.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.model.Account;
 import com.moneydance.apps.md.model.OnlineTxn;
+import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
@@ -26,15 +28,22 @@ public final class ViewControllerImplTest {
 
     private ViewController viewController;
     private Account account;
+    private InputData inputData;
 
     @Before
     public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         this.account = factory.getContext().getRootAccount().getSubAccount(0);
 
-        this.viewController = new ViewControllerImpl(
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(
                 factory.getContext(),
                 Helper.INSTANCE.getTracker(0));
+        final char[] password = {'s', 't', 'u', 'b', ' ',
+                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        this.inputData = new InputData("", password, "",
+                this.account.getAccountNum(), new DateRange());
+        viewControllerImpl.setInputData(this.inputData);
+        this.viewController = viewControllerImpl;
     }
 
     @Test
@@ -105,7 +114,7 @@ public final class ViewControllerImplTest {
         onlineTxns.add(this.account.getDownloadedTxns().newTxn());
         this.viewController.transactionsImported(
                 onlineTxns,
-                null,
+                this.inputData.getStartDate(),
                 this.account,
                 null);
     }

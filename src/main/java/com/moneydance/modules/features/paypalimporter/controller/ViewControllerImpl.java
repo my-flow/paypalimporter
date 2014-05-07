@@ -311,6 +311,10 @@ public final class ViewControllerImpl implements ViewController {
         this.wizard.validate();
     }
 
+    void setInputData(final InputData argInputData) {
+        this.inputData = argInputData;
+    }
+
     private MoneydanceGUI getMoneydanceGUI() {
         // Using undocumented feature.
         Main main = (Main) this.context;
