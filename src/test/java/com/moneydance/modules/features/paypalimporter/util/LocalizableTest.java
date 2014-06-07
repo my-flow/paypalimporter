@@ -4,6 +4,7 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
@@ -55,6 +56,12 @@ public final class LocalizableTest {
     public void testGetQuestionMessageMultipleCurrencies() {
         assertThat(this.localizable.getQuestionMessageMultipleCurrencies(
                 "EUR", new Object[0]), notNullValue());
+    }
+
+    @Test
+    public void testGetTranslatedErrorMessage() {
+        assertThat(this.localizable.getTranslatedErrorMessage("-1"), nullValue());
+        assertThat(this.localizable.getTranslatedErrorMessage("10002"), notNullValue());
     }
 
     @Test

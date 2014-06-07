@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -88,6 +89,19 @@ public final class Localizable {
         StrSubstitutor sub = new StrSubstitutor(valuesMap);
 
         return sub.replace(templateString);
+    }
+
+    /**
+     * @return the user-friendly error message for a given error code or null
+     *  if none is found
+     */
+    public String getTranslatedErrorMessage(final String errorCode) {
+        try {
+            final String key = String.format("error_message_%s", errorCode);
+            return this.resourceBundle.getString(key);
+        } catch (MissingResourceException e) {
+            return null;
+        }
     }
 
     /**

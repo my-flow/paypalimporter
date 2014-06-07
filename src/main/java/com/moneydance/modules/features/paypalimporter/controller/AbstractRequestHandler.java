@@ -49,10 +49,20 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
             final ServiceResult<V> serviceResult);
 
     private void serviceCallFailed(
-            final String errorCode, final String message) {
+            final String errorCode, final String originalMessage) {
+
+        final String translatedMessage =
+                this.localizable.getTranslatedErrorMessage(errorCode);
+        final String displayMessage;
+        if (translatedMessage == null) {
+            displayMessage = originalMessage;
+        } else {
+            displayMessage = translatedMessage;
+        }
 
         final String labelMessage =
-                this.localizable.getErrorMessageServiceCallFailed(message);
+                this.localizable.getErrorMessageServiceCallFailed(
+                        displayMessage);
         this.viewController.unlock(labelMessage, errorCode);
     }
 
