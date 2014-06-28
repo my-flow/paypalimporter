@@ -108,16 +108,16 @@
 
 
   <target name="compile" depends="-prepare">
-	    <javac source="1.6"
-	           target="1.6"
-	           srcdir="${src}"
-	           destdir="${build}"
-	           debug="${debug}"
-	           optimize="${optimize}"
-	           classpathref="compile.classpath"
-	           includeantruntime="true"
-	           includes="com/moneydance/modules/features/paypalimporter/**"
-	           bootclasspath="${boot.classpath}"/>
+        <javac source="1.6"
+               target="1.6"
+               srcdir="${src}"
+               destdir="${build}"
+               debug="${debug}"
+               optimize="${optimize}"
+               classpathref="compile.classpath"
+               includeantruntime="true"
+               includes="com/moneydance/modules/features/paypalimporter/**"
+               bootclasspath="${boot.classpath}"/>
   </target>
 
 
@@ -193,7 +193,7 @@
 
   <target name="sign"
           depends="-init"
-	      if="privkeyfile.present"
+          if="privkeyfile.present"
           description="Signs an MXT file with a private key that must already exist.">
     <java classpathref="sign.classpath"
           classname="com.moneydance.admin.KeyAdmin">
@@ -210,12 +210,23 @@
 
   <target name="build" depends="-prepare" description="Builds a new version.">
     <antcall target="compile"/>
-	<antcall target="-mxt"/>
+    <antcall target="-mxt"/>
   </target>
 
 
   <target name="test" depends="compile"
     description="Executes JUnit's test suite and generates an HTML report using JMockit Coverage.">
+
+    <javac source="1.6"
+           target="1.6"
+           srcdir="${test}"
+           destdir="${build}"
+           debug="${debug}"
+           optimize="${optimize}"
+           classpathref="test.classpath"
+           includeantruntime="true"
+           includes="com/moneydance/modules/features/paypalimporter/**"
+           bootclasspath="${boot.classpath}"/>
 
     <copy todir="${build}">
       <fileset dir="${src}" includes="
@@ -238,8 +249,8 @@
 
 
   <target name="main" depends="-prepare">
-	  <antcall target="build"/>
-	  <antcall target="test"/>
+    <antcall target="build"/>
+    <antcall target="test"/>
   </target>
 
 
@@ -250,7 +261,7 @@
   </target>
 
 
-  <target name="docs" description="Creates Javadoc documentation with references to external documentations.">
+  <target name="docs" depends="-init" description="Creates Javadoc documentation with references to external documentations.">
 
     <delete>
       <fileset dir="${docs}/api" includes="**/*"/>
@@ -279,8 +290,8 @@
       <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
       <link href="http://commons.apache.org/logging/apidocs/"/>
       <footer><![CDATA[
-      	<a href="https://github.com/my-flow/paypalimporter">
-      	 PayPal Importer on GitHub
+        <a href="https://github.com/my-flow/paypalimporter">
+         PayPal Importer on GitHub
         </a>
       ]]></footer>
     </javadoc>
@@ -288,6 +299,7 @@
 
 
   <target name="checkstyle-report"
+          depends="-init"
           description="Generates a report of code convention violations.">
     <delete>
       <fileset dir="${docs}/checkstyle-report" includes="**/*"/>
@@ -305,6 +317,7 @@
 
 
   <target name="pmd-report"
+    depends="-init"
     description="Runs a set of static code analysis rules and generates a list of problems found.">
 
     <delete>
