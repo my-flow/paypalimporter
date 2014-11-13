@@ -3,7 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -51,7 +52,7 @@ public final class PreferencesTest {
     public void testSetFirstRun() {
         final boolean firstRun = false;
         this.prefs.setFirstRun(firstRun);
-        assertThat(this.prefs.isFirstRun(), is(firstRun));
+        assertThat(this.prefs.isFirstRun(), equalTo(firstRun));
     }
 
     @Test
@@ -76,27 +77,27 @@ public final class PreferencesTest {
 
     @Test
     public void testGetProxyHost() {
-        assertThat(this.prefs.getProxyHost(), notNullValue());
+        assertThat(this.prefs.getProxyHost(), anything());
     }
 
     @Test
     public void testGetProxyPort() {
-        this.prefs.getProxyPort();
+        assertThat(this.prefs.getProxyPort(), anything());
     }
 
     @Test
     public void testHasProxyAuthentication() {
-        this.prefs.hasProxyAuthentication();
+        assertThat(this.prefs.hasProxyAuthentication(), anything());
     }
 
     @Test
     public void testGetProxyUsername() {
-        assertThat(this.prefs.getProxyUsername(), notNullValue());
+        assertThat(this.prefs.getProxyUsername(), anything());
     }
 
     @Test
     public void testGetProxyPassword() {
-        assertThat(this.prefs.getProxyPassword(), notNullValue());
+        assertThat(this.prefs.getProxyPassword(), anything());
     }
 
     @Test
@@ -109,7 +110,7 @@ public final class PreferencesTest {
     public void testSetUsername() {
         final String username = "stub username";
         this.prefs.setUsername(0, username);
-        assertThat(this.prefs.getUsername(-1), is(username));
+        assertThat(this.prefs.getUsername(-1), equalTo(username));
     }
 
     @Test
@@ -122,7 +123,7 @@ public final class PreferencesTest {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.prefs.setPassword(0, password);
-        assertThat(String.valueOf(this.prefs.getPassword(0)), is(String.valueOf(password)));
+        assertThat(String.valueOf(this.prefs.getPassword(0)), equalTo(String.valueOf(password)));
     }
 
     @Test
@@ -134,7 +135,7 @@ public final class PreferencesTest {
     public void testSetSignature() {
         final String signature = "stub signature";
         this.prefs.setSignature(0, signature);
-        assertThat(this.prefs.getSignature(0), is(signature));
+        assertThat(this.prefs.getSignature(0), equalTo(signature));
     }
 
     @Test
@@ -145,6 +146,6 @@ public final class PreferencesTest {
     @Test
     public void testHasUsedCombination() {
         final String username = "stub username";
-        assertThat(this.prefs.hasUsedCombination(0, username), is(false));
+        assertThat(this.prefs.hasUsedCombination(0, username), equalTo(false));
     }
 }
