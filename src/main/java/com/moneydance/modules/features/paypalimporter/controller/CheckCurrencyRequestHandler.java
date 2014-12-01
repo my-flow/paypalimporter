@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.CurrencyType;
 import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapper;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
 import java.util.List;
@@ -23,17 +23,17 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 final class CheckCurrencyRequestHandler
 extends AbstractRequestHandler<CurrencyCodeType> {
 
-    private final RootAccount rootAccount;
+    private final IAccountBook accountBook;
     private final int accountNum;
 
     CheckCurrencyRequestHandler(
             final ViewController argViewController,
-            final RootAccount argRootAccount,
+            final IAccountBook argAccountBook,
             final int argAccountNum) {
         super(argViewController);
 
-        Validate.notNull(argRootAccount, "root account must not be null");
-        this.rootAccount = argRootAccount;
+        Validate.notNull(argAccountBook, "root account must not be null");
+        this.accountBook = argAccountBook;
         this.accountNum = argAccountNum;
     }
 
@@ -45,7 +45,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
         List<CurrencyCodeType> currencyCodes = serviceResult.getResults();
         Validate.notEmpty(currencyCodes, "currency codes must not be empty");
 
-        Account useAccount = this.rootAccount.getAccountById(this.accountNum);
+        Account useAccount = this.accountBook.getAccountByNum(this.accountNum);
 
         // 1. determine the currency of the Moneydance account
         CurrencyType currencyType;
@@ -54,7 +54,8 @@ extends AbstractRequestHandler<CurrencyCodeType> {
             // account later with the first currency of the PayPal account.
             currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
                     currencyCodes.get(0),
-                    this.rootAccount.getCurrencyTable());
+                    this.accountBook.getCurrencies(),
+                    this.accountBook);
         } else {
             // a Moneydance account was found, so take its currency
             currencyType = useAccount.getCurrencyType();

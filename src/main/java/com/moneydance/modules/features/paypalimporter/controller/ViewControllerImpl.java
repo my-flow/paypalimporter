@@ -3,20 +3,22 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.CurrencyType;
+import com.infinitekind.moneydance.model.OnlineTxn;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.Main;
 import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.apps.md.view.gui.AccountListModel;
 import com.moneydance.apps.md.view.gui.MainFrame;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
+import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
@@ -26,7 +28,6 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
 import java.util.Calendar;
@@ -65,17 +66,19 @@ public final class ViewControllerImpl implements ViewController {
     private final Tracker               tracker;
     private final FeatureModuleContext  context;
     private final ServiceProvider       serviceProvider;
+    private final IAccountBookFactory   accountBookFactory;
     private       WizardHandler         wizard;
     private       InputData             inputData;
 
     public ViewControllerImpl(
             final FeatureModuleContext argContext,
             final Tracker argTracker) {
-        this.prefs           = Helper.INSTANCE.getPreferences();
-        this.localizable     = Helper.INSTANCE.getLocalizable();
-        this.tracker         = argTracker;
-        this.context         = argContext;
-        this.serviceProvider = new ServiceProvider();
+        this.prefs              = Helper.INSTANCE.getPreferences();
+        this.localizable        = Helper.INSTANCE.getLocalizable();
+        this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
+        this.tracker            = argTracker;
+        this.context            = argContext;
+        this.serviceProvider    = new ServiceProvider();
     }
 
     @Override
@@ -113,32 +116,17 @@ public final class ViewControllerImpl implements ViewController {
 
     @SuppressWarnings("deprecation")
     private void initAndShowWizard() {
-
-        final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
-
-        if (this.context.getRootAccount() == null) {
-            // this condition can only be true in Moneydance 2008
-            // and older versions
-
-            final Component parentComponent = mdGUI.getTopLevelFrame();
-            final Object errorLabel = new JLabel(
-                    this.localizable.getErrorMessageRootAccountNull());
-            JOptionPane.showMessageDialog(
-                    parentComponent,
-                    errorLabel,
-                    null, // no title
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         Helper.INSTANCE.setChanged();
         Helper.INSTANCE.notifyObservers(Boolean.TRUE);
+
+        final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
 
         if (this.wizard == null) {
             final Frame owner = mdGUI.getTopLevelFrame();
             this.wizard = new WizardHandler(owner, mdGUI, this);
-            this.wizard.addComponentListener(
-                    new ComponentDelegateListener(this.context, this));
+            this.wizard.addComponentListener(new ComponentDelegateListener(
+                    this.accountBookFactory.createAccountBook(
+                            this.context), this));
             this.tracker.track(Tracker.EventName.DISPLAY);
         } else if (this.wizard.isVisible()) {
             this.wizard.setVisible(true);
@@ -195,9 +183,9 @@ public final class ViewControllerImpl implements ViewController {
                 this.inputData.getPassword(false),
                 this.inputData.getSignature(),
                 new CheckCurrencyRequestHandler(
-                        this,
-                        this.context.getRootAccount(),
-                        this.inputData.getAccountId()));
+                    this,
+                    this.accountBookFactory.createAccountBook(this.context),
+                    this.inputData.getAccountId()));
     }
 
     @Override
@@ -259,7 +247,7 @@ public final class ViewControllerImpl implements ViewController {
 
         TransactionSearchIterator iter = new TransactionSearchIterator(
                 this,
-                this.context.getRootAccount(),
+                this.accountBookFactory.createAccountBook(this.context),
                 this.serviceProvider,
                 this.inputData,
                 currencyType,
@@ -296,7 +284,8 @@ public final class ViewControllerImpl implements ViewController {
             this.unlock(null, null);
             this.wizard.setVisible(false);
 
-            OnlineManager manager = new OnlineManager(this.getMoneydanceGUI());
+            final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
+            final OnlineManager manager = mdGUI.getOnlineManager();
             manager.processDownloadedTxns(account);
         }
     }
@@ -310,16 +299,21 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     public void refreshAccounts(final int accountId) {
         LOG.config("Refreshing accounts");
-        final RootAccount rootAccount = this.context.getRootAccount();
-        final AccountListModel accountModel = new AccountListModel(rootAccount);
+        final IAccountBook accountBook =
+                this.accountBookFactory.createAccountBook(this.context);
+        final AccountListModel accountModel = new AccountListModel(
+                accountBook.getRootAccount());
         accountModel.setShowBankAccounts(true);
         accountModel.setShowCreditCardAccounts(true);
         accountModel.setShowInvestAccounts(true);
         accountModel.setShowAssetAccounts(true);
         accountModel.setShowLiabilityAccounts(true);
         accountModel.setShowLoanAccounts(true);
-        final Account selectedAccount = rootAccount.getAccountById(accountId);
-        accountModel.setSelectedAccount(selectedAccount);
+        final Account selectedAccount = accountBook.getAccountByNum(accountId);
+        if (selectedAccount != null
+                && accountModel.isAccountViewable(selectedAccount)) {
+            accountModel.setSelectedAccount(selectedAccount);
+        }
         this.wizard.setAccounts(accountModel);
         this.wizard.invalidate();
         this.wizard.validate();

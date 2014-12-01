@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,27 +18,27 @@ import org.junit.Test;
 public final class PayPalOnlineServiceTest {
 
     private PayPalOnlineService service;
-    private RootAccount rootAccount;
+    private IAccountBook accountBook;
 
     @Before
     public void setUp() {
-        this.rootAccount = new StubContextFactory().getContext().getRootAccount();
-        this.service = OnlineServiceFactory.createService(this.rootAccount);
+        this.accountBook = new StubContextFactory().getContext().getAccountBook();
+        this.service = OnlineServiceFactory.createService(this.accountBook);
     }
 
     @Test
     public void testAssignToAccount() {
         this.service.assignToAccount(
-                this.rootAccount,
-                this.rootAccount.getSubAccount(0).getAccountNum());
+                this.accountBook,
+                this.accountBook.getRootAccount().getSubAccount(0).getAccountNum());
         // assign twice
         this.service.assignToAccount(
-                this.rootAccount,
-                this.rootAccount.getSubAccount(0).getAccountNum());
+                this.accountBook,
+                this.accountBook.getRootAccount().getSubAccount(0).getAccountNum());
         // assign another
         this.service.assignToAccount(
-                this.rootAccount,
-                this.rootAccount.getSubAccount(1).getAccountNum());
+                this.accountBook,
+                this.accountBook.getRootAccount().getSubAccount(1).getAccountNum());
     }
 
     @Test

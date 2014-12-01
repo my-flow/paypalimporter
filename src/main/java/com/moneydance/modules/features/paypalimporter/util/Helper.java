@@ -4,6 +4,8 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
+import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -43,18 +45,22 @@ public enum Helper {
 
     private final HelperObservable observable;
     private final Settings settings;
-    private final Preferences prefs;
+    private       Preferences prefs;
     private       Localizable localizable;
     private       Tracker tracker;
 
     private Helper() {
         this.observable = new HelperObservable();
         this.settings   = new Settings();
-        this.prefs      = new Preferences();
+        this.prefs      = new Preferences(AccountBookFactoryImpl.INSTANCE);
     }
 
     public Settings getSettings() {
         return this.settings;
+    }
+
+    public void setPreferences(final IAccountBookFactory accountBookFactory) {
+        this.prefs = new Preferences(accountBookFactory);
     }
 
     public Preferences getPreferences() {

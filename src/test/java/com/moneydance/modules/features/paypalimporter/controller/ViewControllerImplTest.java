@@ -3,10 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.controller.DateRange;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.DateRange;
+import com.infinitekind.moneydance.model.OnlineTxn;
+import com.moneydance.apps.md.controller.StubAccountBookFactory;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.OnlineTxn;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
@@ -33,6 +34,9 @@ public final class ViewControllerImplTest {
     @Before
     public void setUp() {
         StubContextFactory factory = new StubContextFactory();
+        Helper.INSTANCE.setPreferences(
+                new StubAccountBookFactory(
+                        factory.getContext().getAccountBook()));
         this.account = factory.getContext().getRootAccount().getSubAccount(0);
 
         ViewControllerImpl viewControllerImpl = new ViewControllerImpl(

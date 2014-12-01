@@ -3,8 +3,9 @@
 
 package com.moneydance.apps.md.controller;
 
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.extensionapi.AccountEditor;
-import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.apps.md.view.HomePageView;
 
 import java.awt.Image;
@@ -29,26 +30,35 @@ public final class StubContext extends Main {
             Logger.getLogger(StubContext.class.getName());
 
     private final FeatureModule   featureModule;
-    private       RootAccount     rootAccount;
+    private final StubAccountBook accountBook;
     private       UserPreferences userPreferences;
 
-    StubContext(final FeatureModule argFeatureModule) {
+    public StubContext(final FeatureModule argFeatureModule,
+            final StubAccountBook argAccountBook) {
         super();
         this.featureModule = argFeatureModule;
+        this.accountBook = argAccountBook;
         try {
             this.initializeApp();
+        } catch (Error e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         } catch (Exception e) {
             LOG.log(Level.WARNING, e.getMessage(), e);
         }
     }
 
-    public void setRootAccount(final RootAccount argRootAccount) {
-        this.rootAccount = argRootAccount;
+    @Override
+    public AccountBook getCurrentAccountBook() {
+        return this.accountBook.getWrappedOriginal();
+    }
+
+    public StubAccountBook getAccountBook() {
+        return this.accountBook;
     }
 
     @Override
-    public RootAccount getRootAccount() {
-        return this.rootAccount;
+    public Account getRootAccount() {
+        return this.accountBook.getRootAccount();
     }
 
     @Override

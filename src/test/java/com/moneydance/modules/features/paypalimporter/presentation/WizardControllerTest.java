@@ -6,7 +6,7 @@ package com.moneydance.modules.features.paypalimporter.presentation;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.DateRange;
+import com.infinitekind.moneydance.model.DateRange;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.apps.md.controller.StubMoneydanceGUIFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
@@ -46,7 +46,7 @@ public final class WizardControllerTest {
         this.wizardController.setInputData(inputData);
         this.wizardController.setVisible(true);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -74,7 +74,7 @@ public final class WizardControllerTest {
                 new InputData("mock username", password, null, -1));
         this.wizardController.setVisible(true);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

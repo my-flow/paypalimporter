@@ -5,9 +5,10 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.UserPreferences;
-import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.integration.OnlineServiceFactory;
 import com.moneydance.modules.features.paypalimporter.integration.PayPalOnlineService;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.util.Locale;
 
@@ -25,16 +26,22 @@ public final class Preferences {
 
     private static final String KEY_FIRST_RUN = "paypalimporter.first_run";
 
+    private final IAccountBookFactory accountBookFactory;
+
     private UserPreferences userPreferences;
-    private RootAccount rootAccount;
+    private IAccountBook accountBook;
     private PayPalOnlineService profile;
+
+    Preferences(final IAccountBookFactory argAccountBookFactory) {
+        this.accountBookFactory = argAccountBookFactory;
+    }
 
     void setContext(final FeatureModuleContext context) {
         this.userPreferences = ((com.moneydance.apps.md.controller.Main)
                 context).getPreferences();
-        this.rootAccount = context.getRootAccount();
-        if (this.rootAccount != null) {
-            this.profile = OnlineServiceFactory.createService(this.rootAccount);
+        this.accountBook = this.accountBookFactory.createAccountBook(context);
+        if (this.accountBook != null) {
+            this.profile = OnlineServiceFactory.createService(this.accountBook);
         }
     }
 
@@ -46,6 +53,15 @@ public final class Preferences {
                     "user preferences not initialized");
         }
         return this.userPreferences;
+    }
+
+    private IAccountBook getAccountBook() {
+        if (this.accountBook == null) {
+            Helper.INSTANCE.setChanged();
+            Helper.INSTANCE.notifyObservers(Boolean.FALSE);
+            Validate.notNull(this.accountBook, "Account book not initialized");
+        }
+        return this.accountBook;
     }
 
     private PayPalOnlineService getPayPalOnlineService() {
@@ -60,7 +76,7 @@ public final class Preferences {
 
     public void setAllWritablePreferencesToNull() {
         this.getUserPreferences().setSetting(KEY_FIRST_RUN, (String) null);
-        OnlineServiceFactory.removeService(this.rootAccount);
+        OnlineServiceFactory.removeService(this.getAccountBook());
     }
 
     public void setFirstRun(final boolean firstRun) {
@@ -116,7 +132,7 @@ public final class Preferences {
 
     public void assignBankingFI(final int accountId) {
         this.getPayPalOnlineService().assignToAccount(
-                this.rootAccount, accountId);
+                this.getAccountBook(), accountId);
     }
 
     public void setUsername(final int accountId, final String username) {

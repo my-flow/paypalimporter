@@ -23,7 +23,7 @@ public final class ComponentDelegateListenerTest {
         ViewController viewController = new ViewControllerMock();
 
         this.componentAdapter = new ComponentDelegateListener(
-                factory.getContext(),
+                factory.getContext().getAccountBook(),
                 viewController);
     }
 

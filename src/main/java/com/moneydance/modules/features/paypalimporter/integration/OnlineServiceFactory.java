@@ -3,26 +3,34 @@
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
-import com.moneydance.apps.md.model.OnlineInfo;
-import com.moneydance.apps.md.model.OnlineService;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.OnlineInfo;
+import com.infinitekind.moneydance.model.OnlineService;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.Validate;
 
 /**
  * Use this factory class in order to access and remove the
- * <code>PayPalOnlineService</code> for a given <code>RootAccount</code>.
+ * <code>PayPalOnlineService</code> for a given <code>IAccountBook</code>.
  *
  * @author Florian J. Breunig
  */
 public final class OnlineServiceFactory {
 
-    private static final String SERVICE_ID = createServiceId();
+    /**
+     * Static initialization of class-dependent logger.
+     */
+    private static final Logger LOG = Logger.getLogger(
+            OnlineServiceFactory.class.getName());
+
+    private static final OnlineService SERVICE = createService();
     private static final String KEY_SERVICE_TYPE = "type";
 
     /**
@@ -33,49 +41,54 @@ public final class OnlineServiceFactory {
     }
 
     public static PayPalOnlineService createService(
-            final RootAccount rootAccount) {
-        Validate.notNull(rootAccount, "root account must not be null");
-        final OnlineInfo onlineInfo = rootAccount.getOnlineInfo();
+            final IAccountBook accountBook) {
+        Validate.notNull(accountBook, "account book must not be null");
+        final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
-        OnlineService onlineService = onlineInfo.getServiceById(SERVICE_ID);
+        OnlineService onlineService = getServiceById(onlineInfo, SERVICE);
 
         if (onlineService == null) {
-            onlineService = new OnlineService(
-                    onlineInfo,
-                    new StreamTable());
-            onlineInfo.addService(onlineService);
+            onlineService = new OnlineService(accountBook.getWrappedOriginal());
             setUpOnlineService(onlineService);
         }
         return new PayPalOnlineService(onlineService);
     }
 
-    public static void removeService(final RootAccount rootAccount) {
-        Validate.notNull(rootAccount, "root account must not be null");
-        final OnlineInfo onlineInfo = rootAccount.getOnlineInfo();
+    public static void removeService(final IAccountBook accountBook) {
+        Validate.notNull(accountBook, "account book must not be null");
+        final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
-        int serviceCount = onlineInfo.getServiceCount();
-        for (int i = 0; i < serviceCount; i++) {
-            final OnlineService service = onlineInfo.getService(i);
-            if (service != null && service.isSameAs(SERVICE_ID)) {
+        final Settings settings = Helper.INSTANCE.getSettings();
+
+        for (OnlineService service : onlineInfo.getAllServices()) {
+            if (settings.getServiceType().equals(service.getServiceType())) {
                 service.clearAuthenticationCache();
-                onlineInfo.removeService(i);
+                if (!accountBook.logRemovedItem(service)) {
+                    LOG.warning(String.format(
+                        "Could not remove %s online service %s",
+                        service.getServiceType(),
+                        service.getServiceId()));
+                }
             }
         }
     }
 
-    private static String createServiceId() {
+    private static OnlineService createService() {
         final OnlineService onlineService = new OnlineService(
                 null, // temporary account
                 new StreamTable());
         setUpOnlineService(onlineService);
-        return onlineService.getServiceId();
+        return onlineService;
     }
 
     private static void setUpOnlineService(final OnlineService onlineService) {
-        final StreamTable table = new StreamTable(1);
         final Settings settings = Helper.INSTANCE.getSettings();
-        table.put(KEY_SERVICE_TYPE, settings.getServiceType());
-        onlineService.mergeDataTables(table);
+        onlineService.addParameters(new HashMap<String, String>() {
+            private static final long serialVersionUID = 1L;
+            {
+                this.put(KEY_SERVICE_TYPE, settings.getServiceType());
+            }
+        });
         onlineService.setFIId(settings.getFIId());
         onlineService.setFIOrg(settings.getFIOrg());
         onlineService.setFIName(settings.getFIName());
@@ -86,5 +99,16 @@ public final class OnlineServiceFactory {
         onlineService.setFICountry(settings.getFICountry());
         onlineService.setFIUrl(settings.getFIUrl());
         onlineService.setDateUpdated(new Date().getTime());
+    }
+
+    private static OnlineService getServiceById(
+            final OnlineInfo onlineInfo, final OnlineService service) {
+
+        for (OnlineService onlineService : onlineInfo.getAllServices()) {
+            if (onlineService.isSameAs(service)) {
+                return onlineService;
+            }
+        }
+        return null;
     }
 }

@@ -7,10 +7,10 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import com.moneydance.apps.md.controller.StubContextFactory;
 
 /**
  * @author Florian J. Breunig
@@ -66,11 +66,6 @@ public final class LocalizableTest {
     public void testGetTranslatedErrorMessage() {
         assertThat(this.localizable.getTranslatedErrorMessage("-1"), nullValue());
         assertThat(this.localizable.getTranslatedErrorMessage("10002"), notNullValue());
-    }
-
-    @Test
-    public void testGetErrorMessageRootAccountNull() {
-        assertThat(this.localizable.getErrorMessageRootAccountNull(), notNullValue());
     }
 
     @Test

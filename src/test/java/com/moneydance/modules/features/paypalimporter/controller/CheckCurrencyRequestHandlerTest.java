@@ -3,6 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.infinitekind.moneydance.model.AccountBook;
+import com.moneydance.apps.md.controller.StubAccountBook;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
@@ -26,7 +28,7 @@ public final class CheckCurrencyRequestHandlerTest {
 
         this.handler = new CheckCurrencyRequestHandler(
                 viewController,
-                factory.getContext().getRootAccount(),
+                factory.getContext().getAccountBook(),
                 -1);
     }
 
@@ -58,6 +60,19 @@ public final class CheckCurrencyRequestHandlerTest {
                 MockServiceResultFactory.createMultipleServiceResult(
                         MockServiceResultFactory.createIncompleteCurrencyCodeType(),
                         MockServiceResultFactory.createIncompleteCurrencyCodeType());
+        this.handler.serviceCallSucceeded(result);
+    }
+
+    @Test
+    public void testServiceCallSucceededNoExistingAccount() {
+        this.handler = new CheckCurrencyRequestHandler(
+                new ViewControllerMock(),
+                new StubAccountBook(AccountBook.fakeAccountBook()),
+                -1);
+
+        ServiceResult<CurrencyCodeType> result =
+                MockServiceResultFactory.createValidSingleServiceResult(
+                        MockServiceResultFactory.createCompleteCurrencyCodeType());
         this.handler.serviceCallSucceeded(result);
     }
 }

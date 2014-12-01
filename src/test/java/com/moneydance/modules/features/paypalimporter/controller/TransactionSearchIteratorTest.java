@@ -3,9 +3,9 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.infinitekind.moneydance.model.AccountBook;
+import com.infinitekind.moneydance.model.OnlineTxn;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.RootAccount;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
@@ -29,12 +29,12 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 public final class TransactionSearchIteratorTest {
 
     private TransactionSearchIterator iterator;
-    private RootAccount account;
+    private AccountBook accountBook;
 
     @Before
     public void setUp() throws Exception {
         StubContextFactory factory = new StubContextFactory();
-        this.account = factory.getContext().getRootAccount();
+        this.accountBook = factory.getContext().getCurrentAccountBook();
 
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
@@ -45,10 +45,10 @@ public final class TransactionSearchIteratorTest {
                 -1);
         this.iterator = new TransactionSearchIterator(
                 new ViewControllerMock(),
-                factory.getContext().getRootAccount(),
+                factory.getContext().getAccountBook(),
                 new ServiceProvider(),
                 inputData,
-                this.account.getCurrencyType(),
+                this.accountBook.getRootAccount().getCurrencyType(),
                 CurrencyCodeType.USD);
     }
 
@@ -112,7 +112,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedNoSearchWarningFilled() {
         final List<OnlineTxn> onlineTxns = new LinkedList<OnlineTxn>();
-        onlineTxns.add(this.account.getDownloadedTxns().newTxn());
+        onlineTxns.add(this.accountBook.getRootAccount().getDownloadedTxns().newTxn());
         this.iterator.transactionsImported(
                 onlineTxns,
                 null,

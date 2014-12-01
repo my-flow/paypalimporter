@@ -3,15 +3,15 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.OnlineTxn;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.CurrencyType;
+import com.infinitekind.moneydance.model.OnlineTxn;
 
 /**
  * @author Florian J. Breunig

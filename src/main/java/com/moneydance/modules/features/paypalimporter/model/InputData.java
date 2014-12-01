@@ -3,7 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.model;
 
-import com.moneydance.apps.md.controller.DateRange;
+import com.infinitekind.moneydance.model.DateRange;
 import com.moneydance.apps.md.controller.Util;
 
 import java.util.Arrays;

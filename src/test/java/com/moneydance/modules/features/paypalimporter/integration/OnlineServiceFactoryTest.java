@@ -8,12 +8,19 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.infinitekind.moneydance.model.OnlineService;
+import com.infinitekind.moneydance.model.StubOnlineInfo;
+import com.moneydance.apps.md.controller.StubAccountBook;
+import com.moneydance.apps.md.controller.StubContext;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.RootAccount;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -21,6 +28,8 @@ import org.junit.Test;
  * @author Florian J. Breunig
  */
 public final class OnlineServiceFactoryTest {
+
+    private static final String KEY_SERVICE_TYPE = "type";
 
     @Test
     public void testConstructorIsPrivate()
@@ -39,24 +48,47 @@ public final class OnlineServiceFactoryTest {
 
     @Test
     public void testGetService() {
-        RootAccount rootAccount = new StubContextFactory().getContext().getRootAccount();
-        PayPalOnlineService service = OnlineServiceFactory.createService(rootAccount);
+        IAccountBook accountBook = new StubContextFactory().getContext().getAccountBook();
+        PayPalOnlineService service = OnlineServiceFactory.createService(accountBook);
         assertThat(service, notNullValue());
-        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
+        assertThat(OnlineServiceFactory.createService(accountBook), not(service));
     }
 
     @Test
-    public void testRemoveService() {
-        RootAccount rootAccount = new StubContextFactory().getContext().getRootAccount();
-        PayPalOnlineService service = OnlineServiceFactory.createService(rootAccount);
+    public void testRemoveServiceEmpty() {
+        IAccountBook accountBook = new StubContextFactory().getContext().getAccountBook();
+        PayPalOnlineService service = OnlineServiceFactory.createService(accountBook);
         assertThat(service, notNullValue());
-        OnlineServiceFactory.removeService(rootAccount);
-        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
+        OnlineServiceFactory.removeService(accountBook);
+        assertThat(OnlineServiceFactory.createService(accountBook), not(service));
+    }
 
-        rootAccount = new StubContextFactory().addOnlineService().getContext().getRootAccount();
-        service = OnlineServiceFactory.createService(rootAccount);
+    @Test
+    public void testRemoveExistingServices() {
+        final StubContext context = new StubContextFactory().getContext();
+
+        OnlineService onlineService = new OnlineService(
+                context.getCurrentAccountBook());
+        onlineService.addParameters(new HashMap<String, String>() {
+            private static final long serialVersionUID = 1L;
+            {
+                this.put(
+                    KEY_SERVICE_TYPE,
+                    Helper.INSTANCE.getSettings().getServiceType());
+            }
+        });
+        StubOnlineInfo onlineInfo = new StubOnlineInfo(
+                context.getAccountBook(),
+                Collections.singletonList(onlineService));
+        IAccountBook accountBook = new StubAccountBook(
+                context.getCurrentAccountBook(), onlineInfo);
+
+        PayPalOnlineService service = OnlineServiceFactory.createService(
+                accountBook);
         assertThat(service, notNullValue());
-        OnlineServiceFactory.removeService(rootAccount);
-        assertThat(OnlineServiceFactory.createService(rootAccount), not(service));
+        OnlineServiceFactory.removeService(accountBook);
+        assertThat(
+                OnlineServiceFactory.createService(accountBook),
+                not(service));
     }
 }

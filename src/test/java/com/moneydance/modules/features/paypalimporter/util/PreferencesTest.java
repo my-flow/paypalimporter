@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.StubAccountBookFactory;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
 import java.util.Observable;
@@ -26,20 +27,29 @@ public final class PreferencesTest {
 
     @Before
     public void setUp() {
-        this.prefs = new Preferences();
         this.factory = new StubContextFactory();
+        this.prefs = new Preferences(
+                new StubAccountBookFactory(
+                        this.factory.getContext().getAccountBook()));
         Helper.INSTANCE.addObserver(new Observer() {
             @Override
             public void update(final Observable observable,
                     final Object updateAll) {
-                PreferencesTest.this.prefs.setContext(PreferencesTest.this.factory.getContext());
+                PreferencesTest.this.prefs.setContext(
+                        PreferencesTest.this.factory.getContext());
             }
         });
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testGetUserPreferencesWithoutAccountBook() {
+        Preferences p = new Preferences(new StubAccountBookFactory(null));
+        p.setContext(this.factory.getContext());
+        p.setAllWritablePreferencesToNull();
+    }
+
     @Test
     public void testGetUserPreferences() {
-        this.prefs = new Preferences();
         assertThat(this.prefs.getLocale(), notNullValue());
     }
 
@@ -123,7 +133,8 @@ public final class PreferencesTest {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.prefs.setPassword(0, password);
-        assertThat(String.valueOf(this.prefs.getPassword(0)), equalTo(String.valueOf(password)));
+        assertThat(String.valueOf(this.prefs.getPassword(0)),
+                equalTo(String.valueOf(password)));
     }
 
     @Test

@@ -3,11 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.OnlineTxnList;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.CurrencyType;
+import com.infinitekind.moneydance.model.OnlineTxn;
+import com.infinitekind.moneydance.model.OnlineTxnList;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
@@ -57,7 +57,7 @@ final class TransactionSearchIterator implements ViewController {
     private static final String KEY_ACCOUNT_URL = "account_url";
 
     private final ViewController viewController;
-    private final RootAccount rootAccount;
+    private final IAccountBook accountBook;
     private final ServiceProvider serviceProvider;
     private final InputData inputData;
     private final CurrencyType currencyType;
@@ -69,22 +69,22 @@ final class TransactionSearchIterator implements ViewController {
 
     TransactionSearchIterator(
             final ViewController argViewController,
-            final RootAccount argRootAccount,
+            final IAccountBook argIAccountBook,
             final ServiceProvider argServiceProvider,
             final InputData argInputData,
             final CurrencyType argCurrencyType,
             final CurrencyCodeType argCurrencyCode) {
 
         Validate.notNull(argViewController, "view controller must not be null");
-        Validate.notNull(argRootAccount, "root account must not be null");
+        Validate.notNull(argIAccountBook, "root account must not be null");
         Validate.notNull(argServiceProvider,
                 "service provider must not be null");
         Validate.notNull(argInputData, "input data must not be null");
         Validate.notNull(argCurrencyType, "currency type must not be null");
         Validate.notNull(argCurrencyCode, "currency code must not be null");
-        Validate.notNull(argRootAccount, "root account must not be null");
+        Validate.notNull(argIAccountBook, "root account must not be null");
         this.viewController = argViewController;
-        this.rootAccount = argRootAccount;
+        this.accountBook = argIAccountBook;
         this.serviceProvider = argServiceProvider;
         this.inputData = argInputData;
         this.currencyType = argCurrencyType;
@@ -92,7 +92,7 @@ final class TransactionSearchIterator implements ViewController {
 
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
-                this.rootAccount);
+                this.accountBook);
         this.resultList = new ArrayList<OnlineTxn>();
         this.errorCodeSearchWarning =
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
@@ -130,7 +130,7 @@ final class TransactionSearchIterator implements ViewController {
                     "All %d transactions downloaded", this.resultList.size()));
 
             account = findOrCreateAccount(
-                    this.rootAccount,
+                    this.accountBook,
                     this.inputData.getAccountId(),
                     this.currencyType);
             final OnlineTxnList txnList = account.getDownloadedTxns();
@@ -171,25 +171,26 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     private static Account findOrCreateAccount(
-            final RootAccount rootAccount,
+            final IAccountBook accountBook,
             final int accountId,
             final CurrencyType currencyType) {
 
-        Account account = rootAccount.getAccountById(accountId);
+        Account account = accountBook.getAccountByNum(accountId);
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
             // ESCA-JAVA0166: Account.makeAccount throws generic exception
             try {
                 account = Account.makeAccount(
-                        Account.ACCOUNT_TYPE_BANK,
-                        Helper.INSTANCE.getLocalizable().getNameNewAccount(),
-                        currencyType,
-                        rootAccount);
+                        accountBook.getWrappedOriginal(),
+                        Account.AccountType.BANK,
+                        accountBook.getRootAccount());
+                account.setAccountName(
+                        Helper.INSTANCE.getLocalizable().getNameNewAccount());
+                account.setCurrencyType(currencyType);
                 account.setParameter(
                         KEY_ACCOUNT_URL,
                         Helper.INSTANCE.getLocalizable().getUrlNewAccount());
-                rootAccount.addSubAccount(account);
             } catch (Exception e) {
                 LOG.log(Level.WARNING, e.getMessage(), e);
                 throw new IllegalStateException(

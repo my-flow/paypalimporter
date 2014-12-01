@@ -2,19 +2,20 @@
 <project name="paypalimporter" default="all" basedir=".">
 
   <target name="-init">
-      <property name="src"         value="src/main/java"/>
-      <property name="resources"   value="src/main/resources"/>
-      <property name="test"        value="src/test/java"/>
-      <property name="lib"         value="lib"/>
-      <property name="dist"        value="target"/>
-      <property name="build"       value="${dist}/classes"/>
-      <property name="docs"        value="docs"/>
-      <property name="log"         value="logs"/>
-      <property name="privkeyfile" value="src/main/config/priv_key"/>
-      <property name="pubkeyfile"  value="src/main/config/pub_key"/>
-      <property name="privkeyid"   value="99"/>
-      <property name="debug"       value="on"/>
-      <property name="optimize"    value="on"/>
+      <property name="src"            value="src/main/java"/>
+      <property name="resources"      value="src/main/resources"/>
+      <property name="test"           value="src/test/java"/>
+      <property name="test-resources" value="src/test/resources"/>
+      <property name="lib"            value="lib"/>
+      <property name="dist"           value="target"/>
+      <property name="build"          value="${dist}/classes"/>
+      <property name="docs"           value="docs"/>
+      <property name="log"            value="logs"/>
+      <property name="privkeyfile"    value="src/main/config/priv_key"/>
+      <property name="pubkeyfile"     value="src/main/config/pub_key"/>
+      <property name="privkeyid"      value="99"/>
+      <property name="debug"          value="on"/>
+      <property name="optimize"       value="on"/>
       <property name="descriptor.file"
           value="${src}/com/moneydance/modules/features/paypalimporter/meta_info.dict"/>
       <property name="jar.file"
@@ -35,7 +36,7 @@
              classpath="${lib}/proguard-5.1.jar" />
 
       <path id="compile.classpath">
-            <pathelement path="${lib}/moneydance.jar"/>
+            <pathelement path="${lib}/moneydance-1119.jar"/>
             <pathelement path="${lib}/commons-lang-2.6.jar"/>
             <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
             <pathelement path="${lib}/commons-configuration-1.10.jar"/>
@@ -51,11 +52,12 @@
       </path>
 
       <path id="test.classpath">
-        <pathelement path="${lib}/moneydance.jar"/>
+        <pathelement path="${lib}/moneydance-1119.jar"/>
         <pathelement path="${lib}/commons-configuration-1.10.jar"/>
         <pathelement path="${lib}/commons-lang-2.6.jar"/>
         <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
         <pathelement path="${lib}/commons-logging-1.2.jar"/>
+        <pathelement path="${lib}/dropbox-java-sdk-1.5.jar"/>
         <pathelement path="${lib}/jcip-annotations.jar"/>
         <pathelement path="${lib}/jgoodies-common-1.8.0.jar"/>
         <pathelement path="${lib}/jgoodies-forms-moneydance-1.8.0.jar"/>
@@ -73,11 +75,11 @@
       </path>
 
       <path id="manifest.classpath">
-        <pathelement path="${lib}/moneydance.jar"/>
+        <pathelement path="${lib}/moneydance-1119.jar"/>
       </path>
 
       <path id="sign.classpath">
-        <pathelement path="${lib}/moneydance.jar"/>
+        <pathelement path="${lib}/moneydance-1119.jar"/>
         <pathelement path="${lib}/extadmin.jar"/>
       </path>
   </target>
@@ -216,6 +218,10 @@
 
   <target name="test" depends="compile"
     description="Executes the unit tests.">
+
+    <copy todir="${build}">
+      <fileset dir="${test-resources}" includes="*"/>
+    </copy>
 
     <javac source="1.6"
            target="1.6"

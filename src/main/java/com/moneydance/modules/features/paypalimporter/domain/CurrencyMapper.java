@@ -3,10 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
+import com.infinitekind.moneydance.model.CurrencyTable;
+import com.infinitekind.moneydance.model.CurrencyType;
+import com.infinitekind.moneydance.model.CurrencyUtil;
 import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.model.CurrencyTable;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.CurrencyUtil;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import java.util.Calendar;
 import java.util.List;
@@ -40,7 +41,8 @@ public final class CurrencyMapper {
 
     public static CurrencyType getCurrencyTypeFromCurrencyCode(
             final CurrencyCodeType currencyCode,
-            final CurrencyTable table) {
+            final CurrencyTable table,
+            final IAccountBook accountBook) {
         Validate.notNull(currencyCode, "currency code must not be null");
         Validate.notNull(table, "currency table must not be null");
 
@@ -48,23 +50,24 @@ public final class CurrencyMapper {
         CurrencyType currencyType = table.getCurrencyByIDString(name);
 
         if (currencyType == null) {
-            currencyType = CurrencyUtil.createDefaultTable(null)
+            currencyType = CurrencyUtil.createDefaultTable(
+                    accountBook.getWrappedOriginal(), null)
                     .getCurrencyByIDString(name);
             if (currencyType == null) {
                 // no existing currency type matches, so create a new one
-                currencyType = new CurrencyType(
-                        -1,
-                        name,
-                        name,
-                        1.0D,
-                        2,
-                        name,
-                        "",
-                        name,
-                        Util.convertDateToInt(
-                                Calendar.getInstance().getTime()),
-                                CurrencyType.CURRTYPE_CURRENCY,
-                                table);
+               currencyType = CurrencyType.currencyFromFields(
+                     -1,
+                     name,
+                     name,
+                     1.0D,
+                     2,
+                     name,
+                     "",
+                     name,
+                     Util.convertDateToInt(
+                             Calendar.getInstance().getTime()),
+                             CurrencyType.CURRTYPE_CURRENCY,
+                             table);
             }
             table.addCurrencyType(currencyType);
         }

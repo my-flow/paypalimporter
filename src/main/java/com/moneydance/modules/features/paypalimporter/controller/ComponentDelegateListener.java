@@ -3,8 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.apps.md.model.AccountListener;
+import com.infinitekind.moneydance.model.AccountListener;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -25,30 +25,29 @@ final class ComponentDelegateListener extends ComponentAdapter {
     private static final Logger LOG = Logger.getLogger(
             ComponentDelegateListener.class.getName());
 
-    private final FeatureModuleContext context;
-    private final AccountListener      accountListener;
+    private final IAccountBook accountBook;
+    private final AccountListener accountListener;
 
     ComponentDelegateListener(
-            final FeatureModuleContext argContext,
+            final IAccountBook argAccountBook,
             final ViewController argViewController) {
         super();
-        Validate.notNull(argContext, "context must not be null");
+        Validate.notNull(argAccountBook, "account book must not be null");
         Validate.notNull(argViewController,
                 "view controller must not be null");
-        this.context = argContext;
+        this.accountBook = argAccountBook;
         this.accountListener = new AccountDelegateListener(argViewController);
     }
 
     @Override
     public void componentShown(final ComponentEvent event) {
         LOG.config("Show wizard");
-        this.context.getRootAccount().addAccountListener(this.accountListener);
+        this.accountBook.addAccountListener(this.accountListener);
     }
 
     @Override
     public void componentHidden(final ComponentEvent event) {
         LOG.config("Hide wizard");
-        this.context.getRootAccount().removeAccountListener(
-                this.accountListener);
+        this.accountBook.removeAccountListener(this.accountListener);
     }
 }

@@ -3,15 +3,14 @@
 
 package com.moneydance.apps.md.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.CurrencyTable;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.OnlineInfo;
-import com.moneydance.apps.md.model.OnlineService;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.AccountBook;
+import com.infinitekind.moneydance.model.AccountHelper;
+import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.util.StreamTable;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.Validate;
@@ -27,44 +26,70 @@ public final class StubContextFactory {
     private static final Logger LOG = Logger.getLogger(StubContextFactory.class
             .getName());
 
-    private static final String KEY_SERVICE_TYPE = "type";
-
     private final FeatureModule featureModule;
     private final StubContext context;
 
     public StubContextFactory() {
         this.featureModule = null;
-        this.context = new StubContext(this.featureModule);
-        this.initContext();
+        this.context = initContext(null, null);
+        Helper.INSTANCE.setContext(this.context);
+    }
+
+    public StubContextFactory(final OnlineInfo onlineInfo) {
+        Validate.notNull(onlineInfo, "online info must not be null");
+        this.featureModule = null;
+        this.context = initContext(null, onlineInfo);
+        Helper.INSTANCE.setContext(this.context);
     }
 
     public StubContextFactory(final FeatureModule argFeatureModule) {
-        Validate.notNull(argFeatureModule, "featureModule must not be null");
+        Validate.notNull(argFeatureModule, "feature module must not be null");
         this.featureModule = argFeatureModule;
-        this.context = new StubContext(this.featureModule);
-        this.initContext();
+        this.context = initContext(argFeatureModule, null);
+        Helper.INSTANCE.setContext(this.context);
     }
 
-    private void initContext() {
-        CurrencyType currencyType = new CurrencyType(-1, "USD",
-                "Test Currency", 1.0D, 0, "$", "", "USD",
-                CurrencyType.CURRTYPE_CURRENCY, 0, null);
+    private static StubContext initContext(final FeatureModule argFeatureModule,
+            final OnlineInfo onlineInfo) {
+       AccountBook accountBook = AccountBook.fakeAccountBook();
+       accountBook.initializeNewEmptyAccounts("USD");
+       accountBook.setLocalStorage(new StubLocalStorage());
 
-        RootAccount rootAccount = new RootAccount(currencyType,
-                new CurrencyTable());
-        try {
-            rootAccount.addSubAccount(Account.makeAccount(
-                    Account.ACCOUNT_TYPE_BANK, "stub account 1", currencyType,
-                    rootAccount));
-            rootAccount.addSubAccount(Account.makeAccount(
-                    Account.ACCOUNT_TYPE_BANK, "stub account 2", currencyType,
-                    rootAccount));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       StubAccountBook acctBook;
+       if (onlineInfo == null) {
+           acctBook = new StubAccountBook(accountBook);
+       } else {
+           acctBook = new StubAccountBook(accountBook, onlineInfo);
+       }
 
-        this.context.setRootAccount(rootAccount);
-        Helper.INSTANCE.setContext(this.context);
+       try {
+           final Account acc1 = Account.makeAccount(
+               accountBook,
+               Account.AccountType.BANK,
+               accountBook.getRootAccount()
+           );
+           AccountHelper.addSubAccount(
+               accountBook.getRootAccount(),
+               acc1
+           );
+           acctBook.addAccount(acc1);
+
+           final Account acc2 = Account.makeAccount(
+               accountBook,
+               Account.AccountType.BANK,
+               accountBook.getRootAccount()
+           );
+           AccountHelper.addSubAccount(
+               accountBook.getRootAccount(),
+               acc2
+           );
+           acctBook.addAccount(acc2);
+
+       } catch (Exception e) {
+           LOG.log(Level.SEVERE, e.getMessage(), e);
+       }
+
+       return new StubContext(argFeatureModule, acctBook);
     }
 
     public void init() {
@@ -75,16 +100,5 @@ public final class StubContextFactory {
 
     public StubContext getContext() {
         return this.context;
-    }
-
-    public StubContextFactory addOnlineService() {
-        final StreamTable table = new StreamTable(1);
-        OnlineInfo onlineInfo = this.context.getRootAccount().getOnlineInfo();
-        table.put(KEY_SERVICE_TYPE, Helper.INSTANCE.getSettings().getServiceType());
-        OnlineService onlineService = new OnlineService(
-                onlineInfo,
-                table);
-        onlineInfo.addService(onlineService);
-        return this;
     }
 }

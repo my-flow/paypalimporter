@@ -12,6 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    AccountBookFactoryImplTest.class,
+    AccountBookTest.class,
     InputDataValidatorTest.class
 })
 public final class AllUnitTests {

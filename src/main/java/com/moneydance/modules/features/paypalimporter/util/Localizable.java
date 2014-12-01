@@ -105,13 +105,6 @@ public final class Localizable {
     }
 
     /**
-     * @return the error message when no root account is not available
-     */
-    public String getErrorMessageRootAccountNull() {
-        return this.resourceBundle.getString("error_message_root_account_null");
-    }
-
-    /**
      * @return the error message when no username has been entered
      */
     public String getErrorMessageUsernameBlank() {

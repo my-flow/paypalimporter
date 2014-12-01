@@ -6,13 +6,13 @@ package com.moneydance.modules.features.paypalimporter.model;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.Validator;
-import com.moneydance.apps.md.controller.DateRange;
-import com.moneydance.apps.md.controller.StubContextFactory;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.infinitekind.moneydance.model.DateRange;
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.Validator;
+import com.moneydance.apps.md.controller.StubContextFactory;
 
 /**
  * @author Florian J. Breunig

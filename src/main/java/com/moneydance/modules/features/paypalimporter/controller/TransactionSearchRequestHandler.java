@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.OnlineTxn;
-import com.moneydance.apps.md.model.OnlineTxnList;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.OnlineTxn;
+import com.infinitekind.moneydance.model.OnlineTxnList;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
@@ -47,11 +47,11 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
-            final RootAccount argAccount) {
+            final IAccountBook accountBook) {
 
         super(argViewController);
-        Validate.notNull(argAccount, "account must not be null");
-        this.account = argAccount;
+        Validate.notNull(accountBook, "account book must not be null");
+        this.account = accountBook.getRootAccount();
         this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
     }
 

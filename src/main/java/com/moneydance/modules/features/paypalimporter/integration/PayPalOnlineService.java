@@ -3,13 +3,15 @@
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.AccountUtil;
-import com.moneydance.apps.md.model.OnlineService;
-import com.moneydance.apps.md.model.RootAccount;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.AccountUtil;
+import com.infinitekind.moneydance.model.OnlineService;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,35 +36,31 @@ public final class PayPalOnlineService {
     }
 
     /**
-     * Assign this <code>PayPalOnlineService</code> to a Mondance
+     * Assign this <code>PayPalOnlineService</code> to a Moneydance
      * <code>Account</code>. That means the credentials of a PayPal account
-     * will be assciated with a Moneydance account.
+     * will be associated with a Moneydance account.
      *
-     * @param rootAccount Global root account
+     * @param accountBook Global account book
      * @param accountId Identifier of the account
      */
     public void assignToAccount(
-            final RootAccount rootAccount,
+            final IAccountBook accountBook,
             final int accountId) {
-        Validate.notNull(rootAccount, "root account must not be null");
+        Validate.notNull(accountBook, "account book must not be null");
 
-        final Account account = rootAccount.getAccountById(accountId);
+        final Account account = accountBook.getAccountByNum(accountId);
         Validate.notNull(account, "account must not be null");
 
-        if (account.getBankingFI() != null
-                && account.getBankingFI().isSameAs(
-                        this.onlineService.getServiceId())) {
+        if (this.onlineService.isSameAs(account.getBankingFI())) {
             return;
         }
 
         Account nextAccount;
-        for (Iterator<Account> iterator =
-                AccountUtil.getAccountIterator(rootAccount);
-                iterator.hasNext();) {
+        for (Iterator<Account> iterator = AccountUtil.getAccountIterator(
+                accountBook.getWrappedOriginal());
+            iterator.hasNext();) {
             nextAccount = iterator.next();
-            if (nextAccount.getBankingFI() != null
-                    && nextAccount.getBankingFI().isSameAs(
-                            this.onlineService.getServiceId())) {
+            if (this.onlineService.isSameAs(nextAccount.getBankingFI())) {
                 nextAccount.setBankingFI(null);
             }
         }
@@ -115,27 +113,30 @@ public final class PayPalOnlineService {
     }
 
     public void setSignature(final int accountId, final String signature) {
-        this.onlineService.getTable().put(
-                buildSignatureKey(buildRealm(accountId)),
-                signature);
+        this.onlineService.addParameters(new HashMap<String, String>() {
+            private static final long serialVersionUID = 1L;
+            {
+                this.put(buildSignatureKey(buildRealm(accountId)), signature);
+            }
+        });
     }
 
     public String getSignature(final int accountId) {
-        String signature = this.onlineService.getTable().getStr(
+        String signature = this.onlineService.getParameter(
                 buildSignatureKey(buildRealm(accountId)),
                 null);
         if (signature == null && this.getFirstRealm() != null) {
-            signature = this.onlineService.getTable().getStr(
+            signature = this.onlineService.getParameter(
                     buildSignatureKey(this.getFirstRealm()), null);
         }
         return signature;
     }
 
     private String getFirstRealm() {
-        final String[] realms = this.onlineService.getRealms();
-        if (realms != null && realms.length > 0) {
-            LOG.config(String.format("realms[0]: %s", realms[0]));
-            return realms[0];
+        final List<String> realms = this.onlineService.getRealms();
+        if (realms != null && !realms.isEmpty()) {
+            LOG.config(String.format("realms[0]: %s", realms.get(0)));
+            return realms.get(0);
         }
         return null;
     }

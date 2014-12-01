@@ -6,9 +6,10 @@ package com.moneydance.modules.features.paypalimporter.domain;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import com.infinitekind.moneydance.model.CurrencyTable;
+import com.infinitekind.moneydance.model.CurrencyType;
+import com.infinitekind.moneydance.model.CurrencyUtil;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.apps.md.model.CurrencyType;
-import com.moneydance.apps.md.model.CurrencyUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -51,7 +52,10 @@ public final class CurrencyMapperTest {
     public void testGetCurrencyTypeFromCurrencyCodeWithDefaultTable() {
         CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.USD,
-                CurrencyUtil.createDefaultTable(CurrencyCodeType.USD.getValue()));
+                CurrencyUtil.createDefaultTable(
+                        this.factory.getContext().getCurrentAccountBook(),
+                        CurrencyCodeType.USD.getValue()), null
+                );
         assertThat(currencyType.getIDString(), is(CurrencyCodeType.USD.getValue()));
     }
 
@@ -59,7 +63,8 @@ public final class CurrencyMapperTest {
     public void testGetCurrencyTypeFromCurrencyCodeWithEmptyCurrencyTable() {
         CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.USD,
-                this.factory.getContext().getRootAccount().getCurrencyTable());
+                this.factory.getContext().getAccountBook().getCurrencies(),
+                this.factory.getContext().getAccountBook());
         assertThat(currencyType.getIDString(), is(CurrencyCodeType.USD.getValue()));
     }
 
@@ -67,7 +72,9 @@ public final class CurrencyMapperTest {
     public void testGetCurrencyTypeFromCurrencyCodeWithUnknownCurrencyCode() {
         CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.NIO,
-                this.factory.getContext().getRootAccount().getCurrencyTable());
+                this.factory.getContext().getAccountBook().getCurrencies(),
+                this.factory.getContext().getAccountBook()
+        );
         assertThat(currencyType.getIDString(), is(CurrencyCodeType.NIO.getValue()));
     }
 
@@ -82,24 +89,18 @@ public final class CurrencyMapperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGetCurrencyCodeFromCurrencyTypeWhenEmpty() {
         CurrencyMapper.getCurrencyCodeFromCurrencyType(
-                this.factory.getContext().getRootAccount().getCurrencyTable().getBaseType(),
+                this.factory.getContext().getCurrentAccountBook().getRootAccount().getCurrencyType(),
                 Collections.<CurrencyCodeType>emptyList());
     }
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWhenUnknown() {
         CurrencyType currencyType = new CurrencyType(
-                -1,
-                "Banana",
-                "Banana",
-                1.0D,
-                0,
-                "B",
-                "",
-                "BAN",
-                CurrencyType.CURRTYPE_CURRENCY,
-                0,
-                null);
+                new CurrencyTable(this.factory.getContext().getCurrentAccountBook())
+        );
+        currencyType.setCurrencyType(CurrencyType.Type.CURRENCY);
+        currencyType.setName("Banana");
+        currencyType.setIDString("BAN");
 
         CurrencyCodeType currencyCodeType = CurrencyMapper.getCurrencyCodeFromCurrencyType(
                 currencyType,

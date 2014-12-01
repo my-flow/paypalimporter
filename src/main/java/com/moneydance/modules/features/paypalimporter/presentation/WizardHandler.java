@@ -3,16 +3,16 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.model.InputData;
-
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Observer;
 
 import org.apache.commons.lang3.Validate;
+
+import com.infinitekind.moneydance.model.Account;
+import com.moneydance.apps.md.view.gui.MoneydanceGUI;
+import com.moneydance.modules.features.paypalimporter.model.InputData;
 
 /**
  * This reactive class forwards UI events to its observers. The observers can

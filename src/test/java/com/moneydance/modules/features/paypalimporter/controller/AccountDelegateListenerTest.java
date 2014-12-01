@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.AccountListener;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.infinitekind.moneydance.model.AccountListener;
 
 /**
  * @author Florian J. Breunig

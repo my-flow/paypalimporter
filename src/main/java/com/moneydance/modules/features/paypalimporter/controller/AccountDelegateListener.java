@@ -3,8 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.moneydance.apps.md.model.Account;
-import com.moneydance.apps.md.model.AccountListener;
+import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.AccountListener;
 
 import org.apache.commons.lang3.Validate;
 

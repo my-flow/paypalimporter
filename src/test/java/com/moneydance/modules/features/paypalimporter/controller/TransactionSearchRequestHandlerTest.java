@@ -26,7 +26,7 @@ public final class TransactionSearchRequestHandlerTest {
 
         this.handler = new TransactionSearchRequestHandler(
                 viewController,
-                factory.getContext().getRootAccount());
+                factory.getContext().getAccountBook());
     }
 
     @Test
