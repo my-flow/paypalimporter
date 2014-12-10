@@ -10,6 +10,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.moneydance.apps.md.controller.StubContextFactory;
+
 /**
  * @author Florian J. Breunig
  */
@@ -19,6 +21,8 @@ public final class LocalizableTest {
 
     @Before
     public void setUp() {
+        Helper.INSTANCE.getPreferences();
+        new StubContextFactory();
         this.localizable = Helper.INSTANCE.getLocalizable();
     }
 

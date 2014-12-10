@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     OnlineServiceFactoryTest.class,
-    PayPalOnlineServiceTest.class })
+    PayPalOnlineServiceTest.class
+})
 public final class AllTests {
     // no test cases
 }

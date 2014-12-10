@@ -17,8 +17,7 @@ import org.junit.runners.Suite.SuiteClasses;
     ComponentDelegateListenerTest.class,
     TransactionSearchIteratorTest.class,
     TransactionSearchRequestHandlerTest.class,
-    ViewControllerImplTest.class
 })
-public final class AllTests {
+public final class AllUnitTests {
     // no test cases
 }

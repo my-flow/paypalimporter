@@ -1,7 +1,7 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
 // Copyright (C) 2013-2014 Florian J. Breunig. All rights reserved.
 
-package com.moneydance.modules.features.paypalimporter.controller;
+package com.moneydance.modules.features.paypalimporter.integration;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -12,13 +12,9 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    AccountDelegateListenerTest.class,
-    CheckCurrencyRequestHandlerTest.class,
-    ComponentDelegateListenerTest.class,
-    TransactionSearchIteratorTest.class,
-    TransactionSearchRequestHandlerTest.class,
-    ViewControllerImplTest.class
+    OnlineServiceFactoryTest.class,
+    PayPalOnlineServiceTest.class
 })
-public final class AllTests {
+public final class AllUnitTests {
     // no test cases
 }

@@ -6,12 +6,21 @@ package com.moneydance.modules.features.paypalimporter.util;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import com.moneydance.apps.md.controller.StubContextFactory;
 
 /**
  * @author Florian J. Breunig
  */
 public final class HelperTest {
+
+    @Before
+    public void setUp() {
+        Helper.INSTANCE.getPreferences();
+        new StubContextFactory();
+    }
 
     @Test
     public void testGetPreferences() {

@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     CurrencyMapperTest.class,
-    DateConverterTest.class })
+    DateConverterTest.class
+})
 public final class AllTests {
     // no test cases
 }

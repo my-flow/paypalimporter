@@ -237,11 +237,15 @@
       <fileset dir="${resources}" includes="*"/>
     </copy>
 
-    <junit printsummary="yes" haltonfailure="yes" fork="yes">
+  	<junit printsummary="yes"
+  	       haltonfailure="yes"
+  	       showoutput="true"
+  	       enabletestlistenerevents="true"
+  	       fork="yes">
       <classpath refid="test.classpath"/>
-      <test name="com.moneydance.modules.features.paypalimporter.AllTests"/>
+      <test name="com.moneydance.modules.features.paypalimporter.AllUnitTests"/>
       <sysproperty key="jmockit-coverage-excludes"
-                   value=".*AllTests|.*Stub.*|.*Mock.*|.*ConsoleRunner.*"/>
+                   value=".*AllUnitTests|.*AllTests|.*Stub.*|.*Mock.*|.*ConsoleRunner.*"/>
       <sysproperty key="jmockit-coverage-outputDir"
                    value="${docs}/coverage-report"/>
     </junit>
