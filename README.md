@@ -34,5 +34,5 @@ After the build process has succeeded, the resulting extension file
 (http://my-flow.github.io/paypalimporter/docs/pmd-report/pmd-report.html)
 
 ## License
-Copyright (C) 2013-2014 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2015 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.
