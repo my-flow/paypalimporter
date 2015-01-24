@@ -215,7 +215,7 @@
 
 
   <target name="test" depends="compile"
-    description="Executes JUnit's test suite and generates an HTML report using JMockit Coverage.">
+    description="Executes the unit tests.">
 
     <javac source="1.6"
            target="1.6"
@@ -244,6 +244,40 @@
   	       fork="yes">
       <classpath refid="test.classpath"/>
       <test name="com.moneydance.modules.features.paypalimporter.AllUnitTests"/>
+    </junit>
+  </target>
+
+
+  <target name="test-all" depends="compile"
+    description="Executes all tests and generates an HTML report using JMockit Coverage.">
+
+    <javac source="1.6"
+           target="1.6"
+           srcdir="${test}"
+           destdir="${build}"
+           debug="${debug}"
+           optimize="${optimize}"
+           classpathref="test.classpath"
+           includeantruntime="true"
+           includes="com/moneydance/modules/features/paypalimporter/**"
+           bootclasspath="${boot.classpath}"/>
+
+    <copy todir="${build}">
+      <fileset dir="${src}" includes="
+        com/moneydance/modules/features/paypalimporter/meta_info.dict"/>
+    </copy>
+
+    <copy todir="${build}">
+      <fileset dir="${resources}" includes="*"/>
+    </copy>
+
+    <junit printsummary="yes"
+           haltonfailure="yes"
+           showoutput="true"
+           enabletestlistenerevents="true"
+           fork="yes">
+      <classpath refid="test.classpath"/>
+      <test name="com.moneydance.modules.features.paypalimporter.AllTests"/>
       <sysproperty key="jmockit-coverage-excludes"
                    value=".*AllUnitTests|.*AllTests|.*Stub.*|.*Mock.*|.*ConsoleRunner.*"/>
       <sysproperty key="jmockit-coverage-outputDir"
