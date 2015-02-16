@@ -110,8 +110,8 @@
 
 
   <target name="compile" depends="-prepare">
-        <javac source="1.6"
-               target="1.6"
+        <javac source="1.7"
+               target="1.7"
                srcdir="${src}"
                destdir="${build}"
                debug="${debug}"
@@ -223,8 +223,8 @@
       <fileset dir="${test-resources}" includes="*"/>
     </copy>
 
-    <javac source="1.6"
-           target="1.6"
+    <javac source="1.7"
+           target="1.7"
            srcdir="${test}"
            destdir="${build}"
            debug="${debug}"
@@ -257,8 +257,8 @@
   <target name="test-all" depends="compile"
     description="Executes all tests and generates an HTML report using JMockit Coverage.">
 
-    <javac source="1.6"
-           target="1.6"
+    <javac source="1.7"
+           target="1.7"
            srcdir="${test}"
            destdir="${build}"
            debug="${debug}"

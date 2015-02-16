@@ -7,7 +7,7 @@ extension please visit the [project page]
 (http://my-flow.github.io/paypalimporter/).
 
 ## Build Prerequisites
-* Java Development Kit, version 6
+* Java Development Kit, version 7
 * [Apache Ant™](http://ant.apache.org), version 1.7 or newer
 
 ## Building the extension
