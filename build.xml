@@ -391,45 +391,6 @@
       <fileset dir="${src}" includes="**/*.java"/>
       <formatter type="html" toFile="${docs}/pmd-report/pmd-report.html"/>
     </pmd>
-
   </target>
-
-
-  <target name="audit" depends="-init" description="Creates a compressed file
-for the audition process. The zip file contains all files required to build
-and deploy a new version.">
-
-    <!-- Extract build version from descriptor -->
-    <loadfile srcfile="${descriptor.file}" property="build.version">
-      <filterchain>
-        <striplinebreaks/>
-        <linecontains>
-          <contains value="module_build"/>
-        </linecontains>
-        <tokenfilter>
-           <replaceregex pattern=".*&quot;(\d+)&quot;.*" replace="\1"/>
-        </tokenfilter>
-      </filterchain>
-    </loadfile>
-
-    <echo message="Building version ${build.version} for auditing"/>
-
-    <property name="zip.file" value="${dist}/paypalimporter-v${build.version}.zip"/>
-
-    <zip destfile="${zip.file}">
-       <zipfileset dir="." defaultexcludes="yes">
-         <include name="**/*"/>
-         <exclude name="**/${build}"/>
-         <exclude name="**/${build}/**/*"/>
-         <exclude name="**/${dist}"/>
-         <exclude name="**/${dist}/**/*"/>
-         <exclude name="**/${docs}"/>
-         <exclude name="**/${docs}/**/*"/>
-         <exclude name="**/${log}"/>
-         <exclude name="**/${log}/**/*"/>
-       </zipfileset>
-    </zip>
-  </target>
-
 
 </project>
