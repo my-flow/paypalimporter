@@ -212,7 +212,7 @@
   </target>
 
 
-  <target name="build" depends="-prepare" description="Builds a new version.">
+  <target name="dist" depends="-prepare" description="Produces the distributable.">
     <antcall target="compile"/>
     <antcall target="-mxt"/>
   </target>
@@ -295,19 +295,22 @@
 
 
   <target name="main" depends="-prepare">
-    <antcall target="build"/>
+    <antcall target="dist"/>
     <antcall target="test"/>
   </target>
 
 
   <target name="all" depends="-prepare">
     <antcall target="clean"/>
-    <antcall target="build"/>
+    <antcall target="dist"/>
     <antcall target="sign" />
+    <antcall target="test" />
   </target>
 
 
-  <target name="docs" depends="-init" description="Creates Javadoc documentation with references to external documentations.">
+  <target name="javadocs"
+          depends="-init"
+          description="Creates Javadoc documentation with references to external documentations.">
 
     <delete>
       <fileset dir="${docs}/api" includes="**/*"/>
