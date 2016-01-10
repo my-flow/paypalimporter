@@ -11,8 +11,8 @@
       <property name="build"          value="${dist}/classes"/>
       <property name="docs"           value="docs"/>
       <property name="log"            value="logs"/>
-      <property name="privkeyfile"    value="src/main/config/priv_key"/>
-      <property name="pubkeyfile"     value="src/main/config/pub_key"/>
+      <property name="privkeyfile"    value="${resources}/priv_key"/>
+      <property name="pubkeyfile"     value="${resources}/pub_key"/>
       <property name="privkeyid"      value="99"/>
       <property name="debug"          value="on"/>
       <property name="optimize"       value="on"/>
@@ -99,7 +99,9 @@
   </target>
 
 
-  <target name="genkeys" description="Generates a passphrase-protected key pair.">
+  <target name="genkeys"
+          depends="-init"
+          description="Generates a passphrase-protected key pair.">
     <java classpathref="sign.classpath"
           classname="com.moneydance.admin.KeyAdmin">
       <arg value="genkey"/>
