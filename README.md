@@ -13,7 +13,7 @@ extension please visit the [project page]
 ## Building the extension
 1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the 
 repository.
-2. `ant build` compiles the extension.
+2. `ant dist` produces the distributable.
 
 ## Signing the extension
 1. `ant genkeys` generates a passphrase-protected key pair.
