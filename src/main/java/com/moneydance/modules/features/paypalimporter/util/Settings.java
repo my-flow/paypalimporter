@@ -239,10 +239,17 @@ public final class Settings {
     }
 
     /**
-     * @return Column specification for JGoodies FormLayout
+     * @return Column specification for JGoodies Forms
      */
     public String getColumnSpecs() {
         return this.config.getString("column_specs"); //$NON-NLS-1$
+    }
+
+    /**
+     * @return Rows specification for JGoodies Forms
+     */
+    public String getRowsSpecs() {
+        return this.config.getString("rows_specs"); //$NON-NLS-1$
     }
 
     private static Image getImage(final String resource) {

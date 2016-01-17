@@ -3,6 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.infinitekind.moneydance.model.Account;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
@@ -173,7 +174,8 @@ implements ActionListener, WindowListener {
         } else {
             isLoading = loading.booleanValue();
         }
-        final ComboBoxModel accountModel = this.comboBoxAccts.getModel();
+        final ComboBoxModel<Account> accountModel =
+                this.comboBoxAccts.getModel();
         final boolean acctsExist = accountModel.getSize() > 0;
 
         this.rdBtnExistingAcct.setEnabled(!isLoading && acctsExist);
@@ -235,8 +237,7 @@ implements ActionListener, WindowListener {
 
         if (text != null) {
             ValidationComponentUtils
-            .updateComponentTreeMandatoryAndBlankBackground(
-                    this.panelBuilder.getPanel());
+            .updateComponentTreeMandatoryAndBlankBackground(this.jpanel);
 
             final Component parentComponent;
             if (this.isVisible()) {
