@@ -25,52 +25,56 @@
 
       <available file="${privkeyfile}" property="privkeyfile.present"/>
 
-      <taskdef resource="checkstyletask.properties"
-        classpath="${lib}/checkstyle-6.0-all.jar"/>
+      <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+        classpath="${lib}/checkstyle-6.14.1-all.jar"/>
 
       <taskdef name="pmd"
         classname="net.sourceforge.pmd.ant.PMDTask"
-        classpath="lib/pmd-core-5.2.1.jar;lib/pmd-java-5.2.1.jar;lib/jaxen-1.1.6.jar;lib/asm-5.0.3.jar;lib/commons-io-2.4.jar"/>
+        classpath="${lib}/pmd-core-5.4.1.jar;${lib}/pmd-java-5.4.1.jar;${lib}/jaxen-1.1.6.jar;${lib}/asm-5.0.4.jar;${lib}/commons-io-2.4.jar;${lib}/commons-lang3-3.4.jar"/>
+
+      <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
+        classpath="${lib}/jarjar-1.4.jar"/>
 
       <taskdef resource="proguard/ant/task.properties"
-             classpath="${lib}/proguard-5.1.jar" />
+             classpath="${lib}/proguard-5.2.1.jar" />
 
       <path id="compile.classpath">
             <pathelement path="${lib}/moneydance-1119.jar"/>
             <pathelement path="${lib}/commons-lang-2.6.jar"/>
-            <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
+            <pathelement path="${lib}/commons-lang3-3.4.jar"/>
             <pathelement path="${lib}/commons-configuration-1.10.jar"/>
-            <pathelement path="${lib}/jcip-annotations.jar"/>
-            <pathelement path="${lib}/jgoodies-common-1.8.0.jar"/>
-            <pathelement path="${lib}/jgoodies-forms-moneydance-1.8.0.jar"/>
-            <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
+            <pathelement path="${lib}/jcip-annotations-1.0.jar"/>
+            <pathelement path="${lib}/jgoodies-common-1.9.0.jar"/>
+            <pathelement path="${lib}/jgoodies-forms-1.10.jar"/>
+            <pathelement path="${lib}/jgoodies-validation-2.5.1.jar"/>
             <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
-            <pathelement path="${lib}/merchantsdk-2.13.117.jar"/>
-            <pathelement path="${lib}/paypal-core-moneydance-1.6.5.jar"/>
+            <pathelement path="${lib}/merchantsdk-2.14.117.jar"/>
+            <pathelement path="${lib}/paypal-core-paypalimporter-1.7.0.jar"/>
             <pathelement path="${lib}/prompt.jar"/>
-            <pathelement path="${lib}/slf4j-api-1.7.7.jar"/>
+            <pathelement path="${lib}/slf4j-api-1.7.13.jar"/>
       </path>
 
       <path id="test.classpath">
         <pathelement path="${lib}/moneydance-1119.jar"/>
         <pathelement path="${lib}/commons-configuration-1.10.jar"/>
         <pathelement path="${lib}/commons-lang-2.6.jar"/>
-        <pathelement path="${lib}/commons-lang3-3.3.2.jar"/>
+        <pathelement path="${lib}/commons-lang3-3.4.jar"/>
         <pathelement path="${lib}/commons-logging-1.2.jar"/>
         <pathelement path="${lib}/dropbox-java-sdk-1.5.jar"/>
-        <pathelement path="${lib}/jcip-annotations.jar"/>
-        <pathelement path="${lib}/jgoodies-common-1.8.0.jar"/>
-        <pathelement path="${lib}/jgoodies-forms-moneydance-1.8.0.jar"/>
-        <pathelement path="${lib}/jgoodies-validation-2.5.0.jar"/>
+        <pathelement path="${lib}/java-hamcrest-2.0.0.0.jar"/>
+        <pathelement path="${lib}/jcip-annotations-1.0.jar"/>
+        <pathelement path="${lib}/jgoodies-common-1.9.0.jar"/>
+        <pathelement path="${lib}/jgoodies-forms-1.10.jar"/>
+        <pathelement path="${lib}/jgoodies-validation-2.5.1.jar"/>
         <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
         <pathelement path="${lib}/jmockit-coverage-1.5.jar"/>
         <pathelement path="${lib}/jmockit-1.5.jar"/>
-        <pathelement path="${lib}/junit-4.11.jar"/>
-        <pathelement path="${lib}/merchantsdk-2.13.117.jar"/>
-        <pathelement path="${lib}/paypal-core-moneydance-1.6.5.jar"/>
+        <pathelement path="${lib}/junit-4.12.jar"/>
+        <pathelement path="${lib}/merchantsdk-2.14.117.jar"/>
+        <pathelement path="${lib}/paypal-core-paypalimporter-1.7.0.jar"/>
         <pathelement path="${lib}/prompt.jar"/>
-        <pathelement path="${lib}/slf4j-api-1.7.7.jar"/>
-        <pathelement path="${lib}/slf4j-simple-1.7.7.jar"/>
+        <pathelement path="${lib}/slf4j-api-1.7.13.jar"/>
+        <pathelement path="${lib}/slf4j-simple-1.7.13.jar"/>
         <pathelement path="${build}"/>
       </path>
 
@@ -96,6 +100,35 @@
           description="Wipe the slate clean, to be used before starting the build process.">
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+  </target>
+
+
+  <target name="gendeps"
+          depends="-init"
+          description="Generates custom dependencies.">
+
+    <antcall target="-genpaypalcore"/>
+  </target>
+
+
+  <target name="-genpaypalcore" depends="-init">
+
+    <!-- Clone tagged version from GitHub repository -->
+    <exec executable="git" failonerror="true">
+        <arg line="clone -b v1.7.0 --single-branch git@github.com:paypal/sdk-core-java.git --depth=1 ${dist}/paypal-core-java"/>
+    </exec>
+
+    <!-- Apply local patch -->
+    <exec executable="patch" failonerror="true">
+        <arg line="-p 1 -d ${dist}/paypal-core-java -i ../../fix_proxies.patch"/>
+    </exec>
+
+    <!-- Generate new JAR file -->
+    <exec executable="mvn" failonerror="true">
+        <arg line="package -f ${dist}/paypal-core-java/pom.xml"/>
+    </exec>
+    <copy file="${dist}/paypal-core-java/target/paypal-core-1.7.0.jar"
+          tofile="${lib}/paypal-core-paypalimporter-1.7.0.jar"/>
   </target>
 
 
@@ -134,19 +167,19 @@
     <jar jarfile="${build}/external-libs.jar">
         <zipgroupfileset dir="${lib}">
             <include name="commons-lang-2.6.jar"/>
-            <include name="commons-lang3-3.3.2.jar"/>
+            <include name="commons-lang3-3.4.jar"/>
             <include name="commons-configuration-1.10.jar"/>
-            <include name="jcip-annotations.jar"/>
-            <include name="jgoodies-common-1.8.0.jar"/>
-            <include name="jgoodies-forms-moneydance-1.8.0.jar"/>
-            <include name="jgoodies-validation-2.5.0.jar"/>
+            <include name="jcip-annotations-1.0.jar"/>
+            <include name="jgoodies-common-1.9.0.jar"/>
+            <include name="jgoodies-forms-1.10.jar"/>
+            <include name="jgoodies-validation-2.5.1.jar"/>
             <include name="commons-logging-1.2.jar"/>
             <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
-            <include name="merchantsdk-2.13.117.jar"/>
-            <include name="paypal-core-moneydance-1.6.5.jar"/>
+            <include name="merchantsdk-2.14.117.jar"/>
+            <include name="paypal-core-paypalimporter-1.7.0.jar"/>
             <include name="prompt.jar"/>
-            <include name="slf4j-api-1.7.7.jar"/>
-            <include name="slf4j-nop-1.7.7.jar"/>
+            <include name="slf4j-api-1.7.13.jar"/>
+            <include name="slf4j-nop-1.7.13.jar"/>
         </zipgroupfileset>
     </jar>
 
@@ -159,7 +192,7 @@
       <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
     </tstamp>
 
-    <jar destfile="${jar.file}">
+    <jarjar jarfile="${jar.file}">
       <fileset dir="" includes="NOTICE"/>
       <fileset dir="" includes="LICENSE"/>
       <fileset dir="${src}" includes="
@@ -181,7 +214,11 @@
         <exclude name="*"/>
         <exclude name="META-INF/**/*"/>
       </zipfileset>
-    </jar>
+
+      <rule pattern="com.jgoodies.**"
+            result="com.moneydance.modules.features.paypalimporter.jgoodies.@1"/>
+
+    </jarjar>
 
     <move file="${jar.file}" tofile="${build}/paypalimporter.jar"/>
     
@@ -335,7 +372,7 @@
       <link href="http://www.dmurph.com/jgoogleanalyticstracker/"/>
       <link href="http://www.slf4j.org/apidocs/"/>
       <link href="http://commons.apache.org/configuration/apidocs/"/>
-      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.3.2/"/>
+      <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/"/>
       <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
       <link href="http://commons.apache.org/logging/apidocs/"/>
       <footer><![CDATA[

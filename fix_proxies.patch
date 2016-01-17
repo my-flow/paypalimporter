@@ -1,0 +1,33 @@
+diff --git a/src/main/java/com/paypal/core/DefaultHttpConnection.java b/src/main/java/com/paypal/core/DefaultHttpConnection.java
+index 1b6eb75..27a3e90 100644
+--- a/src/main/java/com/paypal/core/DefaultHttpConnection.java
++++ b/src/main/java/com/paypal/core/DefaultHttpConnection.java
+@@ -64,7 +64,7 @@ public class DefaultHttpConnection extends HttpConnection {
+ 			this.connection = (HttpURLConnection) url.openConnection(proxy);
+ 		} else {
+ 			this.connection = (HttpURLConnection) url
+-					.openConnection(Proxy.NO_PROXY);
++					.openConnection();
+ 		}
+ 		if (this.connection instanceof HttpsURLConnection) {
+ 			((HttpsURLConnection) this.connection)
+@@ -197,4 +197,4 @@ public class DefaultHttpConnection extends HttpConnection {
+ 		}
+ 	}
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/src/main/java/com/paypal/core/GoogleAppEngineHttpConnection.java b/src/main/java/com/paypal/core/GoogleAppEngineHttpConnection.java
+index b4f9ae2..17d6edb 100644
+--- a/src/main/java/com/paypal/core/GoogleAppEngineHttpConnection.java
++++ b/src/main/java/com/paypal/core/GoogleAppEngineHttpConnection.java
+@@ -50,7 +50,7 @@ public class GoogleAppEngineHttpConnection extends HttpConnection {
+ 		// http://code.google.com/p/googleappengine/issues/detail?id=1036
+ 
+ 		this.connection = (HttpURLConnection) url
+-				.openConnection(Proxy.NO_PROXY);
++				.openConnection();
+ 		this.connection.setDoInput(true);
+ 		this.connection.setDoOutput(true);
+ 		this.connection.setRequestMethod(config.getHttpMethod());

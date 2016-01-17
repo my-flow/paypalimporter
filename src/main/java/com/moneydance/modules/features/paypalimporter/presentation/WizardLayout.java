@@ -6,16 +6,16 @@ package com.moneydance.modules.features.paypalimporter.presentation;
 import com.jgoodies.common.internal.ResourceBundleAccessor;
 import com.jgoodies.common.internal.StringResourceAccessor;
 import com.jgoodies.common.swing.MnemonicUtils;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.builder.PanelBuilder;
+import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.CC;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.Sizes;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.builder.DefaultFormBuilder;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.builder.PanelBuilder;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.factories.Borders;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.factories.CC;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.CellConstraints;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.FormLayout;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.RowSpec;
-import com.moneydance.modules.features.paypalimporter.jgoodies.forms.layout.Sizes;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.awt.Dimension;
@@ -63,7 +63,8 @@ class WizardLayout extends JDialog {
 
     /**
      * Create the frame.
-     * @param owner
+     * @param owner the {@code Frame} from which the dialog is displayed
+     * @param mdGUI {@code MoneydanceGUI} that can resolve i18n translations
      * @param resourceBundle the resource bundle used to lookup i15d strings
      */
     WizardLayout(
@@ -162,7 +163,7 @@ class WizardLayout extends JDialog {
         builder.leadingColumnOffset(0);
         this.progressBar.setPreferredSize(
                 new Dimension(
-                        2 * Sizes.DLUX21.getPixelSize(this),
+                        2 * Sizes.DLUX21.getPixelSize(this, true),
                         this.progressBar.getPreferredSize().height));
         builder.append(this.progressBar);
         builder.nextColumn(5);
