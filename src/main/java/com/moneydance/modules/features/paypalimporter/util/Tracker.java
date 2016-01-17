@@ -3,15 +3,14 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
-import com.dmurph.tracking.AnalyticsConfigData;
-import com.dmurph.tracking.JGoogleAnalyticsTracker;
-import com.dmurph.tracking.JGoogleAnalyticsTracker.GoogleAnalyticsVersion;
+import com.brsanthu.googleanalytics.EventHit;
+import com.brsanthu.googleanalytics.GoogleAnalytics;
+import com.brsanthu.googleanalytics.GoogleAnalyticsConfig;
 
 import java.net.Authenticator;
-import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.net.SocketAddress;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A facade for dispatching Google Analytics tracking information.
@@ -23,7 +22,7 @@ public final class Tracker {
     private final String fullVersion;
     private final String build;
 
-    private final JGoogleAnalyticsTracker analyticsTracker;
+    private final GoogleAnalytics analyticsTracker;
 
     Tracker(final int argBuild,
             final String argExtensionName,
@@ -32,55 +31,48 @@ public final class Tracker {
         this.fullVersion = String.format("Moneydance %s", argFullVersion);
         this.build       = String.format("%s v%d", argExtensionName, argBuild);
 
-        if (!Proxy.NO_PROXY.equals(Tracker.getProxy())) {
-            JGoogleAnalyticsTracker.setProxy(Tracker.getProxy());
+        Settings settings = Helper.INSTANCE.getSettings();
+        boolean enabled = StringUtils.isNotEmpty(settings.getTrackingCode());
+
+        GoogleAnalyticsConfig config = new GoogleAnalyticsConfig();
+        config.setEnabled(enabled);
+
+        final Preferences prefs = Helper.INSTANCE.getPreferences();
+        if (prefs.hasProxy()) {
+            config.setProxyHost(prefs.getProxyHost());
+            config.setProxyPort(prefs.getProxyPort());
+
+            if (prefs.hasProxyAuthentication()) {
+                config.setProxyUserName(prefs.getProxyUsername());
+                config.setProxyPassword(prefs.getProxyPassword());
+                Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication
+                    getPasswordAuthentication() {
+                        return new PasswordAuthentication(
+                                prefs.getProxyUsername(),
+                                prefs.getProxyPassword().toCharArray());
+                    }
+                });
+            }
         }
-        AnalyticsConfigData config = new AnalyticsConfigData(argTrackingCode);
-        this.analyticsTracker = new JGoogleAnalyticsTracker(
-                config,
-                GoogleAnalyticsVersion.V_4_7_2);
+        this.analyticsTracker = new GoogleAnalytics(config, argTrackingCode);
     }
 
     public void track(final EventName eventName) {
-        this.analyticsTracker.trackEvent(
+        this.analyticsTracker.postAsync(new EventHit(
                 this.fullVersion,
                 eventName.toString(),
-                this.build);
+                this.build,
+                null));
     }
 
     public void track(final String eventName) {
-        this.analyticsTracker.trackEvent(
+        this.analyticsTracker.postAsync(new EventHit(
                 this.fullVersion,
                 eventName,
-                this.build);
-    }
-
-    private static Proxy getProxy() {
-        final Preferences prefs = Helper.INSTANCE.getPreferences();
-        if (!prefs.hasProxy()) {
-            return Proxy.NO_PROXY;
-        }
-
-        final SocketAddress socketAddress = new InetSocketAddress(
-                prefs.getProxyHost(),
-                prefs.getProxyPort());
-
-        boolean authProxy = prefs.hasProxyAuthentication();
-
-        Proxy.Type proxyType = Proxy.Type.HTTP;
-
-        if (authProxy) {
-            proxyType = Proxy.Type.SOCKS;
-            Authenticator.setDefault(new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(
-                            prefs.getProxyUsername(),
-                            prefs.getProxyPassword().toCharArray());
-                }
-            });
-        }
-        return new Proxy(proxyType, socketAddress);
+                this.build,
+                null));
     }
 
     /**
@@ -96,7 +88,7 @@ public final class Tracker {
 
         private final String eventString;
 
-        private EventName(final String argEventString) {
+        EventName(final String argEventString) {
             this.eventString = argEventString;
         }
 
