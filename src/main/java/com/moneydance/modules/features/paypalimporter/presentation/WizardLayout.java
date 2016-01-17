@@ -3,16 +3,13 @@
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
+import com.infinitekind.moneydance.model.Account;
 import com.jgoodies.common.internal.ResourceBundleAccessor;
 import com.jgoodies.common.internal.StringResourceAccessor;
 import com.jgoodies.common.swing.MnemonicUtils;
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.builder.PanelBuilder;
-import com.jgoodies.forms.factories.Borders;
-import com.jgoodies.forms.factories.CC;
+import com.jgoodies.forms.builder.FormBuilder;
+import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.Sizes;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
@@ -27,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
@@ -45,16 +43,14 @@ class WizardLayout extends JDialog {
 
     private static final long serialVersionUID = 1L;
 
-    private static final RowSpec GAP_ROW = RowSpec.createGap(Sizes.DLUX9);
-
-    protected final PanelBuilder panelBuilder;
+    protected final JPanel jpanel;
     protected final DateRangeChooser dateRanger;
     protected final JTextField txtUsername;
     protected final AbstractButton btnHelp;
     protected final JPasswordField txtPassword;
     protected final JTextField txtSignature;
     protected final AbstractButton rdBtnExistingAcct;
-    protected final JComboBox comboBoxAccts;
+    protected final JComboBox<Account> comboBoxAccts;
     protected final AbstractButton rdBtnNewAcct;
     protected final JComponent comboBoxDateRange;
     protected final JButton btnProceed;
@@ -86,105 +82,91 @@ class WizardLayout extends JDialog {
         this.txtPassword = new JPasswordField();
         this.txtSignature = new JTextField();
         this.rdBtnExistingAcct = new JRadioButton();
-        this.comboBoxAccts = new JComboBox();
+        this.comboBoxAccts = new JComboBox<Account>();
         this.rdBtnNewAcct = new JRadioButton();
         this.comboBoxDateRange = this.dateRanger.getChoice();
         this.progressBar = new JProgressBar();
         this.btnCancel = new JButton();
         this.btnProceed = new JButton();
 
-        // add rows dynamically
-        final FormLayout layout = new FormLayout(
-                Helper.INSTANCE.getSettings().getColumnSpecs());
-
-        DefaultFormBuilder builder = new DefaultFormBuilder(
-                layout, localizer);
-        builder.border(Borders.DIALOG);
-
         PromptSupport.setPrompt(
-                localizer.getString("hint_username"),
-                this.txtUsername);
+            localizer.getString("hint_username"),
+            this.txtUsername);
+        PromptSupport.setPrompt(
+            localizer.getString("hint_password"),
+            this.txtPassword);
+        PromptSupport.setPrompt(
+            localizer.getString("hint_signature"),
+            this.txtSignature);
         this.txtUsername.setToolTipText(null);
-        builder.appendI15d("label_username", this.txtUsername,  9);
-        builder.append(this.btnHelp);
-
-        PromptSupport.setPrompt(
-                localizer.getString("hint_password"),
-                this.txtPassword);
         this.txtPassword.setToolTipText(null);
-        builder.appendI15d("label_password", this.txtPassword, 11);
-
-        PromptSupport.setPrompt(
-                localizer.getString("hint_signature"),
-                this.txtSignature);
         this.txtSignature.setToolTipText(null);
-        builder.appendI15d("label_signature", this.txtSignature, 11);
 
-        builder.appendRow(GAP_ROW);
-        builder.nextLine(2);
-
-        builder.appendI15d(
-                String.format("%s%s",
-                        mdGUI.getStr("import_into_acct"),
-                        localizer.getString("label_colon")),
-                        this.rdBtnExistingAcct, 3);
-        builder.append(this.comboBoxAccts, 7);
         MnemonicUtils.configure(
-                this.rdBtnExistingAcct,
-                String.format(
-                        "%s%s",
-                        mdGUI.getStr("existing_account"),
-                        localizer.getString("label_colon")));
-
-        builder.leadingColumnOffset(2);
-        builder.append(this.rdBtnNewAcct, 11);
+            this.rdBtnExistingAcct,
+            String.format(
+                "%s%s",
+                mdGUI.getStr("existing_account"),
+                localizer.getString("label_colon")));
         MnemonicUtils.configure(
-                this.rdBtnNewAcct,
-                mdGUI.getStr("new_account"));
-
-        builder.appendRow(GAP_ROW);
-        builder.nextLine(2);
-
-        builder.leadingColumnOffset(0);
-        builder.append(this.dateRanger.getChoiceLabel());
-        builder.append(this.comboBoxDateRange, 11);
-
-        builder.leadingColumnOffset(2);
-        builder.append(this.dateRanger.getStartField(), 3);
-        builder.appendI15d("label_custom_date_to",
-                this.dateRanger.getEndField(), 5);
-
-        builder.appendRow(GAP_ROW);
-        builder.nextLine(2);
-
-        builder.appendGlueRow();
-        builder.nextLine(1);
-
-        builder.leadingColumnOffset(0);
-        this.progressBar.setPreferredSize(
-                new Dimension(
-                        2 * Sizes.DLUX21.getPixelSize(this, true),
-                        this.progressBar.getPreferredSize().height));
-        builder.append(this.progressBar);
-        builder.nextColumn(5);
-        builder.add(this.btnCancel,
-                CC.xyw(
-                        builder.getColumn(),
-                        builder.getRow(),
-                        2,
-                        CellConstraints.RIGHT,
-                        CellConstraints.DEFAULT));
+            this.rdBtnNewAcct,
+            mdGUI.getStr("new_account"));
         MnemonicUtils.configure(
-                this.btnCancel,
-                mdGUI.getStr("cancel"));
-        builder.nextColumn(3);
-        builder.append(this.btnProceed, 3);
+            this.btnCancel,
+            mdGUI.getStr("cancel"));
         MnemonicUtils.configure(
-                this.btnProceed,
-                localizer.getString("label_import_button"));
-        this.panelBuilder = builder;
+            this.btnProceed,
+            localizer.getString("label_import_button"));
 
-        this.setContentPane(this.panelBuilder.getPanel());
+        this.progressBar.setPreferredSize(new Dimension(
+            2 * Sizes.DLUX21.getPixelSize(this, true),
+            this.progressBar.getPreferredSize().height));
+
+
+        this.jpanel = FormBuilder.create()
+            .columns(Helper.INSTANCE.getSettings().getColumnSpecs())
+            .rows(Helper.INSTANCE.getSettings().getRowsSpecs())
+            .debug(false)
+            .padding(Paddings.DIALOG)
+
+            .add(localizer.getString("label_username"))
+                .labelFor(this.txtUsername).xy(1, 1)
+            .add(this.txtUsername).xyw(3, 1, 9)
+            .add(this.btnHelp).xy(13, 1)
+
+            .add(localizer.getString("label_password"))
+                .labelFor(this.txtPassword).xy(1, 3)
+            .add(this.txtPassword).xyw(3, 3, 11)
+
+            .add(localizer.getString("label_signature"))
+                .labelFor(this.txtSignature).xy(1, 5)
+            .add(this.txtSignature).xyw(3, 5, 11)
+
+            .add(String.format("%s%s",
+                mdGUI.getStr("import_into_acct"),
+                localizer.getString("label_colon")))
+                .labelFor(this.rdBtnExistingAcct).xy(1, 7)
+
+            .add(this.rdBtnExistingAcct).xyw(3, 7, 3)
+                .add(this.comboBoxAccts).xyw(7, 7, 7)
+            .add(this.rdBtnNewAcct).xyw(3, 9, 11)
+
+            .add(this.dateRanger.getChoiceLabel())
+                .labelFor(this.comboBoxDateRange).xy(1, 11)
+            .add(this.comboBoxDateRange).xyw(3, 11, 11)
+
+            .add(this.dateRanger.getStartField()).xyw(3, 13, 3)
+            .add(localizer.getString("label_custom_date_to"))
+                .labelFor(this.dateRanger.getEndField()).xyw(7, 13, 1)
+            .add(this.dateRanger.getEndField()).xyw(9, 13, 5)
+
+            .add(this.progressBar).xy(1, 15)
+            .add(this.btnCancel)
+                .xyw(8, 15, 2, CellConstraints.RIGHT, CellConstraints.DEFAULT)
+            .add(this.btnProceed).xyw(11, 15, 3)
+            .build();
+
+        this.setContentPane(this.jpanel);
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.pack();
     }
