@@ -4,11 +4,6 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="lib" path="lib/JGoogleAnalyticsTracker-1.2.0.jar" sourcepath="/Users/fbreunig/.m2/repository/com/dmurph/JGoogleAnalyticsTracker/1.2.0/JGoogleAnalyticsTracker-1.2.0-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://www.dmurph.com/jgoogleanalyticstracker/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/"/>
@@ -54,6 +49,13 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/PayPalImporter/lib/jgoodies-forms-1.10-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/google-analytics-java-1.1.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://brsanthu.github.io/google-analytics-java/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/httpclient-4.3.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/jmockit-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/jmockit-coverage-1.5.jar"/>

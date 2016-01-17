@@ -43,11 +43,13 @@
             <pathelement path="${lib}/commons-lang-2.6.jar"/>
             <pathelement path="${lib}/commons-lang3-3.4.jar"/>
             <pathelement path="${lib}/commons-configuration-1.10.jar"/>
+            <pathelement path="${lib}/httpcore-4.3.jar"/>
+            <pathelement path="${lib}/httpclient-4.3.jar"/>
             <pathelement path="${lib}/jcip-annotations-1.0.jar"/>
             <pathelement path="${lib}/jgoodies-common-1.9.0.jar"/>
             <pathelement path="${lib}/jgoodies-forms-1.10.jar"/>
             <pathelement path="${lib}/jgoodies-validation-2.5.1.jar"/>
-            <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
+            <pathelement path="${lib}/google-analytics-java-1.1.2.jar"/>
             <pathelement path="${lib}/merchantsdk-2.14.117.jar"/>
             <pathelement path="${lib}/paypal-core-paypalimporter-1.7.0.jar"/>
             <pathelement path="${lib}/prompt.jar"/>
@@ -61,12 +63,14 @@
         <pathelement path="${lib}/commons-lang3-3.4.jar"/>
         <pathelement path="${lib}/commons-logging-1.2.jar"/>
         <pathelement path="${lib}/dropbox-java-sdk-1.5.jar"/>
+        <pathelement path="${lib}/httpcore-4.3.jar"/>
+        <pathelement path="${lib}/httpclient-4.3.jar"/>
         <pathelement path="${lib}/java-hamcrest-2.0.0.0.jar"/>
         <pathelement path="${lib}/jcip-annotations-1.0.jar"/>
         <pathelement path="${lib}/jgoodies-common-1.9.0.jar"/>
         <pathelement path="${lib}/jgoodies-forms-1.10.jar"/>
         <pathelement path="${lib}/jgoodies-validation-2.5.1.jar"/>
-        <pathelement path="${lib}/JGoogleAnalyticsTracker-1.2.0.jar"/>
+        <pathelement path="${lib}/google-analytics-java-1.1.2.jar"/>
         <pathelement path="${lib}/jmockit-coverage-1.5.jar"/>
         <pathelement path="${lib}/jmockit-1.5.jar"/>
         <pathelement path="${lib}/junit-4.12.jar"/>
@@ -169,12 +173,14 @@
             <include name="commons-lang-2.6.jar"/>
             <include name="commons-lang3-3.4.jar"/>
             <include name="commons-configuration-1.10.jar"/>
+            <include name="httpcore-4.3.jar"/>
+            <include name="httpclient-4.3.jar"/>
             <include name="jcip-annotations-1.0.jar"/>
             <include name="jgoodies-common-1.9.0.jar"/>
             <include name="jgoodies-forms-1.10.jar"/>
             <include name="jgoodies-validation-2.5.1.jar"/>
             <include name="commons-logging-1.2.jar"/>
-            <include name="JGoogleAnalyticsTracker-1.2.0.jar"/>
+            <include name="google-analytics-java-1.1.2.jar"/>
             <include name="merchantsdk-2.14.117.jar"/>
             <include name="paypal-core-paypalimporter-1.7.0.jar"/>
             <include name="prompt.jar"/>
@@ -218,6 +224,8 @@
       <rule pattern="com.jgoodies.**"
             result="com.moneydance.modules.features.paypalimporter.jgoodies.@1"/>
 
+      <rule pattern="org.apache.http.**"
+            result="com.moneydance.modules.features.paypalimporter.apache.http.@1"/>
     </jarjar>
 
     <move file="${jar.file}" tofile="${build}/paypalimporter.jar"/>
@@ -369,7 +377,7 @@
       <doctitle><![CDATA[<h1>PayPal Importer for Moneydance</h1>]]></doctitle>
       <link href="http://download.oracle.com/javase/6/docs/api/"/>
       <link href="http://moneydance.com/dev/apidoc/"/>
-      <link href="http://www.dmurph.com/jgoogleanalyticstracker/"/>
+      <link href="https://brsanthu.github.io/google-analytics-java/javadocs/"/>
       <link href="http://www.slf4j.org/apidocs/"/>
       <link href="http://commons.apache.org/configuration/apidocs/"/>
       <link href="https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/"/>
