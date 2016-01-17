@@ -74,6 +74,8 @@ public final class Localizable {
     }
 
     /**
+     * @param currency Default currency that will be used.
+     * @param currencies All currencies that were found for the PayPal account.
      * @return the question when multiple currencies are available
      */
     public String getQuestionMessageMultipleCurrencies(
@@ -92,6 +94,7 @@ public final class Localizable {
     }
 
     /**
+     * @param errorCode PayPal-specific numeric error code
      * @return the user-friendly error message for a given error code or null
      *  if none is found
      */
@@ -134,6 +137,7 @@ public final class Localizable {
     }
 
     /**
+     * @param errorMessage Orginal error message that should be displayed
      * @return the error message when service call failed
      */
     public String getErrorMessageServiceCallFailed(final String errorMessage) {
