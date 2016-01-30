@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="Android Application Rules"
+    xmlns="http://pmd.sf.net/ruleset/1.0.0"
+    xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 
+                        http://pmd.sf.net/ruleset_xml_schema.xsd" >
+
+    <rule ref="rulesets/java/basic.xml"/>
+    <rule ref="rulesets/java/braces.xml"/>
+    <rule ref="rulesets/java/clone.xml"/>
+    <rule ref="rulesets/java/codesize.xml">
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="ModifiedCyclomaticComplexity"/>
+        <exclude name="NPathComplexity"/>
+        <exclude name="StdCyclomaticComplexity"/>
+        <exclude name="TooManyMethods"/>
+        <exclude name="TooManyFields"/>
+    </rule>
+    <rule ref="rulesets/java/design.xml">
+        <exclude name="UseVarargs"/>
+        <exclude name="NonStaticInitializer"/>
+    </rule>
+    <rule ref="rulesets/java/empty.xml"/>
+    <rule ref="rulesets/java/finalizers.xml"/>
+    <rule ref="rulesets/java/imports.xml"/>
+    <rule ref="rulesets/java/junit.xml">
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
+    </rule>
+    <rule ref="rulesets/java/logging-jakarta-commons.xml"/>
+    <rule ref="rulesets/java/logging-java.xml">
+        <exclude name="AvoidPrintStackTrace"/>
+    </rule>
+    <rule ref="rulesets/java/migrating.xml"/>
+    <rule ref="rulesets/java/naming.xml">
+        <exclude name="LongVariable"/>
+    </rule>
+    <rule ref="rulesets/java/strictexception.xml">
+        <exclude name="AvoidCatchingGenericException"/>
+    </rule>
+    <rule ref="rulesets/java/strings.xml"/>
+    <rule ref="rulesets/java/sunsecure.xml"/>
+    <rule ref="rulesets/java/typeresolution.xml"/>
+    <rule ref="rulesets/java/unnecessary.xml"/>
+    <rule ref="rulesets/java/unusedcode.xml"/>
+</ruleset>

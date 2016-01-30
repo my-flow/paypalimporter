@@ -1,7 +1,7 @@
-#java specific
+# java specific
 *.class
  
-## generic files to ignore
+# generic files to ignore
 *~
 *.lock
 *.DS_Store
@@ -9,9 +9,24 @@
 *.out
 
 # project specific
-docs/*
-target
-lib/moneydance-source.jar
 logs
-src/main/config/priv_key
-src/main/config/pub_key
+config/priv_key
+config/pub_key
+
+# gradle
+.gradle
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# Intellij
+*.iml
+
+# directory-based project format:
+.idea/
+
+# file-based project format:
+*.ipr
+*.iws
+

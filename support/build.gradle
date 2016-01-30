@@ -1,0 +1,56 @@
+apply plugin: 'application'
+
+dependencies {
+    compile project(':core')
+
+    runtime('org.slf4j:slf4j-simple:1.7.13')
+    runtime('com.syncthemall:dropbox-java-sdk:1.5.3.2')
+
+    testCompile('junit:junit:4.12')
+
+    testRuntime('org.jmockit:jmockit-coverage:1.21')
+    testRuntime('org.slf4j:slf4j-simple:1.7.13')
+}
+
+mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
+
+test {
+    include 'com/moneydance/modules/features/paypalimporter/**/AllUnitTests.*'
+}
+
+task testAll(type: Test) {
+    doFirst {
+        String jMockit = project.configurations.testRuntime.find {
+            it.name.startsWith("jmockit-coverage")
+        }
+        jvmArgs "-javaagent:${jMockit}"
+        systemProperty 'coverage-classes', 'com.moneydance.modules.features.paypalimporter.*'
+        systemProperty 'coverage-excludes', '*AllUnitTests|*AllTests|*Stub*|*Mock*|*ConsoleRunner*'
+        systemProperty 'coverage-metrics', 'all'
+        systemProperty 'coverage-outputDir', "${project.docsDir}/coverage-report"
+    }
+    include 'com/moneydance/modules/features/paypalimporter/AllTests.*'
+}
+
+task genKeys(type: JavaExec) {
+    description 'Generates a passphrase-protected key pair.'
+    standardInput = System.in
+    classpath = files("$rootDir/lib/extadmin.jar")
+    main = 'com.moneydance.admin.KeyAdmin'
+    args 'genkey', privkeyfile, pubkeyfile
+}
+
+task sign(type: JavaExec) {
+    description 'Signs an MXT file with a private key that must already exist.'
+    onlyIf {
+        new File(privkeyfile as String).exists()
+    }
+    standardInput = System.in
+    classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-1119.jar")
+    main = 'com.moneydance.admin.KeyAdmin'
+    args 'signextjar', privkeyfile, privkeyid, rootProject.name, mxtfile
+}
+
+sign.doLast {
+    new File("$projectDir/s-paypalimporter.mxt").renameTo mxtfile as String
+}
