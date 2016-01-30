@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.7
+
+    ext {
+        privkeyid = '99'
+        privkeyfile = "$rootDir/config/priv_key"
+        pubkeyfile = "$rootDir/config/pub_key"
+        mxtfile = "${project(':core').distsDir}/${rootProject.name}.mxt"
+    }
+
+    repositories {
+        mavenCentral()
+        flatDir dirs: "$rootDir/lib"
+    }
+
+    task checkstyleHtml << {
+        ant.xslt(in: checkstyleMain.reports.xml.destination,
+                style: file("$rootDir/config/checkstyle-noframes-sorted.xsl"),
+                out: new File(checkstyleMain.reports.xml.destination.parent as String, 'main.html'))
+    }
+
+    checkstyleMain.finalizedBy checkstyleHtml
+
+    pmd {
+        ruleSetFiles = files('config/ruleSet.xml')
+    }
+}
+
+task createLibs(type: Exec) {
+    description 'Generates patched libraries from trusted source'
+    commandLine 'sh', 'config/create_libs.sh'
+}
