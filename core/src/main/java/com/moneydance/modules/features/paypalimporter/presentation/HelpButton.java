@@ -20,9 +20,10 @@ final class HelpButton extends JButton {
 
     private static final long serialVersionUID = 1L;
 
+    @SuppressWarnings("nullness")
     HelpButton() {
         super();
-        final Image image =  Helper.INSTANCE.getSettings().getHelpImage();
+        final Image image = Helper.INSTANCE.getSettings().getHelpImage();
         this.setIcon(new ImageIcon(image));
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);

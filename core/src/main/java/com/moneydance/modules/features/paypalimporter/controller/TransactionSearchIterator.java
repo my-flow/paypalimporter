@@ -21,10 +21,10 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.Validate;
-
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+
+import javax.annotation.Nullable;
 
 /**
  * This controller class fetches the transactions iteratively by adjusting
@@ -67,6 +67,7 @@ final class TransactionSearchIterator implements ViewController {
     private final List<OnlineTxn> resultList;
     private final String errorCodeSearchWarning;
 
+    @SuppressWarnings("initialization")
     TransactionSearchIterator(
             final ViewController argViewController,
             final IAccountBook argIAccountBook,
@@ -75,14 +76,6 @@ final class TransactionSearchIterator implements ViewController {
             final CurrencyType argCurrencyType,
             final CurrencyCodeType argCurrencyCode) {
 
-        Validate.notNull(argViewController, "view controller must not be null");
-        Validate.notNull(argIAccountBook, "root account must not be null");
-        Validate.notNull(argServiceProvider,
-                "service provider must not be null");
-        Validate.notNull(argInputData, "input data must not be null");
-        Validate.notNull(argCurrencyType, "currency type must not be null");
-        Validate.notNull(argCurrencyCode, "currency code must not be null");
-        Validate.notNull(argIAccountBook, "root account must not be null");
         this.viewController = argViewController;
         this.accountBook = argIAccountBook;
         this.serviceProvider = argServiceProvider;
@@ -109,8 +102,8 @@ final class TransactionSearchIterator implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> argOnlineTxns,
             final Date argStartDate,
-            final Account argAccount,
-            final String errorCode) {
+            @Nullable final Account argAccount,
+            @Nullable final String errorCode) {
 
         this.resultList.addAll(argOnlineTxns); // aggregate all results
 
@@ -148,7 +141,9 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void unlock(final String text, final Object key) {
+    public void unlock(
+            @Nullable final String text,
+            @Nullable final Object key) {
         if (!this.errorCodeSearchWarning.equals(key)) {
             this.viewController.unlock(text, key);
         }
@@ -158,6 +153,7 @@ final class TransactionSearchIterator implements ViewController {
      * @param endDate The adapted end date which must be an ealier date than
      * the previous end date.
      */
+    @SuppressWarnings("nullness")
     private void callTransactionSearchService(final Date endDate) {
 
         this.serviceProvider.callTransactionSearchService(
@@ -179,7 +175,6 @@ final class TransactionSearchIterator implements ViewController {
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
-            // ESCA-JAVA0166: Account.makeAccount throws generic exception
             try {
                 account = Account.makeAccount(
                         accountBook.getWrappedOriginal(),
@@ -192,7 +187,10 @@ final class TransactionSearchIterator implements ViewController {
                         KEY_ACCOUNT_URL,
                         Helper.INSTANCE.getLocalizable().getUrlNewAccount());
             } catch (Exception e) {
-                LOG.log(Level.WARNING, e.getMessage(), e);
+                final String message = e.getMessage();
+                if (message != null) {
+                    LOG.log(Level.WARNING, message, e);
+                }
                 throw new IllegalStateException(
                         "Could not create account", e);
             }

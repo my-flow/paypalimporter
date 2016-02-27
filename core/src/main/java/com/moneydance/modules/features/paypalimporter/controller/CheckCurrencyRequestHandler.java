@@ -11,8 +11,6 @@ import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
 import java.util.List;
 
-import org.apache.commons.lang3.Validate;
-
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
@@ -31,8 +29,6 @@ extends AbstractRequestHandler<CurrencyCodeType> {
             final IAccountBook argAccountBook,
             final int argAccountNum) {
         super(argViewController);
-
-        Validate.notNull(argAccountBook, "root account must not be null");
         this.accountBook = argAccountBook;
         this.accountNum = argAccountNum;
     }
@@ -43,7 +39,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
             final ServiceResult<CurrencyCodeType> serviceResult) {
 
         List<CurrencyCodeType> currencyCodes = serviceResult.getResults();
-        Validate.notEmpty(currencyCodes, "currency codes must not be empty");
+        assert currencyCodes != null : "@AssumeAssertion(nullness)";
 
         Account useAccount = this.accountBook.getAccountByNum(this.accountNum);
 

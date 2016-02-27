@@ -13,6 +13,8 @@ import java.util.Observer;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
+import javax.annotation.Nullable;
+
 /**
  * Controller interface, strategy pattern.
  *
@@ -42,8 +44,8 @@ public interface ViewController extends Observer {
      * @param key identifier of the related input field (can be null)
      */
     void unlock(
-            final String text,
-            final Object key);
+            @Nullable final String text,
+            @Nullable final Object key);
 
     /**
      * This hook is called after a service call has checked the available
@@ -72,8 +74,8 @@ public interface ViewController extends Observer {
     void transactionsImported(
             final List<OnlineTxn> onlineTxns,
             final Date argStartDate,
-            final Account account,
-            final String errorCode);
+            @Nullable final Account account,
+            @Nullable final String errorCode);
 
     /**
      * Show instructions to the user how to find the credentials.

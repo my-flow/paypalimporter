@@ -17,6 +17,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -36,30 +37,31 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
  */
 public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
-    private List<BasicAmountType> balanceHoldings;
-    private AckCodeType ack;
-    private List<ErrorType> errors;
+    @Nullable private List<BasicAmountType> balanceHoldings;
+    @Nullable private AckCodeType ack;
+    @Nullable private List<ErrorType> errors;
 
-    private UnknownHostException unknownHostException;
-    private SocketException socketException;
-    private IOException ioException;
-    private SSLConfigurationException sslConfigurationException;
-    private InvalidCredentialException invalidCredentialException;
-    private HttpErrorException httpErrorException;
-    private InvalidResponseDataException invalidResponseDataException;
-    private ClientActionRequiredException clientActionRequiredException;
-    private MissingCredentialException missingCredentialException;
-    private OAuthException oAuthException;
-    private InterruptedException interruptedException;
-    private ParserConfigurationException parserConfigurationException;
-    private SAXException saxException;
-    private List<PaymentTransactionSearchResultType> paymentTransactions;
+    @Nullable private UnknownHostException unknownHostException;
+    @Nullable private SocketException socketException;
+    @Nullable private IOException ioException;
+    @Nullable private SSLConfigurationException sslConfigurationException;
+    @Nullable private InvalidCredentialException invalidCredentialException;
+    @Nullable private HttpErrorException httpErrorException;
+    @Nullable private InvalidResponseDataException invalidResponseDataException;
+    @Nullable private ClientActionRequiredException clientActionRequiredException;
+    @Nullable private MissingCredentialException missingCredentialException;
+    @Nullable private OAuthException oAuthException;
+    @Nullable private InterruptedException interruptedException;
+    @Nullable private ParserConfigurationException parserConfigurationException;
+    @Nullable private SAXException saxException;
+    @Nullable private List<PaymentTransactionSearchResultType> paymentTransactions;
 
     public ServiceMock(final InputStream inputStream) throws IOException {
         super(inputStream);
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public GetBalanceResponseType getBalance(final GetBalanceReq getBalanceReq)
             throws SSLConfigurationException, InvalidCredentialException,
             IOException, HttpErrorException, InvalidResponseDataException,
@@ -115,6 +117,7 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public TransactionSearchResponseType transactionSearch(final TransactionSearchReq transactionSearchReq)
             throws SSLConfigurationException, InvalidCredentialException,
             IOException, HttpErrorException, InvalidResponseDataException,

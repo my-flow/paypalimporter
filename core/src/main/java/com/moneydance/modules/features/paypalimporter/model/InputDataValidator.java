@@ -3,6 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.model;
 
+import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
@@ -58,21 +59,25 @@ public final class InputDataValidator implements Validator<InputData> {
         return ValidationResult.unmodifiableResult(result);
     }
 
+    @SuppressWarnings("nullness")
     private static boolean isValidUsername(final InputData data) {
         return StringUtils.isNotBlank(data.getUsername());
     }
 
+    @SuppressWarnings("nullness")
     private static boolean isValidPassword(final InputData data) {
         return ArrayUtils.isNotEmpty(data.getPassword(false));
     }
 
+    @SuppressWarnings("nullness")
     private static boolean isValidSignature(final InputData data) {
         return StringUtils.isNotBlank(data.getSignature());
     }
 
     private static boolean isValidDateRange(final InputData data) {
-        return data.getDateRange() != null
-                && data.getDateRange().getStartDateInt()
-                <= data.getDateRange().getEndDateInt();
+        final DateRange dateRange = data.getDateRange();
+        return dateRange != null
+                && dateRange.getStartDateInt()
+                <= dateRange.getEndDateInt();
     }
 }

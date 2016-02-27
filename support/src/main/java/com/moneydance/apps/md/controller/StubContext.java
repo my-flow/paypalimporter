@@ -8,6 +8,7 @@ import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.extensionapi.AccountEditor;
 import com.moneydance.apps.md.view.HomePageView;
 
+import javax.annotation.Nullable;
 import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
@@ -29,21 +30,30 @@ public final class StubContext extends Main {
     private static final Logger LOG =
             Logger.getLogger(StubContext.class.getName());
 
-    private final FeatureModule   featureModule;
+    @Nullable private final FeatureModule featureModule;
     private final StubAccountBook accountBook;
-    private       UserPreferences userPreferences;
+    @Nullable private UserPreferences userPreferences;
 
-    public StubContext(final FeatureModule argFeatureModule,
+    @SuppressWarnings("nullness")
+    public StubContext(@Nullable final FeatureModule argFeatureModule,
             final StubAccountBook argAccountBook) {
         super();
         this.featureModule = argFeatureModule;
         this.accountBook = argAccountBook;
         try {
-            this.initializeApp();
+            if (!this.isInitialized()) {
+                this.initializeApp();
+            }
         } catch (Error e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.SEVERE, message, e);
+            }
         } catch (Exception e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.WARNING, message, e);
+            }
         }
     }
 
@@ -63,7 +73,7 @@ public final class StubContext extends Main {
 
     @Override
     public String getVersion() {
-        return null;
+        return "0";
     }
 
     @Override
@@ -129,6 +139,7 @@ public final class StubContext extends Main {
                     "Stub context returns user preferences from file %s",
                     preferencesFile.getAbsolutePath()));
         }
+        assert this.userPreferences != null : "@AssumeAssertion(nullness)";
         return this.userPreferences;
     }
 }

@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
+
+import javax.annotation.Nullable;
 
 /**
  * Decorator class for an <code>OnlineService</code> that saves user name,
@@ -31,7 +32,6 @@ public final class PayPalOnlineService {
     private final OnlineService onlineService;
 
     PayPalOnlineService(final OnlineService argOnlineService) {
-        Validate.notNull(argOnlineService, "online service must not be null");
         this.onlineService = argOnlineService;
     }
 
@@ -43,13 +43,11 @@ public final class PayPalOnlineService {
      * @param accountBook Global account book
      * @param accountId Identifier of the account
      */
+    @SuppressWarnings("nullness")
     public void assignToAccount(
             final IAccountBook accountBook,
             final int accountId) {
-        Validate.notNull(accountBook, "account book must not be null");
-
         final Account account = accountBook.getAccountByNum(accountId);
-        Validate.notNull(account, "account must not be null");
 
         if (this.onlineService.isSameAs(account.getBankingFI())) {
             return;
@@ -70,7 +68,8 @@ public final class PayPalOnlineService {
         }
     }
 
-    public void setUsername(final int accountId, final String username) {
+    @SuppressWarnings("nullness")
+    public void setUsername(final int accountId, @Nullable final String username) {
         this.onlineService.setUserId(
                 buildRealm(accountId),
                 null,
@@ -80,29 +79,34 @@ public final class PayPalOnlineService {
                 buildRealm(accountId));
     }
 
+    @SuppressWarnings("nullness")
     public String getUsername(final int accountId) {
         String username = this.onlineService.getUserId(
                 buildRealm(accountId),
                 null);
-        if (StringUtils.isBlank(username) && this.getFirstRealm() != null) {
-            username = this.onlineService.getUserId(this.getFirstRealm(), null);
+        final String firstRealm = this.getFirstRealm();
+        if (StringUtils.isBlank(username) && firstRealm != null) {
+            username = this.onlineService.getUserId(firstRealm, null);
         }
         return username;
     }
 
-    public void setPassword(final int accountId, final char[] password) {
+    @SuppressWarnings("nullness")
+    public void setPassword(final int accountId, @Nullable final char[] password) {
         this.onlineService.cacheAuthentication(
                 buildAuthKey(buildRealm(accountId)),
                 String.valueOf(password));
     }
 
+    @SuppressWarnings("nullness")
     public char[] getPassword(final int accountId) {
         Object authObj = this.onlineService.getCachedAuthentication(
                 buildAuthKey(buildRealm(accountId)));
         char[] result;
-        if (authObj == null && this.getFirstRealm() != null) {
+        final String firstRealm = this.getFirstRealm();
+        if (authObj == null && firstRealm != null) {
             authObj = this.onlineService.getCachedAuthentication(
-                    buildAuthKey(this.getFirstRealm()));
+                    buildAuthKey(firstRealm));
         }
         if (authObj == null) {
             result = null;
@@ -112,7 +116,8 @@ public final class PayPalOnlineService {
         return result;
     }
 
-    public void setSignature(final int accountId, final String signature) {
+    @SuppressWarnings("initialization")
+    public void setSignature(final int accountId, @Nullable final String signature) {
         this.onlineService.addParameters(new HashMap<String, String>() {
             private static final long serialVersionUID = 1L;
             {
@@ -121,18 +126,20 @@ public final class PayPalOnlineService {
         });
     }
 
+    @SuppressWarnings("nullness")
     public String getSignature(final int accountId) {
         String signature = this.onlineService.getParameter(
                 buildSignatureKey(buildRealm(accountId)),
                 null);
-        if (signature == null && this.getFirstRealm() != null) {
+        final String firstRealm = this.getFirstRealm();
+        if (signature == null && firstRealm != null) {
             signature = this.onlineService.getParameter(
-                    buildSignatureKey(this.getFirstRealm()), null);
+                    buildSignatureKey(firstRealm), null);
         }
         return signature;
     }
 
-    private String getFirstRealm() {
+    @Nullable private String getFirstRealm() {
         final List<String> realms = this.onlineService.getRealms();
         if (realms != null && !realms.isEmpty()) {
             LOG.config(String.format("realms[0]: %s", realms.get(0)));

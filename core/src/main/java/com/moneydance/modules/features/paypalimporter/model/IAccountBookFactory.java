@@ -5,11 +5,13 @@ package com.moneydance.modules.features.paypalimporter.model;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Florian J. Breunig
  */
 public interface IAccountBookFactory {
 
-    IAccountBook createAccountBook(final FeatureModuleContext context);
+    @Nullable IAccountBook createAccountBook(final FeatureModuleContext context);
 
 }

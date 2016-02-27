@@ -8,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Observer;
 
-import org.apache.commons.lang3.Validate;
-
 import com.infinitekind.moneydance.model.Account;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
+
+import javax.annotation.Nullable;
 
 /**
  * This reactive class forwards UI events to its observers. The observers can
@@ -38,18 +38,18 @@ public final class WizardHandler extends WizardController {
         PROCEED;
     }
 
+    @SuppressWarnings("nullness")
     public WizardHandler(
-            final Frame owner,
+            @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
             final Observer argObserver) {
         super(owner, mdGUI);
-        Validate.notNull(mdGUI, "Moneydance GUI must not be null");
-        Validate.notNull(argObserver, "observer must not be null");
         this.observer = argObserver;
         this.inputData = new InputData(null,  null,  null,  -1);
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public void actionPerformed(final ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(this.btnHelp)) {
             this.observer.update(null, ExecutedAction.SHOW_HELP);
@@ -84,6 +84,7 @@ public final class WizardHandler extends WizardController {
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public void windowClosing(final WindowEvent event) {
         if (!this.progressBar.isVisible()) {
             this.observer.update(null, ExecutedAction.CANCEL);

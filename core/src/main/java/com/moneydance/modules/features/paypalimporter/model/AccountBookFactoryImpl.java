@@ -6,6 +6,7 @@ package com.moneydance.modules.features.paypalimporter.model;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 
+import javax.annotation.Nullable;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -20,9 +21,9 @@ public enum AccountBookFactoryImpl implements IAccountBookFactory {
             new Hashtable<AccountBook, AccountBookImpl>();
 
     @Override
-    public AccountBookImpl createAccountBook(
+    @Nullable public AccountBookImpl createAccountBook(
             final FeatureModuleContext context) {
-      AccountBook accountBook = context.getCurrentAccountBook();
+      final AccountBook accountBook = context.getCurrentAccountBook();
       if (accountBook == null) {
           return null;
       }
@@ -32,5 +33,6 @@ public enum AccountBookFactoryImpl implements IAccountBookFactory {
       this.multitons.clear();
       AccountBookImpl value = new AccountBookImpl(context);
       this.multitons.put(accountBook, value);
-      return value;    }
+      return value;
+    }
 }

@@ -12,6 +12,7 @@ import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
+import javax.annotation.Nullable;
 import java.awt.Image;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Florian J. Breunig
  */
+@SuppressWarnings("nullness")
 public final class Main extends FeatureModule implements Observer {
 
     /**
@@ -29,10 +31,10 @@ public final class Main extends FeatureModule implements Observer {
      */
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
-    private final Preferences    prefs;
-    private final Settings       settings;
-    private       Tracker        tracker;
-    private       ViewController viewController;
+    private final Preferences prefs;
+    private final Settings settings;
+    @Nullable private Tracker tracker;
+    @Nullable private ViewController viewController;
 
     static {
         Helper.loadLoggerConfiguration();

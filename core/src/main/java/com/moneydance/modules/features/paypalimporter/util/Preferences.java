@@ -12,7 +12,7 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.util.Locale;
 
-import org.apache.commons.lang3.Validate;
+import javax.annotation.Nullable;
 
 /**
  * This preferences class contains the values the user can control in the
@@ -28,9 +28,9 @@ public final class Preferences {
 
     private final IAccountBookFactory accountBookFactory;
 
-    private UserPreferences userPreferences;
-    private IAccountBook accountBook;
-    private PayPalOnlineService profile;
+    @Nullable private UserPreferences userPreferences;
+    @Nullable private IAccountBook accountBook;
+    @Nullable private PayPalOnlineService profile;
 
     Preferences(final IAccountBookFactory argAccountBookFactory) {
         this.accountBookFactory = argAccountBookFactory;
@@ -49,9 +49,8 @@ public final class Preferences {
         if (this.userPreferences == null) {
             Helper.INSTANCE.setChanged();
             Helper.INSTANCE.notifyObservers(Boolean.FALSE);
-            Validate.notNull(this.userPreferences,
-                    "user preferences not initialized");
         }
+        assert this.userPreferences != null : "@AssumeAssertion(nullness)";
         return this.userPreferences;
     }
 
@@ -59,8 +58,8 @@ public final class Preferences {
         if (this.accountBook == null) {
             Helper.INSTANCE.setChanged();
             Helper.INSTANCE.notifyObservers(Boolean.FALSE);
-            Validate.notNull(this.accountBook, "Account book not initialized");
         }
+        assert this.accountBook != null : "@AssumeAssertion(nullness)";
         return this.accountBook;
     }
 
@@ -68,12 +67,12 @@ public final class Preferences {
         if (this.profile == null) {
             Helper.INSTANCE.setChanged();
             Helper.INSTANCE.notifyObservers(Boolean.FALSE);
-            Validate.notNull(this.profile,
-                    "PayPal online service not initialized");
         }
+        assert this.profile != null : "@AssumeAssertion(nullness)";
         return this.profile;
     }
 
+    @SuppressWarnings("nullness")
     public void setAllWritablePreferencesToNull() {
         this.getUserPreferences().setSetting(KEY_FIRST_RUN, (String) null);
         OnlineServiceFactory.removeService(this.getAccountBook());
@@ -135,7 +134,7 @@ public final class Preferences {
                 this.getAccountBook(), accountId);
     }
 
-    public void setUsername(final int accountId, final String username) {
+    public void setUsername(final int accountId, @Nullable final String username) {
         this.getPayPalOnlineService().setUsername(accountId, username);
     }
 
@@ -143,15 +142,17 @@ public final class Preferences {
         return this.getPayPalOnlineService().getUsername(accountId);
     }
 
-    public void setPassword(final int accountId, final char[] password) {
+    @SuppressWarnings("nullness")
+    public void setPassword(final int accountId, @Nullable final char[] password) {
         this.getPayPalOnlineService().setPassword(accountId, password);
     }
 
+    @SuppressWarnings("nullness")
     public char[] getPassword(final int accountId) {
         return this.getPayPalOnlineService().getPassword(accountId);
     }
 
-    public void setSignature(final int accountId, final String signature) {
+    public void setSignature(final int accountId, @Nullable final String signature) {
         this.getPayPalOnlineService().setSignature(accountId, signature);
     }
 

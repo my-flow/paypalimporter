@@ -6,8 +6,6 @@ package com.moneydance.modules.features.paypalimporter.util;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.Validate;
-
 /**
  * Utility class for date calculations.
  *
@@ -23,8 +21,6 @@ public final class DateCalculator {
     }
 
     public static Date max(final Date date1, final Date date2) {
-        Validate.notNull(date1, "first date must not be null");
-        Validate.notNull(date2, "second date must not be null");
         if (date1.after(date2)) {
             return date1;
         }
@@ -42,9 +38,6 @@ public final class DateCalculator {
             final Date date1,
             final Date date2,
             final TimeUnit timeUnit) {
-
-        Validate.notNull(date1, "first date must not be null");
-        Validate.notNull(date2, "second date must not be null");
         final long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }

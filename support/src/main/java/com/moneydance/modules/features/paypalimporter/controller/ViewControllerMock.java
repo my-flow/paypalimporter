@@ -13,6 +13,8 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.OnlineTxn;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Florian J. Breunig
  */
@@ -39,7 +41,7 @@ final class ViewControllerMock implements ViewController {
     }
 
     @Override
-    public void unlock(final String text, final Object key) {
+    public void unlock(@Nullable final String text, @Nullable final Object key) {
         // ignore
     }
 
@@ -55,8 +57,8 @@ final class ViewControllerMock implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> onlineTxns,
             final Date argStartDate,
-            final Account account,
-            final String errorCode) {
+            @Nullable final Account account,
+            @Nullable final String errorCode) {
         // ignore
     }
 

@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.Validate;
-
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
@@ -50,7 +48,6 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             final IAccountBook accountBook) {
 
         super(argViewController);
-        Validate.notNull(accountBook, "account book must not be null");
         this.account = accountBook.getRootAccount();
         this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
     }
@@ -62,6 +59,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
         final List<PaymentTransactionSearchResultType> txns =
                 serviceResult.getResults();
+        assert txns != null : "@AssumeAssertion(nullness)";
         final OnlineTxnList txnList = this.account.getDownloadedTxns();
         final List<OnlineTxn> resultList =
                 new ArrayList<OnlineTxn>(txns.size());
@@ -76,7 +74,10 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
                     startDateLong = timestamp;
                 }
             } catch (ParseException e) {
-                LOG.log(Level.WARNING, e.getMessage(), e);
+                final String message = e.getMessage();
+                if (message != null) {
+                    LOG.log(Level.WARNING, message, e);
+                }
             }
         }
 

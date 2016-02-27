@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang3.Validate;
 import org.xml.sax.SAXException;
 
 import urn.ebay.api.PayPalAPI.GetBalanceReq;
@@ -63,9 +62,7 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
             final PayPalAPIInterfaceServiceService argService,
             final Locale argErrorLocale) {
         this.localizable = Helper.INSTANCE.getLocalizable();
-        Validate.notNull(argService, "service must not be null");
         this.service = argService;
-        Validate.notNull(argErrorLocale, "error locale must not be null");
         this.errorLocale = argErrorLocale;
     }
 
@@ -104,43 +101,43 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
             }
 
         } catch (UnknownHostException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
         } catch (SocketException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
         } catch (IOException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (SSLConfigurationException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (InvalidCredentialException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (HttpErrorException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (InvalidResponseDataException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (ClientActionRequiredException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (MissingCredentialException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (OAuthException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (InterruptedException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (ParserConfigurationException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         } catch (SAXException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }
 
@@ -148,5 +145,12 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
                 results,
                 errorCode,
                 errorMessage);
+    }
+
+    private static void logErrorMessage(final Exception exception) {
+        final String message = exception.getMessage();
+        if (message != null) {
+            LOG.log(Level.WARNING, message, exception);
+        }
     }
 }

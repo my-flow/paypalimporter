@@ -14,6 +14,8 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.commons.lang3.time.DateUtils;
 
+import javax.annotation.Nullable;
+
 /**
  * Data model of the user data. Effectively immutable.
  *
@@ -21,28 +23,30 @@ import org.apache.commons.lang3.time.DateUtils;
  */
 public final class InputData {
 
-    private final String username;
-    private final char[] password;
-    private final String signature;
+    @Nullable private final String username;
+    @SuppressWarnings("nullness") private final char[] password;
+    @Nullable private final String signature;
     private final int accountId;
     private final int startDateInt;
     private final int endDateInt;
 
+    @SuppressWarnings("nullness")
     public InputData(
-            final String argUsername,
-            final char[] argPassword,
-            final String argSignature,
+            @Nullable final String argUsername,
+            @Nullable final char[] argPassword,
+            @Nullable final String argSignature,
             final int argAccountId) {
 
         this(argUsername, argPassword, argSignature, argAccountId, null);
     }
 
+    @SuppressWarnings("nullness")
     public InputData(
-            final String argUsername,
-            final char[] argPassword,
-            final String argSignature,
+            @Nullable final String argUsername,
+            @Nullable final char[] argPassword,
+            @Nullable final String argSignature,
             final int argAccountId,
-            final DateRange argDateRange) {
+            @Nullable final DateRange argDateRange) {
 
         this.username = argUsername;
         if (argPassword == null) {
@@ -61,10 +65,11 @@ public final class InputData {
         }
     }
 
-    public String getUsername() {
+    @Nullable public String getUsername() {
         return this.username;
     }
 
+    @SuppressWarnings("nullness")
     public char[] getPassword(final boolean clear) {
         char[] result;
         if (this.password == null) {
@@ -78,7 +83,7 @@ public final class InputData {
         return result;
     }
 
-    public String getSignature() {
+    @Nullable public String getSignature() {
         return this.signature;
     }
 
@@ -98,7 +103,7 @@ public final class InputData {
                 Calendar.DATE);
     }
 
-    public DateRange getDateRange() {
+    @Nullable public DateRange getDateRange() {
         if (this.startDateInt >= 0 && this.endDateInt >= 0) {
             return new DateRange(this.startDateInt, this.endDateInt);
         }

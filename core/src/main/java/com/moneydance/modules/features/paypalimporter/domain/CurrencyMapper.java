@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.Validate;
-
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
@@ -39,13 +37,11 @@ public final class CurrencyMapper {
         // Prevents this class from being instantiated from the outside.
     }
 
+    @SuppressWarnings("nullness")
     public static CurrencyType getCurrencyTypeFromCurrencyCode(
             final CurrencyCodeType currencyCode,
             final CurrencyTable table,
             final IAccountBook accountBook) {
-        Validate.notNull(currencyCode, "currency code must not be null");
-        Validate.notNull(table, "currency table must not be null");
-
         final String name = currencyCode.getValue();
         CurrencyType currencyType = table.getCurrencyByIDString(name);
 

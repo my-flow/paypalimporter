@@ -9,6 +9,8 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Florian J. Breunig
  * @param <V> The type of result objects which a service returns.
@@ -16,14 +18,14 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public final class ServiceResult<V> {
 
-    private final List<V> results;
-    private final String errorCode;
-    private final String errorMessage;
+    @Nullable private final List<V> results;
+    @Nullable private final String errorCode;
+    @Nullable private final String errorMessage;
 
     ServiceResult(
-            final List<V> argResults,
-            final String argErrorCode,
-            final String argErrorMessage) {
+            @Nullable final List<V> argResults,
+            @Nullable final String argErrorCode,
+            @Nullable final String argErrorMessage) {
         if (argResults == null) {
             this.results = null;
         } else {
@@ -34,21 +36,21 @@ public final class ServiceResult<V> {
         this.errorMessage = argErrorMessage;
     }
 
-    ServiceResult(final String argErrorMessage) {
+    ServiceResult(@Nullable final String argErrorMessage) {
         this.results = null;
         this.errorCode = null;
         this.errorMessage = argErrorMessage;
     }
 
-    public List<V> getResults() {
+    @Nullable public List<V> getResults() {
         return this.results;
     }
 
-    public String getErrorCode() {
+    @Nullable public String getErrorCode() {
         return this.errorCode;
     }
 
-    public String getErrorMessage() {
+    @Nullable public String getErrorMessage() {
         return this.errorMessage;
     }
 }

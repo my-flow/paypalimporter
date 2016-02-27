@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Florian J. Breunig
  */
@@ -26,7 +28,7 @@ public final class StubContextFactory {
     private static final Logger LOG = Logger.getLogger(StubContextFactory.class
             .getName());
 
-    private final FeatureModule featureModule;
+    @Nullable private final FeatureModule featureModule;
     private final StubContext context;
 
     public StubContextFactory() {
@@ -49,8 +51,9 @@ public final class StubContextFactory {
         Helper.INSTANCE.setContext(this.context);
     }
 
-    private static StubContext initContext(final FeatureModule argFeatureModule,
-            final OnlineInfo onlineInfo) {
+    private static StubContext initContext(
+            @Nullable final FeatureModule argFeatureModule,
+            @Nullable final OnlineInfo onlineInfo) {
        AccountBook accountBook = AccountBook.fakeAccountBook();
        accountBook.initializeNewEmptyAccounts("USD");
        accountBook.setLocalStorage(new StubLocalStorage());
@@ -86,15 +89,23 @@ public final class StubContextFactory {
            acctBook.addAccount(acc2);
 
        } catch (Exception e) {
-           LOG.log(Level.SEVERE, e.getMessage(), e);
+           final String message = e.getMessage();
+           if (message != null) {
+               LOG.log(Level.SEVERE, message, e);
+           }
        }
 
        return new StubContext(argFeatureModule, acctBook);
     }
 
+    @SuppressWarnings("nullness")
     public void init() {
         LOG.info("Setting up stub context");
-        this.featureModule.setup(this.context, null, new StreamTable(), null,
+        this.featureModule.setup(
+                this.context,
+                null,
+                new StreamTable(),
+                null,
                 null);
     }
 

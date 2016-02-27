@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.ResourceBundle;
 
+import javax.annotation.Nullable;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,7 +32,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import org.apache.commons.lang3.Validate;
 import org.jdesktop.xswingx.PromptSupport;
 
 /**
@@ -63,15 +63,14 @@ class WizardLayout extends JDialog {
      * @param mdGUI {@code MoneydanceGUI} that can resolve i18n translations
      * @param resourceBundle the resource bundle used to lookup i15d strings
      */
+    @SuppressWarnings("initialization")
     WizardLayout(
-            final Frame owner,
+            @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
             final ResourceBundle resourceBundle) {
         super(owner, false);
-        Validate.notNull(mdGUI, "Moneydance GUI must not be null");
         this.dateRanger = new DateRangeChooser(mdGUI);
 
-        Validate.notNull(resourceBundle, "resource bundle must not be null");
         StringResourceAccessor localizer = new ResourceBundleAccessor(
                 resourceBundle);
 
