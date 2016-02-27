@@ -73,7 +73,10 @@ final class ConsoleRunner {
         try {
             main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
         } catch (Exception e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.WARNING, message, e);
+            }
         }
     }
 }

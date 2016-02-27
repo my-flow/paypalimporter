@@ -6,6 +6,7 @@ package com.moneydance.apps.md.controller;
 import com.infinitekind.moneydance.model.LocalStorage;
 import com.infinitekind.tiksync.SyncRecord;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -57,12 +58,22 @@ public final class StubLocalStorage extends LocalStorage {
 
     @Override
     public InputStream openFileForReading(final String arg0) {
-        return null;
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+        };
     }
 
     @Override
     public OutputStream openFileForWriting(final String arg0) {
-        return null;
+        return new OutputStream() {
+            @Override
+            public void write(final int b) throws IOException {
+                // ignore
+            }
+        };
     }
 
     @Override

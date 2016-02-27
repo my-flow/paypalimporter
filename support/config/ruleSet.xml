@@ -34,6 +34,7 @@
     <rule ref="rulesets/java/migrating.xml"/>
     <rule ref="rulesets/java/naming.xml">
         <exclude name="LongVariable"/>
+        <exclude name="ShortVariable"/>
     </rule>
     <rule ref="rulesets/java/strictexception.xml">
         <exclude name="AvoidCatchingGenericException"/>

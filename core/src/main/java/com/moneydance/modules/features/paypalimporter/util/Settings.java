@@ -35,11 +35,12 @@ public final class Settings {
     private static final String PROPERTIES_RESOURCE = "settings.properties";
 
     private final Configuration config;
-    private Image iconImage;
-    private DateFormat dateFormat;
-    private Date minDate;
-    private Image helpImage;
+    private final Image iconImage;
+    private final DateFormat dateFormat;
+    private final Date minDate;
+    private final Image helpImage;
 
+    @SuppressWarnings("nullness")
     Settings() {
         final AbstractFileConfiguration abstractFileConfiguration =
                 new PropertiesConfiguration();
@@ -52,23 +53,30 @@ public final class Settings {
             throw new IllegalStateException(e.getMessage(), e);
         }
         this.config = abstractFileConfiguration;
+        this.iconImage = getImage(this.config.getString("icon_resource"));
+        this.helpImage = getImage(this.config.getString("help_resource"));
+        this.dateFormat = new SimpleDateFormat(
+                this.config.getString("date_pattern"),
+                Locale.US);
+        try {
+            this.minDate = this.dateFormat.parse(
+                    this.config.getString("min_date"));
+        } catch (ParseException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 
     /**
      * @return The descriptive name of this extension.
      */
     public String getExtensionName() {
-        return this.config.getString("extension_name"); //$NON-NLS-1$
+        return this.config.getString("extension_name");
     }
 
     /**
      * @return The icon image that represents this extension.
      */
     public Image getIconImage() {
-        if (this.iconImage == null) {
-            this.iconImage = getImage(
-                    this.config.getString("icon_resource")); //$NON-NLS-1$
-        }
         return this.iconImage;
     }
 
@@ -76,10 +84,6 @@ public final class Settings {
      * @return The help image.
      */
     public Image getHelpImage() {
-        if (this.helpImage == null) {
-            this.helpImage = getImage(
-                    this.config.getString("help_resource")); //$NON-NLS-1$
-        }
         return this.helpImage;
     }
 
@@ -88,14 +92,14 @@ public final class Settings {
      */
     public String getLoggingPropertiesResource() {
         return this.config.getString(
-                "logging_properties_resource"); //$NON-NLS-1$
+                "logging_properties_resource");
     }
 
     /**
      * @return The resource in the JAR file to read the language strings from.
      */
     public String getLocalizableResource() {
-        return this.config.getString("localizable_resource"); //$NON-NLS-1$
+        return this.config.getString("localizable_resource");
     }
 
     /**
@@ -103,46 +107,41 @@ public final class Settings {
      *  import process.
      */
     public String getStartWizardSuffix() {
-        return this.config.getString("start_wizard_suffix"); //$NON-NLS-1$
+        return this.config.getString("start_wizard_suffix");
     }
 
     /**
      * @return Tracking code for Google Analytics (aka "utmac").
      */
     public String getTrackingCode() {
-        return this.config.getString("tracking_code"); //$NON-NLS-1$
+        return this.config.getString("tracking_code");
     }
 
     /**
      * @return Event action for installation
      */
     public String getEventActionInstall() {
-        return this.config.getString("event_action_install"); //$NON-NLS-1$
+        return this.config.getString("event_action_install");
     }
 
     /**
      * @return Event action for display
      */
     public String getEventActionDisplay() {
-        return this.config.getString("event_action_display"); //$NON-NLS-1$
+        return this.config.getString("event_action_display");
     }
 
     /**
      * @return Event action for removal
      */
     public String getEventActionUninstall() {
-        return this.config.getString("event_action_uninstall"); //$NON-NLS-1$
+        return this.config.getString("event_action_uninstall");
     }
 
     /**
      * @return Date format specific to PayPal
      */
     public DateFormat getDateFormat() {
-        if (this.dateFormat == null) {
-            this.dateFormat = new SimpleDateFormat(
-                    this.config.getString("date_pattern"), //$NON-NLS-1$
-                    Locale.US);
-        }
         return this.dateFormat;
     }
 
@@ -150,14 +149,6 @@ public final class Settings {
      * @return Earliest transaction date of the TransactionSearch API
      */
     public Date getMinDate() {
-        if (this.minDate == null) {
-            try {
-                this.minDate = this.getDateFormat().parse(
-                        this.config.getString("min_date")); //$NON-NLS-1$
-            } catch (ParseException e) {
-                throw new IllegalStateException(e.getMessage(), e);
-            }
-        }
         return this.minDate;
     }
 
@@ -165,91 +156,91 @@ public final class Settings {
      * @return Error code for seach warning
      */
     public String getErrorCodeSearchWarning() {
-        return this.config.getString("error_code_search_warning"); //$NON-NLS-1$
+        return this.config.getString("error_code_search_warning");
     }
 
     /**
      * @return OFX service type specific to PayPal
      */
     public String getServiceType() {
-        return this.config.getString("service_type"); //$NON-NLS-1$
+        return this.config.getString("service_type");
     }
 
     /**
      * @return OFX FI Id specific to PayPal
      */
     public String getFIId() {
-        return this.config.getString("fi_id"); //$NON-NLS-1$
+        return this.config.getString("fi_id");
     }
 
     /**
      * @return OFX FI Org specific to PayPal
      */
     public String getFIOrg() {
-        return this.config.getString("fi_org"); //$NON-NLS-1$
+        return this.config.getString("fi_org");
     }
 
     /**
      * @return OFX FI Name specific to PayPal
      */
     public String getFIName() {
-        return this.config.getString("fi_name"); //$NON-NLS-1$
+        return this.config.getString("fi_name");
     }
 
     /**
      * @return OFX FI address specific to PayPal
      */
     public String getFIAddress() {
-        return this.config.getString("fi_address"); //$NON-NLS-1$
+        return this.config.getString("fi_address");
     }
 
     /**
      * @return OFX FI city specific to PayPal
      */
     public String getFICity() {
-        return this.config.getString("fi_city"); //$NON-NLS-1$
+        return this.config.getString("fi_city");
     }
 
     /**
      * @return OFX FI URL specific to PayPal
      */
     public String getFIUrl() {
-        return this.config.getString("fi_url"); //$NON-NLS-1$
+        return this.config.getString("fi_url");
     }
 
     /**
      * @return OFX FI state specific to PayPal
      */
     public String getFIState() {
-        return this.config.getString("fi_state"); //$NON-NLS-1$
+        return this.config.getString("fi_state");
     }
 
     /**
      * @return OFX FI zip specific to PayPal
      */
     public String getFIZip() {
-        return this.config.getString("fi_zip"); //$NON-NLS-1$
+        return this.config.getString("fi_zip");
     }
 
     /**
      * @return OFX FI country specific to PayPal
      */
     public String getFICountry() {
-        return this.config.getString("fi_country"); //$NON-NLS-1$
+        return this.config.getString("fi_country");
     }
 
     /**
      * @return Column specification for JGoodies Forms
      */
     public String getColumnSpecs() {
-        return this.config.getString("column_specs"); //$NON-NLS-1$
+        return this.config.getString("column_specs");
     }
 
     /**
      * @return Rows specification for JGoodies Forms
      */
     public String getRowsSpecs() {
-        return this.config.getString("rows_specs"); //$NON-NLS-1$
+        return this.config.getString("rows_specs");
     }
 
     private static Image getImage(final String resource) {

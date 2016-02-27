@@ -10,11 +10,10 @@ import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 
+import javax.annotation.Nullable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Logger;
-
-import org.apache.commons.lang3.Validate;
 
 /**
  * Use this factory class in order to access and remove the
@@ -42,7 +41,6 @@ public final class OnlineServiceFactory {
 
     public static PayPalOnlineService createService(
             final IAccountBook accountBook) {
-        Validate.notNull(accountBook, "account book must not be null");
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
         OnlineService onlineService = getServiceById(onlineInfo, SERVICE);
@@ -55,7 +53,6 @@ public final class OnlineServiceFactory {
     }
 
     public static void removeService(final IAccountBook accountBook) {
-        Validate.notNull(accountBook, "account book must not be null");
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
         final Settings settings = Helper.INSTANCE.getSettings();
@@ -74,6 +71,7 @@ public final class OnlineServiceFactory {
     }
 
     private static OnlineService createService() {
+        @SuppressWarnings("nullness")
         final OnlineService onlineService = new OnlineService(
                 null, // temporary account
                 new StreamTable());
@@ -81,6 +79,7 @@ public final class OnlineServiceFactory {
         return onlineService;
     }
 
+    @SuppressWarnings("initialization")
     private static void setUpOnlineService(final OnlineService onlineService) {
         final Settings settings = Helper.INSTANCE.getSettings();
         onlineService.addParameters(new HashMap<String, String>() {
@@ -101,7 +100,7 @@ public final class OnlineServiceFactory {
         onlineService.setDateUpdated(new Date().getTime());
     }
 
-    private static OnlineService getServiceById(
+    @Nullable private static OnlineService getServiceById(
             final OnlineInfo onlineInfo, final OnlineService service) {
 
         for (OnlineService onlineService : onlineInfo.getAllServices()) {

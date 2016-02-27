@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
+import javax.annotation.Nullable;
+
 /**
  * This i18n class provides language-dependent strings such as labels and
  * messages.
@@ -98,7 +100,7 @@ public final class Localizable {
      * @return the user-friendly error message for a given error code or null
      *  if none is found
      */
-    public String getTranslatedErrorMessage(final String errorCode) {
+    @Nullable public String getTranslatedErrorMessage(@Nullable final String errorCode) {
         try {
             final String key = String.format("error_message_%s", errorCode);
             return this.resourceBundle.getString(key);

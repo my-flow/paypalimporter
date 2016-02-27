@@ -106,9 +106,15 @@ public final class ServiceProvider {
                     Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
             config.load(inputStream);
         } catch (IllegalArgumentException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.WARNING, message, e);
+            }
         } catch (IOException e) {
-            LOG.log(Level.WARNING, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.WARNING, message, e);
+            }
         }
 
         final String prefix = Constants.ACCOUNT_PREFIX + 1;
@@ -161,10 +167,14 @@ public final class ServiceProvider {
                     serviceResult = new ServiceResult<V>(
                             e.getLocalizedMessage());
                 } catch (ExecutionException e) {
-                    LOG.log(Level.WARNING, "Task aborted", e.getCause());
+                    final Throwable cause = e.getCause();
+                    if (cause != null) {
+                        LOG.log(Level.WARNING, "Task aborted", cause);
+                    }
                     serviceResult = new ServiceResult<V>(
                             e.getLocalizedMessage());
                 } finally {
+                    assert serviceResult != null : "@AssumeAssertion(nullness)";
                     final ServiceResult<V> finalResult = serviceResult;
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {

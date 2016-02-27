@@ -41,7 +41,7 @@ public final class PreferencesTest {
         });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testGetUserPreferencesWithoutAccountBook() {
         Preferences preferences = new Preferences(new StubAccountBookFactory(null));
         preferences.setContext(this.factory.getContext());

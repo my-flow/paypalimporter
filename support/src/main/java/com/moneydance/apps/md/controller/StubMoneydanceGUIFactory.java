@@ -5,7 +5,7 @@ package com.moneydance.apps.md.controller;
 
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 
-import org.apache.commons.lang.Validate;
+import javax.annotation.Nullable;
 
 /**
  * @author Florian J. Breunig
@@ -16,12 +16,10 @@ public final class StubMoneydanceGUIFactory {
 
     public StubMoneydanceGUIFactory(
             final StubContextFactory argStubContextFactory) {
-        Validate.notNull(argStubContextFactory,
-                "stub context factory must not be null");
         this.stubContextFactory = argStubContextFactory;
     }
 
-    public MoneydanceGUI getMoneydanceGUI() {
+    @Nullable public MoneydanceGUI getMoneydanceGUI() {
         // Using undocumented feature.
         Main main = this.stubContextFactory.getContext();
         if (main != null) {

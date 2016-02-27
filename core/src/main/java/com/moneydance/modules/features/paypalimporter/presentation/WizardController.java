@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
@@ -30,7 +31,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 /**
  * This controller class adds dynamic behaviour to the static
@@ -49,7 +49,7 @@ implements ActionListener, WindowListener {
 
     private static final long serialVersionUID = 1L;
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"initialization", "deprecation"})
     protected WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
         super(owner, mdGUI,
                 Helper.INSTANCE.getLocalizable().getResourceBundle());
@@ -86,6 +86,7 @@ implements ActionListener, WindowListener {
             final PropertyChangeListener propertyChangeListener =
                     new PropertyChangeListener() {
                 @Override
+                @SuppressWarnings("nullness")
                 public void propertyChange(
                         final PropertyChangeEvent propertyChangeEvent) {
                     refreshListener.actionPerformed(null);
@@ -94,7 +95,10 @@ implements ActionListener, WindowListener {
             this.dateRanger.addPropertyChangeListener(propertyChangeListener);
         } catch (NoSuchMethodError e) {
             // ignore exception in older versions of Moneydance
-            LOG.log(Level.FINE, e.getMessage(), e);
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.FINE, message, e);
+            }
         }
 
         this.btnProceed.addActionListener(this);
@@ -112,9 +116,8 @@ implements ActionListener, WindowListener {
         return !this.txtUsername.isEnabled();
     }
 
+    @SuppressWarnings("nullness")
     public final void setInputData(final InputData inputData) {
-        Validate.notNull(inputData, "input data must not be null");
-
         this.txtUsername.setText(inputData.getUsername());
 
         String password = null;
@@ -160,14 +163,13 @@ implements ActionListener, WindowListener {
      *
      * @param accountModel Data source of the accounts combobox.
      */
+    @SuppressWarnings("unchecked")
     public final void setAccounts(final ComboBoxModel accountModel) {
-        Validate.notNull(accountModel, "account model must not be null");
         this.comboBoxAccts.setModel(accountModel);
-
         this.refresh(true, null);
     }
 
-    public final void refresh(final boolean initialize, final Boolean loading) {
+    public final void refresh(final boolean initialize, @Nullable final Boolean loading) {
         final boolean isLoading;
         if (loading == null) {
             isLoading = this.isLoading();
@@ -216,7 +218,10 @@ implements ActionListener, WindowListener {
      * @param text error message to be displayed (can be null)
      * @param key identifier of the related input field (can be null)
      */
-    public final void updateValidation(final String text, final Object key) {
+    @SuppressWarnings("nullness")
+    public final void updateValidation(
+            @Nullable final String text,
+            @Nullable final Object key) {
         this.refresh(false, Boolean.FALSE);
 
         if (InputDataValidator.MessageKey.USERNAME.equals(key)) {

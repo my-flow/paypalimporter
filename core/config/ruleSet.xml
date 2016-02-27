@@ -3,7 +3,7 @@
     name="Android Application Rules"
     xmlns="http://pmd.sf.net/ruleset/1.0.0"
     xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 
+    xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0
                         http://pmd.sf.net/ruleset_xml_schema.xsd" >
 
     <rule ref="rulesets/java/basic.xml"/>
@@ -39,7 +39,9 @@
         <exclude name="AvoidCatchingThrowable"/>
         <exclude name="AvoidCatchingGenericException"/>
     </rule>
-    <rule ref="rulesets/java/strings.xml"/>
+    <rule ref="rulesets/java/strings.xml">
+        <exclude name="AvoidDuplicateLiterals"/>
+    </rule>
     <rule ref="rulesets/java/sunsecure.xml"/>
     <rule ref="rulesets/java/typeresolution.xml"/>
     <rule ref="rulesets/java/unnecessary.xml"/>

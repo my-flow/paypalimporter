@@ -16,6 +16,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.LogManager;
 
+import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -30,6 +31,7 @@ import org.apache.commons.lang3.Validate;
  *
  * @author Florian J. Breunig
  */
+@SuppressWarnings("nullness")
 public enum Helper {
 
     /**
@@ -45,9 +47,9 @@ public enum Helper {
 
     private final HelperObservable observable;
     private final Settings settings;
-    private       Preferences prefs;
-    private       Localizable localizable;
-    private       Tracker tracker;
+    @Nullable private Preferences prefs;
+    @Nullable private Localizable localizable;
+    @Nullable private Tracker tracker;
 
     Helper() {
         this.observable = new HelperObservable();
@@ -123,7 +125,7 @@ public enum Helper {
 
     public static InputStream getInputStreamFromResource(
             final String resource) {
-        ClassLoader cloader     = Helper.class.getClassLoader();
+        ClassLoader cloader = Helper.class.getClassLoader();
         InputStream inputStream = cloader.getResourceAsStream(resource);
         Validate.notNull(inputStream, "Resource %s was not found.",  resource);
         return inputStream;

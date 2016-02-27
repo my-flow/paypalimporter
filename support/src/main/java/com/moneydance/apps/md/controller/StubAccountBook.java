@@ -11,6 +11,7 @@ import com.infinitekind.moneydance.model.MoneydanceSyncableItem;
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
+import javax.annotation.Nullable;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -21,17 +22,17 @@ public final class StubAccountBook implements IAccountBook {
 
     private final AccountBook accountBook;
     private final Map<Integer, Account> accountsByNum;
-    private final OnlineInfo onlineInfo;
+    @Nullable private final OnlineInfo onlineInfo;
 
     public StubAccountBook(final AccountBook argAccountBook) {
         this(argAccountBook, null);
     }
 
     public StubAccountBook(final AccountBook argAccountBook,
-            final OnlineInfo argOnlineInfo) {
-        this.accountBook   = argAccountBook;
+            @Nullable final OnlineInfo argOnlineInfo) {
+        this.accountBook = argAccountBook;
         this.accountsByNum = new Hashtable<Integer, Account>();
-        this.onlineInfo    = argOnlineInfo;
+        this.onlineInfo = argOnlineInfo;
     }
 
     public void addAccount(final Account account) {
@@ -47,6 +48,7 @@ public final class StubAccountBook implements IAccountBook {
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public Account getAccountByNum(final int accountId) {
         return this.accountsByNum.get(accountId);
     }

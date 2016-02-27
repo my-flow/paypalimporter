@@ -8,7 +8,7 @@ import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
-import org.apache.commons.lang3.Validate;
+import javax.annotation.Nullable;
 
 /**
  * Default implementation of the <code>RequestHandler</code> interface.
@@ -22,7 +22,6 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     private final Localizable localizable;
 
     protected AbstractRequestHandler(final ViewController argViewController) {
-        Validate.notNull(argViewController, "view controller must not be null");
         this.viewController = argViewController;
         this.localizable = Helper.INSTANCE.getLocalizable();
     }
@@ -35,10 +34,11 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
             this.serviceCallSucceeded(serviceResult);
         }
         // no "else" because the case "success + error message" might occur
-        if (serviceResult.getErrorMessage() != null) {
+        final String errorMessage = serviceResult.getErrorMessage();
+        if (errorMessage != null) {
             this.serviceCallFailed(
                     serviceResult.getErrorCode(),
-                    serviceResult.getErrorMessage());
+                    errorMessage);
         }
     }
 
@@ -49,7 +49,8 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
             final ServiceResult<V> serviceResult);
 
     private void serviceCallFailed(
-            final String errorCode, final String originalMessage) {
+            @Nullable final String errorCode,
+            final String originalMessage) {
 
         final String translatedMessage =
                 this.localizable.getTranslatedErrorMessage(errorCode);

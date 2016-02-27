@@ -37,6 +37,7 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.BoundedRangeModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -61,14 +62,14 @@ public final class ViewControllerImpl implements ViewController {
     private static final Logger LOG = Logger.getLogger(
             ViewControllerImpl.class.getName());
 
-    private final Preferences           prefs;
-    private final Localizable           localizable;
-    private final Tracker               tracker;
-    private final FeatureModuleContext  context;
-    private final ServiceProvider       serviceProvider;
-    private final IAccountBookFactory   accountBookFactory;
-    private       WizardHandler         wizard;
-    private       InputData             inputData;
+    private final Preferences prefs;
+    private final Localizable localizable;
+    private final Tracker tracker;
+    private final FeatureModuleContext context;
+    private final ServiceProvider serviceProvider;
+    private final IAccountBookFactory accountBookFactory;
+    @Nullable private WizardHandler wizard;
+    @Nullable private InputData inputData;
 
     public ViewControllerImpl(
             final FeatureModuleContext argContext,
@@ -82,11 +83,13 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public void startWizard() {
         this.update(null, WizardHandler.ExecutedAction.START_WIZARD);
     }
 
     @Override
+    @SuppressWarnings("nullable")
     public void update(final Observable observable, final Object arg) {
         try {
             WizardHandler.ExecutedAction action =
@@ -109,12 +112,15 @@ public final class ViewControllerImpl implements ViewController {
                         String.format("case %s not defined", observable));
             }
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, t.getMessage(), t);
+            final String message = t.getMessage();
+            if (message != null) {
+                LOG.log(Level.SEVERE, message, t);
+            }
             this.tracker.track(ExceptionUtils.getStackTrace(t));
         }
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "nullness"})
     private void initAndShowWizard() {
         Helper.INSTANCE.setChanged();
         Helper.INSTANCE.notifyObservers(Boolean.TRUE);
@@ -122,7 +128,12 @@ public final class ViewControllerImpl implements ViewController {
         final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
 
         if (this.wizard == null) {
-            final Frame owner = mdGUI.getTopLevelFrame();
+            final Frame owner;
+            if (mdGUI == null) {
+                owner = null;
+            } else {
+                owner = mdGUI.getTopLevelFrame();
+            }
             this.wizard = new WizardHandler(owner, mdGUI, this);
             this.wizard.addComponentListener(new ComponentDelegateListener(
                     this.accountBookFactory.createAccountBook(
@@ -155,15 +166,18 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     public void cancel() {
         this.serviceProvider.shutdownNow();
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
         if (this.wizard.isLoading()) {
             this.unlock(null, null);
         } else {
+            assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
         }
     }
 
     @Override
     public void proceed() {
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
         this.wizard.refresh(false, Boolean.TRUE);
 
         final InputData newInputData = this.wizard.getInputData();
@@ -178,23 +192,35 @@ public final class ViewControllerImpl implements ViewController {
         }
 
         this.inputData = newInputData;
+        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context);
+        assert accountBook != null : "@AssumeAssertion(nullness)";
+
+        final String username = newInputData.getUsername();
+        final char[] password = newInputData.getPassword(false);
+        final String signature = newInputData.getSignature();
+        assert username != null : "@AssumeAssertion(nullness)";
+        assert password != null : "@AssumeAssertion(nullness)";
+        assert signature != null : "@AssumeAssertion(nullness)";
+
         this.serviceProvider.callCheckCurrencyService(
-                this.inputData.getUsername(),
-                this.inputData.getPassword(false),
-                this.inputData.getSignature(),
+                username,
+                password,
+                signature,
                 new CheckCurrencyRequestHandler(
                     this,
-                    this.accountBookFactory.createAccountBook(this.context),
-                    this.inputData.getAccountId()));
+                    accountBook,
+                    newInputData.getAccountId()));
     }
 
     @Override
-    public void unlock(final String text, final Object key) {
+    public void unlock(@Nullable final String text, @Nullable final Object key) {
         this.inputData = null;
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
         this.wizard.updateValidation(text, key);
     }
 
     @Override
+    @SuppressWarnings("nullness")
     public void currencyChecked(
             final CurrencyType currencyType,
             final CurrencyCodeType currencyCode,
@@ -210,10 +236,7 @@ public final class ViewControllerImpl implements ViewController {
                             currencyCodes.toArray());
             final Object confirmationLabel = new JLabel(message);
             final Image image = Helper.INSTANCE.getSettings().getIconImage();
-            Icon icon  = null;
-            if (image != null) {
-                icon = new ImageIcon(image);
-            }
+            final Icon icon = new ImageIcon(image);
             final Object[] options = {
                     this.localizable.getLabelContinueButton(),
                     this.getMoneydanceGUI().getStr("cancel")
@@ -241,6 +264,7 @@ public final class ViewControllerImpl implements ViewController {
         }
     }
 
+    @SuppressWarnings("nullness")
     private void importTransactions(
             final CurrencyType currencyType,
             final CurrencyCodeType currencyCode) {
@@ -259,8 +283,12 @@ public final class ViewControllerImpl implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> onlineTxns,
             final Date currentStartDate,
-            final Account account,
-            final String errorCode) {
+            @Nullable final Account account,
+            @Nullable final String errorCode) {
+
+        final InputData input = this.inputData;
+        assert input != null : "@AssumeAssertion(nullness)";
+        assert account != null : "@AssumeAssertion(nullness)";
 
         if (!onlineTxns.isEmpty()) {
             // refresh progress bar
@@ -269,24 +297,28 @@ public final class ViewControllerImpl implements ViewController {
                             onlineTxns.get(0).getDatePostedInt()),
                             Calendar.DATE);
             final BoundedRangeModel model = DateConverter.getBoundedRangeModel(
-                    this.inputData.getStartDate(),
+                    input.getStartDate(),
                     endDate,
                     currentStartDate);
+            assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setBoundedRangeModel(model);
         }
         if (errorCode == null) {
             final int accountId = account.getAccountNum();
-            this.prefs.setUsername(accountId, this.inputData.getUsername());
-            this.prefs.setPassword(accountId, this.inputData.getPassword(true));
-            this.prefs.setSignature(accountId, this.inputData.getSignature());
+            this.prefs.setUsername(accountId, input.getUsername());
+            this.prefs.setPassword(accountId, input.getPassword(true));
+            this.prefs.setSignature(accountId, input.getSignature());
             this.prefs.assignBankingFI(accountId);
 
             this.unlock(null, null);
+            assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
 
             final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
-            final OnlineManager manager = mdGUI.getOnlineManager();
-            manager.processDownloadedTxns(account);
+            if (mdGUI != null) {
+                final OnlineManager manager = mdGUI.getOnlineManager();
+                manager.processDownloadedTxns(account);
+            }
         }
     }
 
@@ -301,6 +333,7 @@ public final class ViewControllerImpl implements ViewController {
         LOG.config("Refreshing accounts");
         final IAccountBook accountBook =
                 this.accountBookFactory.createAccountBook(this.context);
+        assert accountBook != null : "@AssumeAssertion(nullness)";
         final AccountListModel accountModel = new AccountListModel(
                 accountBook.getRootAccount());
         accountModel.setShowBankAccounts(true);
@@ -314,16 +347,18 @@ public final class ViewControllerImpl implements ViewController {
                 && accountModel.isAccountViewable(selectedAccount)) {
             accountModel.setSelectedAccount(selectedAccount);
         }
-        this.wizard.setAccounts(accountModel);
-        this.wizard.invalidate();
-        this.wizard.validate();
+        final WizardHandler wizardHandler = this.wizard;
+        assert wizardHandler != null : "@AssumeAssertion(nullness)";
+        wizardHandler.setAccounts(accountModel);
+        wizardHandler.invalidate();
+        wizardHandler.validate();
     }
 
     void setInputData(final InputData argInputData) {
         this.inputData = argInputData;
     }
 
-    private MoneydanceGUI getMoneydanceGUI() {
+    @Nullable private MoneydanceGUI getMoneydanceGUI() {
         // Using undocumented feature.
         Main main = (Main) this.context;
         MoneydanceGUI result;

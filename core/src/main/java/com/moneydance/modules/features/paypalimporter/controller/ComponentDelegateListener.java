@@ -10,8 +10,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.Validate;
-
 /**
  * Listener / observer on the main window.
  *
@@ -32,9 +30,6 @@ final class ComponentDelegateListener extends ComponentAdapter {
             final IAccountBook argAccountBook,
             final ViewController argViewController) {
         super();
-        Validate.notNull(argAccountBook, "account book must not be null");
-        Validate.notNull(argViewController,
-                "view controller must not be null");
         this.accountBook = argAccountBook;
         this.accountListener = new AccountDelegateListener(argViewController);
     }

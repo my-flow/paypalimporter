@@ -33,9 +33,6 @@ public final class DateConverter {
             final Date endDate,
             final Date valueDate) {
 
-        Validate.notNull(startDate, "start date must not be null");
-        Validate.notNull(endDate,   "end date must not be null");
-        Validate.notNull(valueDate, "value date must not be null");
         Validate.inclusiveBetween(
                 startDate,
                 endDate,

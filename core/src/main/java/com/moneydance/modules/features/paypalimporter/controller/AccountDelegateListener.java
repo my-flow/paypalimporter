@@ -6,8 +6,6 @@ package com.moneydance.modules.features.paypalimporter.controller;
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountListener;
 
-import org.apache.commons.lang3.Validate;
-
 /**
  * Listener / observer on Moneydance's list of accounts.
  *
@@ -18,7 +16,6 @@ final class AccountDelegateListener implements AccountListener {
     private final ViewController viewController;
 
     AccountDelegateListener(final ViewController argViewController) {
-        Validate.notNull(argViewController, "view controller must not be null");
         this.viewController = argViewController;
     }
 
