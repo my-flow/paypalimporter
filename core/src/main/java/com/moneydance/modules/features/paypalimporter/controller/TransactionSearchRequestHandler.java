@@ -3,10 +3,10 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
@@ -40,7 +40,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
     private static final BigDecimal MULTIPLIER = BigDecimal.valueOf(100);
 
-    private final Account account;
+    private final OnlineTxnList txnList;
     private final DateFormat dateFormat;
 
     TransactionSearchRequestHandler(
@@ -48,7 +48,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             final IAccountBook accountBook) {
 
         super(argViewController);
-        this.account = accountBook.getRootAccount();
+        this.txnList = accountBook.getRootAccount().getDownloadedTxns();
         this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
     }
 
@@ -60,14 +60,14 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         final List<PaymentTransactionSearchResultType> txns =
                 serviceResult.getResults();
         assert txns != null : "@AssumeAssertion(nullness)";
-        final OnlineTxnList txnList = this.account.getDownloadedTxns();
+
         final List<OnlineTxn> resultList =
                 new ArrayList<OnlineTxn>(txns.size());
         long startDateLong = Long.MAX_VALUE;
 
         for (PaymentTransactionSearchResultType result : txns) {
             try {
-                resultList.add(this.createNewOnlineTxn(txnList, result));
+                resultList.add(this.createNewOnlineTxn(result));
                 long timestamp = this.dateFormat.parse(
                         result.getTimestamp()).getTime();
                 if (timestamp < startDateLong) {
@@ -89,11 +89,10 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
     }
 
     private OnlineTxn createNewOnlineTxn(
-            final OnlineTxnList txnList,
             final PaymentTransactionSearchResultType result)
                     throws ParseException {
 
-        final String fitxnid = result.getTransactionID();
+        final String transactionID = result.getTransactionID();
         String grossAmount = "0";
         CurrencyCodeType currencyID = null;
         if (result.getGrossAmount() != null) {
@@ -136,16 +135,12 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         final long date = this.dateFormat.parse(
                 result.getTimestamp()).getTime();
 
-        final OnlineTxn onlineTxn = txnList.newTxn();
-        onlineTxn.setProtocolType(OnlineTxn.PROTO_TYPE_OFX);
-        onlineTxn.setAmount(amount);
-        onlineTxn.setTotalAmount(amount);
-        onlineTxn.setName(description);
-        onlineTxn.setMemo(memo);
-        onlineTxn.setFITxnId(fitxnid);
-        onlineTxn.setDatePosted(date);
-        onlineTxn.setDateInitiated(date);
-        onlineTxn.setDateAvailable(date);
-        return onlineTxn;
+        return new Transaction(
+                txnList,
+                transactionID,
+                amount,
+                description,
+                memo,
+                date);
     }
 }

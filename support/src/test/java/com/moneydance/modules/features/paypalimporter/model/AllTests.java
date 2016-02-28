@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
     AccountBookFactoryImplTest.class,
     AccountBookTest.class,
     InputDataValidatorTest.class,
+    TransactionTest.class
 })
 public final class AllTests {
     // no test cases
