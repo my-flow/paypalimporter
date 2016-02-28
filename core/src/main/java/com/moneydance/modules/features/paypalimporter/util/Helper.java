@@ -45,11 +45,11 @@ public enum Helper {
     private static final String DISPATCH_WINDOW_CLOSING_ACTION_MAP_KEY =
             "com.spodding.tackline.dispatch:WINDOW_CLOSING";
 
-    private final HelperObservable observable;
-    private final Settings settings;
-    @Nullable private Preferences prefs;
-    @Nullable private Localizable localizable;
-    @Nullable private Tracker tracker;
+    private final transient HelperObservable observable;
+    private final transient Settings settings;
+    @Nullable private transient Preferences prefs;
+    @Nullable private transient Localizable localizable;
+    @Nullable private transient Tracker tracker;
 
     Helper() {
         this.observable = new HelperObservable();
@@ -151,7 +151,7 @@ public enum Helper {
     /**
      * @author Florian J. Breunig
      */
-    private final class HelperObservable extends Observable {
+    private static final class HelperObservable extends Observable {
         @Override
         public synchronized void setChanged() { // increase visibility
             super.setChanged();

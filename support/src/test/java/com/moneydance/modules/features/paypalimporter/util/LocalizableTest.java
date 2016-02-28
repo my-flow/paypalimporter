@@ -21,7 +21,6 @@ public final class LocalizableTest {
 
     @Before
     public void setUp() {
-        Helper.INSTANCE.getPreferences();
         new StubContextFactory();
         this.localizable = Helper.INSTANCE.getLocalizable();
     }

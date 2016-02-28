@@ -76,8 +76,8 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         this.localizable = Helper.INSTANCE.getLocalizable();
         this.service = argService;
         this.currencyCode = argCurrencyCode;
-        this.startDate = argStartDate;
-        this.endDate = argEndDate;
+        this.startDate = new Date(argStartDate.getTime());
+        this.endDate = new Date(argEndDate.getTime());
         this.errorLocale = argErrorLocale;
         this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
     }

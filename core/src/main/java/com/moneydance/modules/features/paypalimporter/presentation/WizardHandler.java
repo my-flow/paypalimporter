@@ -45,7 +45,7 @@ public final class WizardHandler extends WizardController {
             final Observer argObserver) {
         super(owner, mdGUI);
         this.observer = argObserver;
-        this.inputData = new InputData(null,  null,  null,  -1);
+        this.inputData = new InputData();
     }
 
     @Override

@@ -128,12 +128,7 @@ public final class ViewControllerImpl implements ViewController {
         final MoneydanceGUI mdGUI = this.getMoneydanceGUI();
 
         if (this.wizard == null) {
-            final Frame owner;
-            if (mdGUI == null) {
-                owner = null;
-            } else {
-                owner = mdGUI.getTopLevelFrame();
-            }
+            final Frame owner = mdGUI.getTopLevelFrame();
             this.wizard = new WizardHandler(owner, mdGUI, this);
             this.wizard.addComponentListener(new ComponentDelegateListener(
                     this.accountBookFactory.createAccountBook(
@@ -152,10 +147,10 @@ public final class ViewControllerImpl implements ViewController {
         }
 
         final InputData newUserData = new InputData(
-                this.prefs.getUsername(accountId),
-                this.prefs.getPassword(accountId),
-                this.prefs.getSignature(accountId),
-                accountId);
+            this.prefs.getUsername(accountId),
+            this.prefs.getPassword(accountId),
+            this.prefs.getSignature(accountId),
+            accountId);
 
         this.wizard.setInputData(newUserData);
         this.refreshAccounts(newUserData.getAccountId());
@@ -358,15 +353,12 @@ public final class ViewControllerImpl implements ViewController {
         this.inputData = argInputData;
     }
 
-    @Nullable private MoneydanceGUI getMoneydanceGUI() {
+    private MoneydanceGUI getMoneydanceGUI() {
         // Using undocumented feature.
         Main main = (Main) this.context;
-        MoneydanceGUI result;
         if (main == null) {
-            result = null;
-        } else {
-            result = (MoneydanceGUI) main.getUI();
+            throw new IllegalStateException("FeatureModuleContext is null");
         }
-        return result;
+        return (MoneydanceGUI) main.getUI();
     }
 }

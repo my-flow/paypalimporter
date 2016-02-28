@@ -30,6 +30,10 @@ public final class InputData {
     private final int startDateInt;
     private final int endDateInt;
 
+    public InputData() {
+        this(null,  null,  null,  -1);
+    }
+
     @SuppressWarnings("nullness")
     public InputData(
             @Nullable final String argUsername,

@@ -17,7 +17,6 @@ public final class TrackerTest {
 
     @Before
     public void setUp() {
-        Helper.INSTANCE.getPreferences();
         new StubContextFactory();
         this.tracker = new Tracker(0, "extension name", "full version",
                 "tracking code");
