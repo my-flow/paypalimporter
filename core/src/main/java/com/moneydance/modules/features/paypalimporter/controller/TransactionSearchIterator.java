@@ -13,11 +13,14 @@ import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.Observable;
+import java.util.Set;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +67,7 @@ final class TransactionSearchIterator implements ViewController {
     private final CurrencyCodeType currencyCode;
     private final RequestHandler<PaymentTransactionSearchResultType>
     requestHandler;
-    private final List<OnlineTxn> resultList;
+    private final Set<OnlineTxn> resultSet;
     private final String errorCodeSearchWarning;
 
     @SuppressWarnings("initialization")
@@ -86,7 +89,7 @@ final class TransactionSearchIterator implements ViewController {
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
                 this.accountBook);
-        this.resultList = new ArrayList<OnlineTxn>();
+        this.resultSet = new LinkedHashSet<OnlineTxn>();
         this.errorCodeSearchWarning =
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
     }
@@ -105,7 +108,7 @@ final class TransactionSearchIterator implements ViewController {
             @Nullable final Account argAccount,
             @Nullable final String errorCode) {
 
-        this.resultList.addAll(argOnlineTxns); // aggregate all results
+        this.resultSet.addAll(argOnlineTxns); // aggregate all results
 
         final Account account;
         if (this.errorCodeSearchWarning.equals(errorCode)) {
@@ -120,24 +123,26 @@ final class TransactionSearchIterator implements ViewController {
             // there are no more transactions in the pipeline, so we can
             // start attaching the transactions all at once.
             LOG.info(String.format(
-                    "All %d transactions downloaded", this.resultList.size()));
+                    "All %d transactions downloaded", this.resultSet.size()));
 
             account = findOrCreateAccount(
                     this.accountBook,
                     this.inputData.getAccountId(),
                     this.currencyType);
             final OnlineTxnList txnList = account.getDownloadedTxns();
-            final ListIterator<OnlineTxn> iter = this.resultList.listIterator(
-                    this.resultList.size());
 
             // import all transactions in reverse order,
             // i.e. from oldest to newest
-            while (iter.hasPrevious()) {
-                txnList.addNewTxn(iter.previous());
+            final Iterator<OnlineTxn> iter =
+                new LinkedList<OnlineTxn>(this.resultSet).descendingIterator();
+            while (iter.hasNext()) {
+                txnList.addNewTxn(iter.next());
             }
         }
+
         this.viewController.transactionsImported(
-                this.resultList, argStartDate, account, errorCode);
+                new LinkedList<OnlineTxn>(this.resultSet), argStartDate,
+                account, errorCode);
     }
 
     @Override
