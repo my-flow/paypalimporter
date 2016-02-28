@@ -81,13 +81,14 @@ public final class OnlineServiceFactory {
 
     @SuppressWarnings("initialization")
     private static void setUpOnlineService(final OnlineService onlineService) {
-        final Settings settings = Helper.INSTANCE.getSettings();
         onlineService.addParameters(new HashMap<String, String>() {
             private static final long serialVersionUID = 1L;
             {
+                final Settings settings = Helper.INSTANCE.getSettings();
                 this.put(KEY_SERVICE_TYPE, settings.getServiceType());
             }
         });
+        final Settings settings = Helper.INSTANCE.getSettings();
         onlineService.setFIId(settings.getFIId());
         onlineService.setFIOrg(settings.getFIOrg());
         onlineService.setFIName(settings.getFIName());

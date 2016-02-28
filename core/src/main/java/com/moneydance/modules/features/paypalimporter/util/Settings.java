@@ -149,7 +149,7 @@ public final class Settings {
      * @return Earliest transaction date of the TransactionSearch API
      */
     public Date getMinDate() {
-        return this.minDate;
+        return new Date(this.minDate.getTime());
     }
 
     /**

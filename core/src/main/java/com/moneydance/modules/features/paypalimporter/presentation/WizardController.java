@@ -50,7 +50,7 @@ implements ActionListener, WindowListener {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings({"initialization", "deprecation"})
-    protected WizardController(final Frame owner, final MoneydanceGUI mdGUI) {
+    protected WizardController(@Nullable final Frame owner, final MoneydanceGUI mdGUI) {
         super(owner, mdGUI,
                 Helper.INSTANCE.getLocalizable().getResourceBundle());
 

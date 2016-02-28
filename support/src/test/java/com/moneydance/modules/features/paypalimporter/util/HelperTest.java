@@ -18,7 +18,6 @@ public final class HelperTest {
 
     @Before
     public void setUp() {
-        Helper.INSTANCE.getPreferences();
         new StubContextFactory();
     }
 

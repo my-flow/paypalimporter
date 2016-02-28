@@ -15,6 +15,7 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+    apply plugin: 'findbugs'
 
     sourceCompatibility = 1.7
 
@@ -28,6 +29,18 @@ subprojects {
     repositories {
         mavenCentral()
         flatDir dirs: "$rootDir/lib"
+    }
+
+    findbugs {
+        effort = "max"
+        reportLevel = "medium"
+    }
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
     }
 
     task checkstyleHtml << {
