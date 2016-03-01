@@ -59,6 +59,9 @@ public final class Main extends FeatureModule implements Observer {
             this.prefs.setFirstRun(false);
             LOG.config("Install");
             this.tracker.track(Tracker.EventName.INSTALL);
+
+            // show wizard immediately after installation
+            this.getViewController().startWizard();
         }
 
         // register this module to be invoked via the application toolbar
