@@ -167,7 +167,14 @@ public final class Settings {
     }
 
     /**
-     * @return OFX FI Id specific to PayPal
+     * @return OFX FI TIK ID specific to PayPal
+     */
+    public String getFITIKId() {
+        return this.config.getString("fi_tik_id");
+    }
+
+    /**
+     * @return OFX FI ID specific to PayPal
      */
     public String getFIId() {
         return this.config.getString("fi_id");
