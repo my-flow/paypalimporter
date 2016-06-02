@@ -89,6 +89,8 @@ public final class OnlineServiceFactory {
             }
         });
         final Settings settings = Helper.INSTANCE.getSettings();
+        // see https://github.com/my-flow/paypalimporter/issues/9
+        onlineService.setParameter(OnlineService.ITEM_KEY_FI_TIK_ID, settings.getFITIKId());
         onlineService.setFIId(settings.getFIId());
         onlineService.setFIOrg(settings.getFIOrg());
         onlineService.setFIName(settings.getFIName());
