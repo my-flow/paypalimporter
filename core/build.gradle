@@ -4,7 +4,7 @@ import proguard.gradle.ProGuardTask
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-    compile(':moneydance:1119')
+    compile(':moneydance:1358')
     compile(':prompt:')
     compile(':paypal-core-paypalimporter:1.7.0')
     compile('com.paypal.sdk:merchantsdk:2.14.117') {

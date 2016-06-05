@@ -55,6 +55,14 @@ public final class StubContextFactory {
             @Nullable final FeatureModule argFeatureModule,
             @Nullable final OnlineInfo onlineInfo) {
        AccountBook accountBook = AccountBook.fakeAccountBook();
+       try {
+           accountBook.doInitialLoad(true);
+        } catch (Exception e) {
+           final String message = e.getMessage();
+           if (message != null) {
+               LOG.log(Level.SEVERE, message, e);
+           }
+       }
        accountBook.initializeNewEmptyAccounts("USD");
        accountBook.setLocalStorage(new StubLocalStorage());
 
@@ -71,23 +79,11 @@ public final class StubContextFactory {
                Account.AccountType.BANK,
                accountBook.getRootAccount()
            );
-           AccountHelper.addSubAccount(
-               accountBook.getRootAccount(),
-               acc1
-           );
            acctBook.addAccount(acc1);
-
-           final Account acc2 = Account.makeAccount(
-               accountBook,
-               Account.AccountType.BANK,
-               accountBook.getRootAccount()
-           );
            AccountHelper.addSubAccount(
-               accountBook.getRootAccount(),
-               acc2
+                   accountBook.getRootAccount(),
+                   acc1
            );
-           acctBook.addAccount(acc2);
-
        } catch (Exception e) {
            final String message = e.getMessage();
            if (message != null) {

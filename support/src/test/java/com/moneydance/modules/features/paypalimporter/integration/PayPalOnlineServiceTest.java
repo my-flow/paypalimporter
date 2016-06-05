@@ -35,10 +35,6 @@ public final class PayPalOnlineServiceTest {
         this.service.assignToAccount(
                 this.accountBook,
                 this.accountBook.getRootAccount().getSubAccount(0).getAccountNum());
-        // assign another
-        this.service.assignToAccount(
-                this.accountBook,
-                this.accountBook.getRootAccount().getSubAccount(1).getAccountNum());
     }
 
     @Test

@@ -46,7 +46,7 @@ task sign(type: JavaExec) {
         new File(privkeyfile as String).exists()
     }
     standardInput = System.in
-    classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-1119.jar")
+    classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-1358.jar")
     main = 'com.moneydance.admin.KeyAdmin'
     args 'signextjar', privkeyfile, privkeyid, rootProject.name, mxtfile
 }
