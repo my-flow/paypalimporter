@@ -10,7 +10,7 @@ the extension please visit the
 Java Development Kit, version 7
 
 ## Building the extension
-1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the 
+1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the
 repository.
 2. `./gradlew assemble` produces the distributable.
 
@@ -19,7 +19,7 @@ repository.
 2. `./gradlew sign` signs the extension.
 
 ## Running the extension
-After the build process has succeeded, the resulting extension file 
+After the build process has succeeded, the resulting extension file
 `core/build/distributions/paypalimporter.mxt` can be added to Moneydance.
 
 ## Project Structure
@@ -33,5 +33,5 @@ mock-ups) and the test cases. It depends from the core project.
 * [JMockit Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
 
 ## License
-Copyright (C) 2013-2016 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2018 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.
