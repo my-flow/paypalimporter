@@ -74,6 +74,27 @@ proguard.doLast {
 
 shadowJar.finalizedBy proguard
 
+javadoc {
+    options.author = true
+    options.version = true
+    options.memberLevel = JavadocMemberLevel.PACKAGE
+    options.use = true
+    options.linkSource = true
+    options.docTitle = 'PayPal Importer for Moneydance'
+    options.windowTitle = 'PayPal Importer for Moneydance'
+    options.links = [
+            'http://download.oracle.com/javase/7/docs/api/',
+            'http://moneydance.com/dev/apidoc/',
+            'https://brsanthu.github.io/google-analytics-java/javadocs/',
+            'http://www.slf4j.org/apidocs/',
+            'https://commons.apache.org/proper/commons-configuration/javadocs/v1.10/apidocs/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/',
+            'http://commons.apache.org/logging/apidocs/'
+    ]
+    options.footer = '<a href="https://github.com/my-flow/paypalimporter">PayPal Importer on GitHub</a>'
+}
+
 def String getCurrentTimestamp() {
   Date today = new Date()
   SimpleDateFormat df = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
