@@ -18,8 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
     com.moneydance.modules.features.paypalimporter.integration.AllTests.class,
     com.moneydance.modules.features.paypalimporter.model.AllTests.class,
     com.moneydance.modules.features.paypalimporter.service.AllTests.class,
-    com.moneydance.modules.features.paypalimporter.util.AllTests.class,
-    com.moneydance.modules.features.paypalimporter.presentation.AllTests.class
+    com.moneydance.modules.features.paypalimporter.util.AllTests.class
 })
 public final class AllTests {
     // no test cases

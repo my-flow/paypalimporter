@@ -33,19 +33,6 @@ public final class MainTest {
     }
 
     @Test
-    public void testUnload() {
-        this.main.unload();
-    }
-
-    @Test
-    public void testCleanup() {
-        this.main.cleanup();
-
-        this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
-        this.main.cleanup();
-    }
-
-    @Test
     public void testGetName() {
         assertThat(this.main.getName(), notNullValue());
     }
