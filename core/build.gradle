@@ -1,5 +1,12 @@
+import java.util.jar.Attributes
+
 import java.text.SimpleDateFormat
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration
+
 import proguard.gradle.ProGuardTask
+
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
@@ -26,8 +33,13 @@ dependencies {
 jar {
     baseName rootProject.name
     manifest {
-        attributes 'Built-By': System.getProperty('user.name'),
-                   'Built-Date': getCurrentTimestamp()
+        attributes ((Attributes.Name.IMPLEMENTATION_TITLE.toString()): getConfigValueForKey("module_name"),
+                    (Attributes.Name.IMPLEMENTATION_VERSION.toString()): getConfigValueForKey("module_build"),
+                    (Attributes.Name.IMPLEMENTATION_VENDOR.toString()): getConfigValueForKey("vendor"),
+                    'Built-By': System.getProperty('user.name'),
+                    'Built-Date': getCurrentTimestamp(),
+                    'Created-By': System.getProperty('java.version') + ' (' + System.getProperty('java.vendor') + ')')
+
     }
 }
 
@@ -95,8 +107,16 @@ javadoc {
     options.footer = '<a href="https://github.com/my-flow/paypalimporter">PayPal Importer on GitHub</a>'
 }
 
-def String getCurrentTimestamp() {
+String getCurrentTimestamp() {
   Date today = new Date()
   SimpleDateFormat df = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
   return df.format(today)
+}
+
+String getConfigValueForKey(String key) {
+    file('src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict').withInputStream {
+        final Configuration config = new PropertiesConfiguration();
+        config.load(it);
+        return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "");
+    }
 }
