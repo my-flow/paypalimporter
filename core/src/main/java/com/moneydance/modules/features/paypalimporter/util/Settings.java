@@ -42,17 +42,17 @@ public final class Settings {
 
     @SuppressWarnings("nullness")
     Settings() {
-        final AbstractFileConfiguration abstractFileConfiguration =
-                new PropertiesConfiguration();
-
         try {
             InputStream inputStream = Helper.getInputStreamFromResource(
                     PROPERTIES_RESOURCE);
+
+            final AbstractFileConfiguration abstractFileConfiguration =
+                    new PropertiesConfiguration();
             abstractFileConfiguration.load(inputStream);
+            this.config = abstractFileConfiguration;
         } catch (ConfigurationException e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
-        this.config = abstractFileConfiguration;
         this.iconImage = getImage(this.config.getString("icon_resource"));
         this.helpImage = getImage(this.config.getString("help_resource"));
         this.dateFormat = new SimpleDateFormat(
