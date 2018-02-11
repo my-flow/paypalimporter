@@ -17,10 +17,10 @@ dependencies {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
     compile('com.brsanthu:google-analytics-java:1.1.2')
-    compile('org.apache.commons:commons-lang3:3.4')
+    compile('org.apache.commons:commons-lang3:3.6')
     compile('commons-configuration:commons-configuration:1.10')
-    compile('org.slf4j:slf4j-api:1.7.13')
-    compile('org.checkerframework:checker:1.9.11')
+    compile('org.slf4j:slf4j-api:1.7.25')
+    compile('org.checkerframework:checker:2.2.0')
 }
 
 jar {
@@ -42,7 +42,7 @@ shadowJar {
 
     dependencies {
         include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.4')
+        include dependency('org.apache.commons:commons-lang3:3.6')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('org.apache.httpcomponents:httpcore:4.3')
         include dependency('org.apache.httpcomponents:httpclient:4.3')
@@ -55,8 +55,8 @@ shadowJar {
         include dependency('com.paypal.sdk:merchantsdk:2.14.117')
         include dependency(':paypal-core-paypalimporter:1.7.0')
         include dependency(':prompt:')
-        include dependency('org.slf4j:slf4j-api:1.7.13')
-        include dependency('org.slf4j:slf4j-nop:1.7.13')
+        include dependency('org.slf4j:slf4j-api:1.7.25')
+        include dependency('org.slf4j:slf4j-nop:1.7.25')
     }
     relocate 'com.jgoodies',    'com.moneydance.modules.features.paypalimporter.jgoodies'
     relocate 'org.apache.http', 'com.moneydance.modules.features.paypalimporter.apache.http'
@@ -88,7 +88,7 @@ javadoc {
             'https://brsanthu.github.io/google-analytics-java/javadocs/',
             'http://www.slf4j.org/apidocs/',
             'https://commons.apache.org/proper/commons-configuration/javadocs/v1.10/apidocs/',
-            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.6/',
             'https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/',
             'http://commons.apache.org/logging/apidocs/'
     ]
