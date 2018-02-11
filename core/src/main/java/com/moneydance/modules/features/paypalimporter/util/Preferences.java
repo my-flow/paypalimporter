@@ -87,9 +87,7 @@ public final class Preferences {
     }
 
     public String getFullVersion() {
-        final String fullString = this.getUserPreferences().getSetting(
-                "current_version", "0");
-        return fullString;
+        return this.getUserPreferences().getSetting("current_version", "0");
     }
 
     public Locale getLocale() {

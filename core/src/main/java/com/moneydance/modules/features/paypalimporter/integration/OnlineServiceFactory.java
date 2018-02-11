@@ -30,7 +30,7 @@ public final class OnlineServiceFactory {
             OnlineServiceFactory.class.getName());
 
     private static final OnlineService SERVICE = createService();
-    private static final String KEY_SERVICE_TYPE = "type";
+    static final String KEY_SERVICE_TYPE = "type";
 
     /**
      * Restrictive constructor.

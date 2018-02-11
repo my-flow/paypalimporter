@@ -64,7 +64,7 @@ final class ConsoleRunner {
      * Create the GUI and show it. For thread safety, this method should be
      * invoked from the event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    static void createAndShowGUI() {
         final Main main = new Main();
         final StubContextFactory factory = new StubContextFactory(main);
         factory.init();

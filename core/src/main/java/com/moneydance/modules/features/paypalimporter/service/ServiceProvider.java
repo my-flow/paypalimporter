@@ -36,7 +36,7 @@ public final class ServiceProvider {
     /**
      * Static initialization of class-dependent logger.
      */
-    private static final Logger LOG = Logger.getLogger(
+    static final Logger LOG = Logger.getLogger(
             ServiceProvider.class.getName());
 
     /**

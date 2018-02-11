@@ -139,6 +139,17 @@ public final class PayPalOnlineService {
         return signature;
     }
 
+    static String buildRealm(final int accountId) {
+        if (accountId >= 0) {
+            return String.format("realm_%d", accountId);
+        }
+        return OnlineService.DEFAULT_REQ_REALM;
+    }
+
+    static String buildSignatureKey(final String realm) {
+        return String.format("so_signature_%s", realm);
+    }
+
     @Nullable private String getFirstRealm() {
         final List<String> realms = this.onlineService.getRealms();
         if (realms != null && !realms.isEmpty()) {
@@ -148,19 +159,8 @@ public final class PayPalOnlineService {
         return null;
     }
 
-    private static String buildRealm(final int accountId) {
-        if (accountId >= 0) {
-            return String.format("realm_%d", accountId);
-        }
-        return OnlineService.DEFAULT_REQ_REALM;
-    }
-
     private static String buildAuthKey(final String realm) {
         return String.format("%s:%s",
                 Helper.INSTANCE.getSettings().getFIId(), realm);
-    }
-
-    private static String buildSignatureKey(final String realm) {
-        return String.format("so_signature_%s", realm);
     }
 }
