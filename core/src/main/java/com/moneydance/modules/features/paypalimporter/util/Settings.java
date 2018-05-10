@@ -111,34 +111,6 @@ public final class Settings {
     }
 
     /**
-     * @return Tracking code for Google Analytics (aka "utmac").
-     */
-    public String getTrackingCode() {
-        return this.config.getString("tracking_code");
-    }
-
-    /**
-     * @return Event action for installation
-     */
-    public String getEventActionInstall() {
-        return this.config.getString("event_action_install");
-    }
-
-    /**
-     * @return Event action for display
-     */
-    public String getEventActionDisplay() {
-        return this.config.getString("event_action_display");
-    }
-
-    /**
-     * @return Event action for removal
-     */
-    public String getEventActionUninstall() {
-        return this.config.getString("event_action_uninstall");
-    }
-
-    /**
      * @return Date format specific to PayPal
      */
     public DateFormat getDateFormat() {

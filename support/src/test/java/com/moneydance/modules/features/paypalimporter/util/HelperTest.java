@@ -32,11 +32,6 @@ public final class HelperTest {
     }
 
     @Test
-    public void testGetTracker() {
-        assertThat(Helper.INSTANCE.getTracker(0), notNullValue());
-    }
-
-    @Test
     public void testGetInputStreamFromResource() {
         assertThat(Helper.getInputStreamFromResource(
                 Helper.INSTANCE.getSettings().getLoggingPropertiesResource()),
