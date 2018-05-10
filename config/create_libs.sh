@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
 # Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
 
@@ -6,9 +6,23 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
+readonly VERSION="1.7.0"
+
+readonly PROGNAME=$(basename "$0")
 readonly PROGDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly TARGET_DIR=${TARGET_DIR:-"$PROGDIR/../lib"}
 readonly TMP_DIR=${TMP_DIR:-$(mktemp -d -t paypalimporter)}
+
+# Check if all required dependencies exist
+check_prerequisites() {
+  # All executables used in this script must be available
+  for executable in basename cp git mvn patch; do
+    command -v "${executable}" > /dev/null 2>&1 || {
+      echo >&2 "In order to use \"${PROGNAME}\", executable \"${executable}\" must be installed.";
+      exit 1;
+    }
+  done
+}
 
 clone_repository() {
     local repository=$1
@@ -31,7 +45,7 @@ generate_jar() {
 copy_jar() {
     local source_dir=$1
     local target_file=$2
-    cp "$source_dir/target/paypal-core-1.7.0.jar" "$target_file"
+    cp "$source_dir/target/paypal-core-$VERSION.jar" "$target_file"
 }
 
 function cleanup {
@@ -39,10 +53,11 @@ function cleanup {
 }
 
 main() {
-    clone_repository "git@github.com:paypal/sdk-core-java.git" "v1.7.0" "$TMP_DIR"
+    check_prerequisites
+    clone_repository "git@github.com:paypal/sdk-core-java.git" "v$VERSION" "$TMP_DIR"
     apply_patch "$PROGDIR/fix_proxies.patch" "$TMP_DIR"
     generate_jar "$TMP_DIR"
-    copy_jar "$TMP_DIR" "$TARGET_DIR/paypal-core-paypalimporter-1.7.0.jar"
+    copy_jar "$TMP_DIR" "$TARGET_DIR/paypal-core-paypalimporter-$VERSION.jar"
 }
 
 trap cleanup EXIT
