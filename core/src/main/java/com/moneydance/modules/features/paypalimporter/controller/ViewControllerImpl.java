@@ -26,7 +26,6 @@ import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
-import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
 import java.awt.Frame;
 import java.awt.Image;
@@ -44,7 +43,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -64,20 +62,16 @@ public final class ViewControllerImpl implements ViewController {
 
     private final Preferences prefs;
     private final Localizable localizable;
-    private final Tracker tracker;
     private final FeatureModuleContext context;
     private final ServiceProvider serviceProvider;
     private final IAccountBookFactory accountBookFactory;
     @Nullable private WizardHandler wizard;
     @Nullable private InputData inputData;
 
-    public ViewControllerImpl(
-            final FeatureModuleContext argContext,
-            final Tracker argTracker) {
+    public ViewControllerImpl(final FeatureModuleContext argContext) {
         this.prefs              = Helper.INSTANCE.getPreferences();
         this.localizable        = Helper.INSTANCE.getLocalizable();
         this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
-        this.tracker            = argTracker;
         this.context            = argContext;
         this.serviceProvider    = new ServiceProvider();
     }
@@ -116,7 +110,6 @@ public final class ViewControllerImpl implements ViewController {
             if (message != null) {
                 LOG.log(Level.SEVERE, message, t);
             }
-            this.tracker.track(ExceptionUtils.getStackTrace(t));
         }
     }
 
@@ -133,7 +126,6 @@ public final class ViewControllerImpl implements ViewController {
             this.wizard.addComponentListener(new ComponentDelegateListener(
                     this.accountBookFactory.createAccountBook(
                             this.context), this));
-            this.tracker.track(Tracker.EventName.DISPLAY);
         } else if (this.wizard.isVisible()) {
             this.wizard.setVisible(true);
             return;

@@ -36,9 +36,7 @@ public final class ViewControllerImplTest {
                         factory.getContext().getAccountBook()));
         this.account = factory.getContext().getRootAccount().getSubAccount(0);
 
-        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(
-                factory.getContext(),
-                Helper.INSTANCE.getTracker(0));
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(factory.getContext());
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         InputData inputData = new InputData("", password, "",

@@ -49,7 +49,6 @@ public enum Helper {
     private final transient Settings settings;
     @Nullable private transient Preferences prefs;
     @Nullable private transient Localizable localizable;
-    @Nullable private transient Tracker tracker;
 
     Helper() {
         this.observable = new HelperObservable();
@@ -78,19 +77,6 @@ public enum Helper {
             }
         }
         return this.localizable;
-    }
-
-    public Tracker getTracker(final int build) {
-        synchronized (Helper.class) {
-            if (this.tracker == null) {
-                this.tracker = new Tracker(
-                        build,
-                        this.settings.getExtensionName(),
-                        this.prefs.getFullVersion(),
-                        this.settings.getTrackingCode());
-            }
-        }
-        return this.tracker;
     }
 
     public void addObserver(final Observer observer) {

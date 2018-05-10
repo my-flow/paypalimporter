@@ -10,7 +10,6 @@ import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
-import com.moneydance.modules.features.paypalimporter.util.Tracker;
 
 import javax.annotation.Nullable;
 import java.awt.Image;
@@ -33,7 +32,6 @@ public final class Main extends FeatureModule implements Observer {
 
     private final Preferences prefs;
     private final Settings settings;
-    @Nullable private Tracker tracker;
     @Nullable private ViewController viewController;
 
     static {
@@ -53,12 +51,10 @@ public final class Main extends FeatureModule implements Observer {
     @Override
     public void init() {
         Helper.INSTANCE.addObserver(this);
-        this.tracker = Helper.INSTANCE.getTracker(this.getBuild());
 
         if (this.prefs.isFirstRun()) {
             this.prefs.setFirstRun(false);
             LOG.config("Install");
-            this.tracker.track(Tracker.EventName.INSTALL);
 
             // show wizard immediately after installation
             this.getViewController().startWizard();
@@ -101,7 +97,6 @@ public final class Main extends FeatureModule implements Observer {
     @Override
     public void unload() {
         LOG.info("Unloading extension.");
-        this.tracker.track(Tracker.EventName.UNINSTALL);
         this.cleanup();
         this.prefs.setAllWritablePreferencesToNull();
     }
@@ -120,9 +115,7 @@ public final class Main extends FeatureModule implements Observer {
      */
     private ViewController getViewController() {
         if (this.viewController == null) {
-            this.viewController = new ViewControllerImpl(
-                    this.getContext(),
-                    this.tracker);
+            this.viewController = new ViewControllerImpl(this.getContext());
         }
         return this.viewController;
     }

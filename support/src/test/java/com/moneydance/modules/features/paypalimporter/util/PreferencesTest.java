@@ -71,11 +71,6 @@ public final class PreferencesTest {
     }
 
     @Test
-    public void testGetFullVersion() {
-        assertThat(this.prefs.getFullVersion(), notNullValue());
-    }
-
-    @Test
     public void testGetLocale() {
         assertThat(this.prefs.getLocale(), notNullValue());
     }

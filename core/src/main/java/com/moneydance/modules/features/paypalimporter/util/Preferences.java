@@ -86,10 +86,6 @@ public final class Preferences {
         return this.getUserPreferences().getBoolSetting(KEY_FIRST_RUN, true);
     }
 
-    public String getFullVersion() {
-        return this.getUserPreferences().getSetting("current_version", "0");
-    }
-
     public Locale getLocale() {
         return this.getUserPreferences().getLocale();
     }
