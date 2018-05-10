@@ -13,8 +13,8 @@ apply plugin: 'com.github.johnrengelman.shadow'
 dependencies {
     compile(':moneydance:1358')
     compile(':prompt:')
-    compile(':paypal-core-paypalimporter:1.7.0')
-    compile('com.paypal.sdk:merchantsdk:2.14.117') {
+    compile(':paypal-core-paypalimporter:1.7.2')
+    compile('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
     }
     compile('net.jcip:jcip-annotations:1.0')
@@ -23,10 +23,10 @@ dependencies {
     compile('com.jgoodies:jgoodies-validation:2.5.1') {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
-    compile('org.apache.commons:commons-lang3:3.6')
+    compile('org.apache.commons:commons-lang3:3.7')
     compile('commons-configuration:commons-configuration:1.10')
     compile('org.slf4j:slf4j-api:1.7.25')
-    compile('org.checkerframework:checker:2.2.0')
+    compile('org.checkerframework:checker:2.3.2')
 }
 
 jar {
@@ -53,15 +53,15 @@ shadowJar {
 
     dependencies {
         include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.6')
+        include dependency('org.apache.commons:commons-lang3:3.7')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
         include dependency('com.jgoodies:jgoodies-validation:2.5.1')
-        include dependency('commons-logging:commons-logging:1.1.1')
-        include dependency('com.paypal.sdk:merchantsdk:2.14.117')
-        include dependency(':paypal-core-paypalimporter:1.7.0')
+        include dependency('commons-logging:commons-logging:1.2')
+        include dependency('com.paypal.sdk:merchantsdk:2.15.122')
+        include dependency(':paypal-core-paypalimporter:1.7.2')
         include dependency(':prompt:')
         include dependency('org.slf4j:slf4j-api:1.7.25')
         include dependency('org.slf4j:slf4j-nop:1.7.25')
@@ -94,7 +94,7 @@ javadoc {
             'http://moneydance.com/dev/apidoc/',
             'http://www.slf4j.org/apidocs/',
             'https://commons.apache.org/proper/commons-configuration/javadocs/v1.10/apidocs/',
-            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.6/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.7/',
             'https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/',
             'http://commons.apache.org/logging/apidocs/'
     ]

@@ -6,7 +6,7 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
-readonly VERSION="1.7.0"
+readonly VERSION="1.7.2"
 
 readonly PROGNAME=$(basename "$0")
 readonly PROGDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

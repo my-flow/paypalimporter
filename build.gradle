@@ -4,9 +4,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'net.sf.proguard:proguard-gradle:5.3.3'
+        classpath 'net.sf.proguard:proguard-gradle:6.0.2'
     }
 }
 
