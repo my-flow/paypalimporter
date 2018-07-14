@@ -3,6 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -11,6 +12,8 @@ import com.moneydance.apps.md.controller.StubContextFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 /**
  * @author Florian J. Breunig
@@ -58,7 +61,8 @@ public final class LocalizableTest {
     @Test
     public void testGetQuestionMessageMultipleCurrencies() {
         assertThat(this.localizable.getQuestionMessageMultipleCurrencies(
-                "EUR", new Object[0]), notNullValue());
+                "EUR", Arrays.asList("USD", "EUR")),
+                containsString("multiple<br>currencies (USD, EUR).<br>Only transactions in EUR"));
     }
 
     @Test

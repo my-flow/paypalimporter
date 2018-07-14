@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.swing.BoundedRangeModel;
@@ -220,7 +221,10 @@ public final class ViewControllerImpl implements ViewController {
             final String message =
                     this.localizable.getQuestionMessageMultipleCurrencies(
                             currencyCode.name(),
-                            currencyCodes.toArray());
+                            currencyCodes
+                                    .stream()
+                                    .map(CurrencyCodeType::getValue)
+                                    .collect(Collectors.toList()));
             final Object confirmationLabel = new JLabel(message);
             final Image image = Helper.INSTANCE.getSettings().getIconImage();
             final Icon icon = new ImageIcon(image);
