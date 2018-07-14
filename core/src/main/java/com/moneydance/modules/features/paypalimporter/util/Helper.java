@@ -113,7 +113,7 @@ public enum Helper {
             final String resource) {
         ClassLoader cloader = Helper.class.getClassLoader();
         InputStream inputStream = cloader.getResourceAsStream(resource);
-        Validate.notNull(inputStream, "Resource %s was not found.",  resource);
+        Validate.notNull(inputStream, "Resource %s was not found.", resource);
         return inputStream;
     }
 

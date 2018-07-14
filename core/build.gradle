@@ -23,8 +23,9 @@ dependencies {
     compile('com.jgoodies:jgoodies-validation:2.5.1') {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
-    compile('org.apache.commons:commons-lang3:3.7')
+    compile('org.apache.commons:commons-lang3:3.9')
     compile('commons-configuration:commons-configuration:1.10')
+    compile('org.apache.commons:commons-text:1.6')
     compile('org.slf4j:slf4j-api:1.7.25')
     compile('org.checkerframework:checker:2.3.2')
 }
@@ -52,9 +53,10 @@ shadowJar {
     exclude 'META-INF/**/*'
 
     dependencies {
-        include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.7')
         include dependency('commons-configuration:commons-configuration:1.10')
+        include dependency('commons-lang:commons-lang:2.6')
+        include dependency('org.apache.commons:commons-lang3:3.9')
+        include dependency('org.apache.commons:commons-text:1.6')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
@@ -94,8 +96,8 @@ javadoc {
             'http://moneydance.com/dev/apidoc/',
             'http://www.slf4j.org/apidocs/',
             'https://commons.apache.org/proper/commons-configuration/javadocs/v1.10/apidocs/',
-            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.7/',
-            'https://commons.apache.org/proper/commons-lang/javadocs/api-2.6/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.9/',
+            'https://commons.apache.org/proper/commons-text/javadocs/api-1.6/',
             'http://commons.apache.org/logging/apidocs/'
     ]
     options.footer = '<a href="https://github.com/my-flow/paypalimporter">PayPal Importer on GitHub</a>'

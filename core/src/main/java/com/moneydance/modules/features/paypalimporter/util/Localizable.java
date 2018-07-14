@@ -5,14 +5,14 @@ package com.moneydance.modules.features.paypalimporter.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import javax.annotation.Nullable;
 
@@ -82,15 +82,15 @@ public final class Localizable {
      */
     public String getQuestionMessageMultipleCurrencies(
             final String currency,
-            final Object[] currencies) {
+            final List<String> currencies) {
         final String templateString = this.resourceBundle.getString(
                 "question_message_multiple_currencies");
 
         Map<String, String> valuesMap =
                 new ConcurrentHashMap<String, String>(2);
         valuesMap.put("currency", currency);
-        valuesMap.put("currencies", StringUtils.join(currencies, ", "));
-        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+        valuesMap.put("currencies", String.join(", ", currencies));
+        StringSubstitutor sub = new StringSubstitutor(valuesMap);
 
         return sub.replace(templateString);
     }
@@ -139,7 +139,7 @@ public final class Localizable {
     }
 
     /**
-     * @param errorMessage Orginal error message that should be displayed
+     * @param errorMessage Original error message that should be displayed
      * @return the error message when service call failed
      */
     public String getErrorMessageServiceCallFailed(final String errorMessage) {
@@ -149,7 +149,7 @@ public final class Localizable {
         Map<String, String> valuesMap =
                 new ConcurrentHashMap<String, String>(1);
         valuesMap.put("error.message", errorMessage);
-        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+        StringSubstitutor sub = new StringSubstitutor(valuesMap);
 
         return sub.replace(templateString);
     }
