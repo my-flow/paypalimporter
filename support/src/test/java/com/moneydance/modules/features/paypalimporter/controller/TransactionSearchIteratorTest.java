@@ -8,7 +8,7 @@ import com.infinitekind.moneydance.model.OnlineTxn;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
-import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
+import com.moneydance.modules.features.paypalimporter.service.ServiceProviderImpl;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.net.MalformedURLException;
@@ -32,6 +32,7 @@ public final class TransactionSearchIteratorTest {
 
     private TransactionSearchIterator iterator;
     private AccountBook accountBook;
+    private InputData inputData;
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +41,7 @@ public final class TransactionSearchIteratorTest {
 
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        final InputData inputData = new InputData(
+        this.inputData = new InputData(
                 "mock username",
                 password,
                 "mock signature",
@@ -48,7 +49,7 @@ public final class TransactionSearchIteratorTest {
         this.iterator = new TransactionSearchIterator(
                 new ViewControllerMock(),
                 factory.getContext().getAccountBook(),
-                new ServiceProvider(),
+                new ServiceProviderImpl(),
                 inputData,
                 this.accountBook.getRootAccount().getCurrencyType(),
                 CurrencyCodeType.USD);
@@ -62,6 +63,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testStartWizard() {
         this.iterator.startWizard();
+        this.iterator.cancel();
     }
 
     @Test
@@ -71,7 +73,7 @@ public final class TransactionSearchIteratorTest {
 
     @Test
     public void testProceed() {
-        this.iterator.proceed();
+        this.iterator.proceed(this.inputData);
     }
 
     @Test
@@ -96,7 +98,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedWithSearchWarning() {
         this.iterator.transactionsImported(
-                Collections.<OnlineTxn>emptyList(),
+                Collections.emptyList(),
                 new Date(Math.abs(System.currentTimeMillis() - RandomUtils.nextLong())),
                 null,
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
@@ -105,7 +107,7 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedNoSearchWarningEmpty() {
         this.iterator.transactionsImported(
-                Collections.<OnlineTxn>emptyList(),
+                Collections.emptyList(),
                 null,
                 null,
                 null);
@@ -113,7 +115,7 @@ public final class TransactionSearchIteratorTest {
 
     @Test
     public void testTransactionsImportedNoSearchWarningFilled() {
-        final List<OnlineTxn> onlineTxns = new LinkedList<OnlineTxn>();
+        final List<OnlineTxn> onlineTxns = new LinkedList<>();
         onlineTxns.add(this.accountBook.getRootAccount().getDownloadedTxns().newTxn());
         this.iterator.transactionsImported(
                 onlineTxns,

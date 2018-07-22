@@ -5,7 +5,6 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.DateRange;
-import com.infinitekind.moneydance.model.OnlineTxn;
 import com.moneydance.apps.md.controller.StubAccountBookFactory;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
@@ -25,29 +24,35 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
  */
 public final class ViewControllerImplTest {
 
+    private StubContextFactory factory;
     private ViewController viewController;
+    private InputData validInputData;
+    private InputData invalidInputData;
     private Account account;
 
     @Before
     public void setUp() {
-        StubContextFactory factory = new StubContextFactory();
+        this.factory = new StubContextFactory();
         Helper.INSTANCE.setPreferences(
                 new StubAccountBookFactory(
-                        factory.getContext().getAccountBook()));
+                        this.factory.getContext().getAccountBook()));
         this.account = factory.getContext().getRootAccount().getSubAccount(0);
 
-        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(factory.getContext());
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(this.factory.getContext(), new ServiceProviderMock());
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        InputData inputData = new InputData("", password, "",
+        this.validInputData = new InputData("mock username", password, "mock signature",
                 this.account.getAccountNum(), new DateRange());
-        viewControllerImpl.setInputData(inputData);
+        this.invalidInputData = new InputData("", password, "",
+                this.account.getAccountNum(), new DateRange());
+
+        viewControllerImpl.setInputData(validInputData);
         this.viewController = viewControllerImpl;
     }
 
     @Test
-    public void testStartWizard() {
-        this.viewController.startWizard();
+    public void testProceedSuccessfully() {
+        this.viewController.proceed(this.validInputData);
     }
 
     @Test
@@ -55,15 +60,18 @@ public final class ViewControllerImplTest {
         this.viewController.currencyChecked(
                 this.account.getCurrencyType(),
                 CurrencyCodeType.USD,
-                Collections.<CurrencyCodeType>emptyList());
+                Collections.emptyList());
     }
 
     @Test
     public void testCurrencyCheckedFilled() {
-        List<CurrencyCodeType> currencyCodes = new LinkedList<CurrencyCodeType>();
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(this.factory.getContext(), new ServiceProviderMock());
+        viewControllerImpl.setInputData(this.invalidInputData);
+
+        List<CurrencyCodeType> currencyCodes = new LinkedList<>();
         currencyCodes.add(CurrencyCodeType.USD);
         currencyCodes.add(CurrencyCodeType.EUR);
-        this.viewController.currencyChecked(
+        viewControllerImpl.currencyChecked(
                 this.account.getCurrencyType(),
                 CurrencyCodeType.USD,
                 currencyCodes);
@@ -72,7 +80,7 @@ public final class ViewControllerImplTest {
     @Test
     public void testTransactionsImportedEmptyWithErrorCode() {
         this.viewController.transactionsImported(
-                Collections.<OnlineTxn>emptyList(),
+                Collections.emptyList(),
                 null,
                 this.account,
                 Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());

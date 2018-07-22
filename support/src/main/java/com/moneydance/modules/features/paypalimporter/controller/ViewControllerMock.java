@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
+import com.moneydance.modules.features.paypalimporter.model.InputData;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 import com.infinitekind.moneydance.model.Account;
@@ -36,12 +37,17 @@ final class ViewControllerMock implements ViewController {
     }
 
     @Override
-    public void proceed() {
+    public void proceed(final InputData inputData) {
         // ignore
     }
 
     @Override
-    public void unlock(@Nullable final String text, @Nullable final Object key) {
+    public void unlock() {
+        // ignore
+    }
+
+    @Override
+    public void unlock(final String text, final Object key) {
         // ignore
     }
 

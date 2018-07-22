@@ -16,6 +16,7 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 import javax.annotation.Nullable;
 
+import com.moneydance.modules.features.paypalimporter.model.InputData;
 /**
  * Controller interface, strategy pattern.
  *
@@ -35,18 +36,22 @@ public interface ViewController extends Observer {
 
     /**
      * Continue to the next step of the import process.
+     * @param inputData user input to proceed with
      */
-    void proceed();
+    void proceed(InputData inputData);
+
+    /**
+     * Unlock the input fields of the view.
+     */
+    void unlock();
 
     /**
      * Unlock the input fields of the view.
      *
-     * @param text error message to be displayed (can be null)
-     * @param key identifier of the related input field (can be null)
+     * @param text error message to be displayed
+     * @param key identifier of the related input field
      */
-    void unlock(
-            @Nullable final String text,
-            @Nullable final Object key);
+    void unlock(final String text, final Object key);
 
     /**
      * This hook is called after a service call has checked the available
