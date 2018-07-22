@@ -11,9 +11,6 @@ import static org.junit.Assert.assertThat;
 import com.moneydance.apps.md.controller.StubAccountBookFactory;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,14 +28,8 @@ public final class PreferencesTest {
         this.prefs = new Preferences(
                 new StubAccountBookFactory(
                         this.factory.getContext().getAccountBook()));
-        Helper.INSTANCE.addObserver(new Observer() {
-            @Override
-            public void update(final Observable observable,
-                    final Object updateAll) {
-                PreferencesTest.this.prefs.setContext(
-                        PreferencesTest.this.factory.getContext());
-            }
-        });
+        Helper.INSTANCE.addObserver((observable, updateAll) -> PreferencesTest.this.prefs.setContext(
+                PreferencesTest.this.factory.getContext()));
     }
 
     @Test(expected = AssertionError.class)

@@ -4,7 +4,7 @@
 package com.moneydance.modules.features.paypalimporter.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -75,7 +76,7 @@ public final class TransactionSearchServiceTest {
     @Test
     public void testCallSuccessfulEmpty() {
         this.service.setAck(AckCodeType.SUCCESS);
-        this.service.setPaymentTransactions(Collections.<PaymentTransactionSearchResultType>emptyList());
+        this.service.setPaymentTransactions(Collections.emptyList());
 
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
@@ -87,7 +88,7 @@ public final class TransactionSearchServiceTest {
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
-            assertThat(serviceResult.getErrorMessage(), nullValue());
+            assertThat(serviceResult.getErrorMessage(), is(Optional.empty()));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

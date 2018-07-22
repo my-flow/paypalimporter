@@ -4,7 +4,6 @@
 package com.moneydance.modules.features.paypalimporter.presentation;
 
 import com.infinitekind.moneydance.model.Account;
-import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
@@ -20,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -119,21 +119,18 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("nullness")
     public final void setInputData(final InputData inputData) {
-        this.txtUsername.setText(inputData.getUsername());
+        this.txtUsername.setText(inputData.getUsername().orElse(null));
 
-        String password = null;
-        if (inputData.getPassword(false) != null) {
-            password = String.valueOf(inputData.getPassword(true));
-        }
-        this.txtPassword.setText(password);
+        AtomicReference<String> password = new AtomicReference<>(null);
+        inputData.getPassword(true).ifPresent(pass -> password.set(String.valueOf(pass)));
+        this.txtPassword.setText(password.get());
 
-        this.txtSignature.setText(inputData.getSignature());
+        this.txtSignature.setText(inputData.getSignature().orElse(null));
 
-        DateRange dateRange = inputData.getDateRange();
-        if (dateRange != null) {
-            this.dateRanger.setStartDate(dateRange.getStartDateInt());
-            this.dateRanger.setEndDate(dateRange.getEndDateInt());
-        }
+        inputData.getDateRange().ifPresent(dateRange -> {
+                this.dateRanger.setStartDate(dateRange.getStartDateInt());
+                this.dateRanger.setEndDate(dateRange.getEndDateInt());
+        });
 
         // preset focus
         if (StringUtils.isEmpty(this.txtUsername.getText())) {
@@ -174,7 +171,7 @@ implements ActionListener, WindowListener {
         if (loading == null) {
             isLoading = this.isLoading();
         } else {
-            isLoading = loading.booleanValue();
+            isLoading = loading;
         }
         final ComboBoxModel<Account> accountModel =
                 this.comboBoxAccts.getModel();

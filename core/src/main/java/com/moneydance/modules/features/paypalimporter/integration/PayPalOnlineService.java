@@ -10,9 +10,9 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -53,15 +53,12 @@ public final class PayPalOnlineService {
             return;
         }
 
-        Account nextAccount;
-        for (Iterator<Account> iterator = AccountUtil.getAccountIterator(
-                accountBook.getWrappedOriginal());
-            iterator.hasNext();) {
-            nextAccount = iterator.next();
-            if (this.onlineService.isSameAs(nextAccount.getBankingFI())) {
-                nextAccount.setBankingFI(null);
-            }
-        }
+        Iterable<Account> iterable = () -> AccountUtil.getAccountIterator(accountBook.getWrappedOriginal());
+        StreamSupport
+                .stream(iterable.spliterator(), false)
+                .filter(nextAccount -> this.onlineService.isSameAs(nextAccount.getBankingFI()))
+                .forEach(nextAccount -> nextAccount.setBankingFI(null));
+
         if (account.getBankingFI() == null) {
             // never override a preexisting OFX setting
             account.setBankingFI(this.onlineService);
@@ -84,9 +81,9 @@ public final class PayPalOnlineService {
         String username = this.onlineService.getUserId(
                 buildRealm(accountId),
                 null);
-        final String firstRealm = this.getFirstRealm();
-        if (firstRealm != null && StringUtils.isBlank(username)) {
-            username = this.onlineService.getUserId(firstRealm, null);
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (firstRealm.isPresent() && StringUtils.isBlank(username)) {
+            username = this.onlineService.getUserId(firstRealm.get(), null);
         }
         return username;
     }
@@ -103,10 +100,10 @@ public final class PayPalOnlineService {
         Object authObj = this.onlineService.getCachedAuthentication(
                 buildAuthKey(buildRealm(accountId)));
         char[] result;
-        final String firstRealm = this.getFirstRealm();
-        if (authObj == null && firstRealm != null) {
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (authObj == null && firstRealm.isPresent()) {
             authObj = this.onlineService.getCachedAuthentication(
-                    buildAuthKey(firstRealm));
+                    buildAuthKey(firstRealm.get()));
         }
         if (authObj == null) {
             result = null;
@@ -131,10 +128,10 @@ public final class PayPalOnlineService {
         String signature = this.onlineService.getParameter(
                 buildSignatureKey(buildRealm(accountId)),
                 null);
-        final String firstRealm = this.getFirstRealm();
-        if (signature == null && firstRealm != null) {
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (signature == null && firstRealm.isPresent()) {
             signature = this.onlineService.getParameter(
-                    buildSignatureKey(firstRealm), null);
+                    buildSignatureKey(firstRealm.get()), null);
         }
         return signature;
     }
@@ -150,13 +147,10 @@ public final class PayPalOnlineService {
         return String.format("so_signature_%s", realm);
     }
 
-    @Nullable private String getFirstRealm() {
-        final List<String> realms = this.onlineService.getRealms();
-        if (realms != null && !realms.isEmpty()) {
-            LOG.config(String.format("realms[0]: %s", realms.get(0)));
-            return realms.get(0);
-        }
-        return null;
+    private Optional<String> getFirstRealm() {
+        final Optional<String> realm = this.onlineService.getRealms().stream().findFirst();
+        LOG.config(String.format("realms[0]: %s", realm));
+        return realm;
     }
 
     private static String buildAuthKey(final String realm) {

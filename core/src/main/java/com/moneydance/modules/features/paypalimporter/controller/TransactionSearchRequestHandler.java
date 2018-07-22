@@ -58,8 +58,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             serviceResult) {
 
         final List<PaymentTransactionSearchResultType> txns =
-                serviceResult.getResults();
-        assert txns != null : "@AssumeAssertion(nullness)";
+                serviceResult.getResults().orElseThrow(AssertionError::new);
 
         final List<OnlineTxn> resultList =
                 new ArrayList<OnlineTxn>(txns.size());
@@ -85,7 +84,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
                 resultList,
                 new Date(startDateLong),
                 null,
-                serviceResult.getErrorCode());
+                serviceResult.getErrorCode().orElse(null));
     }
 
     private OnlineTxn createNewOnlineTxn(

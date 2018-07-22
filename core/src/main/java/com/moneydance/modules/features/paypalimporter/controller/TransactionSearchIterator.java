@@ -159,16 +159,16 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     /**
-     * @param endDate The adapted end date which must be an ealier date than
+     * @param endDate The adapted end date which must be an earlier date than
      * the previous end date.
      */
     @SuppressWarnings("nullness")
     private void callTransactionSearchService(final Date endDate) {
 
         this.serviceProvider.callTransactionSearchService(
-                this.inputData.getUsername(),
-                this.inputData.getPassword(false),
-                this.inputData.getSignature(),
+                this.inputData.getUsername().orElseThrow(AssertionError::new),
+                this.inputData.getPassword(false).orElseThrow(AssertionError::new),
+                this.inputData.getSignature().orElseThrow(AssertionError::new),
                 this.inputData.getStartDate(),
                 endDate,
                 this.currencyCode,

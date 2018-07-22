@@ -8,8 +8,6 @@ import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
-import javax.annotation.Nullable;
-
 /**
  * Default implementation of the <code>RequestHandler</code> interface.
  *
@@ -21,7 +19,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     private final ViewController viewController;
     private final Localizable localizable;
 
-    protected AbstractRequestHandler(final ViewController argViewController) {
+    AbstractRequestHandler(final ViewController argViewController) {
         this.viewController = argViewController;
         this.localizable = Helper.INSTANCE.getLocalizable();
     }
@@ -30,16 +28,18 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     public final void serviceCallFinished(
             final ServiceResult<V> serviceResult) {
 
-        if (serviceResult.getResults() != null) {
-            this.serviceCallSucceeded(serviceResult);
-        }
-        // no "else" because the case "success + error message" might occur
-        final String errorMessage = serviceResult.getErrorMessage();
-        if (errorMessage != null) {
-            this.serviceCallFailed(
-                    serviceResult.getErrorCode(),
-                    errorMessage);
-        }
+        serviceResult
+                .getResults()
+                .ifPresent(results -> this.serviceCallSucceeded(serviceResult));
+
+        // the case "success + error message" might occur
+        serviceResult
+                .getErrorMessage()
+                .ifPresent(errorMessage -> this.serviceCallFailed(
+                    serviceResult
+                            .getErrorCode()
+                            .orElse(null),
+                    errorMessage));
     }
 
     /**
@@ -49,17 +49,12 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
             final ServiceResult<V> serviceResult);
 
     private void serviceCallFailed(
-            @Nullable final String errorCode,
+            final String errorCode,
             final String originalMessage) {
 
-        final String translatedMessage =
-                this.localizable.getTranslatedErrorMessage(errorCode);
-        final String displayMessage;
-        if (translatedMessage == null) {
-            displayMessage = originalMessage;
-        } else {
-            displayMessage = translatedMessage;
-        }
+        final String displayMessage = this.localizable
+                .getTranslatedErrorMessage(errorCode)
+                .orElse(originalMessage);
 
         final String labelMessage =
                 this.localizable.getErrorMessageServiceCallFailed(
@@ -67,7 +62,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
         this.viewController.unlock(labelMessage, errorCode);
     }
 
-    protected final ViewController getViewController() {
+    final ViewController getViewController() {
         return this.viewController;
     }
 }

@@ -3,7 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter.model;
 
-import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
@@ -11,6 +10,8 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Florian J. Breunig
@@ -61,23 +62,25 @@ public final class InputDataValidator implements Validator<InputData> {
 
     @SuppressWarnings("nullness")
     private static boolean isValidUsername(final InputData data) {
-        return StringUtils.isNotBlank(data.getUsername());
+        return data.getUsername().isPresent() && StringUtils.isNotBlank(data.getUsername().get());
     }
 
     @SuppressWarnings("nullness")
     private static boolean isValidPassword(final InputData data) {
-        return ArrayUtils.isNotEmpty(data.getPassword(false));
+        AtomicBoolean result = new AtomicBoolean(false);
+        data.getPassword(false).ifPresent(password -> result.set(ArrayUtils.isNotEmpty(password)));
+        return result.get();
     }
 
     @SuppressWarnings("nullness")
     private static boolean isValidSignature(final InputData data) {
-        return StringUtils.isNotBlank(data.getSignature());
+        return data.getSignature().isPresent() && StringUtils.isNotBlank(data.getSignature().get());
     }
 
     private static boolean isValidDateRange(final InputData data) {
-        final DateRange dateRange = data.getDateRange();
-        return dateRange != null
-                && dateRange.getStartDateInt()
-                <= dateRange.getEndDateInt();
+        return data
+                .getDateRange()
+                .filter(dateRange -> dateRange.getStartDateInt() <= dateRange.getEndDateInt())
+                .isPresent();
     }
 }

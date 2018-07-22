@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -96,12 +97,12 @@ public final class Localizable {
      * @return the user-friendly error message for a given error code or null
      *  if none is found
      */
-    @Nullable public String getTranslatedErrorMessage(@Nullable final String errorCode) {
+    public Optional<String> getTranslatedErrorMessage(@Nullable final String errorCode) {
         try {
             final String key = String.format("error_message_%s", errorCode);
-            return this.resourceBundle.getString(key);
+            return Optional.of(this.resourceBundle.getString(key));
         } catch (MissingResourceException e) {
-            return null;
+            return Optional.empty();
         }
     }
 

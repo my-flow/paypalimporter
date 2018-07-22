@@ -9,6 +9,7 @@ import com.moneydance.apps.md.controller.Util;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -69,17 +70,16 @@ public final class InputData {
         }
     }
 
-    @Nullable public String getUsername() {
-        return this.username;
+    public Optional<String> getUsername() {
+        return Optional.ofNullable(this.username);
     }
 
-    @SuppressWarnings("nullness")
-    public char[] getPassword(final boolean clear) {
-        char[] result;
+    public Optional<char[]> getPassword(final boolean clear) {
+        Optional<char[]> result;
         if (this.password == null) {
-            result = null;
+            result = Optional.empty();
         } else {
-            result = Arrays.copyOf(this.password, this.password.length);
+            result = Optional.of(Arrays.copyOf(this.password, this.password.length));
             if (clear) {
                 Arrays.fill(this.password, '\0');
             }
@@ -87,8 +87,8 @@ public final class InputData {
         return result;
     }
 
-    @Nullable public String getSignature() {
-        return this.signature;
+    public Optional<String> getSignature() {
+        return Optional.ofNullable(this.signature);
     }
 
     public int getAccountId() {
@@ -107,11 +107,11 @@ public final class InputData {
                 Calendar.DATE);
     }
 
-    @Nullable public DateRange getDateRange() {
+    public Optional<DateRange> getDateRange() {
         if (this.startDateInt >= 0 && this.endDateInt >= 0) {
-            return new DateRange(this.startDateInt, this.endDateInt);
+            return Optional.of(new DateRange(this.startDateInt, this.endDateInt));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

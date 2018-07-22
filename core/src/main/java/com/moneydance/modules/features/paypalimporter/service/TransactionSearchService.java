@@ -67,7 +67,7 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
     private final Locale errorLocale;
     private final DateFormat dateFormat;
 
-    public TransactionSearchService(
+    TransactionSearchService(
             final PayPalAPIInterfaceServiceService argService,
             final CurrencyCodeType argCurrencyCode,
             final Date argStartDate,
@@ -118,51 +118,17 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
                 results = txnResponse.getPaymentTransactions();
             }
 
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | SocketException e) {
             logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (SocketException e) {
-            logErrorMessage(e);
-            errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (IOException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SSLConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (HttpErrorException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidResponseDataException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (ClientActionRequiredException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (MissingCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (OAuthException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InterruptedException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (ParserConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SAXException e) {
+        } catch (IOException | SSLConfigurationException | HttpErrorException | InvalidCredentialException
+                | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException
+                | OAuthException | InterruptedException | ParserConfigurationException | SAXException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }
 
-        return new ServiceResult<PaymentTransactionSearchResultType>(
-                results,
-                errorCode,
-                errorMessage);
+        return new ServiceResult<>(results, errorCode, errorMessage);
     }
 
     private static void logErrorMessage(final Exception exception) {

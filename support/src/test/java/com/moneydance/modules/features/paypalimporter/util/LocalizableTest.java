@@ -4,8 +4,8 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * @author Florian J. Breunig
@@ -73,7 +74,7 @@ public final class LocalizableTest {
 
     @Test
     public void testGetTranslatedErrorMessage() {
-        assertThat(this.localizable.getTranslatedErrorMessage("-1"), nullValue());
+        assertThat(this.localizable.getTranslatedErrorMessage("-1"), is(Optional.empty()));
         assertThat(this.localizable.getTranslatedErrorMessage("10002"), notNullValue());
     }
 
