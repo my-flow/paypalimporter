@@ -215,13 +215,13 @@ implements ActionListener, WindowListener {
     }
 
     /**
-     * @param text error message to be displayed (can be null)
-     * @param key identifier of the related input field (can be null)
+     * @param text error message to be displayed
+     * @param key identifier of the related input field
      */
     @SuppressWarnings("nullness")
     public final void updateValidation(
-            @Nullable final String text,
-            @Nullable final Object key) {
+            final String text,
+            final Object key) {
         this.refresh(false, Boolean.FALSE);
 
         if (key == InputDataValidator.MessageKey.USERNAME) {
@@ -240,24 +240,22 @@ implements ActionListener, WindowListener {
             this.dateRanger.getEndField().requestFocus();
         }
 
-        if (text != null) {
-            ValidationComponentUtils
-            .updateComponentTreeMandatoryAndBlankBackground(this.jpanel);
+        ValidationComponentUtils
+        .updateComponentTreeMandatoryAndBlankBackground(this.jpanel);
 
-            final Component parentComponent;
-            if (this.isVisible()) {
-                parentComponent = this;
-            } else {
-                parentComponent = null;
-            }
-            final JLabel errorLabel = new JLabel(text);
-            errorLabel.setLabelFor(null);
-            JOptionPane.showMessageDialog(
-                    parentComponent,
-                    errorLabel,
-                    null, // no title
-                    JOptionPane.ERROR_MESSAGE);
+        final Component parentComponent;
+        if (this.isVisible()) {
+            parentComponent = this;
+        } else {
+            parentComponent = null;
         }
+        final JLabel errorLabel = new JLabel(text);
+        errorLabel.setLabelFor(null);
+        JOptionPane.showMessageDialog(
+                parentComponent,
+                errorLabel,
+                null, // no title
+                JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

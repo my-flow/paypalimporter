@@ -6,6 +6,7 @@ package com.moneydance.modules.features.paypalimporter;
 import com.moneydance.apps.md.controller.FeatureModule;
 import com.moneydance.modules.features.paypalimporter.controller.ViewController;
 import com.moneydance.modules.features.paypalimporter.controller.ViewControllerImpl;
+import com.moneydance.modules.features.paypalimporter.service.ServiceProviderImpl;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
@@ -115,7 +116,7 @@ public final class Main extends FeatureModule implements Observer {
      */
     private ViewController getViewController() {
         if (this.viewController == null) {
-            this.viewController = new ViewControllerImpl(this.getContext());
+            this.viewController = new ViewControllerImpl(this.getContext(), new ServiceProviderImpl());
         }
         return this.viewController;
     }

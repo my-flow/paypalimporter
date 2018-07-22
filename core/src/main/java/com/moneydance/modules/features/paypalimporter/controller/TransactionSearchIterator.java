@@ -15,13 +15,12 @@ import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.net.MalformedURLException;
 import java.util.Date;
-import java.util.List;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Set;
-
 import java.util.logging.Logger;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -146,6 +145,11 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
+    public void unlock() {
+        this.viewController.unlock();
+    }
+
+    @Override
     public void unlock(
             @Nullable final String text,
             @Nullable final Object key) {
@@ -210,8 +214,8 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void proceed() {
-        this.viewController.proceed();
+    public void proceed(final InputData argInputData) {
+        this.viewController.proceed(argInputData);
     }
 
     @Override

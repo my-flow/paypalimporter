@@ -70,12 +70,12 @@ public final class ViewControllerImpl implements ViewController {
     @Nullable private WizardHandler wizard;
     @Nullable private InputData inputData;
 
-    public ViewControllerImpl(final FeatureModuleContext argContext) {
+    public ViewControllerImpl(final FeatureModuleContext argContext, final ServiceProvider argServiceProvider) {
         this.prefs              = Helper.INSTANCE.getPreferences();
         this.localizable        = Helper.INSTANCE.getLocalizable();
         this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
         this.context            = argContext;
-        this.serviceProvider    = new ServiceProvider();
+        this.serviceProvider    = argServiceProvider;
     }
 
     @Override
@@ -101,7 +101,9 @@ public final class ViewControllerImpl implements ViewController {
                 this.cancel();
                 break;
             case PROCEED:
-                this.proceed();
+                assert this.wizard != null : "@AssumeAssertion(nullness)";
+                this.wizard.refresh(false, Boolean.TRUE);
+                this.proceed(this.wizard.getInputData());
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -160,21 +162,17 @@ public final class ViewControllerImpl implements ViewController {
         this.serviceProvider.shutdownNow();
         assert this.wizard != null : "@AssumeAssertion(nullness)";
         if (this.wizard.isLoading()) {
-            this.unlock(null, null);
+            this.unlock();
         } else {
             this.wizard.setVisible(false);
         }
     }
 
     @Override
-    public void proceed() {
-        assert this.wizard != null : "@AssumeAssertion(nullness)";
-        this.wizard.refresh(false, Boolean.TRUE);
-
-        final InputData newInputData = this.wizard.getInputData();
-        LOG.config(newInputData.toString());
+    public void proceed(final InputData argInputData) {
+        LOG.config(argInputData.toString());
         Validator<InputData> inputValidator = new InputDataValidator();
-        ValidationResult result = inputValidator.validate(newInputData);
+        ValidationResult result = inputValidator.validate(argInputData);
         if (result.hasErrors()) {
             this.unlock(
                     result.getErrors().get(0).formattedText(),
@@ -182,13 +180,13 @@ public final class ViewControllerImpl implements ViewController {
             return;
         }
 
-        this.inputData = newInputData;
+        this.inputData = argInputData;
         final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context);
         assert accountBook != null : "@AssumeAssertion(nullness)";
 
-        final String username = newInputData.getUsername();
-        final char[] password = newInputData.getPassword(false);
-        final String signature = newInputData.getSignature();
+        final String username = argInputData.getUsername();
+        final char[] password = argInputData.getPassword(false);
+        final String signature = argInputData.getSignature();
         assert username != null : "@AssumeAssertion(nullness)";
         assert password != null : "@AssumeAssertion(nullness)";
         assert signature != null : "@AssumeAssertion(nullness)";
@@ -200,11 +198,18 @@ public final class ViewControllerImpl implements ViewController {
                 new CheckCurrencyRequestHandler(
                     this,
                     accountBook,
-                    newInputData.getAccountId()));
+                    argInputData.getAccountId()));
     }
 
     @Override
-    public void unlock(@Nullable final String text, @Nullable final Object key) {
+    public void unlock() {
+        this.inputData = null;
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
+        this.wizard.refresh(false, Boolean.FALSE);
+    }
+
+    @Override
+    public void unlock(final String text, final Object key) {
         this.inputData = null;
         assert this.wizard != null : "@AssumeAssertion(nullness)";
         this.wizard.updateValidation(text, key);
@@ -252,7 +257,7 @@ public final class ViewControllerImpl implements ViewController {
                 this.importTransactions(currencyType, currencyCode);
             } else {
                 LOG.info("Cancel");
-                this.unlock(null, null);
+                this.unlock();
             }
         } else {
             this.importTransactions(currencyType, currencyCode);
@@ -305,7 +310,7 @@ public final class ViewControllerImpl implements ViewController {
             this.prefs.setSignature(accountId, input.getSignature());
             this.prefs.assignBankingFI(accountId);
 
-            this.unlock(null, null);
+            this.unlock();
             assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
 

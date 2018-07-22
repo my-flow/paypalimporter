@@ -21,12 +21,12 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
  */
 public final class ServiceProviderTest {
 
-    private ServiceProvider serviceProvider;
+    private ServiceProviderImpl serviceProvider;
 
     @Before
     public void setUp() {
         new StubContextFactory();
-        this.serviceProvider = new ServiceProvider();
+        this.serviceProvider = new ServiceProviderImpl();
     }
 
     @Test
@@ -37,13 +37,7 @@ public final class ServiceProviderTest {
                 "mock username",
                 password,
                 "mock signature",
-                new RequestHandler<CurrencyCodeType>() {
-                    @Override
-                    public void serviceCallFinished(
-                            final ServiceResult<CurrencyCodeType> serviceResult) {
-                        assertThat(serviceResult, notNullValue());
-                    }
-                });
+                serviceResult -> assertThat(serviceResult, notNullValue()));
     }
 
     @Test

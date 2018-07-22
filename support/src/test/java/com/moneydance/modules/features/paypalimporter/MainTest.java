@@ -48,9 +48,4 @@ public final class MainTest {
         this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
         this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
     }
-
-    @Test
-    public void testUpdate() {
-        this.main.update(null, null);
-    }
 }
