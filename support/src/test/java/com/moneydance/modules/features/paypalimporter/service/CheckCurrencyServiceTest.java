@@ -4,7 +4,7 @@
 package com.moneydance.modules.features.paypalimporter.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
@@ -22,6 +22,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,7 +59,7 @@ public final class CheckCurrencyServiceTest {
     @Test
     public void testCallSuccessfulEmpty() {
         this.service.setAck(AckCodeType.SUCCESS);
-        this.service.setBalanceHoldings(Collections.<BasicAmountType>emptyList());
+        this.service.setBalanceHoldings(Collections.emptyList());
 
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
@@ -67,7 +68,7 @@ public final class CheckCurrencyServiceTest {
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
-            assertThat(serviceResult.getErrorMessage(), nullValue());
+            assertThat(serviceResult.getErrorMessage(), is(Optional.empty()));
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

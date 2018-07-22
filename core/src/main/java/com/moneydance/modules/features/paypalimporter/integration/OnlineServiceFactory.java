@@ -81,11 +81,11 @@ public final class OnlineServiceFactory {
     @Nullable private static OnlineService getServiceById(
             final OnlineInfo onlineInfo, final OnlineService service) {
 
-        for (OnlineService onlineService : onlineInfo.getAllServices()) {
-            if (onlineService.isSameAs(service)) {
-                return onlineService;
-            }
-        }
-        return null;
+        return onlineInfo
+                .getAllServices()
+                .stream()
+                .filter(onlineService -> onlineService.isSameAs(service))
+                .findFirst()
+                .orElse(null);
     }
 }

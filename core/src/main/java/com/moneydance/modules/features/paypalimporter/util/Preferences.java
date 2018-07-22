@@ -39,7 +39,7 @@ public final class Preferences {
     void setContext(final FeatureModuleContext context) {
         this.userPreferences = ((com.moneydance.apps.md.controller.Main)
                 context).getPreferences();
-        this.accountBook = this.accountBookFactory.createAccountBook(context);
+        this.accountBook = this.accountBookFactory.createAccountBook(context).orElse(null);
         if (this.accountBook != null) {
             this.profile = OnlineServiceFactory.createService(this.accountBook);
         }

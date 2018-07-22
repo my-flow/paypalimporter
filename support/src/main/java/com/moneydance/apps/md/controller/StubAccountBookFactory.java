@@ -3,7 +3,10 @@
 
 package com.moneydance.apps.md.controller;
 
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
+
+import java.util.Optional;
 
 /**
  * @author Florian J. Breunig
@@ -17,9 +20,9 @@ public final class StubAccountBookFactory implements IAccountBookFactory {
     }
 
     @Override
-    public StubAccountBook createAccountBook(
+    public Optional<IAccountBook> createAccountBook(
             final FeatureModuleContext context) {
-        return this.accountBook;
+        return Optional.ofNullable(this.accountBook);
     }
 
 }

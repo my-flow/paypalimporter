@@ -104,9 +104,7 @@ public enum Helper {
                     .getLoggingPropertiesResource());
             LogManager.getLogManager().readConfiguration(inputStream);
 
-        } catch (SecurityException e) {
-            e.printStackTrace(System.err);
-        } catch (IOException e) {
+        } catch (SecurityException | IOException e) {
             e.printStackTrace(System.err);
         }
     }

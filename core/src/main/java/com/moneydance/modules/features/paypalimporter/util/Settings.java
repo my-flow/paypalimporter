@@ -50,16 +50,12 @@ public final class Settings {
             this.config = abstractFileConfiguration;
             this.iconImage = getImage(this.config.getString("icon_resource"));
             this.helpImage = getImage(this.config.getString("help_resource"));
-        } catch (ConfigurationException | IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
-        this.dateFormat = new SimpleDateFormat(
-                this.config.getString("date_pattern"),
-                Locale.US);
-        try {
+            this.dateFormat = new SimpleDateFormat(
+                    this.config.getString("date_pattern"),
+                    Locale.US);
             this.minDate = this.dateFormat.parse(
                     this.config.getString("min_date"));
-        } catch (ParseException e) {
+        } catch (ConfigurationException | IOException | ParseException e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
     }

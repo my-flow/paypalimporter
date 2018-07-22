@@ -22,10 +22,10 @@ public final class AccountBookTest {
     private IAccountBook accountBook;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         this.accountBook = AccountBookFactoryImpl.INSTANCE.createAccountBook(
-                factory.getContext());
+                factory.getContext()).orElseThrow(AssertionError::new);
     }
 
     @Test

@@ -38,6 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.BoundedRangeModel;
 import javax.swing.Icon;
@@ -127,9 +128,10 @@ public final class ViewControllerImpl implements ViewController {
         if (this.wizard == null) {
             final Frame owner = mdGUI.getTopLevelFrame();
             this.wizard = new WizardHandler(owner, mdGUI, this);
-            this.wizard.addComponentListener(new ComponentDelegateListener(
-                    this.accountBookFactory.createAccountBook(
-                            this.context), this));
+            this.wizard.addComponentListener(
+                    new ComponentDelegateListener(
+                        this.accountBookFactory.createAccountBook(this.context).orElseThrow(AssertionError::new),
+                            this));
         } else if (this.wizard.isVisible()) {
             this.wizard.setVisible(true);
             return;
@@ -181,15 +183,12 @@ public final class ViewControllerImpl implements ViewController {
         }
 
         this.inputData = argInputData;
-        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context);
-        assert accountBook != null : "@AssumeAssertion(nullness)";
+        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context)
+                .orElseThrow(AssertionError::new);
 
-        final String username = argInputData.getUsername();
-        final char[] password = argInputData.getPassword(false);
-        final String signature = argInputData.getSignature();
-        assert username != null : "@AssumeAssertion(nullness)";
-        assert password != null : "@AssumeAssertion(nullness)";
-        assert signature != null : "@AssumeAssertion(nullness)";
+        final String username = argInputData.getUsername().orElseThrow(AssertionError::new);
+        final char[] password = argInputData.getPassword(false).orElseThrow(AssertionError::new);
+        final String signature = argInputData.getSignature().orElseThrow(AssertionError::new);
 
         this.serviceProvider.callCheckCurrencyService(
                 username,
@@ -224,7 +223,7 @@ public final class ViewControllerImpl implements ViewController {
 
         if (currencyCodes.size() > 1 && !this.prefs.hasUsedCombination(
                 this.inputData.getAccountId(),
-                this.inputData.getUsername())) {
+                this.inputData.getUsername().orElseThrow(AssertionError::new))) {
 
             final String message =
                     this.localizable.getQuestionMessageMultipleCurrencies(
@@ -271,7 +270,7 @@ public final class ViewControllerImpl implements ViewController {
 
         TransactionSearchIterator iter = new TransactionSearchIterator(
                 this,
-                this.accountBookFactory.createAccountBook(this.context),
+                this.accountBookFactory.createAccountBook(this.context).orElseThrow(AssertionError::new),
                 this.serviceProvider,
                 this.inputData,
                 currencyType,
@@ -305,9 +304,9 @@ public final class ViewControllerImpl implements ViewController {
         }
         if (errorCode == null) {
             final int accountId = account.getAccountNum();
-            this.prefs.setUsername(accountId, input.getUsername());
-            this.prefs.setPassword(accountId, input.getPassword(true));
-            this.prefs.setSignature(accountId, input.getSignature());
+            this.prefs.setUsername(accountId, input.getUsername().orElseThrow(AssertionError::new));
+            this.prefs.setPassword(accountId, input.getPassword(true).orElseThrow(AssertionError::new));
+            this.prefs.setSignature(accountId, input.getSignature().orElseThrow(AssertionError::new));
             this.prefs.assignBankingFI(accountId);
 
             this.unlock();
@@ -331,9 +330,8 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     public void refreshAccounts(final int accountId) {
         LOG.config("Refreshing accounts");
-        final IAccountBook accountBook =
-                this.accountBookFactory.createAccountBook(this.context);
-        assert accountBook != null : "@AssumeAssertion(nullness)";
+        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context)
+                .orElseThrow(AssertionError::new);
         final AccountListModel accountModel = new AccountListModel(
                 accountBook.getRootAccount());
         accountModel.setShowBankAccounts(true);
@@ -354,7 +352,7 @@ public final class ViewControllerImpl implements ViewController {
         wizardHandler.validate();
     }
 
-    void setInputData(final InputData argInputData) {
+    void setInputData(@Nonnull final InputData argInputData) {
         this.inputData = argInputData;
     }
 

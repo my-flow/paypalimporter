@@ -38,9 +38,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
     public void serviceCallSucceeded(
             final ServiceResult<CurrencyCodeType> serviceResult) {
 
-        List<CurrencyCodeType> currencyCodes = serviceResult.getResults();
-        assert currencyCodes != null : "@AssumeAssertion(nullness)";
-
+        final List<CurrencyCodeType> currencyCodes = serviceResult.getResults().orElseThrow(AssertionError::new);
         Account useAccount = this.accountBook.getAccountByNum(this.accountNum);
 
         // 1. determine the currency of the Moneydance account
