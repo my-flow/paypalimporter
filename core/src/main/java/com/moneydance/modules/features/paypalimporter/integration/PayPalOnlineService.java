@@ -9,8 +9,8 @@ import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
-import java.util.HashMap;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
@@ -115,12 +115,7 @@ public final class PayPalOnlineService {
 
     @SuppressWarnings("initialization")
     public void setSignature(final int accountId, @Nullable final String signature) {
-        this.onlineService.addParameters(new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-            {
-                this.put(buildSignatureKey(buildRealm(accountId)), signature);
-            }
-        });
+        this.onlineService.setParameter(buildSignatureKey(buildRealm(accountId)), signature);
     }
 
     @SuppressWarnings("nullness")
@@ -136,15 +131,44 @@ public final class PayPalOnlineService {
         return signature;
     }
 
-    static String buildRealm(final int accountId) {
+    public void setAccountId(final int accountId) {
+        this.onlineService.setParameter(buildAccountKey(buildRealm(-1)), String.valueOf(accountId));
+    }
+
+    public int getAccountId() {
+        String accountId = this.onlineService.getParameter(
+                buildAccountKey(buildRealm(-1)),
+                "-1");
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (accountId == null && firstRealm.isPresent()) {
+            accountId = this.onlineService.getParameter(
+                    buildAccountKey(firstRealm.get()), "-1");
+        }
+
+        try {
+            return Integer.parseInt(accountId);
+        } catch (NumberFormatException e) {
+            final String message = e.getMessage();
+            if (message != null) {
+                LOG.log(Level.WARNING, message, e);
+            }
+            return -1;
+        }
+    }
+
+    private static String buildRealm(final int accountId) {
         if (accountId >= 0) {
             return String.format("realm_%d", accountId);
         }
         return OnlineService.DEFAULT_REQ_REALM;
     }
 
-    static String buildSignatureKey(final String realm) {
+    private static String buildSignatureKey(final String realm) {
         return String.format("so_signature_%s", realm);
+    }
+
+    private static String buildAccountKey(final String realm) {
+        return String.format("so_account_%s", realm);
     }
 
     private Optional<String> getFirstRealm() {

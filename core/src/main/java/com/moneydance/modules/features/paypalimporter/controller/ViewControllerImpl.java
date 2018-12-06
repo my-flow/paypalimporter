@@ -138,12 +138,14 @@ public final class ViewControllerImpl implements ViewController {
         }
         this.wizard.pack();
 
-        int accountId = -1;
-        final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
-        if (mainFrame != null) {
-            final Account selectedAccount = mainFrame.getSelectedAccount();
-            if (selectedAccount != null) {
-                accountId = selectedAccount.getAccountNum();
+        int accountId = this.prefs.getAccountId();
+        if (accountId < 0) {
+            final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
+            if (mainFrame != null) {
+                final Account selectedAccount = mainFrame.getSelectedAccount();
+                if (selectedAccount != null) {
+                    accountId = selectedAccount.getAccountNum();
+                }
             }
         }
 
@@ -307,6 +309,7 @@ public final class ViewControllerImpl implements ViewController {
             this.prefs.setUsername(accountId, input.getUsername().orElseThrow(AssertionError::new));
             this.prefs.setPassword(accountId, input.getPassword(true).orElseThrow(AssertionError::new));
             this.prefs.setSignature(accountId, input.getSignature().orElseThrow(AssertionError::new));
+            this.prefs.setAccountId(accountId);
             this.prefs.assignBankingFI(accountId);
 
             this.unlock();
