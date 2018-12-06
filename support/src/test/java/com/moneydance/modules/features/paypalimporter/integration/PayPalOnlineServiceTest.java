@@ -75,4 +75,16 @@ public final class PayPalOnlineServiceTest {
         this.service.setSignature(0, signature);
         assertThat(this.service.getSignature(0), is(signature));
     }
+
+    @Test
+    public void testSetAccountId() {
+        this.service.setAccountId(1);
+    }
+
+    @Test
+    public void testGetAccountId() {
+        final int accountId = 1;
+        this.service.setAccountId(accountId);
+        assertThat(this.service.getAccountId(), is(accountId));
+    }
 }

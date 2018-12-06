@@ -141,6 +141,18 @@ public final class PreferencesTest {
     }
 
     @Test
+    public void testSetAccountId() {
+        final int accountId = 1;
+        this.prefs.setAccountId(accountId);
+        assertThat(this.prefs.getAccountId(), equalTo(accountId));
+    }
+
+    @Test
+    public void testGetAccountId() {
+        this.prefs.getAccountId();
+    }
+
+    @Test
     public void testHasUsedCombination() {
         final String username = "stub username";
         assertThat(this.prefs.hasUsedCombination(0, username), equalTo(false));

@@ -137,6 +137,14 @@ public final class Preferences {
         return this.getPayPalOnlineService().getSignature(accountId);
     }
 
+    public void setAccountId(final int accountId) {
+        this.getPayPalOnlineService().setAccountId(accountId);
+    }
+
+    public int getAccountId() {
+        return this.getPayPalOnlineService().getAccountId();
+    }
+
     public boolean hasUsedCombination(
             final int accountId,
             final String username) {
