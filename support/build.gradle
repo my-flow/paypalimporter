@@ -8,25 +8,24 @@ dependencies {
 
     testCompile('junit:junit:4.12')
 
-    testRuntime('org.jmockit:jmockit-coverage:1.23')
     testRuntime('org.slf4j:slf4j-simple:1.7.25')
 }
 
 mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
 
 test {
-    doFirst {
-        String jMockit = project.configurations.testRuntime.find {
-            it.name.startsWith("jmockit-coverage")
+    jacocoTestReport {
+        sourceDirectories = files(project(':core').sourceSets.main.allSource.srcDirs)
+        classDirectories = files(project(':core').sourceSets.main.output)
+
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        include: 'com/moneydance/modules/features/paypalimporter/**',
+                        exclude: '**/ConsoleHelper*')
+            })
         }
-        jvmArgs "-javaagent:${jMockit}"
-        systemProperty 'coverage-srcDirs', project(':core').projectDir
-        systemProperty 'coverage-classes', 'com.moneydance.modules.features.paypalimporter.*'
-        systemProperty 'coverage-excludes', '*AllTests|*Stub|*Mock*|*ConsoleRunner*|*Test'
-        systemProperty 'coverage-metrics', 'all'
-        systemProperty 'coverage-outputDir', "${project.docsDir}/coverage-report"
     }
-    include 'com/moneydance/modules/features/paypalimporter/AllTests.*'
 }
 
 task genKeys(type: JavaExec) {
