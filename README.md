@@ -30,7 +30,7 @@ mock-ups) and the test cases. It depends from the core project.
 
 ## Documentation
 * [PayPal Importer API](http://my-flow.github.io/paypalimporter/docs/api/)
-* [JMockit Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
+* [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
 
 ## License
 Copyright (C) 2013-2018 [Florian J. Breunig](http://www.my-flow.com).
