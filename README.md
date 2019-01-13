@@ -33,5 +33,5 @@ mock-ups) and the test cases. It depends from the core project.
 * [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
 
 ## License
-Copyright (C) 2013-2018 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2019 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.
