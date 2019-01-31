@@ -176,26 +176,24 @@ public final class ServiceProviderImpl implements ServiceProvider {
                     serviceResult = this.get();
                 } catch (InterruptedException e) {
                     LOG.log(Level.WARNING, "Thread interrupted", e);
-                    serviceResult = new ServiceResult<V>(
+                    Thread.currentThread().interrupt();
+                    serviceResult = new ServiceResult<>(
                             e.getLocalizedMessage());
                 } catch (ExecutionException e) {
                     final Throwable cause = e.getCause();
                     if (cause != null) {
                         LOG.log(Level.WARNING, "Task aborted", cause);
                     }
-                    serviceResult = new ServiceResult<V>(
+                    serviceResult = new ServiceResult<>(
                             e.getLocalizedMessage());
                 } finally {
                     final ServiceResult<V> finalResult = serviceResult;
                     try {
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            @Override
-                            public void run() {
-                                requestHandler.serviceCallFinished(finalResult);
-                            }
-                        });
+                        SwingUtilities.invokeAndWait(() ->
+                                requestHandler.serviceCallFinished(finalResult));
                     } catch (InterruptedException e) {
                         LOG.log(Level.WARNING, "Thread interrupted", e);
+                        Thread.currentThread().interrupt();
                     } catch (InvocationTargetException e) {
                         LOG.log(Level.WARNING, "Exception thrown", e);
                     }

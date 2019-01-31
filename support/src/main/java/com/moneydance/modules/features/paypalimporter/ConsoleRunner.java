@@ -55,12 +55,7 @@ final class ConsoleRunner {
 
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
-        UiUtil.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowGUI(main, coreComponent.settings());
-            }
-        });
+        UiUtil.runOnUIThread(() -> createAndShowGUI(main, coreComponent.settings()));
     }
 
     /**

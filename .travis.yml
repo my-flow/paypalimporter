@@ -8,6 +8,7 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.sonar/cache/
 branches:
   only:
     - master
@@ -16,3 +17,6 @@ branches:
     - /^hotfix\/\S+$/
     - /^release\/\S+$/
     - gh-pages
+script:
+  - ./gradlew check
+  - ./gradlew sonarqube -Dsonar.login="${SONAR_TOKEN}"

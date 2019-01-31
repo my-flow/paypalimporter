@@ -64,7 +64,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
                 serviceResult.getResults().orElseThrow(AssertionError::new);
 
         final List<OnlineTxn> resultList =
-                new ArrayList<OnlineTxn>(txns.size());
+                new ArrayList<>(txns.size());
         long startDateLong = Long.MAX_VALUE;
 
         for (PaymentTransactionSearchResultType result : txns) {

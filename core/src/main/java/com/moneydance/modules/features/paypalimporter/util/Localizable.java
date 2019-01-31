@@ -84,7 +84,7 @@ public final class Localizable {
                 "question_message_multiple_currencies");
 
         Map<String, String> valuesMap =
-                new ConcurrentHashMap<String, String>(2);
+                new ConcurrentHashMap<>(2);
         valuesMap.put("currency", currency);
         valuesMap.put("currencies", String.join(", ", currencies));
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
@@ -144,7 +144,7 @@ public final class Localizable {
                 "error_message_service_call_failed");
 
         Map<String, String> valuesMap =
-                new ConcurrentHashMap<String, String>(1);
+                new ConcurrentHashMap<>(1);
         valuesMap.put("error.message", errorMessage);
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
 

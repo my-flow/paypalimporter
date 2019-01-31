@@ -28,16 +28,16 @@ public final class MockServiceResultFactory {
 
     public <V> ServiceResult<V> createFailedServiceResult() {
         String errorMessage = "stub error message";
-        return new ServiceResult<V>(null, null, errorMessage);
+        return new ServiceResult<>(null, null, errorMessage);
     }
 
     public <V> ServiceResult<V> createEmptyServiceResult() {
-        return new ServiceResult<V>(Collections.<V>emptyList(), null, null);
+        return new ServiceResult<>(Collections.<V>emptyList(), null, null);
     }
 
     public <V> ServiceResult<V> createValidSingleServiceResult(
             final V resultType) {
-        return new ServiceResult<V>(
+        return new ServiceResult<>(
                 Collections.singletonList(resultType),
                 null,
                 null);
@@ -45,11 +45,11 @@ public final class MockServiceResultFactory {
 
     public <V> ServiceResult<V> createMultipleServiceResult(
             final V resultType1, final V resultType2) {
-        final List<V> results = new LinkedList<V>();
+        final List<V> results = new LinkedList<>();
         results.add(resultType1);
         results.add(resultType2);
 
-        return new ServiceResult<V>(
+        return new ServiceResult<>(
                 results,
                 null,
                 null);

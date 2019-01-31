@@ -9,7 +9,6 @@ import com.infinitekind.util.StreamTable;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Use this class to initialize an <code>OnlineService</code>.
@@ -38,12 +37,7 @@ final class InitializedOnlineService extends OnlineService {
     }
 
     private void init(final Settings settings, final Date dateUpdated) {
-        addParameters(new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-            {
-                this.put(KEY_SERVICE_TYPE, settings.getServiceType());
-            }
-        });
+        setParameter(KEY_SERVICE_TYPE, settings.getServiceType());
         // see https://github.com/my-flow/paypalimporter/issues/9
         setParameter(ITEM_KEY_FI_TIK_ID, settings.getFITIKId());
         setFIId(settings.getFIId());
