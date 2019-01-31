@@ -18,7 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
@@ -82,25 +81,14 @@ implements ActionListener, WindowListener {
         this.getRootPane().setDefaultButton(this.btnProceed);
 
         // register listeners
-        final ActionListener refreshListener = new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                WizardController.this.refresh(false, null);
-            }
-        };
+        final ActionListener refreshListener = event ->
+                this.refresh(false, null);
         this.rdBtnExistingAcct.addActionListener(refreshListener);
         this.rdBtnNewAcct.addActionListener(refreshListener);
 
         try {
-            final PropertyChangeListener propertyChangeListener =
-                    new PropertyChangeListener() {
-                @Override
-                @SuppressWarnings("nullness")
-                public void propertyChange(
-                        final PropertyChangeEvent propertyChangeEvent) {
-                    refreshListener.actionPerformed(null);
-                }
-            };
+            final PropertyChangeListener propertyChangeListener = propertyChangeEvent ->
+                refreshListener.actionPerformed(null);
             this.dateRanger.addPropertyChangeListener(propertyChangeListener);
         } catch (NoSuchMethodError e) {
             // ignore exception in older versions of Moneydance

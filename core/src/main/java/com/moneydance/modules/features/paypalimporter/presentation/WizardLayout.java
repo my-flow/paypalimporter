@@ -44,7 +44,6 @@ class WizardLayout extends JDialog {
     private static final long serialVersionUID = 1L;
 
     protected final JPanel jpanel;
-    protected final DateRangeChooser dateRanger;
     protected final JTextField txtUsername;
     protected final AbstractButton btnHelp;
     protected final JPasswordField txtPassword;
@@ -56,6 +55,7 @@ class WizardLayout extends JDialog {
     protected final JButton btnProceed;
     protected final JButton btnCancel;
     protected final JProgressBar progressBar;
+    protected transient DateRangeChooser dateRanger;
 
     /**
      * Create the frame.
@@ -82,7 +82,7 @@ class WizardLayout extends JDialog {
         this.txtPassword = new JPasswordField();
         this.txtSignature = new JTextField();
         this.rdBtnExistingAcct = new JRadioButton();
-        this.comboBoxAccts = new JComboBox<Account>();
+        this.comboBoxAccts = new JComboBox<>();
         this.rdBtnNewAcct = new JRadioButton();
         this.comboBoxDateRange = this.dateRanger.getChoice();
         this.progressBar = new JProgressBar();

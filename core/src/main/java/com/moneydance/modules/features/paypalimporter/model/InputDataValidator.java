@@ -10,6 +10,7 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -61,7 +62,8 @@ public final class InputDataValidator implements Validator<InputData> {
 
     @SuppressWarnings("nullness")
     private static boolean isValidUsername(final InputData data) {
-        return data.getUsername().isPresent() && StringUtils.isNotBlank(data.getUsername().get());
+        final Optional<String> username = data.getUsername();
+        return username.isPresent() && StringUtils.isNotBlank(username.get());
     }
 
     @SuppressWarnings("nullness")
@@ -73,7 +75,8 @@ public final class InputDataValidator implements Validator<InputData> {
 
     @SuppressWarnings("nullness")
     private static boolean isValidSignature(final InputData data) {
-        return data.getSignature().isPresent() && StringUtils.isNotBlank(data.getSignature().get());
+        final Optional<String> signature = data.getSignature();
+        return signature.isPresent() && StringUtils.isNotBlank(signature.get());
     }
 
     private static boolean isValidDateRange(final InputData data) {

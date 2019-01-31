@@ -95,7 +95,7 @@ final class TransactionSearchIterator implements ViewController {
                 this.accountBook,
                 argDateFormat,
                 argLocalizable);
-        this.resultSet = new LinkedHashSet<OnlineTxn>();
+        this.resultSet = new LinkedHashSet<>();
         this.errorCodeSearchWarning = argErrorCodeSearchWarning;
         this.localizable = argLocalizable;
     }

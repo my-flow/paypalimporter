@@ -6,7 +6,7 @@ package com.moneydance.modules.features.paypalimporter.model;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ public enum AccountBookFactoryImpl implements IAccountBookFactory {
 
     INSTANCE;
 
-    private final Map<AccountBook, AccountBookImpl> multitons = new Hashtable<>();
+    private final Map<AccountBook, AccountBookImpl> multitons = new HashMap<>();
 
     @Override
     public Optional<IAccountBook> createAccountBook(

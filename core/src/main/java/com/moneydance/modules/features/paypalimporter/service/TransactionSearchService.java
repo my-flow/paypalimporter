@@ -125,9 +125,13 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         } catch (UnknownHostException | SocketException e) {
             logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
+        } catch (InterruptedException e) {
+            logErrorMessage(e);
+            errorMessage = e.getLocalizedMessage();
+            Thread.currentThread().interrupt();
         } catch (IOException | SSLConfigurationException | HttpErrorException | InvalidCredentialException
                 | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException
-                | OAuthException | InterruptedException | ParserConfigurationException | SAXException e) {
+                | OAuthException | ParserConfigurationException | SAXException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }

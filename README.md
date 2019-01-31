@@ -31,6 +31,7 @@ mock-ups) and the test cases. It depends from the core project.
 ## Documentation
 * [PayPal Importer API](http://my-flow.github.io/paypalimporter/docs/api/)
 * [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
+* [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
 
 ## License
 Copyright (C) 2013-2019 [Florian J. Breunig](http://www.my-flow.com).

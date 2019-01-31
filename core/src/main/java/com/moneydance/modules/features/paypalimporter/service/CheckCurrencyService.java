@@ -101,9 +101,13 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
         } catch (UnknownHostException | SocketException e) {
             logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
+        } catch (InterruptedException e) {
+            logErrorMessage(e);
+            errorMessage = e.getLocalizedMessage();
+            Thread.currentThread().interrupt();
         } catch (IOException | SSLConfigurationException | InvalidCredentialException | HttpErrorException
                 | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException
-                | SAXException | OAuthException | InterruptedException | ParserConfigurationException e) {
+                | SAXException | OAuthException | ParserConfigurationException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }

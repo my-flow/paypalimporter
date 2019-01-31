@@ -31,7 +31,7 @@ public final class StubAccountBook implements IAccountBook {
     public StubAccountBook(final AccountBook argAccountBook,
             @Nullable final OnlineInfo argOnlineInfo) {
         this.accountBook = argAccountBook;
-        this.accountsByNum = new Hashtable<Integer, Account>();
+        this.accountsByNum = new Hashtable<>();
         this.onlineInfo = argOnlineInfo;
     }
 
