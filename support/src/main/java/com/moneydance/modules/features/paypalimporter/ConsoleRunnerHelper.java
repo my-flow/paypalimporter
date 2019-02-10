@@ -19,18 +19,18 @@ import java.util.logging.Logger;
  *
  * @author Florian J. Breunig
  */
-final class ConsoleRunner {
+final class ConsoleRunnerHelper {
 
     /**
      * Static initialization of class-dependent logger.
      */
     private static final Logger LOG =
-            Logger.getLogger(ConsoleRunner.class.getName());
+            Logger.getLogger(ConsoleRunnerHelper.class.getName());
 
     /**
      * Restrictive constructor.
      */
-    private ConsoleRunner() {
+    private ConsoleRunnerHelper() {
         // Prevents this class from being instantiated from the outside.
     }
 

@@ -5,7 +5,7 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
-import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapper;
+import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapperUtil;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
@@ -49,7 +49,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
         if (useAccount == null) {
             // no Moneydance account was found, so create a new Moneydance
             // account later with the first currency of the PayPal account.
-            currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
+            currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                     currencyCodes.get(0),
                     this.accountBook.getCurrencies(),
                     this.accountBook);
@@ -60,7 +60,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
 
         // 2. determine the currency of the PayPal account
         CurrencyCodeType currencyCode =
-                CurrencyMapper.getCurrencyCodeFromCurrencyType(
+                CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                         currencyType,
                         currencyCodes);
         this.getViewController().currencyChecked(

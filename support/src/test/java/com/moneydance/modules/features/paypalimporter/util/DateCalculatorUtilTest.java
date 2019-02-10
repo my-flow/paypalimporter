@@ -15,7 +15,7 @@ import org.junit.Test;
 /**
  * @author Florian J. Breunig
  */
-public final class DateCalculatorTest {
+public final class DateCalculatorUtilTest {
 
     @Test
     public void testConstructorIsPrivate()
@@ -27,8 +27,8 @@ public final class DateCalculatorTest {
             IllegalAccessException,
             InvocationTargetException {
 
-        Constructor<DateCalculator> constructor =
-                DateCalculator.class.getDeclaredConstructor();
+        Constructor<DateCalculatorUtil> constructor =
+                DateCalculatorUtil.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
         constructor.setAccessible(true);
         constructor.newInstance();

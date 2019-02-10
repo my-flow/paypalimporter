@@ -22,18 +22,18 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
  *
  * @author Florian J. Breunig
  */
-public final class CurrencyMapper {
+public final class CurrencyMapperUtil {
 
     /**
      * Static initialization of class-dependent logger.
      */
     private static final Logger LOG = Logger
-            .getLogger(CurrencyMapper.class.getName());
+            .getLogger(CurrencyMapperUtil.class.getName());
 
     /**
      * Restrictive constructor.
      */
-    private CurrencyMapper() {
+    private CurrencyMapperUtil() {
         // Prevents this class from being instantiated from the outside.
     }
 

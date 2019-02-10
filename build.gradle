@@ -67,8 +67,10 @@ subprojects {
     checkstyleMain.finalizedBy checkstyleHtml
 
     pmd {
+        toolVersion = "6.11.0"
         sourceSets = [sourceSets.main]
-        ruleSetFiles = files("$rootDir/config/ruleSet.xml")
+        ruleSets = []
+        ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
     }
 
     sonarqube {

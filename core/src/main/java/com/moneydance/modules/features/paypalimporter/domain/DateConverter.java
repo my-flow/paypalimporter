@@ -3,7 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
-import com.moneydance.modules.features.paypalimporter.util.DateCalculator;
+import com.moneydance.modules.features.paypalimporter.util.DateCalculatorUtil;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -37,11 +37,11 @@ public final class DateConverter {
                 valueDate);
 
         final TimeUnit timeUnit = TimeUnit.SECONDS;
-        final int value = safeLongToInt(DateCalculator.getDateDiff(
+        final int value = safeLongToInt(DateCalculatorUtil.getDateDiff(
                 this.getValidDate(valueDate),
                 this.getValidDate(endDate),
                 timeUnit));
-        final int max = safeLongToInt(DateCalculator.getDateDiff(
+        final int max = safeLongToInt(DateCalculatorUtil.getDateDiff(
                 this.getValidDate(startDate),
                 this.getValidDate(endDate),
                 timeUnit));
@@ -53,7 +53,7 @@ public final class DateConverter {
     }
 
     public Date getValidDate(final Date date) {
-        return DateCalculator.max(
+        return DateCalculatorUtil.max(
                 date,
                 this.minDate);
     }
