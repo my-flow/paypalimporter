@@ -24,7 +24,7 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 /**
  * @author Florian J. Breunig
  */
-public final class CurrencyMapperTest {
+public final class CurrencyMapperUtilTest {
 
     private StubContextFactory factory;
 
@@ -41,8 +41,8 @@ public final class CurrencyMapperTest {
             IllegalAccessException,
             InvocationTargetException {
 
-        Constructor<CurrencyMapper> constructor =
-                CurrencyMapper.class.getDeclaredConstructor();
+        Constructor<CurrencyMapperUtil> constructor =
+                CurrencyMapperUtil.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
         constructor.setAccessible(true);
         constructor.newInstance();
@@ -50,7 +50,7 @@ public final class CurrencyMapperTest {
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithDefaultTable() {
-        CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
+        CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.USD,
                 CurrencyUtil.createDefaultTable(
                         this.factory.getContext().getCurrentAccountBook(),
@@ -61,7 +61,7 @@ public final class CurrencyMapperTest {
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithEmptyCurrencyTable() {
-        CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
+        CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.USD,
                 this.factory.getContext().getAccountBook().getCurrencies(),
                 this.factory.getContext().getAccountBook());
@@ -70,7 +70,7 @@ public final class CurrencyMapperTest {
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithUnknownCurrencyCode() {
-        CurrencyType currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
+        CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.NIO,
                 this.factory.getContext().getAccountBook().getCurrencies(),
                 this.factory.getContext().getAccountBook()
@@ -80,7 +80,7 @@ public final class CurrencyMapperTest {
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithSingleCurrency() {
-        CurrencyCodeType currencyCodeType = CurrencyMapper.getCurrencyCodeFromCurrencyType(
+        CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getRootAccount().getCurrencyType(),
                 Collections.singletonList(CurrencyCodeType.USD));
         assertThat(currencyCodeType, is(CurrencyCodeType.USD));
@@ -88,7 +88,7 @@ public final class CurrencyMapperTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetCurrencyCodeFromCurrencyTypeWhenEmpty() {
-        CurrencyMapper.getCurrencyCodeFromCurrencyType(
+        CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getCurrentAccountBook().getRootAccount().getCurrencyType(),
                 Collections.<CurrencyCodeType>emptyList());
     }
@@ -102,7 +102,7 @@ public final class CurrencyMapperTest {
         currencyType.setName("Banana");
         currencyType.setIDString("BAN");
 
-        CurrencyCodeType currencyCodeType = CurrencyMapper.getCurrencyCodeFromCurrencyType(
+        CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 currencyType,
                 Collections.singletonList(CurrencyCodeType.USD));
         assertThat(currencyCodeType, is(CurrencyCodeType.USD));
@@ -110,7 +110,7 @@ public final class CurrencyMapperTest {
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithUnsupportedCurrency() {
-        CurrencyCodeType currencyCodeType = CurrencyMapper.getCurrencyCodeFromCurrencyType(
+        CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getRootAccount().getCurrencyType(),
                 Collections.singletonList(CurrencyCodeType.EUR));
         assertThat(currencyCodeType, is(CurrencyCodeType.EUR));

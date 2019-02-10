@@ -11,12 +11,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Florian J. Breunig
  */
-public final class DateCalculator {
+public final class DateCalculatorUtil {
 
     /**
      * Restrictive constructor.
      */
-    private DateCalculator() {
+    private DateCalculatorUtil() {
         // Prevents this class from being instantiated from the outside.
     }
 

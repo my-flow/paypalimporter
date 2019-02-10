@@ -65,6 +65,7 @@ public final class ServiceProviderImpl implements ServiceProvider {
         this.localizable = argLocalizable;
     }
 
+    @Override
     public void callCheckCurrencyService(
             final String username,
             final char[] password,
@@ -79,6 +80,7 @@ public final class ServiceProviderImpl implements ServiceProvider {
         this.createAndExecuteFutureTask(callable, requestHandler);
     }
 
+    @Override
     public void callTransactionSearchService(
             final String username,
             final char[] password,
@@ -106,6 +108,7 @@ public final class ServiceProviderImpl implements ServiceProvider {
     /**
      * Shuts down all running requests. Can be called anytime.
      */
+    @Override
     public void shutdownNow() {
         synchronized (this.prefs) {
             this.executorService.shutdownNow();

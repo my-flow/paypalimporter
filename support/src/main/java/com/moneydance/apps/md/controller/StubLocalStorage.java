@@ -18,6 +18,7 @@ public final class StubLocalStorage extends LocalStorage {
     private static final long serialVersionUID = 1L;
 
     StubLocalStorage() {
+        super();
         this.authenticationCache = new SyncRecord();
     }
 

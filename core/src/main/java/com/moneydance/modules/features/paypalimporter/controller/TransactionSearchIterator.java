@@ -140,14 +140,14 @@ final class TransactionSearchIterator implements ViewController {
             // import all transactions in reverse order,
             // i.e. from oldest to newest
             final Iterator<OnlineTxn> iter =
-                new LinkedList<OnlineTxn>(this.resultSet).descendingIterator();
+                new LinkedList<>(this.resultSet).descendingIterator();
             while (iter.hasNext()) {
                 txnList.addNewTxn(iter.next());
             }
         }
 
         this.viewController.transactionsImported(
-                new LinkedList<OnlineTxn>(this.resultSet), argStartDate,
+                new LinkedList<>(this.resultSet), argStartDate,
                 account, errorCode);
     }
 
