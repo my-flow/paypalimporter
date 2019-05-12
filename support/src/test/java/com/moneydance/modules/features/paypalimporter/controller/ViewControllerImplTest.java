@@ -47,10 +47,12 @@ public final class ViewControllerImplTest {
                 supportComponent.localizable());
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+        int accountNum = this.account.getAccountNum();
+
         this.validInputData = new InputData("mock username", password, "mock signature",
-                this.account.getAccountNum(), new DateRange());
+                accountNum, new DateRange());
         this.invalidInputData = new InputData("", password, "",
-                this.account.getAccountNum(), new DateRange());
+                accountNum, new DateRange());
 
         viewControllerImpl.setInputData(validInputData);
         this.viewController = viewControllerImpl;

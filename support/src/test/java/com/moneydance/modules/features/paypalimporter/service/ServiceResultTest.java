@@ -45,9 +45,12 @@ public final class ServiceResultTest {
         assertThat(serviceResult.getResults(), is(Optional.empty()));
         assertThat(serviceResult.getErrorCode(), is(Optional.empty()));
         assertThat(serviceResult.getErrorMessage().orElseThrow(AssertionError::new), is(errorMessage));
+    }
 
-        // test convenience constructor
-        serviceResult = new ServiceResult<>(errorMessage);
+    @Test
+    public void testGetErrorMessageWithConvenienceConstructor() {
+        String errorMessage = "stub error message";
+        ServiceResult<String> serviceResult = new ServiceResult<>(errorMessage);
         assertThat(serviceResult.getResults(), is(Optional.empty()));
         assertThat(serviceResult.getErrorCode(), is(Optional.empty()));
         assertThat(serviceResult.getErrorMessage().orElseThrow(AssertionError::new), is(errorMessage));

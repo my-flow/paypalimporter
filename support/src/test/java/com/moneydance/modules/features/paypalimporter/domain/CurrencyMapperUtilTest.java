@@ -12,7 +12,6 @@ import com.infinitekind.moneydance.model.CurrencyUtil;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -35,17 +34,11 @@ public final class CurrencyMapperUtilTest {
 
     @Test
     public void testConstructorIsPrivate()
-            throws
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            InvocationTargetException {
+            throws NoSuchMethodException {
 
         Constructor<CurrencyMapperUtil> constructor =
                 CurrencyMapperUtil.class.getDeclaredConstructor();
         assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
-        constructor.setAccessible(true);
-        constructor.newInstance();
     }
 
     @Test
