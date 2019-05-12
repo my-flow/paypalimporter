@@ -51,6 +51,5 @@ public final class MainTest {
     public void testInvokeString() {
         this.main.invoke("");
         this.main.invoke(this.settings.getStartWizardSuffix());
-        this.main.invoke(this.settings.getStartWizardSuffix());
     }
 }
