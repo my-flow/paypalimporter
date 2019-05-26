@@ -15,6 +15,7 @@ import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.ResourceBundle;
@@ -102,6 +103,10 @@ class WizardLayout extends JDialog {
         this.txtPassword.setToolTipText(null);
         this.txtSignature.setToolTipText(null);
 
+        Color background = mdGUI.getColors().defaultBackground;
+        this.rdBtnExistingAcct.setBackground(background);
+        this.rdBtnNewAcct.setBackground(background);
+
         MnemonicUtils.configure(
             this.rdBtnExistingAcct,
             String.format(
@@ -126,8 +131,9 @@ class WizardLayout extends JDialog {
         this.jpanel = FormBuilder.create()
             .columns(settings.getColumnSpecs())
             .rows(settings.getRowsSpecs())
-            .debug(false)
+            .background(background)
             .padding(Paddings.DIALOG)
+            .debug(false)
 
             .add(localizer.getString("label_username"))
                 .labelFor(this.txtUsername).xy(1, 1)
