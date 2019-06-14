@@ -29,6 +29,7 @@ The project consists of 2 gradle sub-projects:
 mock-ups) and the test cases. It depends from the core project.
 
 ## Documentation
+* [Changelog](CHANGELOG.md)
 * [PayPal Importer API](http://my-flow.github.io/paypalimporter/docs/api/)
 * [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
 * [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
