@@ -7,6 +7,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import org.junit.Before;
@@ -23,7 +26,9 @@ public final class PayPalOnlineServiceTest {
     @Before
     public void setUp() {
         this.accountBook = new StubContextFactory().getContext().getAccountBook();
-        this.service = OnlineServiceFactory.createService(this.accountBook);
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.service = new OnlineServiceFactory(supportComponent.settings()).createService(this.accountBook);
     }
 
     @Test

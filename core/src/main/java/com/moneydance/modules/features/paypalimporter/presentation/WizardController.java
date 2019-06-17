@@ -9,7 +9,8 @@ import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -19,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +53,15 @@ implements ActionListener, WindowListener {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings({"initialization", "deprecation"})
-    protected WizardController(@Nullable final Frame owner, final MoneydanceGUI mdGUI) {
-        super(owner, mdGUI,
-                Helper.INSTANCE.getLocalizable().getResourceBundle());
+    protected WizardController(
+            @Nullable final Frame owner,
+            final MoneydanceGUI mdGUI,
+            final ResourceBundle resourceBundle,
+            final Settings settings) {
+        super(owner,
+                mdGUI,
+                resourceBundle,
+                settings);
 
         // preset ESC close operation
         Helper.installEscapeCloseOperation(this);

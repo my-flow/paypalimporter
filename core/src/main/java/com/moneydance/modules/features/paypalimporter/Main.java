@@ -4,15 +4,9 @@
 package com.moneydance.modules.features.paypalimporter;
 
 import com.moneydance.apps.md.controller.FeatureModule;
-import com.moneydance.modules.features.paypalimporter.controller.ViewController;
-import com.moneydance.modules.features.paypalimporter.controller.ViewControllerImpl;
-import com.moneydance.modules.features.paypalimporter.service.ServiceProviderImpl;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.bootstrap.MainHelper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
-import com.moneydance.modules.features.paypalimporter.util.Preferences;
-import com.moneydance.modules.features.paypalimporter.util.Settings;
 
-import javax.annotation.Nullable;
 import java.awt.Image;
 import java.util.Observable;
 import java.util.Observer;
@@ -31,95 +25,63 @@ public final class Main extends FeatureModule implements Observer {
      */
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
-    private Preferences prefs;
-    private final Settings settings;
-    @Nullable private ViewController viewController;
-
-    static {
-        Helper.loadLoggerConfiguration();
-    }
+    private final CoreModule coreModule;
+    private final CoreComponent coreComponent;
+    private final MainHelper mainHelper;
 
     /**
      * Standard constructor must be available in the Moneydance context.
      */
     public Main() {
         super();
-        LOG.info("Initializing extension in Moneydance's application context.");
-        this.settings = Helper.INSTANCE.getSettings();
+        this.coreModule = new CoreModule(this);
+        this.coreComponent = DaggerCoreComponent.builder().coreModule(this.coreModule).build();
+        this.mainHelper = this.coreComponent.mainHelper();
     }
 
     @Override
     public void init() {
-        Helper.INSTANCE.setContext(this.getContext());
-        this.prefs = Helper.INSTANCE.getPreferences();
-
-        Helper.INSTANCE.addObserver(this);
-
-        if (this.prefs.isFirstRun()) {
-            this.prefs.setFirstRun(false);
-            LOG.config("Install");
-
-            // show wizard immediately after installation
-            this.getViewController().startWizard();
-        }
+        this.coreModule.setContext(this.getContext());
+        this.mainHelper.init(this.coreComponent, this);
 
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
-        Localizable localizable = Helper.INSTANCE.getLocalizable();
+        Localizable localizable = this.coreComponent.localizable();
         this.getContext().registerFeature(
                 this,
-                this.settings.getStartWizardSuffix(),
+                this.coreComponent.settings().getStartWizardSuffix(),
                 null, // buttonImage
                 localizable.getLabelButtonText());
     }
 
     @Override
     public String getName() {
-        return this.settings.getExtensionName();
+        return this.mainHelper.getName();
     }
 
     @Override
     public Image getIconImage() {
-        return this.settings.getIconImage();
+        return this.mainHelper.getIconImage();
     }
 
     @Override
     public void invoke(final String uri) {
-        LOG.config(String.format("invoke %s", uri));
-        if (this.settings.getStartWizardSuffix().equals(uri)) {
-            this.getViewController().startWizard();
-        }
+        this.mainHelper.invoke(uri);
     }
 
     @Override
     public void update(final Observable observable, final Object updateAll) {
-        LOG.info("Reloading context from underlying framework.");
-        Helper.INSTANCE.setContext(this.getContext());
+        this.coreModule.setContext(this.getContext());
+        this.mainHelper.update(this.coreComponent);
     }
 
     @Override
     public void unload() {
-        LOG.info("Unloading extension.");
-        this.cleanup();
-        this.prefs.setAllWritablePreferencesToNull();
+        this.mainHelper.unload();
     }
 
     @Override
     public void cleanup() {
-        if (this.viewController != null) {
-            this.viewController.cancel();
-        }
-    }
-
-    /**
-     * Lazy initialization.
-     *
-     * @return the single instance of the view controller.
-     */
-    private ViewController getViewController() {
-        if (this.viewController == null) {
-            this.viewController = new ViewControllerImpl(this.getContext(), new ServiceProviderImpl());
-        }
-        return this.viewController;
+        this.mainHelper.cleanup();
     }
 }

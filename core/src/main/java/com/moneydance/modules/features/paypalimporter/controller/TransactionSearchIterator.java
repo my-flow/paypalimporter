@@ -11,9 +11,10 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.net.MalformedURLException;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -68,6 +69,7 @@ final class TransactionSearchIterator implements ViewController {
     requestHandler;
     private final Set<OnlineTxn> resultSet;
     private final String errorCodeSearchWarning;
+    private final Localizable localizable;
 
     @SuppressWarnings("initialization")
     TransactionSearchIterator(
@@ -76,7 +78,10 @@ final class TransactionSearchIterator implements ViewController {
             final ServiceProvider argServiceProvider,
             final InputData argInputData,
             final CurrencyType argCurrencyType,
-            final CurrencyCodeType argCurrencyCode) {
+            final CurrencyCodeType argCurrencyCode,
+            final String argErrorCodeSearchWarning,
+            final DateFormat argDateFormat,
+            final Localizable argLocalizable) {
 
         this.viewController = argViewController;
         this.accountBook = argIAccountBook;
@@ -87,10 +92,12 @@ final class TransactionSearchIterator implements ViewController {
 
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
-                this.accountBook);
+                this.accountBook,
+                argDateFormat,
+                argLocalizable);
         this.resultSet = new LinkedHashSet<OnlineTxn>();
-        this.errorCodeSearchWarning =
-                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
+        this.errorCodeSearchWarning = argErrorCodeSearchWarning;
+        this.localizable = argLocalizable;
     }
 
     /**
@@ -175,25 +182,24 @@ final class TransactionSearchIterator implements ViewController {
                 this.requestHandler);
     }
 
-    private static Account findOrCreateAccount(
-            final IAccountBook accountBook,
-            final int accountId,
-            final CurrencyType currencyType) {
+    private Account findOrCreateAccount(
+            final IAccountBook argAccountBook,
+            final int argAccountId,
+            final CurrencyType argCurrencyType) {
 
-        Account account = accountBook.getAccountByNum(accountId);
+        Account account = argAccountBook.getAccountByNum(argAccountId);
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
             account = Account.makeAccount(
-                    accountBook.getWrappedOriginal(),
+                    argAccountBook.getWrappedOriginal(),
                     Account.AccountType.BANK,
-                    accountBook.getRootAccount());
-            account.setAccountName(
-                    Helper.INSTANCE.getLocalizable().getNameNewAccount());
-            account.setCurrencyType(currencyType);
+                    argAccountBook.getRootAccount());
+            account.setAccountName(this.localizable.getNameNewAccount());
+            account.setCurrencyType(argCurrencyType);
             account.setParameter(
                     KEY_ACCOUNT_URL,
-                    Helper.INSTANCE.getLocalizable().getUrlNewAccount());
+                    this.localizable.getUrlNewAccount());
         }
         return account;
     }

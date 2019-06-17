@@ -4,7 +4,6 @@
 package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -60,6 +59,7 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         {AckCodeType.SUCCESS, AckCodeType.SUCCESSWITHWARNING};
 
     private final Localizable localizable;
+    private final DateConverter dateConverter;
     private final PayPalAPIInterfaceServiceService service;
     private final CurrencyCodeType currencyCode;
     private final Date startDate;
@@ -69,17 +69,21 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
 
     TransactionSearchService(
             final PayPalAPIInterfaceServiceService argService,
+            final Localizable argLocalizable,
+            final DateConverter argDateConverter,
             final CurrencyCodeType argCurrencyCode,
             final Date argStartDate,
             final Date argEndDate,
-            final Locale argErrorLocale) {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+            final Locale argErrorLocale,
+            final DateFormat argDateFormat) {
+        this.localizable = argLocalizable;
+        this.dateConverter = argDateConverter;
         this.service = argService;
         this.currencyCode = argCurrencyCode;
         this.startDate = new Date(argStartDate.getTime());
         this.endDate = new Date(argEndDate.getTime());
         this.errorLocale = argErrorLocale;
-        this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        this.dateFormat = argDateFormat;
     }
 
     @Override
@@ -94,9 +98,9 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         txnType.setCurrencyCode(this.currencyCode);
         txnType.setTransactionClass(TXN_CLASS);
 
-        final Date sDate = DateConverter.getValidDate(this.startDate);
+        final Date sDate = this.dateConverter.getValidDate(this.startDate);
         txnType.setStartDate(this.dateFormat.format(sDate));
-        final Date eDate = DateConverter.getValidDate(this.endDate);
+        final Date eDate = this.dateConverter.getValidDate(this.endDate);
         txnType.setEndDate(this.dateFormat.format(eDate));
 
         txnType.setErrorLanguage(this.errorLocale.toString());

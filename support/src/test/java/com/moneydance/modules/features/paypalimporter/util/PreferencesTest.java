@@ -8,8 +8,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.StubAccountBookFactory;
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,21 +25,25 @@ public final class PreferencesTest {
 
     private Preferences prefs;
     private StubContextFactory factory;
+    private FeatureModuleContext context;
+    private Settings settings;
 
     @Before
     public void setUp() {
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.prefs = supportComponent.preferences();
         this.factory = new StubContextFactory();
-        this.prefs = new Preferences(
-                factory.getContext(),
-                new StubAccountBookFactory(
-                        this.factory.getContext().getAccountBook()));
+        this.context = supportComponent.context();
+        this.settings = supportComponent.settings();
     }
 
     @Test(expected = AssertionError.class)
     public void testGetUserPreferencesWithoutAccountBook() {
         Preferences preferences = new Preferences(
-                this.factory.getContext(),
-                new StubAccountBookFactory(null));
+                this.context,
+                new StubAccountBookFactory(null),
+                this.settings);
         preferences.setAllWritablePreferencesToNull();
     }
 

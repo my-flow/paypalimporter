@@ -7,8 +7,12 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -20,6 +24,7 @@ import com.paypal.sdk.exceptions.OAuthException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -51,10 +56,14 @@ public final class TransactionSearchServiceTest {
     private ServiceMock service;
     private Date startDate;
     private Date endDate;
+    private Locale locale;
+    private Localizable localizable;
+    private DateConverter dateConverter;
+    private DateFormat dateFormat;
+    private CurrencyCodeType currencyCode;
 
     @Before
     public void setUp() {
-        new StubContextFactory();
         try {
             this.service = new ServiceMock(
                     Helper.getInputStreamFromResource(
@@ -63,6 +72,13 @@ public final class TransactionSearchServiceTest {
             Assert.fail(e.getMessage());
         }
 
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+
+        this.localizable = supportComponent.localizable();
+        this.dateConverter = supportComponent.dateConverter();
+        this.currencyCode = CurrencyCodeType.USD;
+
         Calendar startCal = Calendar.getInstance();
         startCal.add(Calendar.DATE, -1);
         this.startDate = startCal.getTime();
@@ -70,6 +86,9 @@ public final class TransactionSearchServiceTest {
         Calendar endCal = Calendar.getInstance();
         endCal.add(Calendar.DATE, -1);
         this.endDate = endCal.getTime();
+
+        this.locale = supportComponent.preferences().getLocale();
+        this.dateFormat = supportComponent.settings().getDateFormat();
     }
 
 
@@ -81,10 +100,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -107,10 +129,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -131,10 +156,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -156,10 +184,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -181,10 +212,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -206,10 +240,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -231,10 +268,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -256,10 +296,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -281,10 +324,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -306,10 +352,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -331,10 +380,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -356,10 +408,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -381,10 +436,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -406,10 +464,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -431,10 +492,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -456,10 +520,13 @@ public final class TransactionSearchServiceTest {
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =
                 new TransactionSearchService(
                         this.service,
-                        CurrencyCodeType.USD,
+                        this.localizable,
+                        this.dateConverter,
+                        this.currencyCode,
                         this.startDate,
                         this.endDate,
-                        Locale.US);
+                        this.locale,
+                        this.dateFormat);
         try {
             ServiceResult<PaymentTransactionSearchResultType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());

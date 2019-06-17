@@ -8,6 +8,7 @@ import com.infinitekind.moneydance.model.CurrencyType;
 import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapper;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.util.List;
 
@@ -27,8 +28,10 @@ extends AbstractRequestHandler<CurrencyCodeType> {
     CheckCurrencyRequestHandler(
             final ViewController argViewController,
             final IAccountBook argAccountBook,
-            final int argAccountNum) {
-        super(argViewController);
+            final int argAccountNum,
+            final Localizable argLocalizable) {
+        super(argViewController,
+                argLocalizable);
         this.accountBook = argAccountBook;
         this.accountNum = argAccountNum;
     }

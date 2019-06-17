@@ -3,7 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.text.DateFormat;
 import java.util.Collections;
@@ -20,23 +20,22 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
  */
 public final class MockServiceResultFactory {
 
-    /**
-     * Restrictive constructor.
-     */
-    private MockServiceResultFactory() {
-        // Prevents this class from being instantiated from the outside.
+    private final Settings settings;
+
+    public MockServiceResultFactory(final Settings argSettings) {
+        this.settings = argSettings;
     }
 
-    public static <V> ServiceResult<V> createFailedServiceResult() {
+    public <V> ServiceResult<V> createFailedServiceResult() {
         String errorMessage = "stub error message";
         return new ServiceResult<V>(null, null, errorMessage);
     }
 
-    public static <V> ServiceResult<V> createEmptyServiceResult() {
+    public <V> ServiceResult<V> createEmptyServiceResult() {
         return new ServiceResult<V>(Collections.<V>emptyList(), null, null);
     }
 
-    public static <V> ServiceResult<V> createValidSingleServiceResult(
+    public <V> ServiceResult<V> createValidSingleServiceResult(
             final V resultType) {
         return new ServiceResult<V>(
                 Collections.singletonList(resultType),
@@ -44,7 +43,7 @@ public final class MockServiceResultFactory {
                 null);
     }
 
-    public static <V> ServiceResult<V> createMultipleServiceResult(
+    public <V> ServiceResult<V> createMultipleServiceResult(
             final V resultType1, final V resultType2) {
         final List<V> results = new LinkedList<V>();
         results.add(resultType1);
@@ -64,13 +63,13 @@ public final class MockServiceResultFactory {
         return CurrencyCodeType.CUSTOMCODE;
     }
 
-    public static PaymentTransactionSearchResultType
+    public PaymentTransactionSearchResultType
     createCompletePaymentTransactionSearchResultType() {
 
         PaymentTransactionSearchResultType resultType =
                 new PaymentTransactionSearchResultType();
 
-        DateFormat dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        DateFormat dateFormat = this.settings.getDateFormat();
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         BasicAmountType grossAmount = new BasicAmountType();
@@ -82,13 +81,13 @@ public final class MockServiceResultFactory {
         return resultType;
     }
 
-    public static PaymentTransactionSearchResultType
+    public PaymentTransactionSearchResultType
     createIncompletePaymentTransactionSearchResultType() {
 
         PaymentTransactionSearchResultType resultType =
                 new PaymentTransactionSearchResultType();
 
-        DateFormat dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        DateFormat dateFormat = this.settings.getDateFormat();
         resultType.setTimestamp(dateFormat.format(new Date()));
 
         // gross amount is missing
@@ -98,7 +97,7 @@ public final class MockServiceResultFactory {
         return resultType;
     }
 
-    public static PaymentTransactionSearchResultType
+    public PaymentTransactionSearchResultType
     createInvalidPaymentTransactionSearchResultType() {
 
         PaymentTransactionSearchResultType resultType =

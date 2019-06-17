@@ -7,7 +7,6 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountUtil;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
 import java.util.Optional;
 import java.util.logging.Level;
@@ -30,9 +29,13 @@ public final class PayPalOnlineService {
             .getLogger(PayPalOnlineService.class.getName());
 
     private final OnlineService onlineService;
+    private final String fiId;
 
-    PayPalOnlineService(final OnlineService argOnlineService) {
+    PayPalOnlineService(
+            final OnlineService argOnlineService,
+            final String argFIId) {
         this.onlineService = argOnlineService;
+        this.fiId = argFIId;
     }
 
     /**
@@ -177,8 +180,7 @@ public final class PayPalOnlineService {
         return realm;
     }
 
-    private static String buildAuthKey(final String realm) {
-        return String.format("%s:%s",
-                Helper.INSTANCE.getSettings().getFIId(), realm);
+    private String buildAuthKey(final String realm) {
+        return String.format("%s:%s", this.fiId, realm);
     }
 }

@@ -6,7 +6,6 @@ package com.moneydance.modules.features.paypalimporter.integration;
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 
@@ -28,41 +27,40 @@ public final class OnlineServiceFactory {
     private static final Logger LOG = Logger.getLogger(
             OnlineServiceFactory.class.getName());
 
-    private static final OnlineService SERVICE = createService();
+    private final Settings settings;
+    private final OnlineService initializedOnlineService;
 
-    /**
-     * Restrictive constructor.
-     */
-    private OnlineServiceFactory() {
-        // Prevents this class from being instantiated from the outside.
+    public OnlineServiceFactory(final Settings argSettings) {
+        this.settings = argSettings;
+        this.initializedOnlineService = createService();
     }
 
-    public static PayPalOnlineService createService(
+    public PayPalOnlineService createService(
             final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
-        OnlineService onlineService = getServiceById(onlineInfo, SERVICE);
+        OnlineService onlineService = getServiceById(onlineInfo, initializedOnlineService);
 
         if (onlineService == null) {
             onlineService = new InitializedOnlineService(
                     accountBook.getWrappedOriginal(),
-                    Helper.INSTANCE.getSettings(),
+                    this.settings,
                     new Date());
         }
-        return new PayPalOnlineService(onlineService);
+        return new PayPalOnlineService(
+                onlineService,
+                this.settings.getFIId());
     }
 
-    public static void removeService(final IAccountBook accountBook) {
+    public void removeService(final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
 
-        final Settings settings = Helper.INSTANCE.getSettings();
-
         for (OnlineService service : onlineInfo.getAllServices()) {
-            if (settings.getServiceType().equals(service.getServiceType())) {
+            if (this.settings.getServiceType().equals(service.getServiceType())) {
                 service.clearAuthenticationCache();
                 if (!accountBook.logRemovedItem(service)) {
                     LOG.warning(String.format(
-                        "Could not remove %s online service %s",
+                        "Could not remove %s online initializedOnlineService %s",
                         service.getServiceType(),
                         service.getServiceId()));
                 }
@@ -70,11 +68,11 @@ public final class OnlineServiceFactory {
         }
     }
 
-    private static OnlineService createService() {
+    private OnlineService createService() {
         return new InitializedOnlineService(
                 null, // temporary account
                 new StreamTable(),
-                Helper.INSTANCE.getSettings(),
+                this.settings,
                 new Date());
     }
 

@@ -3,6 +3,8 @@
 
 package com.moneydance.modules.features.paypalimporter.util;
 
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;

@@ -13,7 +13,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.Sizes;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -67,7 +67,8 @@ class WizardLayout extends JDialog {
     WizardLayout(
             @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
-            final ResourceBundle resourceBundle) {
+            final ResourceBundle resourceBundle,
+            final Settings settings) {
         super(owner, false);
         this.dateRanger = new DateRangeChooser(mdGUI);
 
@@ -77,7 +78,7 @@ class WizardLayout extends JDialog {
         this.setTitle(localizer.getString("title_wizard"));
 
         this.txtUsername = new JTextField();
-        this.btnHelp = new HelpButton();
+        this.btnHelp = new HelpButton(settings.getHelpImage());
         this.txtPassword = new JPasswordField();
         this.txtSignature = new JTextField();
         this.rdBtnExistingAcct = new JRadioButton();
@@ -123,8 +124,8 @@ class WizardLayout extends JDialog {
 
 
         this.jpanel = FormBuilder.create()
-            .columns(Helper.INSTANCE.getSettings().getColumnSpecs())
-            .rows(Helper.INSTANCE.getSettings().getRowsSpecs())
+            .columns(settings.getColumnSpecs())
+            .rows(settings.getRowsSpecs())
             .debug(false)
             .padding(Paddings.DIALOG)
 

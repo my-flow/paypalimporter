@@ -2,6 +2,7 @@ apply plugin: 'application'
 
 dependencies {
     compile project(':core')
+    annotationProcessor "com.google.dagger:dagger-compiler:2.4"
 
     runtime('org.slf4j:slf4j-simple:1.7.25')
     runtime('com.syncthemall:dropbox-java-sdk:1.5.3.2')
@@ -16,13 +17,22 @@ mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
 test {
     jacocoTestReport {
         sourceDirectories = files(project(':core').sourceSets.main.allSource.srcDirs)
-        classDirectories = files(project(':core').sourceSets.main.output)
+        classDirectories =  files(project(':core').sourceSets.main.output)
 
         afterEvaluate {
             classDirectories = files(classDirectories.files.collect {
                 fileTree(dir: it,
                         include: 'com/moneydance/modules/features/paypalimporter/**',
-                        exclude: '**/ConsoleHelper*')
+                        exclude: [
+                                '**/*Mock.class',
+                                '**/Mock*.class',
+                                '**/ConsoleRunner*.class',
+                                '**/*_MembersInjector.class',
+                                '**/Dagger*Component.class', // covers component implementations
+                                '**/Dagger*Component$Builder.class', // covers component builders
+                                '**/*_*Factory.class',
+                                '**/*Module.class',
+                        ])
             })
         }
     }

@@ -7,8 +7,11 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
 import com.paypal.exception.InvalidCredentialException;
@@ -47,13 +50,18 @@ public final class CheckCurrencyServiceTest {
     private static final String STUB_MESSAGE = "stub message";
 
     private ServiceMock service;
+    private Locale locale;
+    private Localizable localizable;
 
     @Before
     public void setUp() throws IOException {
-        new StubContextFactory();
         this.service = new ServiceMock(
                 Helper.getInputStreamFromResource(
                         "sdk_config.properties"));
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.locale = supportComponent.preferences().getLocale();
+        this.localizable = supportComponent.localizable();
     }
 
     @Test
@@ -64,7 +72,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -87,7 +96,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -108,7 +118,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -130,7 +141,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -152,7 +164,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -174,7 +187,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -196,7 +210,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -218,7 +233,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -240,7 +256,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -262,7 +279,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -285,7 +303,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -307,7 +326,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -329,7 +349,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -351,7 +372,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -373,7 +395,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());
@@ -395,7 +418,8 @@ public final class CheckCurrencyServiceTest {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.service,
-                        Locale.US);
+                        this.locale,
+                        this.localizable);
         try {
             ServiceResult<CurrencyCodeType> serviceResult = callable.call();
             assertThat(serviceResult, notNullValue());

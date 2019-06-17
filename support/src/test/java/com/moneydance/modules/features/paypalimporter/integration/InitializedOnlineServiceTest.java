@@ -5,7 +5,10 @@ package com.moneydance.modules.features.paypalimporter.integration;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,10 +25,15 @@ import static org.junit.Assert.assertThat;
 public final class InitializedOnlineServiceTest {
 
     private AccountBook accountBook;
+    private Settings settings;
 
     @Before
     public void setUp() {
         this.accountBook = new StubContextFactory().getContext().getAccountBook().getWrappedOriginal();
+
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.settings = supportComponent.settings();
     }
 
     @Test
@@ -33,7 +41,7 @@ public final class InitializedOnlineServiceTest {
         final Date dateUpdated = new Date();
         final OnlineService onlineService = new InitializedOnlineService(
                 this.accountBook,
-                Helper.INSTANCE.getSettings(),
+                this.settings,
                 dateUpdated);
         runTest(onlineService, dateUpdated);
     }
@@ -44,7 +52,7 @@ public final class InitializedOnlineServiceTest {
         final OnlineService onlineService = new InitializedOnlineService(
                 this.accountBook,
                 new StreamTable(),
-                Helper.INSTANCE.getSettings(),
+                this.settings,
                 dateUpdated);
         runTest(onlineService, dateUpdated);
     }

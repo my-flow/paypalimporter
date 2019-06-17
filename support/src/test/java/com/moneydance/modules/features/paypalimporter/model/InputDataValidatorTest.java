@@ -12,7 +12,9 @@ import org.junit.Test;
 import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 
 /**
  * @author Florian J. Breunig
@@ -23,8 +25,9 @@ public final class InputDataValidatorTest {
 
     @Before
     public void setUp() {
-        new StubContextFactory();
-        this.validator = new InputDataValidator();
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.validator = new InputDataValidator(supportComponent.localizable());
     }
 
     @Test

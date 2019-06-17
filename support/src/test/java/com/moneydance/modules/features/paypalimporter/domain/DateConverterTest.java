@@ -3,17 +3,18 @@
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
-import static org.hamcrest.CoreMatchers.is;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
+
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Date;
 
 import javax.swing.BoundedRangeModel;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -21,19 +22,13 @@ import org.junit.Test;
  */
 public final class DateConverterTest {
 
-    @Test
-    public void testConstructorIsPrivate()
-            throws
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            InvocationTargetException {
+    private DateConverter dateConverter;
 
-        Constructor<DateConverter> constructor =
-                DateConverter.class.getDeclaredConstructor();
-        assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
-        constructor.setAccessible(true);
-        constructor.newInstance();
+    @Before
+    public void setUp() {
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.dateConverter = supportComponent.dateConverter();
     }
 
     @Test
@@ -42,15 +37,14 @@ public final class DateConverterTest {
         final Date valueDate = new Date(Integer.MAX_VALUE / 2);
         final Date endDate = new Date(Integer.MAX_VALUE);
 
-        final BoundedRangeModel model = DateConverter.getBoundedRangeModel(
+        final BoundedRangeModel model = this.dateConverter.getBoundedRangeModel(
                 startDate, endDate, valueDate);
         assertThat(model, notNullValue());
     }
 
     @Test
     public void testGetValidDate() {
-        final Date validDate = DateConverter.getValidDate(new Date());
+        final Date validDate = this.dateConverter.getValidDate(new Date());
         assertThat(validDate, notNullValue());
     }
-
 }

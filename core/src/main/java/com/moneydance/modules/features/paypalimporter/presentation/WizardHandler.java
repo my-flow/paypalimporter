@@ -11,6 +11,8 @@ import java.util.Observer;
 import com.infinitekind.moneydance.model.Account;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import javax.annotation.Nullable;
 
@@ -42,8 +44,13 @@ public final class WizardHandler extends WizardController {
     public WizardHandler(
             @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
-            final Observer argObserver) {
-        super(owner, mdGUI);
+            final Observer argObserver,
+            final Localizable localizable,
+            final Settings settings) {
+        super(owner,
+                mdGUI,
+                localizable.getResourceBundle(),
+                settings);
         this.observer = argObserver;
         this.inputData = new InputData();
     }

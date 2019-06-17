@@ -6,10 +6,13 @@ package com.moneydance.modules.features.paypalimporter.controller;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
-import com.moneydance.modules.features.paypalimporter.service.ServiceProviderImpl;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
@@ -30,14 +33,19 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
  */
 public final class TransactionSearchIteratorTest {
 
-    private TransactionSearchIterator iterator;
     private AccountBook accountBook;
+    private Settings settings;
     private InputData inputData;
+    private TransactionSearchIterator iterator;
 
     @Before
-    public void setUp() throws Exception {
-        StubContextFactory factory = new StubContextFactory();
-        this.accountBook = factory.getContext().getCurrentAccountBook();
+    public void setUp() {
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        ServiceProvider serviceProvider = supportComponent.serviceProvider();
+
+        this.accountBook = supportComponent.context().getCurrentAccountBook();
+        this.settings = supportComponent.settings();
 
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
@@ -46,13 +54,18 @@ public final class TransactionSearchIteratorTest {
                 password,
                 "mock signature",
                 -1);
+
+        StubContextFactory factory = new StubContextFactory();
         this.iterator = new TransactionSearchIterator(
                 new ViewControllerMock(),
                 factory.getContext().getAccountBook(),
-                new ServiceProviderImpl(),
+                serviceProvider,
                 inputData,
                 this.accountBook.getRootAccount().getCurrencyType(),
-                CurrencyCodeType.USD);
+                CurrencyCodeType.USD,
+                this.settings.getErrorCodeSearchWarning(),
+                this.settings.getDateFormat(),
+                supportComponent.localizable());
     }
 
     @Test
@@ -87,7 +100,7 @@ public final class TransactionSearchIteratorTest {
     public void testUnlockWithSearchWarning() {
         this.iterator.unlock(
                 "stub text",
-                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
+                this.settings.getErrorCodeSearchWarning());
     }
 
     @Test
@@ -101,7 +114,7 @@ public final class TransactionSearchIteratorTest {
                 Collections.emptyList(),
                 new Date(Math.abs(System.currentTimeMillis() - RandomUtils.nextLong())),
                 null,
-                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
+                this.settings.getErrorCodeSearchWarning());
     }
 
     @Test

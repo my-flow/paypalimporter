@@ -23,13 +23,15 @@ import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Frame;
 import java.awt.Image;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -63,20 +65,32 @@ public final class ViewControllerImpl implements ViewController {
     private static final Logger LOG = Logger.getLogger(
             ViewControllerImpl.class.getName());
 
+    private final Settings settings;
     private final Preferences prefs;
     private final Localizable localizable;
     private final FeatureModuleContext context;
     private final ServiceProvider serviceProvider;
+    private final DateConverter dateConverter;
     private final IAccountBookFactory accountBookFactory;
+    private final DateFormat dateFormat;
     @Nullable private WizardHandler wizard;
     @Nullable private InputData inputData;
 
-    public ViewControllerImpl(final FeatureModuleContext argContext, final ServiceProvider argServiceProvider) {
-        this.prefs              = Helper.INSTANCE.getPreferences();
-        this.localizable        = Helper.INSTANCE.getLocalizable();
-        this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
+    public ViewControllerImpl(
+            final FeatureModuleContext argContext,
+            final ServiceProvider argServiceProvider,
+            final DateConverter argDateConverter,
+            final Settings argSettings,
+            final Preferences argPrefs,
+            final Localizable argLocalizable) {
+        this.settings           = argSettings;
+        this.prefs              = argPrefs;
+        this.localizable        = argLocalizable;
         this.context            = argContext;
         this.serviceProvider    = argServiceProvider;
+        this.dateConverter      = argDateConverter;
+        this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
+        this.dateFormat         = settings.getDateFormat();
     }
 
     @Override
@@ -127,7 +141,12 @@ public final class ViewControllerImpl implements ViewController {
 
         if (this.wizard == null) {
             final Frame owner = mdGUI.getTopLevelFrame();
-            this.wizard = new WizardHandler(owner, mdGUI, this);
+            this.wizard = new WizardHandler(
+                    owner,
+                    mdGUI,
+                    this,
+                    this.localizable,
+                    this.settings);
             this.wizard.addComponentListener(
                     new ComponentDelegateListener(
                         this.accountBookFactory.createAccountBook(this.context).orElseThrow(AssertionError::new),
@@ -175,7 +194,7 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     public void proceed(final InputData argInputData) {
         LOG.config(argInputData.toString());
-        Validator<InputData> inputValidator = new InputDataValidator();
+        Validator<InputData> inputValidator = new InputDataValidator(this.localizable);
         ValidationResult result = inputValidator.validate(argInputData);
         if (result.hasErrors()) {
             this.unlock(
@@ -199,7 +218,8 @@ public final class ViewControllerImpl implements ViewController {
                 new CheckCurrencyRequestHandler(
                     this,
                     accountBook,
-                    argInputData.getAccountId()));
+                    argInputData.getAccountId(),
+                    this.localizable));
     }
 
     @Override
@@ -236,7 +256,7 @@ public final class ViewControllerImpl implements ViewController {
                                     .collect(Collectors.toList()));
             final JLabel confirmationLabel = new JLabel(message);
             confirmationLabel.setLabelFor(null);
-            final Image image = Helper.INSTANCE.getSettings().getIconImage();
+            final Image image = this.settings.getIconImage();
             final Icon icon = new ImageIcon(image);
             final Object[] options = {
                     this.localizable.getLabelContinueButton(),
@@ -276,7 +296,10 @@ public final class ViewControllerImpl implements ViewController {
                 this.serviceProvider,
                 this.inputData,
                 currencyType,
-                currencyCode);
+                currencyCode,
+                this.settings.getErrorCodeSearchWarning(),
+                this.dateFormat,
+                this.localizable);
         iter.callTransactionSearchService();
     }
 
@@ -297,7 +320,7 @@ public final class ViewControllerImpl implements ViewController {
                     Util.convertIntDateToLong(
                             onlineTxns.get(0).getDatePostedInt()),
                             Calendar.DATE);
-            final BoundedRangeModel model = DateConverter.getBoundedRangeModel(
+            final BoundedRangeModel model = this.dateConverter.getBoundedRangeModel(
                     input.getStartDate(),
                     endDate,
                     currentStartDate);
