@@ -2,25 +2,25 @@ apply plugin: 'application'
 
 dependencies {
     compile project(':core')
-    annotationProcessor "com.google.dagger:dagger-compiler:2.4"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.22.1"
 
-    runtime('org.slf4j:slf4j-simple:1.7.25')
+    runtime('org.slf4j:slf4j-simple:1.7.26')
     runtime('com.syncthemall:dropbox-java-sdk:1.5.3.2')
 
     testCompile('junit:junit:4.12')
 
-    testRuntime('org.slf4j:slf4j-simple:1.7.25')
+    testRuntime('org.slf4j:slf4j-simple:1.7.26')
 }
 
 mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
 
 test {
     jacocoTestReport {
-        sourceDirectories = files(project(':core').sourceSets.main.allSource.srcDirs)
-        classDirectories =  files(project(':core').sourceSets.main.output)
+        sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
+        classDirectories.from project(':core').sourceSets.main.output
 
         afterEvaluate {
-            classDirectories = files(classDirectories.files.collect {
+            classDirectories.from classDirectories.files.collect {
                 fileTree(dir: it,
                         include: 'com/moneydance/modules/features/paypalimporter/**',
                         exclude: [
@@ -33,7 +33,7 @@ test {
                                 '**/*_*Factory.class',
                                 '**/*Module.class',
                         ])
-            })
+            }
         }
     }
 }

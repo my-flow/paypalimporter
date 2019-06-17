@@ -16,20 +16,19 @@ import java.util.Date;
 public interface ServiceProvider {
 
     void callCheckCurrencyService(
-        final String username,
-        final char[] password,
-        final String signature,
-        final RequestHandler<CurrencyCodeType> requestHandler);
+        String username,
+        char[] password,
+        String signature,
+        RequestHandler<CurrencyCodeType> requestHandler);
 
     void callTransactionSearchService(
-        final String username,
-        final char[] password,
-        final String signature,
-        final Date startDate,
-        final Date endDate,
-        final CurrencyCodeType currencyCode,
-        final RequestHandler<PaymentTransactionSearchResultType>
-                requestHandler);
+        String username,
+        char[] password,
+        String signature,
+        Date startDate,
+        Date endDate,
+        CurrencyCodeType currencyCode,
+        RequestHandler<PaymentTransactionSearchResultType> requestHandler);
 
     /**
      * Shuts down all running requests. Can be called anytime.

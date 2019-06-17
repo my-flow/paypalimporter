@@ -47,7 +47,7 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
      * @param serviceResult result must not be null
      */
     protected abstract void serviceCallSucceeded(
-            final ServiceResult<V> serviceResult);
+            ServiceResult<V> serviceResult);
 
     private void serviceCallFailed(
             final String errorCode,

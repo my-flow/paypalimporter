@@ -1,3 +1,8 @@
+import java.text.SimpleDateFormat
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration
+
 buildscript {
     repositories {
         mavenCentral()
@@ -7,12 +12,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.18'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'net.sf.proguard:proguard-gradle:6.0.2'
-        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9'
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7'
+        classpath 'net.sf.proguard:proguard-gradle:6.1.0'
+        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
     }
 }
 
@@ -32,7 +37,7 @@ subprojects {
         privkeyid = '99'
         privkeyfile = "$rootDir/config/priv_key"
         pubkeyfile = "$rootDir/config/pub_key"
-        mxtfile = "${project(':core').distsDir}/${rootProject.name}.mxt"
+        mxtfile = "${project(':core').buildDir}/${project(':core').distsDirName}/${rootProject.name}-v${getConfigValueForKey("module_build")}.mxt"
     }
 
     repositories {
@@ -55,7 +60,7 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.8.2"
+        toolVersion = "0.8.3"
     }
 
     task checkstyleHtml(dependsOn: checkstyleMain) {
@@ -69,7 +74,7 @@ subprojects {
     checkstyleMain.finalizedBy checkstyleHtml
 
     pmd {
-        toolVersion = "6.11.0"
+        toolVersion = "6.14.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
@@ -86,4 +91,18 @@ subprojects {
 task createLibs(type: Exec) {
     description 'Generates patched libraries from trusted source'
     commandLine 'sh', 'config/create_libs.sh'
+}
+
+String getCurrentTimestamp() {
+    Date today = new Date()
+    SimpleDateFormat df = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
+    return df.format(today)
+}
+
+String getConfigValueForKey(String key) {
+    file("${project(':core').projectDir}/src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict").withInputStream {
+        final Configuration config = new PropertiesConfiguration();
+        config.load(it);
+        return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "");
+    }
 }

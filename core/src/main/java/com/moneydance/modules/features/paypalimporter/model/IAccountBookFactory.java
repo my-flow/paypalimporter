@@ -12,5 +12,5 @@ import java.util.Optional;
  */
 public interface IAccountBookFactory {
 
-    Optional<IAccountBook> createAccountBook(final FeatureModuleContext context);
+    Optional<IAccountBook> createAccountBook(FeatureModuleContext context);
 }
