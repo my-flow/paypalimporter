@@ -31,7 +31,7 @@ public final class Main extends FeatureModule implements Observer {
      */
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
-    private final Preferences prefs;
+    private Preferences prefs;
     private final Settings settings;
     @Nullable private ViewController viewController;
 
@@ -45,12 +45,14 @@ public final class Main extends FeatureModule implements Observer {
     public Main() {
         super();
         LOG.info("Initializing extension in Moneydance's application context.");
-        this.prefs = Helper.INSTANCE.getPreferences();
         this.settings = Helper.INSTANCE.getSettings();
     }
 
     @Override
     public void init() {
+        Helper.INSTANCE.setContext(this.getContext());
+        this.prefs = Helper.INSTANCE.getPreferences();
+
         Helper.INSTANCE.addObserver(this);
 
         if (this.prefs.isFirstRun()) {
