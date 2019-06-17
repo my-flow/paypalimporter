@@ -6,7 +6,6 @@ package com.moneydance.modules.features.paypalimporter.integration;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.infinitekind.util.StreamTable;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.util.Date;
@@ -42,7 +41,6 @@ final class InitializedOnlineService extends OnlineService {
         addParameters(new HashMap<String, String>() {
             private static final long serialVersionUID = 1L;
             {
-                final Settings settings = Helper.INSTANCE.getSettings();
                 this.put(KEY_SERVICE_TYPE, settings.getServiceType());
             }
         });

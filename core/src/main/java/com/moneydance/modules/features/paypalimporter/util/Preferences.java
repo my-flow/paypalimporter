@@ -30,15 +30,18 @@ public final class Preferences {
     private final IAccountBookFactory accountBookFactory;
     private final UserPreferences userPreferences;
     private final FeatureModuleContext context;
+    private final OnlineServiceFactory onlineServiceFactory;
     @Nullable private IAccountBook accountBook;
     @Nullable private PayPalOnlineService profile;
 
     Preferences(
             final FeatureModuleContext argContext,
-            final IAccountBookFactory argAccountBookFactory) {
+            final IAccountBookFactory argAccountBookFactory,
+            final Settings argSettings) {
         this.userPreferences = ((Main) argContext).getPreferences();
         this.accountBookFactory = argAccountBookFactory;
         this.context = argContext;
+        this.onlineServiceFactory = new OnlineServiceFactory(argSettings);
     }
 
     private IAccountBook getAccountBook() {
@@ -50,7 +53,7 @@ public final class Preferences {
 
     private PayPalOnlineService getPayPalOnlineService() {
         if (this.profile == null) {
-            this.profile = OnlineServiceFactory.createService(this.getAccountBook());
+            this.profile = this.onlineServiceFactory.createService(this.getAccountBook());
         }
         return this.profile;
     }
@@ -58,7 +61,7 @@ public final class Preferences {
     @SuppressWarnings("nullness")
     public void setAllWritablePreferencesToNull() {
         this.userPreferences.setSetting(KEY_FIRST_RUN, (String) null);
-        OnlineServiceFactory.removeService(this.getAccountBook());
+        this.onlineServiceFactory.removeService(this.getAccountBook());
     }
 
     public void setFirstRun(final boolean firstRun) {

@@ -1,23 +1,23 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
 // Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
-package com.moneydance.modules.features.paypalimporter.util;
+package com.moneydance.modules.features.paypalimporter.bootstrap;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
-import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
+import com.moneydance.modules.features.paypalimporter.CoreComponent;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.LogManager;
 
-import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -25,7 +25,6 @@ import javax.swing.JDialog;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -41,11 +40,6 @@ public enum Helper {
      */
     INSTANCE;
 
-    /**
-     * The resource in the JAR file to read the settings from.
-     */
-    private static final String SETTINGS_RESOURCE = "settings.properties";
-
     private static final KeyStroke ESCAPE_STROKE =
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
@@ -53,37 +47,28 @@ public enum Helper {
             "com.spodding.tackline.dispatch:WINDOW_CLOSING";
 
     private final HelperObservable observable;
-    private final Settings settings;
-    @Nullable private transient Preferences prefs;
-    @Nullable private transient Localizable localizable;
+    private CoreComponent coreComponent;
 
     Helper() {
         this.observable = new HelperObservable();
-        try {
-            this.settings = new Settings(SETTINGS_RESOURCE);
-        } catch (ConfigurationException | IOException | ParseException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
     }
 
-    public Settings getSettings() {
-        return this.settings;
+    public FeatureModuleContext getContext() {
+        return this.coreComponent.context();
     }
 
-    public void setPreferences(
-            final FeatureModuleContext context,
-            final IAccountBookFactory accountBookFactory) {
+    void init(final CoreComponent argCoreComponent) {
         synchronized (Helper.class) {
-            this.prefs = new Preferences(context, accountBookFactory);
+            this.coreComponent = argCoreComponent;
         }
     }
 
     public Preferences getPreferences() {
-        return this.prefs;
+        return this.coreComponent.preferences();
     }
 
     public Localizable getLocalizable() {
-        return this.localizable;
+        return this.coreComponent.localizable();
     }
 
     public void addObserver(final Observer observer) {
@@ -98,22 +83,11 @@ public enum Helper {
         this.observable.notifyObservers(arg);
     }
 
-    public void setContext(final FeatureModuleContext context) {
-        synchronized (Helper.class) {
-            this.prefs = new Preferences(context, AccountBookFactoryImpl.INSTANCE);
-            this.localizable = new Localizable(
-                    this.settings.getLocalizableResource(),
-                    this.prefs.getLocale());
-        }
-    }
-
-    public static void loadLoggerConfiguration() {
+    public static void loadLoggerConfiguration(final Settings settings) {
         try {
             InputStream inputStream = getInputStreamFromResource(
-                    Helper.INSTANCE.getSettings()
-                    .getLoggingPropertiesResource());
+                    settings.getLoggingPropertiesResource());
             LogManager.getLogManager().readConfiguration(inputStream);
-
         } catch (SecurityException | IOException e) {
             e.printStackTrace(System.err);
         }

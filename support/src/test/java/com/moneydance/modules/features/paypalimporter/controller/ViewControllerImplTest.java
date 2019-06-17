@@ -5,10 +5,11 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.DateRange;
-import com.moneydance.apps.md.controller.StubAccountBookFactory;
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -24,22 +25,26 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
  */
 public final class ViewControllerImplTest {
 
-    private StubContextFactory factory;
     private ViewController viewController;
     private InputData validInputData;
     private InputData invalidInputData;
     private Account account;
+    private Settings settings;
 
     @Before
     public void setUp() {
-        this.factory = new StubContextFactory();
-        Helper.INSTANCE.setPreferences(
-                this.factory.getContext(),
-                new StubAccountBookFactory(
-                        this.factory.getContext().getAccountBook()));
-        this.account = factory.getContext().getRootAccount().getSubAccount(0);
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.account = supportComponent.context().getRootAccount().getSubAccount(0);
+        this.settings = supportComponent.settings();
 
-        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(this.factory.getContext(), new ServiceProviderMock());
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(
+                supportComponent.context(),
+                new ServiceProviderMock(),
+                supportComponent.dateConverter(),
+                supportComponent.settings(),
+                supportComponent.preferences(),
+                supportComponent.localizable());
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
         this.validInputData = new InputData("mock username", password, "mock signature",
@@ -66,7 +71,16 @@ public final class ViewControllerImplTest {
 
     @Test
     public void testCurrencyCheckedFilled() {
-        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(this.factory.getContext(), new ServiceProviderMock());
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+
+        ViewControllerImpl viewControllerImpl = new ViewControllerImpl(
+                supportComponent.context(),
+                new ServiceProviderMock(),
+                supportComponent.dateConverter(),
+                supportComponent.settings(),
+                supportComponent.preferences(),
+                supportComponent.localizable());
         viewControllerImpl.setInputData(this.invalidInputData);
 
         List<CurrencyCodeType> currencyCodes = new LinkedList<>();
@@ -84,6 +98,6 @@ public final class ViewControllerImplTest {
                 Collections.emptyList(),
                 null,
                 this.account,
-                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning());
+                this.settings.getErrorCodeSearchWarning());
     }
 }

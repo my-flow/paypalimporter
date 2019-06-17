@@ -9,32 +9,29 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 
 /**
  * @author Florian J. Breunig
  */
 public final class HelperTest {
 
+    private Settings settings;
+
     @Before
     public void setUp() {
-        new StubContextFactory();
-    }
-
-    @Test
-    public void testGetPreferences() {
-        assertThat(Helper.INSTANCE.getPreferences(), notNullValue());
-    }
-
-    @Test
-    public void testGetLocalizable() {
-        assertThat(Helper.INSTANCE.getLocalizable(), notNullValue());
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.settings = supportComponent.settings();
     }
 
     @Test
     public void testGetInputStreamFromResource() {
         assertThat(Helper.getInputStreamFromResource(
-                Helper.INSTANCE.getSettings().getLoggingPropertiesResource()),
+                this.settings.getLoggingPropertiesResource()),
                 notNullValue());
     }
 }

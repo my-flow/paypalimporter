@@ -3,7 +3,6 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -60,8 +59,9 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
 
     CheckCurrencyService(
             final PayPalAPIInterfaceServiceService argService,
-            final Locale argErrorLocale) {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+            final Locale argErrorLocale,
+            final Localizable argLocalizable) {
+        this.localizable = argLocalizable;
         this.service = argService;
         this.errorLocale = argErrorLocale;
     }

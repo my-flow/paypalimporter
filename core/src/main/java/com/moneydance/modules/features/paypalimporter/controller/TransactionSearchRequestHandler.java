@@ -8,7 +8,7 @@ import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -45,11 +45,14 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
-            final IAccountBook accountBook) {
+            final IAccountBook accountBook,
+            final DateFormat argDateFormat,
+            final Localizable argLocalizable) {
 
-        super(argViewController);
+        super(argViewController,
+                argLocalizable);
         this.txnList = accountBook.getRootAccount().getDownloadedTxns();
-        this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        this.dateFormat = argDateFormat;
     }
 
     @Override

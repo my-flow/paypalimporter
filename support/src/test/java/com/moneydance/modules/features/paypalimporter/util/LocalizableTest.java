@@ -9,7 +9,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,8 +29,9 @@ public final class LocalizableTest {
 
     @Before
     public void setUp() {
-        new StubContextFactory();
-        this.localizable = Helper.INSTANCE.getLocalizable();
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.localizable = supportComponent.localizable();
     }
 
     @Test

@@ -3,8 +3,11 @@
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.paypal.core.Constants;
 
 import java.io.IOException;
@@ -44,12 +47,22 @@ public final class ServiceProviderImpl implements ServiceProvider {
      */
     private static final String PROPERTIES_RESOURCE = "sdk_config.properties";
 
+    private final DateConverter dateConverter;
+    private final Settings settings;
     private final Preferences prefs;
+    private final Localizable localizable;
     private ExecutorService executorService;
 
-    public ServiceProviderImpl() {
+    public ServiceProviderImpl(
+            final DateConverter argDateConverter,
+            final Settings argSettings,
+            final Preferences argPrefs,
+            final Localizable argLocalizable) {
         this.executorService = Executors.newSingleThreadExecutor();
-        this.prefs = Helper.INSTANCE.getPreferences();
+        this.dateConverter = argDateConverter;
+        this.settings = argSettings;
+        this.prefs = argPrefs;
+        this.localizable = argLocalizable;
     }
 
     public void callCheckCurrencyService(
@@ -61,7 +74,8 @@ public final class ServiceProviderImpl implements ServiceProvider {
         Callable<ServiceResult<CurrencyCodeType>> callable =
                 new CheckCurrencyService(
                         this.createService(username, password, signature),
-                        this.prefs.getLocale());
+                        this.prefs.getLocale(),
+                        this.localizable);
         this.createAndExecuteFutureTask(callable, requestHandler);
     }
 
@@ -78,10 +92,13 @@ public final class ServiceProviderImpl implements ServiceProvider {
         Callable<ServiceResult<PaymentTransactionSearchResultType>>
         callable = new TransactionSearchService(
                 this.createService(username, password, signature),
+                this.localizable,
+                this.dateConverter,
                 currencyCode,
                 startDate,
                 endDate,
-                this.prefs.getLocale());
+                this.prefs.getLocale(),
+                this.settings.getDateFormat());
 
         this.createAndExecuteFutureTask(callable, requestHandler);
     }

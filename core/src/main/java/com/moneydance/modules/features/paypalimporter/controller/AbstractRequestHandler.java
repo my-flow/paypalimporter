@@ -5,7 +5,6 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 /**
@@ -19,9 +18,11 @@ abstract class AbstractRequestHandler<V> implements RequestHandler<V> {
     private final ViewController viewController;
     private final Localizable localizable;
 
-    AbstractRequestHandler(final ViewController argViewController) {
+    AbstractRequestHandler(
+            final ViewController argViewController,
+            final Localizable argLocalizable) {
         this.viewController = argViewController;
-        this.localizable = Helper.INSTANCE.getLocalizable();
+        this.localizable = argLocalizable;
     }
 
     @Override

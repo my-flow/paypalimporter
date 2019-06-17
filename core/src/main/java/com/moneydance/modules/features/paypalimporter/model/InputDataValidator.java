@@ -5,7 +5,6 @@ package com.moneydance.modules.features.paypalimporter.model;
 
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -30,8 +29,8 @@ public final class InputDataValidator implements Validator<InputData> {
         DATERANGE;
     }
 
-    public InputDataValidator() {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+    public InputDataValidator(final Localizable argLocalizable) {
+        this.localizable = argLocalizable;
     }
 
     @Override
