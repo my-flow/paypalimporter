@@ -70,7 +70,7 @@ public final class StubLocalStorage extends LocalStorage {
     public OutputStream openFileForWriting(final String arg0) {
         return new OutputStream() {
             @Override
-            public void write(final int b) throws IOException {
+            public void write(final int data) throws IOException {
                 // ignore
             }
         };

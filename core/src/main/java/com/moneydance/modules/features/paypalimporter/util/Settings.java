@@ -42,19 +42,17 @@ public final class Settings {
 
     @SuppressWarnings("nullness")
     Settings() {
+        InputStream inputStream = Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
         try {
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    PROPERTIES_RESOURCE);
-
             final AbstractFileConfiguration abstractFileConfiguration =
                     new PropertiesConfiguration();
             abstractFileConfiguration.load(inputStream);
             this.config = abstractFileConfiguration;
-        } catch (ConfigurationException e) {
+            this.iconImage = getImage(this.config.getString("icon_resource"));
+            this.helpImage = getImage(this.config.getString("help_resource"));
+        } catch (ConfigurationException | IOException e) {
             throw new IllegalStateException(e.getMessage(), e);
         }
-        this.iconImage = getImage(this.config.getString("icon_resource"));
-        this.helpImage = getImage(this.config.getString("help_resource"));
         this.dateFormat = new SimpleDateFormat(
                 this.config.getString("date_pattern"),
                 Locale.US);
@@ -222,13 +220,9 @@ public final class Settings {
         return this.config.getString("rows_specs");
     }
 
-    private static Image getImage(final String resource) {
-        try {
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    resource);
-            return ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
+    private static Image getImage(final String resource) throws IOException {
+        InputStream inputStream = Helper.getInputStreamFromResource(
+                resource);
+        return ImageIO.read(inputStream);
     }
 }

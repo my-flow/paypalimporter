@@ -37,7 +37,7 @@ public final class LogFormatter extends Formatter {
             PrintWriter printWriter = new PrintWriter(stringWriter);
             try {
                 record.getThrown().printStackTrace(printWriter);
-                stringBuilder.append(stringWriter.toString());
+                stringBuilder.append(stringWriter);
             } finally {
                 printWriter.close();
                 try {

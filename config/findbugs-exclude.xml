@@ -1,0 +1,8 @@
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY"/>
+    </Match>
+    <Match>
+        <Bug pattern="IMC_IMMATURE_CLASS_PRINTSTACKTRACE"/>
+    </Match>
+</FindBugsFilter>

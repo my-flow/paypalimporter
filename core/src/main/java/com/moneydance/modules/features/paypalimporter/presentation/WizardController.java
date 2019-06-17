@@ -4,6 +4,7 @@
 package com.moneydance.modules.features.paypalimporter.presentation;
 
 import com.infinitekind.moneydance.model.Account;
+import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
@@ -128,11 +129,10 @@ implements ActionListener, WindowListener {
 
         this.txtSignature.setText(inputData.getSignature());
 
-        if (inputData.getDateRange() != null) {
-            this.dateRanger.setStartDate(
-                    inputData.getDateRange().getStartDateInt());
-            this.dateRanger.setEndDate(
-                    inputData.getDateRange().getEndDateInt());
+        DateRange dateRange = inputData.getDateRange();
+        if (dateRange != null) {
+            this.dateRanger.setStartDate(dateRange.getStartDateInt());
+            this.dateRanger.setEndDate(dateRange.getEndDateInt());
         }
 
         // preset focus
@@ -224,19 +224,19 @@ implements ActionListener, WindowListener {
             @Nullable final Object key) {
         this.refresh(false, Boolean.FALSE);
 
-        if (InputDataValidator.MessageKey.USERNAME.equals(key)) {
+        if (key == InputDataValidator.MessageKey.USERNAME) {
             this.txtUsername.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.PASSWORD.equals(key)) {
+        if (key == InputDataValidator.MessageKey.PASSWORD) {
             this.txtPassword.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.SIGNATURE.equals(key)) {
+        if (key == InputDataValidator.MessageKey.SIGNATURE) {
             this.txtSignature.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.DATERANGE.equals(key)) {
+        if (key == InputDataValidator.MessageKey.DATERANGE) {
             this.dateRanger.getEndField().requestFocus();
         }
 
@@ -250,7 +250,8 @@ implements ActionListener, WindowListener {
             } else {
                 parentComponent = null;
             }
-            final Object errorLabel = new JLabel(text);
+            final JLabel errorLabel = new JLabel(text);
+            errorLabel.setLabelFor(null);
             JOptionPane.showMessageDialog(
                     parentComponent,
                     errorLabel,

@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    InitializedOnlineServiceTest.class,
     OnlineServiceFactoryTest.class,
     PayPalOnlineServiceTest.class
 })

@@ -11,6 +11,7 @@ import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Observable;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,7 +124,11 @@ public final class TransactionSearchIteratorTest {
 
     @Test
     public void testShowHelp() {
-        this.iterator.showHelp();
+        try {
+            this.iterator.showHelp();
+        } catch (MalformedURLException e) {
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test

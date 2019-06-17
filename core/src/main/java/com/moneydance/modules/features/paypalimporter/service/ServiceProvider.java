@@ -90,7 +90,7 @@ public final class ServiceProvider {
      * Shuts down all running requests. Can be called anytime.
      */
     public void shutdownNow() {
-        synchronized (this) {
+        synchronized (this.prefs) {
             this.executorService.shutdownNow();
             this.executorService = Executors.newSingleThreadExecutor();
         }
@@ -174,7 +174,6 @@ public final class ServiceProvider {
                     serviceResult = new ServiceResult<V>(
                             e.getLocalizedMessage());
                 } finally {
-                    assert serviceResult != null : "@AssumeAssertion(nullness)";
                     final ServiceResult<V> finalResult = serviceResult;
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {
@@ -191,6 +190,8 @@ public final class ServiceProvider {
                 }
             }
         };
-        this.executorService.submit(task);
+        synchronized (this.prefs) {
+            this.executorService.submit(task);
+        }
     }
 }

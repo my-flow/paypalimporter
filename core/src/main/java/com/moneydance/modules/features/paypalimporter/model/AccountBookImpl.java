@@ -11,6 +11,8 @@ import com.infinitekind.moneydance.model.MoneydanceSyncableItem;
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 
+import javax.annotation.Nullable;
+
 /**
  * @author Florian J. Breunig
  */
@@ -28,7 +30,7 @@ final class AccountBookImpl implements IAccountBook {
     }
 
     @Override
-    public Account getAccountByNum(final int accountId) {
+    @Nullable public Account getAccountByNum(final int accountId) {
         return this.accountBook.getAccountByNum(accountId);
     }
 

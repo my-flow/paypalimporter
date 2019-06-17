@@ -13,6 +13,7 @@ import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Helper;
 
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Iterator;
@@ -21,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.Observable;
 import java.util.Set;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -34,9 +34,9 @@ import javax.annotation.Nullable;
  * the date bounds and calling the transaction search service. It aggregates
  * the results and imports the transactions all at once.
  *
- * The PayPal API delivers not more 100 transactions per service calls. If there
- * are more than 100 transactions available, the PayPal API will return the
- * newest 100 transactions together with a search warning.
+ * The PayPal API delivers not more than 100 transactions per service calls.
+ * If there are more than 100 transactions available, the PayPal API will
+ * return the newest 100 transactions together with a search warning.
  *
  * This class issues consecutive service calls. It starts with the newest 100
  * transactions and calls the PayPal API repeatedly. It moves the date bounds
@@ -180,25 +180,16 @@ final class TransactionSearchIterator implements ViewController {
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
-            try {
-                account = Account.makeAccount(
-                        accountBook.getWrappedOriginal(),
-                        Account.AccountType.BANK,
-                        accountBook.getRootAccount());
-                account.setAccountName(
-                        Helper.INSTANCE.getLocalizable().getNameNewAccount());
-                account.setCurrencyType(currencyType);
-                account.setParameter(
-                        KEY_ACCOUNT_URL,
-                        Helper.INSTANCE.getLocalizable().getUrlNewAccount());
-            } catch (Exception e) {
-                final String message = e.getMessage();
-                if (message != null) {
-                    LOG.log(Level.WARNING, message, e);
-                }
-                throw new IllegalStateException(
-                        "Could not create account", e);
-            }
+            account = Account.makeAccount(
+                    accountBook.getWrappedOriginal(),
+                    Account.AccountType.BANK,
+                    accountBook.getRootAccount());
+            account.setAccountName(
+                    Helper.INSTANCE.getLocalizable().getNameNewAccount());
+            account.setCurrencyType(currencyType);
+            account.setParameter(
+                    KEY_ACCOUNT_URL,
+                    Helper.INSTANCE.getLocalizable().getUrlNewAccount());
         }
         return account;
     }
@@ -232,7 +223,7 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void showHelp() {
+    public void showHelp() throws MalformedURLException {
         this.viewController.showHelp();
     }
 

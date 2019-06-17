@@ -7,12 +7,14 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
 
 /**
@@ -55,7 +57,11 @@ public final class LocalizableTest {
 
     @Test
     public void testGetUrlHelp() {
-        assertThat(this.localizable.getUrlHelp(), notNullValue());
+        try {
+            assertThat(this.localizable.getUrlHelp(), notNullValue());
+        } catch (MalformedURLException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
