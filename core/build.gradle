@@ -1,10 +1,5 @@
 import java.util.jar.Attributes
 
-import java.text.SimpleDateFormat
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration
-
 import proguard.gradle.ProGuardTask
 
 
@@ -12,8 +7,8 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     compile(':moneydance:1358')
-    compile('com.google.dagger:dagger:2.4')
-    annotationProcessor('com.google.dagger:dagger-compiler:2.4')
+    compile('com.google.dagger:dagger:2.22.1')
+    annotationProcessor('com.google.dagger:dagger-compiler:2.22.1')
     compile(':prompt:')
     compile(':paypal-core-paypalimporter:1.7.2')
     compile('com.paypal.sdk:merchantsdk:2.15.122') {
@@ -28,8 +23,9 @@ dependencies {
     compile('org.apache.commons:commons-lang3:3.9')
     compile('commons-configuration:commons-configuration:1.10')
     compile('org.apache.commons:commons-text:1.6')
-    compile('org.slf4j:slf4j-api:1.7.25')
-    compile('org.checkerframework:checker:2.3.2')
+    compile('org.slf4j:slf4j-api:1.7.26')
+    compile('org.checkerframework:checker:2.8.1')
+    compile('com.google.code.findbugs:jsr305:3.0.2')
 
     spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.5'
 }
@@ -58,7 +54,7 @@ shadowJar {
 
     dependencies {
         include dependency('javax.inject:javax.inject:1')
-        include dependency('com.google.dagger:dagger:2.4')
+        include dependency('com.google.dagger:dagger:2.22.1')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
         include dependency('org.apache.commons:commons-lang3:3.9')
@@ -71,8 +67,8 @@ shadowJar {
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
         include dependency(':prompt:')
-        include dependency('org.slf4j:slf4j-api:1.7.25')
-        include dependency('org.slf4j:slf4j-nop:1.7.25')
+        include dependency('org.slf4j:slf4j-api:1.7.26')
+        include dependency('org.slf4j:slf4j-nop:1.7.26')
     }
     relocate 'com.jgoodies', 'com.moneydance.modules.features.paypalimporter.jgoodies'
 }
@@ -80,12 +76,12 @@ shadowJar {
 task proguard(type: ProGuardTask, dependsOn: 'shadowJar') {
     injars  shadowJar.archivePath
     libraryjars configurations.findByName('runtimeClasspath').getFiles()
-    outjars "${project.distsDir}/proguard-${rootProject.name}.jar"
+    outjars "${project.buildDir}/${project.distsDirName}/proguard-${rootProject.name}.jar"
     configuration 'config/proguard.cfg'
 }
 
 proguard.doLast {
-    new File("${project.distsDir}/proguard-${rootProject.name}.jar").renameTo mxtfile as String
+    new File("${project.buildDir}/${project.distsDirName}/proguard-${rootProject.name}.jar").renameTo mxtfile as String
 }
 
 shadowJar.finalizedBy proguard
@@ -108,18 +104,4 @@ javadoc {
             'http://commons.apache.org/logging/apidocs/'
     ]
     options.footer = '<a href="https://github.com/my-flow/paypalimporter">PayPal Importer on GitHub</a>'
-}
-
-String getCurrentTimestamp() {
-  Date today = new Date()
-  SimpleDateFormat df = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
-  return df.format(today)
-}
-
-String getConfigValueForKey(String key) {
-    file('src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict').withInputStream {
-        final Configuration config = new PropertiesConfiguration();
-        config.load(it);
-        return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "");
-    }
 }

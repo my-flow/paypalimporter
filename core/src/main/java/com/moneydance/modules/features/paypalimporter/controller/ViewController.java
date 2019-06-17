@@ -51,7 +51,7 @@ public interface ViewController extends Observer {
      * @param text error message to be displayed
      * @param key identifier of the related input field
      */
-    void unlock(final String text, final Object key);
+    void unlock(String text, Object key);
 
     /**
      * This hook is called after a service call has checked the available
@@ -64,9 +64,9 @@ public interface ViewController extends Observer {
      * required to display this information to the user later.
      */
     void currencyChecked(
-            final CurrencyType currencyType,
-            final CurrencyCodeType currencyCode,
-            final List<CurrencyCodeType> currencyCodes);
+            CurrencyType currencyType,
+            CurrencyCodeType currencyCode,
+            List<CurrencyCodeType> currencyCodes);
 
     /**
      * This hook is called after a service call has fetched a batch of or all
@@ -78,10 +78,10 @@ public interface ViewController extends Observer {
      * @param errorCode Error from PayPal that might come with the transactions.
      */
     void transactionsImported(
-            final List<OnlineTxn> onlineTxns,
-            final Date argStartDate,
-            @Nullable final Account account,
-            @Nullable final String errorCode);
+            List<OnlineTxn> onlineTxns,
+            Date argStartDate,
+            @Nullable Account account,
+            @Nullable String errorCode);
 
     /**
      * Show instructions to the user how to find the credentials.
@@ -93,5 +93,5 @@ public interface ViewController extends Observer {
      *
      * @param selectedAccountId Preselected account in the combobox.
      */
-    void refreshAccounts(final int selectedAccountId);
+    void refreshAccounts(int selectedAccountId);
 }

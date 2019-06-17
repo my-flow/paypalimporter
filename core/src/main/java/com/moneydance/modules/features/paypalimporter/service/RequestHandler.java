@@ -10,5 +10,5 @@ package com.moneydance.modules.features.paypalimporter.service;
  * @param <V> The type of result objects which the service returns.
  */
 public interface RequestHandler<V> {
-    void serviceCallFinished(final ServiceResult<V> serviceResult);
+    void serviceCallFinished(ServiceResult<V> serviceResult);
 }

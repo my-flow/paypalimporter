@@ -13,6 +13,7 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -123,7 +124,7 @@ public final class Preferences {
     }
 
     @SuppressWarnings("nullness")
-    public void setPassword(final int accountId, @Nullable final char[] password) {
+    public void setPassword(final int accountId, @Nonnull final char[] password) {
         this.getPayPalOnlineService().setPassword(accountId, password);
     }
 

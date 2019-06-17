@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -92,7 +93,7 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("nullness")
-    public void setPassword(final int accountId, @Nullable final char[] password) {
+    public void setPassword(final int accountId, @Nonnull final char[] password) {
         this.onlineService.cacheAuthentication(
                 buildAuthKey(buildRealm(accountId)),
                 String.valueOf(password));
