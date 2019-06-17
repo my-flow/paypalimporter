@@ -26,16 +26,16 @@ public final class PreferencesTest {
     public void setUp() {
         this.factory = new StubContextFactory();
         this.prefs = new Preferences(
+                factory.getContext(),
                 new StubAccountBookFactory(
                         this.factory.getContext().getAccountBook()));
-        Helper.INSTANCE.addObserver((observable, updateAll) -> PreferencesTest.this.prefs.setContext(
-                PreferencesTest.this.factory.getContext()));
     }
 
     @Test(expected = AssertionError.class)
     public void testGetUserPreferencesWithoutAccountBook() {
-        Preferences preferences = new Preferences(new StubAccountBookFactory(null));
-        preferences.setContext(this.factory.getContext());
+        Preferences preferences = new Preferences(
+                this.factory.getContext(),
+                new StubAccountBookFactory(null));
         preferences.setAllWritablePreferencesToNull();
     }
 

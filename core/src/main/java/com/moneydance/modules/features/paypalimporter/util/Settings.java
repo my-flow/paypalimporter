@@ -29,11 +29,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  */
 public final class Settings {
 
-    /**
-     * The resource in the JAR file to read the settings from.
-     */
-    private static final String PROPERTIES_RESOURCE = "settings.properties";
-
     private final Configuration config;
     private final Image iconImage;
     private final DateFormat dateFormat;
@@ -41,23 +36,20 @@ public final class Settings {
     private final Image helpImage;
 
     @SuppressWarnings("nullness")
-    Settings() {
-        InputStream inputStream = Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
-        try {
+    Settings(final String resource)
+            throws IOException, ConfigurationException, ParseException {
+            InputStream inputStream = Helper.getInputStreamFromResource(resource);
             final AbstractFileConfiguration abstractFileConfiguration =
                     new PropertiesConfiguration();
             abstractFileConfiguration.load(inputStream);
             this.config = abstractFileConfiguration;
-            this.iconImage = getImage(this.config.getString("icon_resource"));
-            this.helpImage = getImage(this.config.getString("help_resource"));
-            this.dateFormat = new SimpleDateFormat(
-                    this.config.getString("date_pattern"),
-                    Locale.US);
-            this.minDate = this.dateFormat.parse(
-                    this.config.getString("min_date"));
-        } catch (ConfigurationException | IOException | ParseException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
+        this.iconImage = getImage(this.config.getString("icon_resource"));
+        this.helpImage = getImage(this.config.getString("help_resource"));
+        this.dateFormat = new SimpleDateFormat(
+                this.config.getString("date_pattern"),
+                Locale.US);
+        this.minDate = this.dateFormat.parse(
+                this.config.getString("min_date"));
     }
 
     /**

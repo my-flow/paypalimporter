@@ -34,6 +34,7 @@ public final class ViewControllerImplTest {
     public void setUp() {
         this.factory = new StubContextFactory();
         Helper.INSTANCE.setPreferences(
+                this.factory.getContext(),
                 new StubAccountBookFactory(
                         this.factory.getContext().getAccountBook()));
         this.account = factory.getContext().getRootAccount().getSubAccount(0);

@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.LogManager;
@@ -24,6 +25,7 @@ import javax.swing.JDialog;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -39,6 +41,11 @@ public enum Helper {
      */
     INSTANCE;
 
+    /**
+     * The resource in the JAR file to read the settings from.
+     */
+    private static final String SETTINGS_RESOURCE = "settings.properties";
+
     private static final KeyStroke ESCAPE_STROKE =
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
@@ -52,17 +59,22 @@ public enum Helper {
 
     Helper() {
         this.observable = new HelperObservable();
-        this.settings   = new Settings();
-        this.prefs      = new Preferences(AccountBookFactoryImpl.INSTANCE);
+        try {
+            this.settings = new Settings(SETTINGS_RESOURCE);
+        } catch (ConfigurationException | IOException | ParseException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
     }
 
     public Settings getSettings() {
         return this.settings;
     }
 
-    public void setPreferences(final IAccountBookFactory accountBookFactory) {
+    public void setPreferences(
+            final FeatureModuleContext context,
+            final IAccountBookFactory accountBookFactory) {
         synchronized (Helper.class) {
-            this.prefs = new Preferences(accountBookFactory);
+            this.prefs = new Preferences(context, accountBookFactory);
         }
     }
 
@@ -71,13 +83,6 @@ public enum Helper {
     }
 
     public Localizable getLocalizable() {
-        synchronized (Helper.class) {
-            if (this.localizable == null) {
-                this.localizable = new Localizable(
-                        this.settings.getLocalizableResource(),
-                        this.prefs.getLocale());
-            }
-        }
         return this.localizable;
     }
 
@@ -94,7 +99,12 @@ public enum Helper {
     }
 
     public void setContext(final FeatureModuleContext context) {
-        this.prefs.setContext(context);
+        synchronized (Helper.class) {
+            this.prefs = new Preferences(context, AccountBookFactoryImpl.INSTANCE);
+            this.localizable = new Localizable(
+                    this.settings.getLocalizableResource(),
+                    this.prefs.getLocale());
+        }
     }
 
     public static void loadLoggerConfiguration() {
