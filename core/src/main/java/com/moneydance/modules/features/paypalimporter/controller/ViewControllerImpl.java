@@ -29,6 +29,7 @@ import com.moneydance.modules.features.paypalimporter.util.Preferences;
 
 import java.awt.Frame;
 import java.awt.Image;
+import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -135,8 +136,11 @@ public final class ViewControllerImpl implements ViewController {
 
         int accountId = -1;
         final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
-        if (mainFrame != null && mainFrame.getSelectedAccount() != null) {
-            accountId = mainFrame.getSelectedAccount().getAccountNum();
+        if (mainFrame != null) {
+            final Account selectedAccount = mainFrame.getSelectedAccount();
+            if (selectedAccount != null) {
+                accountId = selectedAccount.getAccountNum();
+            }
         }
 
         final InputData newUserData = new InputData(
@@ -158,7 +162,6 @@ public final class ViewControllerImpl implements ViewController {
         if (this.wizard.isLoading()) {
             this.unlock(null, null);
         } else {
-            assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
         }
     }
@@ -225,7 +228,8 @@ public final class ViewControllerImpl implements ViewController {
                                     .stream()
                                     .map(CurrencyCodeType::getValue)
                                     .collect(Collectors.toList()));
-            final Object confirmationLabel = new JLabel(message);
+            final JLabel confirmationLabel = new JLabel(message);
+            confirmationLabel.setLabelFor(null);
             final Image image = Helper.INSTANCE.getSettings().getIconImage();
             final Icon icon = new ImageIcon(image);
             final Object[] options = {
@@ -244,10 +248,10 @@ public final class ViewControllerImpl implements ViewController {
                     options[0]);
 
             if (choice == JOptionPane.OK_OPTION) {
-                LOG.info(String.format("Continue"));
+                LOG.info("Continue");
                 this.importTransactions(currencyType, currencyCode);
             } else {
-                LOG.info(String.format("Cancel"));
+                LOG.info("Cancel");
                 this.unlock(null, null);
             }
         } else {
@@ -314,7 +318,7 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public void showHelp() {
+    public void showHelp() throws MalformedURLException {
         this.context.showURL(this.localizable.getUrlHelp().toExternalForm());
         this.cancel();
     }

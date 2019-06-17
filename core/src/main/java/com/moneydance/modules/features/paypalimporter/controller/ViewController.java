@@ -7,6 +7,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.OnlineTxn;
 
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Observer;
@@ -80,7 +81,7 @@ public interface ViewController extends Observer {
     /**
      * Show instructions to the user how to find the credentials.
      */
-    void showHelp();
+    void showHelp() throws MalformedURLException;
 
     /**
      * Notify the view to refresh the list of accounts.

@@ -67,12 +67,8 @@ public final class Localizable {
     /**
      * @return the URL that is displayed if the user needs help.
      */
-    public URL getUrlHelp() {
-        try {
-            return new URL(this.resourceBundle.getString("url_help"));
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("Could not parse help URL", e);
-        }
+    public URL getUrlHelp() throws MalformedURLException {
+        return new URL(this.resourceBundle.getString("url_help"));
     }
 
     /**
@@ -80,7 +76,7 @@ public final class Localizable {
      * @param currencies All currencies that were found for the PayPal account.
      * @return the question when multiple currencies are available
      */
-    public String getQuestionMessageMultipleCurrencies(
+    @Nullable public String getQuestionMessageMultipleCurrencies(
             final String currency,
             final List<String> currencies) {
         final String templateString = this.resourceBundle.getString(
@@ -142,7 +138,7 @@ public final class Localizable {
      * @param errorMessage Original error message that should be displayed
      * @return the error message when service call failed
      */
-    public String getErrorMessageServiceCallFailed(final String errorMessage) {
+    @Nullable public String getErrorMessageServiceCallFailed(final String errorMessage) {
         final String templateString = this.resourceBundle.getString(
                 "error_message_service_call_failed");
 

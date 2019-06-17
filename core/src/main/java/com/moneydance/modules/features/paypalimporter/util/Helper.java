@@ -45,8 +45,8 @@ public enum Helper {
     private static final String DISPATCH_WINDOW_CLOSING_ACTION_MAP_KEY =
             "com.spodding.tackline.dispatch:WINDOW_CLOSING";
 
-    private final transient HelperObservable observable;
-    private final transient Settings settings;
+    private final HelperObservable observable;
+    private final Settings settings;
     @Nullable private transient Preferences prefs;
     @Nullable private transient Localizable localizable;
 
@@ -61,7 +61,9 @@ public enum Helper {
     }
 
     public void setPreferences(final IAccountBookFactory accountBookFactory) {
-        this.prefs = new Preferences(accountBookFactory);
+        synchronized (Helper.class) {
+            this.prefs = new Preferences(accountBookFactory);
+        }
     }
 
     public Preferences getPreferences() {

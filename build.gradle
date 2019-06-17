@@ -35,6 +35,7 @@ subprojects {
     findbugs {
         effort = "max"
         reportLevel = "medium"
+        excludeFilter file("$rootDir/config/findbugs-exclude.xml")
     }
 
     tasks.withType(FindBugs) {
@@ -56,7 +57,7 @@ subprojects {
 
     pmd {
         sourceSets = [sourceSets.main]
-        ruleSetFiles = files('config/ruleSet.xml')
+        ruleSetFiles = files("$rootDir/config/ruleSet.xml")
     }
 }
 

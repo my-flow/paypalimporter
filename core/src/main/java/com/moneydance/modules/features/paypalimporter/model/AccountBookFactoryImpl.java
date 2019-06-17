@@ -27,8 +27,9 @@ public enum AccountBookFactoryImpl implements IAccountBookFactory {
       if (accountBook == null) {
           return null;
       }
-      if (this.multitons.containsKey(accountBook)) {
-          return this.multitons.get(accountBook);
+      final AccountBookImpl impl = this.multitons.get(accountBook);
+      if (impl != null) {
+          return impl;
       }
       this.multitons.clear();
       AccountBookImpl value = new AccountBookImpl(context);

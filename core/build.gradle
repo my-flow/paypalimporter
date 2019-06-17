@@ -1,3 +1,4 @@
+import java.nio.charset.StandardCharsets
 import java.util.jar.Attributes
 
 import java.text.SimpleDateFormat
@@ -28,6 +29,8 @@ dependencies {
     compile('org.apache.commons:commons-text:1.6')
     compile('org.slf4j:slf4j-api:1.7.25')
     compile('org.checkerframework:checker:2.3.2')
+
+    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.2'
 }
 
 jar {

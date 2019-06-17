@@ -12,7 +12,6 @@ import com.moneydance.util.StreamTable;
 
 import javax.annotation.Nullable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -30,7 +29,6 @@ public final class OnlineServiceFactory {
             OnlineServiceFactory.class.getName());
 
     private static final OnlineService SERVICE = createService();
-    static final String KEY_SERVICE_TYPE = "type";
 
     /**
      * Restrictive constructor.
@@ -46,8 +44,10 @@ public final class OnlineServiceFactory {
         OnlineService onlineService = getServiceById(onlineInfo, SERVICE);
 
         if (onlineService == null) {
-            onlineService = new OnlineService(accountBook.getWrappedOriginal());
-            setUpOnlineService(onlineService);
+            onlineService = new InitializedOnlineService(
+                    accountBook.getWrappedOriginal(),
+                    Helper.INSTANCE.getSettings(),
+                    new Date());
         }
         return new PayPalOnlineService(onlineService);
     }
@@ -71,36 +71,11 @@ public final class OnlineServiceFactory {
     }
 
     private static OnlineService createService() {
-        @SuppressWarnings("nullness")
-        final OnlineService onlineService = new OnlineService(
+        return new InitializedOnlineService(
                 null, // temporary account
-                new StreamTable());
-        setUpOnlineService(onlineService);
-        return onlineService;
-    }
-
-    @SuppressWarnings("initialization")
-    private static void setUpOnlineService(final OnlineService onlineService) {
-        onlineService.addParameters(new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-            {
-                final Settings settings = Helper.INSTANCE.getSettings();
-                this.put(KEY_SERVICE_TYPE, settings.getServiceType());
-            }
-        });
-        final Settings settings = Helper.INSTANCE.getSettings();
-        // see https://github.com/my-flow/paypalimporter/issues/9
-        onlineService.setParameter(OnlineService.ITEM_KEY_FI_TIK_ID, settings.getFITIKId());
-        onlineService.setFIId(settings.getFIId());
-        onlineService.setFIOrg(settings.getFIOrg());
-        onlineService.setFIName(settings.getFIName());
-        onlineService.setFIAddress1(settings.getFIAddress());
-        onlineService.setFICity(settings.getFICity());
-        onlineService.setFIState(settings.getFIState());
-        onlineService.setFIZip(settings.getFIZip());
-        onlineService.setFICountry(settings.getFICountry());
-        onlineService.setFIUrl(settings.getFIUrl());
-        onlineService.setDateUpdated(new Date().getTime());
+                new StreamTable(),
+                Helper.INSTANCE.getSettings(),
+                new Date());
     }
 
     @Nullable private static OnlineService getServiceById(

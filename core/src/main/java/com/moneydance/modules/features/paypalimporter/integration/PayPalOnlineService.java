@@ -85,7 +85,7 @@ public final class PayPalOnlineService {
                 buildRealm(accountId),
                 null);
         final String firstRealm = this.getFirstRealm();
-        if (StringUtils.isBlank(username) && firstRealm != null) {
+        if (firstRealm != null && StringUtils.isBlank(username)) {
             username = this.onlineService.getUserId(firstRealm, null);
         }
         return username;
