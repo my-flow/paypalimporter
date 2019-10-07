@@ -9,10 +9,10 @@ import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
@@ -50,8 +50,8 @@ public final class PayPalOnlineService {
     @SuppressWarnings("nullness")
     public void assignToAccount(
             final IAccountBook accountBook,
-            final int accountId) {
-        final Account account = accountBook.getAccountByNum(accountId);
+            final String accountId) {
+        final Account account = accountBook.getAccountById(accountId);
 
         if (this.onlineService.isSameAs(account.getBankingFI())) {
             return;
@@ -70,18 +70,15 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("nullness")
-    public void setUsername(final int accountId, @Nullable final String username) {
+    public void setUsername(final String accountId, @Nullable final String username) {
         this.onlineService.setUserId(
                 buildRealm(accountId),
                 null,
                 username);
-        this.onlineService.setMsgSetSignonRealm(
-                accountId,
-                buildRealm(accountId));
     }
 
     @SuppressWarnings("nullness")
-    public String getUsername(final int accountId) {
+    public String getUsername(final String accountId) {
         String username = this.onlineService.getUserId(
                 buildRealm(accountId),
                 null);
@@ -93,14 +90,14 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("nullness")
-    public void setPassword(final int accountId, @Nonnull final char[] password) {
+    public void setPassword(final String accountId, @Nonnull final char[] password) {
         this.onlineService.cacheAuthentication(
                 buildAuthKey(buildRealm(accountId)),
                 String.valueOf(password));
     }
 
     @SuppressWarnings("nullness")
-    public char[] getPassword(final int accountId) {
+    public char[] getPassword(final String accountId) {
         Object authObj = this.onlineService.getCachedAuthentication(
                 buildAuthKey(buildRealm(accountId)));
         char[] result;
@@ -118,12 +115,12 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("initialization")
-    public void setSignature(final int accountId, @Nullable final String signature) {
+    public void setSignature(final String accountId, @Nullable final String signature) {
         this.onlineService.setParameter(buildSignatureKey(buildRealm(accountId)), signature);
     }
 
     @SuppressWarnings("nullness")
-    public String getSignature(final int accountId) {
+    public String getSignature(final String accountId) {
         String signature = this.onlineService.getParameter(
                 buildSignatureKey(buildRealm(accountId)),
                 null);
@@ -135,34 +132,26 @@ public final class PayPalOnlineService {
         return signature;
     }
 
-    public void setAccountId(final int accountId) {
-        this.onlineService.setParameter(buildAccountKey(buildRealm(-1)), String.valueOf(accountId));
+    public void setAccountId(final String accountId) {
+        this.onlineService.setParameter(buildAccountKey(buildRealm(null)), accountId);
     }
 
-    public int getAccountId() {
+    public String getAccountId() {
         String accountId = this.onlineService.getParameter(
-                buildAccountKey(buildRealm(-1)),
-                "-1");
+                buildAccountKey(buildRealm(null)),
+                null);
         final Optional<String> firstRealm = this.getFirstRealm();
         if (accountId == null && firstRealm.isPresent()) {
             accountId = this.onlineService.getParameter(
-                    buildAccountKey(firstRealm.get()), "-1");
+                    buildAccountKey(firstRealm.get()), null);
         }
 
-        try {
-            return Integer.parseInt(accountId);
-        } catch (NumberFormatException e) {
-            final String message = e.getMessage();
-            if (message != null) {
-                LOG.log(Level.WARNING, message, e);
-            }
-            return -1;
-        }
+        return accountId;
     }
 
-    private static String buildRealm(final int accountId) {
-        if (accountId >= 0) {
-            return String.format("realm_%d", accountId);
+    static String buildRealm(final String accountId) {
+        if (accountId != null && (!NumberUtils.isNumber(accountId) || Integer.parseInt(accountId) >= 0)) {
+            return String.format("realm_%s", accountId);
         }
         return OnlineService.DEFAULT_REQ_REALM;
     }

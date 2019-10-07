@@ -16,6 +16,7 @@ import dagger.Provides;
 @Module(includes = {
         com.moneydance.modules.features.paypalimporter.controller.TestModule.class,
         com.moneydance.modules.features.paypalimporter.domain.FactoryModule.class,
+        com.moneydance.modules.features.paypalimporter.model.TestModule.class,
         com.moneydance.modules.features.paypalimporter.service.FactoryModule.class,
         com.moneydance.modules.features.paypalimporter.util.TestModule.class,
 })

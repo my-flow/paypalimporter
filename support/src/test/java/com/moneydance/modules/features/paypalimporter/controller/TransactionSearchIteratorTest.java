@@ -44,7 +44,7 @@ public final class TransactionSearchIteratorTest {
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
         ServiceProvider serviceProvider = supportComponent.serviceProvider();
 
-        this.accountBook = supportComponent.context().getCurrentAccountBook();
+        this.accountBook = supportComponent.accountBook().getWrappedOriginal();
         this.settings = supportComponent.settings();
 
         final char[] password = {'s', 't', 'u', 'b', ' ',
@@ -53,7 +53,7 @@ public final class TransactionSearchIteratorTest {
                 "mock username",
                 password,
                 "mock signature",
-                -1);
+                "mock account ID");
 
         StubContextFactory factory = new StubContextFactory();
         this.iterator = new TransactionSearchIterator(
@@ -122,7 +122,7 @@ public final class TransactionSearchIteratorTest {
         this.iterator.transactionsImported(
                 Collections.emptyList(),
                 null,
-                null,
+                this.accountBook.getRootAccount(),
                 null);
     }
 
@@ -133,7 +133,7 @@ public final class TransactionSearchIteratorTest {
         this.iterator.transactionsImported(
                 onlineTxns,
                 null,
-                null,
+                this.accountBook.getRootAccount(),
                 null);
     }
 
@@ -148,7 +148,7 @@ public final class TransactionSearchIteratorTest {
 
     @Test
     public void testRefreshAccounts() {
-        this.iterator.refreshAccounts(-1);
+        this.iterator.refreshAccounts(null);
     }
 
     @Test

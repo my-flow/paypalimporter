@@ -34,8 +34,8 @@ public final class AccountBookTest {
     }
 
     @Test
-    public void testGetAccountByNum() {
-        assertThat(this.accountBook.getAccountByNum(0), nullValue());
+    public void testGetAccountById() {
+        assertThat(this.accountBook.getAccountById("123-123"), nullValue());
     }
 
     @Test

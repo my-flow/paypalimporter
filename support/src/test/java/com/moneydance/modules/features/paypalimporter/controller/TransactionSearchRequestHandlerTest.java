@@ -36,6 +36,7 @@ public final class TransactionSearchRequestHandlerTest {
         this.handler = new TransactionSearchRequestHandler(
                 supportComponent.viewController(),
                 factory.getContext().getAccountBook(),
+                supportComponent.accountBook().getRootAccount().getUUID(),
                 supportComponent.settings().getDateFormat(),
                 supportComponent.localizable());
     }

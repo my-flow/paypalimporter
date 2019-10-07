@@ -11,14 +11,12 @@ import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.Main;
 import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.view.gui.AccountListModel;
 import com.moneydance.apps.md.view.gui.MainFrame;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
-import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
+import com.moneydance.modules.features.paypalimporter.model.AccountFilter;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
@@ -36,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -71,7 +70,8 @@ public final class ViewControllerImpl implements ViewController {
     private final FeatureModuleContext context;
     private final ServiceProvider serviceProvider;
     private final DateConverter dateConverter;
-    private final IAccountBookFactory accountBookFactory;
+    private final IAccountBook accountBook;
+    private final AccountFilter accountFilter;
     private final DateFormat dateFormat;
     @Nullable private WizardHandler wizard;
     @Nullable private InputData inputData;
@@ -80,6 +80,8 @@ public final class ViewControllerImpl implements ViewController {
             final FeatureModuleContext argContext,
             final ServiceProvider argServiceProvider,
             final DateConverter argDateConverter,
+            final IAccountBook argAccountBook,
+            final AccountFilter argAccountFilter,
             final Settings argSettings,
             final Preferences argPrefs,
             final Localizable argLocalizable) {
@@ -89,7 +91,8 @@ public final class ViewControllerImpl implements ViewController {
         this.context            = argContext;
         this.serviceProvider    = argServiceProvider;
         this.dateConverter      = argDateConverter;
-        this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
+        this.accountBook        = argAccountBook;
+        this.accountFilter      = argAccountFilter;
         this.dateFormat         = settings.getDateFormat();
     }
 
@@ -149,7 +152,7 @@ public final class ViewControllerImpl implements ViewController {
                     this.settings);
             this.wizard.addComponentListener(
                     new ComponentDelegateListener(
-                        this.accountBookFactory.createAccountBook(this.context).orElseThrow(AssertionError::new),
+                        this.accountBook,
                             this));
         } else if (this.wizard.isVisible()) {
             this.wizard.setVisible(true);
@@ -157,13 +160,13 @@ public final class ViewControllerImpl implements ViewController {
         }
         this.wizard.pack();
 
-        int accountId = this.prefs.getAccountId();
-        if (accountId < 0) {
+        String accountId = this.prefs.getAccountId();
+        if (this.accountBook.getAccountById(accountId) == null) {
             final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
             if (mainFrame != null) {
-                final Account selectedAccount = mainFrame.getSelectedAccount();
+                Account selectedAccount = mainFrame.getSelectedAccount();
                 if (selectedAccount != null) {
-                    accountId = selectedAccount.getAccountNum();
+                    accountId = selectedAccount.getUUID();
                 }
             }
         }
@@ -175,7 +178,7 @@ public final class ViewControllerImpl implements ViewController {
             accountId);
 
         this.wizard.setInputData(newUserData);
-        this.refreshAccounts(newUserData.getAccountId());
+        this.refreshAccounts(newUserData.getAccountId().orElse(null));
         this.wizard.setLocationRelativeTo(null);
         this.wizard.setVisible(true);
     }
@@ -194,7 +197,8 @@ public final class ViewControllerImpl implements ViewController {
     @Override
     public void proceed(final InputData argInputData) {
         LOG.config(argInputData.toString());
-        Validator<InputData> inputValidator = new InputDataValidator(this.localizable);
+        Validator<InputData> inputValidator = new InputDataValidator(
+                this.localizable);
         ValidationResult result = inputValidator.validate(argInputData);
         if (result.hasErrors()) {
             this.unlock(
@@ -204,12 +208,11 @@ public final class ViewControllerImpl implements ViewController {
         }
 
         this.inputData = argInputData;
-        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context)
-                .orElseThrow(AssertionError::new);
 
         final String username = argInputData.getUsername().orElseThrow(AssertionError::new);
         final char[] password = argInputData.getPassword(false).orElseThrow(AssertionError::new);
         final String signature = argInputData.getSignature().orElseThrow(AssertionError::new);
+        final String accountId = argInputData.getAccountId().orElse(null);
 
         this.serviceProvider.callCheckCurrencyService(
                 username,
@@ -217,8 +220,8 @@ public final class ViewControllerImpl implements ViewController {
                 signature,
                 new CheckCurrencyRequestHandler(
                     this,
-                    accountBook,
-                    argInputData.getAccountId(),
+                    this.accountBook,
+                    accountId,
                     this.localizable));
     }
 
@@ -243,9 +246,12 @@ public final class ViewControllerImpl implements ViewController {
             final CurrencyCodeType currencyCode,
             final List<CurrencyCodeType> currencyCodes) {
 
-        if (currencyCodes.size() > 1 && !this.prefs.hasUsedCombination(
-                this.inputData.getAccountId(),
-                this.inputData.getUsername().orElseThrow(AssertionError::new))) {
+        final Optional<String> accountId = this.inputData.getAccountId();
+        if (currencyCodes.size() > 1
+                && accountId.isPresent()
+                && !this.prefs.hasUsedCombination(
+                    accountId.get(),
+                    this.inputData.getUsername().orElseThrow(AssertionError::new))) {
 
             final String message =
                     this.localizable.getQuestionMessageMultipleCurrencies(
@@ -292,7 +298,7 @@ public final class ViewControllerImpl implements ViewController {
 
         TransactionSearchIterator iter = new TransactionSearchIterator(
                 this,
-                this.accountBookFactory.createAccountBook(this.context).orElseThrow(AssertionError::new),
+                this.accountBook,
                 this.serviceProvider,
                 this.inputData,
                 currencyType,
@@ -307,7 +313,7 @@ public final class ViewControllerImpl implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> onlineTxns,
             final Date currentStartDate,
-            @Nullable final Account account,
+            final Account account,
             @Nullable final String errorCode) {
 
         final InputData input = this.inputData;
@@ -328,7 +334,7 @@ public final class ViewControllerImpl implements ViewController {
             this.wizard.setBoundedRangeModel(model);
         }
         if (errorCode == null) {
-            final int accountId = account.getAccountNum();
+            final String accountId = account.getUUID();
             this.prefs.setUsername(accountId, input.getUsername().orElseThrow(AssertionError::new));
             this.prefs.setPassword(accountId, input.getPassword(true).orElseThrow(AssertionError::new));
             this.prefs.setSignature(accountId, input.getSignature().orElseThrow(AssertionError::new));
@@ -354,28 +360,14 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public void refreshAccounts(final int accountId) {
+    public void refreshAccounts(final String accountId) {
         LOG.config("Refreshing accounts");
-        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context)
-                .orElseThrow(AssertionError::new);
-        final AccountListModel accountModel = new AccountListModel(
-                accountBook.getRootAccount());
-        accountModel.setShowBankAccounts(true);
-        accountModel.setShowCreditCardAccounts(true);
-        accountModel.setShowInvestAccounts(true);
-        accountModel.setShowAssetAccounts(true);
-        accountModel.setShowLiabilityAccounts(true);
-        accountModel.setShowLoanAccounts(true);
-        final Account selectedAccount = accountBook.getAccountByNum(accountId);
-        if (selectedAccount != null
-                && accountModel.isAccountViewable(selectedAccount)) {
-            accountModel.setSelectedAccount(selectedAccount);
-        }
-        final WizardHandler wizardHandler = this.wizard;
-        assert wizardHandler != null : "@AssumeAssertion(nullness)";
-        wizardHandler.setAccounts(accountModel);
-        wizardHandler.invalidate();
-        wizardHandler.validate();
+        Account account = this.accountBook.getAccountById(accountId);
+        this.accountFilter.setSelectedAccount(account);
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
+        this.wizard.setAccounts(this.accountFilter.getComboBoxModel());
+        this.wizard.invalidate();
+        this.wizard.validate();
     }
 
     void setInputData(@Nonnull final InputData argInputData) {

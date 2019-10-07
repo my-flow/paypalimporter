@@ -30,8 +30,8 @@ final class AccountBookImpl implements IAccountBook {
     }
 
     @Override
-    @Nullable public Account getAccountByNum(final int accountId) {
-        return this.accountBook.getAccountByNum(accountId);
+    @Nullable public Account getAccountById(final String accountId) {
+        return this.accountBook.getAccountByUUID(accountId);
     }
 
     @Override

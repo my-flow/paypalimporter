@@ -33,7 +33,7 @@ public final class InputDataValidatorTest {
     @Test
     public void testValidateUsername() {
         final String username  = "mock username";
-        InputData inputData = new InputData(username, null, null, -1);
+        InputData inputData = new InputData(username, null, null, null);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.USERNAME), is(false));
@@ -43,7 +43,7 @@ public final class InputDataValidatorTest {
     public void testValidatePassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        InputData inputData = new InputData(null, password, null, -1);
+        InputData inputData = new InputData(null, password, null, null);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.PASSWORD), is(false));
@@ -52,7 +52,7 @@ public final class InputDataValidatorTest {
     @Test
     public void testValidateSignature() {
         final String signature  = "mock signature";
-        InputData inputData = new InputData(null, null, signature, -1);
+        InputData inputData = new InputData(null, null, signature, null);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.SIGNATURE), is(false));
@@ -61,7 +61,7 @@ public final class InputDataValidatorTest {
     @Test
     public void testValidateDateRange() {
         final DateRange dateRange = new DateRange(0,  1);
-        InputData inputData = new InputData(null, null, null, -1, dateRange);
+        InputData inputData = new InputData(null, null, null, null, dateRange);
         ValidationResult result = this.validator.validate(inputData);
         assertThat(result.hasErrors(), is(true));
         assertThat(result.keyMap().containsKey(InputDataValidator.MessageKey.DATERANGE), is(false));

@@ -42,17 +42,19 @@ public final class ViewControllerImplTest {
                 supportComponent.context(),
                 new ServiceProviderMock(),
                 supportComponent.dateConverter(),
+                supportComponent.accountBook(),
+                supportComponent.accountFilter(),
                 supportComponent.settings(),
                 supportComponent.preferences(),
                 supportComponent.localizable());
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        int accountNum = this.account.getAccountNum();
+        String accountId = this.account.getUUID();
 
         this.validInputData = new InputData("mock username", password, "mock signature",
-                accountNum, new DateRange());
+                accountId, new DateRange());
         this.invalidInputData = new InputData("", password, "",
-                accountNum, new DateRange());
+                accountId, new DateRange());
 
         viewControllerImpl.setInputData(validInputData);
         this.viewController = viewControllerImpl;
@@ -80,6 +82,8 @@ public final class ViewControllerImplTest {
                 supportComponent.context(),
                 new ServiceProviderMock(),
                 supportComponent.dateConverter(),
+                supportComponent.accountBook(),
+                supportComponent.accountFilter(),
                 supportComponent.settings(),
                 supportComponent.preferences(),
                 supportComponent.localizable());

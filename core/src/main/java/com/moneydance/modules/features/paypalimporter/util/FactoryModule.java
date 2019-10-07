@@ -6,7 +6,7 @@ package com.moneydance.modules.features.paypalimporter.util;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.Main;
 import com.moneydance.apps.md.controller.UserPreferences;
-import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -45,11 +45,12 @@ public final class FactoryModule {
     @Provides
     @Singleton
     Preferences providePreferences(
+            final IAccountBook accountBook,
             final FeatureModuleContext context,
             final Settings settings) {
         return new Preferences(
                 context,
-                AccountBookFactoryImpl.INSTANCE,
+                accountBook,
                 settings);
     }
 

@@ -5,6 +5,8 @@ package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
+import com.moneydance.modules.features.paypalimporter.model.AccountFilter;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
@@ -27,6 +29,8 @@ public final class FactoryModule {
             final FeatureModuleContext context,
             final ServiceProvider serviceProvider,
             final DateConverter dateConverter,
+            final IAccountBook accountBook,
+            final AccountFilter accountFilter,
             final Settings settings,
             final Preferences prefs,
             final Localizable localizable) {
@@ -34,6 +38,8 @@ public final class FactoryModule {
             context,
             serviceProvider,
             dateConverter,
+            accountBook,
+            accountFilter,
             settings,
             prefs,
             localizable);

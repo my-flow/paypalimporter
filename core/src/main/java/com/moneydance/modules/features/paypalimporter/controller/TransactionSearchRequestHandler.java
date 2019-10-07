@@ -3,6 +3,7 @@
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
@@ -40,17 +41,20 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
     private static final BigDecimal MULTIPLIER = BigDecimal.valueOf(100);
 
+    private final Account account;
     private final OnlineTxnList txnList;
     private final DateFormat dateFormat;
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
             final IAccountBook accountBook,
+            final String argAccountId,
             final DateFormat argDateFormat,
             final Localizable argLocalizable) {
 
         super(argViewController,
                 argLocalizable);
+        this.account = accountBook.getAccountById(argAccountId);
         this.txnList = accountBook.getRootAccount().getDownloadedTxns();
         this.dateFormat = argDateFormat;
     }
@@ -86,7 +90,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         this.getViewController().transactionsImported(
                 resultList,
                 new Date(startDateLong),
-                null,
+                this.account,
                 serviceResult.getErrorCode().orElse(null));
     }
 
