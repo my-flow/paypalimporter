@@ -17,7 +17,7 @@ public interface IAccountBook {
 
     OnlineInfo getOnlineInfo();
 
-    Account getAccountByNum(int accountId);
+    Account getAccountById(String accountId);
 
     AccountBook getWrappedOriginal();
 

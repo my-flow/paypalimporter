@@ -15,6 +15,7 @@ and this project does *not* adhere to Semantic Versioning.
 - Replace [FindBugs](http://findbugs.sourceforge.net) by [SpotBugs](https://spotbugs.github.io).
 
 ### Fixed
+- Crash in Moneydance 2019 when importing into new account.
 - Remember designated account ([#13]).
 
 

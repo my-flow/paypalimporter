@@ -62,11 +62,11 @@ public final class WizardHandler extends WizardController {
             this.observer.update(null, ExecutedAction.SHOW_HELP);
         } else if (actionEvent.getSource().equals(this.btnProceed)) {
 
-            int accountId = -1;
+            String accountId = null;
             if (this.rdBtnExistingAcct.isSelected()) {
                 final Account account = (Account)
                         this.comboBoxAccts.getSelectedItem();
-                accountId = account.getAccountNum();
+                accountId = account.getUUID();
             }
 
             this.inputData = new InputData(

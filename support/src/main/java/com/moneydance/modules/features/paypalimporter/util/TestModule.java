@@ -4,8 +4,7 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.apps.md.controller.StubAccountBookFactory;
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import javax.inject.Singleton;
 
@@ -35,14 +34,12 @@ public final class TestModule {
     @Provides
     @Singleton
     Preferences providePreferences(
+            final IAccountBook accountBook,
             final FeatureModuleContext context,
             final Settings settings) {
-
-        final StubContextFactory factory = new StubContextFactory();
         return new Preferences(
                 context,
-                new StubAccountBookFactory(
-                        factory.getContext().getAccountBook()),
+                accountBook,
                 settings);
     }
 }

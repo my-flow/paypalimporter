@@ -9,7 +9,6 @@ import com.moneydance.apps.md.controller.UserPreferences;
 import com.moneydance.modules.features.paypalimporter.integration.OnlineServiceFactory;
 import com.moneydance.modules.features.paypalimporter.integration.PayPalOnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.util.Locale;
 
@@ -28,33 +27,23 @@ public final class Preferences {
 
     private static final String KEY_FIRST_RUN = "paypalimporter.first_run";
 
-    private final IAccountBookFactory accountBookFactory;
+    private final IAccountBook accountBook;
     private final UserPreferences userPreferences;
-    private final FeatureModuleContext context;
     private final OnlineServiceFactory onlineServiceFactory;
-    @Nullable private IAccountBook accountBook;
     @Nullable private PayPalOnlineService profile;
 
     Preferences(
             final FeatureModuleContext argContext,
-            final IAccountBookFactory argAccountBookFactory,
+            final IAccountBook argAccountBook,
             final Settings argSettings) {
         this.userPreferences = ((Main) argContext).getPreferences();
-        this.accountBookFactory = argAccountBookFactory;
-        this.context = argContext;
+        this.accountBook = argAccountBook;
         this.onlineServiceFactory = new OnlineServiceFactory(argSettings);
-    }
-
-    private IAccountBook getAccountBook() {
-        if (this.accountBook == null) {
-            this.accountBook = this.accountBookFactory.createAccountBook(context).orElseThrow(AssertionError::new);
-        }
-        return this.accountBook;
     }
 
     private PayPalOnlineService getPayPalOnlineService() {
         if (this.profile == null) {
-            this.profile = this.onlineServiceFactory.createService(this.getAccountBook());
+            this.profile = this.onlineServiceFactory.createService(this.accountBook);
         }
         return this.profile;
     }
@@ -62,7 +51,7 @@ public final class Preferences {
     @SuppressWarnings("nullness")
     public void setAllWritablePreferencesToNull() {
         this.userPreferences.setSetting(KEY_FIRST_RUN, (String) null);
-        this.onlineServiceFactory.removeService(this.getAccountBook());
+        this.onlineServiceFactory.removeService(this.accountBook);
     }
 
     public void setFirstRun(final boolean firstRun) {
@@ -110,47 +99,47 @@ public final class Preferences {
                 UserPreferences.NET_PROXY_PASS);
     }
 
-    public void assignBankingFI(final int accountId) {
+    public void assignBankingFI(final String accountId) {
         this.getPayPalOnlineService().assignToAccount(
-                this.getAccountBook(), accountId);
+                this.accountBook, accountId);
     }
 
-    public void setUsername(final int accountId, @Nullable final String username) {
+    public void setUsername(final String accountId, @Nullable final String username) {
         this.getPayPalOnlineService().setUsername(accountId, username);
     }
 
-    public String getUsername(final int accountId) {
+    public String getUsername(final String accountId) {
         return this.getPayPalOnlineService().getUsername(accountId);
     }
 
     @SuppressWarnings("nullness")
-    public void setPassword(final int accountId, @Nonnull final char[] password) {
+    public void setPassword(final String accountId, @Nonnull final char[] password) {
         this.getPayPalOnlineService().setPassword(accountId, password);
     }
 
     @SuppressWarnings("nullness")
-    public char[] getPassword(final int accountId) {
+    public char[] getPassword(final String accountId) {
         return this.getPayPalOnlineService().getPassword(accountId);
     }
 
-    public void setSignature(final int accountId, @Nullable final String signature) {
+    public void setSignature(final String accountId, @Nullable final String signature) {
         this.getPayPalOnlineService().setSignature(accountId, signature);
     }
 
-    public String getSignature(final int accountId) {
+    public String getSignature(final String accountId) {
         return this.getPayPalOnlineService().getSignature(accountId);
     }
 
-    public void setAccountId(final int accountId) {
+    public void setAccountId(final String accountId) {
         this.getPayPalOnlineService().setAccountId(accountId);
     }
 
-    public int getAccountId() {
+    public String getAccountId() {
         return this.getPayPalOnlineService().getAccountId();
     }
 
     public boolean hasUsedCombination(
-            final int accountId,
+            final String accountId,
             final String username) {
 
         return username != null && username.equals(

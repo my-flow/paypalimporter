@@ -13,6 +13,8 @@ import com.moneydance.modules.features.paypalimporter.service.MockServiceResultF
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ public final class CheckCurrencyRequestHandlerTest {
         this.handler = new CheckCurrencyRequestHandler(
                 this.viewController,
                 new StubContextFactory().getContext().getAccountBook(),
-                -1,
+                UUID.randomUUID().toString(),
                 this.localizable);
     }
 
@@ -80,7 +82,7 @@ public final class CheckCurrencyRequestHandlerTest {
         this.handler = new CheckCurrencyRequestHandler(
                 this.viewController,
                 new StubAccountBook(AccountBook.fakeAccountBook()),
-                -1,
+                UUID.randomUUID().toString(),
                 this.localizable);
 
         ServiceResult<CurrencyCodeType> result =

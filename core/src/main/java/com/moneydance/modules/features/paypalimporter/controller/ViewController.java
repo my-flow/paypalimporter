@@ -93,5 +93,5 @@ public interface ViewController extends Observer {
      *
      * @param selectedAccountId Preselected account in the combobox.
      */
-    void refreshAccounts(int selectedAccountId);
+    void refreshAccounts(String selectedAccountId);
 }

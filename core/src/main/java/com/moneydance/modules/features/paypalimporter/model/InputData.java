@@ -27,12 +27,12 @@ public final class InputData {
     @Nullable private final String username;
     @SuppressWarnings("nullness") private final char[] password;
     @Nullable private final String signature;
-    private final int accountId;
+    private final String accountId;
     private final int startDateInt;
     private final int endDateInt;
 
     public InputData() {
-        this(null,  null,  null,  -1);
+        this(null,  null,  null,  null);
     }
 
     @SuppressWarnings("nullness")
@@ -40,7 +40,7 @@ public final class InputData {
             @Nullable final String argUsername,
             @Nullable final char[] argPassword,
             @Nullable final String argSignature,
-            final int argAccountId) {
+            final String argAccountId) {
 
         this(argUsername, argPassword, argSignature, argAccountId, null);
     }
@@ -50,7 +50,7 @@ public final class InputData {
             @Nullable final String argUsername,
             @Nullable final char[] argPassword,
             @Nullable final String argSignature,
-            final int argAccountId,
+            final String argAccountId,
             @Nullable final DateRange argDateRange) {
 
         this.username = argUsername;
@@ -91,8 +91,8 @@ public final class InputData {
         return Optional.ofNullable(this.signature);
     }
 
-    public int getAccountId() {
-        return this.accountId;
+    public Optional<String> getAccountId() {
+        return Optional.ofNullable(this.accountId);
     }
 
     public Date getStartDate() {

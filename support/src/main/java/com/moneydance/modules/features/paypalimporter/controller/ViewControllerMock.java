@@ -74,7 +74,7 @@ final class ViewControllerMock implements ViewController {
     }
 
     @Override
-    public void refreshAccounts(final int accountId) {
+    public void refreshAccounts(final String accountId) {
         // ignore
     }
 }

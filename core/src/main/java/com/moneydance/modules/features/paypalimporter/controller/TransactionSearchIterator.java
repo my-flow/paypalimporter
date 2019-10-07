@@ -93,6 +93,7 @@ final class TransactionSearchIterator implements ViewController {
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
                 this.accountBook,
+                argInputData.getAccountId().orElseThrow(AssertionError::new),
                 argDateFormat,
                 argLocalizable);
         this.resultSet = new LinkedHashSet<>();
@@ -111,7 +112,7 @@ final class TransactionSearchIterator implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> argOnlineTxns,
             final Date argStartDate,
-            @Nullable final Account argAccount,
+            final Account argAccount,
             @Nullable final String errorCode) {
 
         this.resultSet.addAll(argOnlineTxns); // aggregate all results
@@ -133,7 +134,7 @@ final class TransactionSearchIterator implements ViewController {
 
             account = findOrCreateAccount(
                     this.accountBook,
-                    this.inputData.getAccountId(),
+                    this.inputData.getAccountId().orElseThrow(AssertionError::new),
                     this.currencyType);
             final OnlineTxnList txnList = account.getDownloadedTxns();
 
@@ -184,10 +185,10 @@ final class TransactionSearchIterator implements ViewController {
 
     private Account findOrCreateAccount(
             final IAccountBook argAccountBook,
-            final int argAccountId,
+            final String argAccountId,
             final CurrencyType argCurrencyType) {
 
-        Account account = argAccountBook.getAccountByNum(argAccountId);
+        Account account = argAccountBook.getAccountById(argAccountId);
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
@@ -238,7 +239,7 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void refreshAccounts(final int accountId) {
+    public void refreshAccounts(final String accountId) {
         this.viewController.refreshAccounts(accountId);
     }
 }

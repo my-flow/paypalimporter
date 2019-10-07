@@ -23,17 +23,17 @@ final class CheckCurrencyRequestHandler
 extends AbstractRequestHandler<CurrencyCodeType> {
 
     private final IAccountBook accountBook;
-    private final int accountNum;
+    private final String accountId;
 
     CheckCurrencyRequestHandler(
             final ViewController argViewController,
             final IAccountBook argAccountBook,
-            final int argAccountNum,
+            final String argAccountId,
             final Localizable argLocalizable) {
         super(argViewController,
                 argLocalizable);
         this.accountBook = argAccountBook;
-        this.accountNum = argAccountNum;
+        this.accountId = argAccountId;
     }
 
 
@@ -42,7 +42,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
             final ServiceResult<CurrencyCodeType> serviceResult) {
 
         final List<CurrencyCodeType> currencyCodes = serviceResult.getResults().orElseThrow(AssertionError::new);
-        Account useAccount = this.accountBook.getAccountByNum(this.accountNum);
+        Account useAccount = this.accountBook.getAccountById(this.accountId);
 
         // 1. determine the currency of the Moneydance account
         CurrencyType currencyType;

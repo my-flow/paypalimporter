@@ -4,13 +4,17 @@
 package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +23,11 @@ import org.junit.Test;
  * @author Florian J. Breunig
  */
 public final class PayPalOnlineServiceTest {
+
+    private static final String USER_NAME = "mock username";
+    private static final String SIGNATURE = "mock signature";
+    private static final char[] PASSWORD = {'s', 't', 'u', 'b', ' ', 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
+    private static final String ACCOUNT_ID = UUID.randomUUID().toString();
 
     private PayPalOnlineService service;
     private IAccountBook accountBook;
@@ -35,61 +44,63 @@ public final class PayPalOnlineServiceTest {
     public void testAssignToAccount() {
         this.service.assignToAccount(
                 this.accountBook,
-                this.accountBook.getRootAccount().getSubAccount(0).getAccountNum());
+                this.accountBook.getRootAccount().getSubAccount(0).getUUID());
         // assign twice
         this.service.assignToAccount(
                 this.accountBook,
-                this.accountBook.getRootAccount().getSubAccount(0).getAccountNum());
+                this.accountBook.getRootAccount().getSubAccount(0).getUUID());
     }
 
     @Test
     public void testSetUsername() {
-        this.service.setUsername(0, "mock username");
+        this.service.setUsername(ACCOUNT_ID, USER_NAME);
     }
 
     @Test
     public void testGetUsername() {
-        final String username = "mock username";
-        this.service.setUsername(0, username);
-        assertThat(this.service.getUsername(0), is(username));
+        this.service.setUsername(ACCOUNT_ID, USER_NAME);
+        assertThat(this.service.getUsername(ACCOUNT_ID), is(USER_NAME));
     }
 
     @Test
     public void testSetPassword() {
-        final char[] password = {'s', 't', 'u', 'b', ' ',
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(0, password);
+        this.service.setPassword(ACCOUNT_ID, PASSWORD);
     }
 
     @Test
     public void testGetPassword() {
-        final char[] password = {'s', 't', 'u', 'b', ' ',
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.service.setPassword(0, password);
-        assertThat(String.valueOf(this.service.getPassword(0)), is(String.valueOf(password)));
+        this.service.setPassword(ACCOUNT_ID, PASSWORD);
+        assertThat(String.valueOf(this.service.getPassword(ACCOUNT_ID)), is(String.valueOf(PASSWORD)));
     }
 
     @Test
     public void testSetSignature() {
-        this.service.setSignature(0, "mock signature");
+        this.service.setSignature(ACCOUNT_ID, SIGNATURE);
     }
 
     @Test
     public void testGetSignature() {
-        final String signature = "mock signature";
-        this.service.setSignature(0, signature);
-        assertThat(this.service.getSignature(0), is(signature));
+        this.service.setSignature(ACCOUNT_ID, SIGNATURE);
+        assertThat(this.service.getSignature(ACCOUNT_ID), is(SIGNATURE));
     }
 
     @Test
     public void testSetAccountId() {
-        this.service.setAccountId(1);
+        this.service.setAccountId(UUID.randomUUID().toString());
     }
 
     @Test
     public void testGetAccountId() {
-        final int accountId = 1;
-        this.service.setAccountId(accountId);
-        assertThat(this.service.getAccountId(), is(accountId));
+        this.service.setAccountId(ACCOUNT_ID);
+        assertThat(this.service.getAccountId(), is(ACCOUNT_ID));
+    }
+
+    @Test
+    public void testBuildRealm() {
+        assertThat(PayPalOnlineService.buildRealm(null), is(OnlineService.DEFAULT_REQ_REALM));
+        assertThat(PayPalOnlineService.buildRealm("-1"), is(OnlineService.DEFAULT_REQ_REALM));
+        assertThat(PayPalOnlineService.buildRealm(""), not(OnlineService.DEFAULT_REQ_REALM));
+        assertThat(PayPalOnlineService.buildRealm("123-123"), not(OnlineService.DEFAULT_REQ_REALM));
+        assertThat(PayPalOnlineService.buildRealm("1"), not(OnlineService.DEFAULT_REQ_REALM));
     }
 }
