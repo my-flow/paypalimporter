@@ -1,12 +1,14 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 
 import java.util.Calendar;
 
@@ -14,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * @author Florian J. Breunig
@@ -25,8 +26,10 @@ public final class ServiceProviderTest {
 
     @Before
     public void setUp() {
-        new StubContextFactory();
-        this.serviceProvider = new ServiceProvider();
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+
+        this.serviceProvider = supportComponent.serviceProvider();
     }
 
     @Test
@@ -37,13 +40,7 @@ public final class ServiceProviderTest {
                 "mock username",
                 password,
                 "mock signature",
-                new RequestHandler<CurrencyCodeType>() {
-                    @Override
-                    public void serviceCallFinished(
-                            final ServiceResult<CurrencyCodeType> serviceResult) {
-                        assertThat(serviceResult, notNullValue());
-                    }
-                });
+                serviceResult -> assertThat(serviceResult, notNullValue()));
     }
 
     @Test
@@ -63,18 +60,11 @@ public final class ServiceProviderTest {
                 yesterday.getTime(),
                 tomorrow.getTime(),
                 CurrencyCodeType.USD,
-                new RequestHandler<PaymentTransactionSearchResultType>() {
-                    @Override
-                    public void serviceCallFinished(
-                            final ServiceResult<PaymentTransactionSearchResultType> serviceResult) {
-                        assertThat(serviceResult, notNullValue());
-                    }
-                });
+                serviceResult -> assertThat(serviceResult, notNullValue()));
     }
 
     @Test
     public void testShutdownNow() {
         this.serviceProvider.shutdownNow();
     }
-
 }

@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.apps.md.controller;
 
@@ -21,7 +21,7 @@ import java.util.Map;
 public final class StubAccountBook implements IAccountBook {
 
     private final AccountBook accountBook;
-    private final Map<Integer, Account> accountsByNum;
+    private final Map<String, Account> accountsById;
     @Nullable private final OnlineInfo onlineInfo;
 
     public StubAccountBook(final AccountBook argAccountBook) {
@@ -31,12 +31,16 @@ public final class StubAccountBook implements IAccountBook {
     public StubAccountBook(final AccountBook argAccountBook,
             @Nullable final OnlineInfo argOnlineInfo) {
         this.accountBook = argAccountBook;
-        this.accountsByNum = new Hashtable<Integer, Account>();
+        this.accountsById = new Hashtable<>();
         this.onlineInfo = argOnlineInfo;
     }
 
     public void addAccount(final Account account) {
-        this.accountsByNum.put(account.getAccountNum(), account);
+        this.accountsById.put(account.getUUID(), account);
+    }
+
+    public void removeAccount(final Account account) {
+        this.accountsById.remove(account.getUUID());
     }
 
     @Override
@@ -49,8 +53,8 @@ public final class StubAccountBook implements IAccountBook {
 
     @Override
     @SuppressWarnings("nullness")
-    public Account getAccountByNum(final int accountId) {
-        return this.accountsByNum.get(accountId);
+    public Account getAccountById(final String accountId) {
+        return this.accountsById.get(accountId);
     }
 
     @Override

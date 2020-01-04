@@ -7,7 +7,7 @@ the extension please visit the
 [project page](http://my-flow.github.io/paypalimporter/).
 
 ## Build Prerequisites
-Java Development Kit, version 7
+Java Development Kit, version 8
 
 ## Building the extension
 1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the
@@ -29,9 +29,11 @@ The project consists of 2 gradle sub-projects:
 mock-ups) and the test cases. It depends from the core project.
 
 ## Documentation
+* [Changelog](CHANGELOG.md)
 * [PayPal Importer API](http://my-flow.github.io/paypalimporter/docs/api/)
-* [JMockit Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
+* [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
+* [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
 
 ## License
-Copyright (C) 2013-2018 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2019 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.

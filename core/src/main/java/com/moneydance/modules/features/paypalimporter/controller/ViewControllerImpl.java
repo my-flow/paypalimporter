@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -11,31 +11,35 @@ import com.jgoodies.validation.Validator;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
 import com.moneydance.apps.md.controller.Main;
 import com.moneydance.apps.md.controller.Util;
-import com.moneydance.apps.md.view.gui.AccountListModel;
 import com.moneydance.apps.md.view.gui.MainFrame;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.apps.md.view.gui.OnlineManager;
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
-import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
+import com.moneydance.modules.features.paypalimporter.model.AccountFilter;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
 import com.moneydance.modules.features.paypalimporter.presentation.WizardHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Frame;
 import java.awt.Image;
+import java.net.MalformedURLException;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.BoundedRangeModel;
 import javax.swing.Icon;
@@ -60,20 +64,36 @@ public final class ViewControllerImpl implements ViewController {
     private static final Logger LOG = Logger.getLogger(
             ViewControllerImpl.class.getName());
 
+    private final Settings settings;
     private final Preferences prefs;
     private final Localizable localizable;
     private final FeatureModuleContext context;
     private final ServiceProvider serviceProvider;
-    private final IAccountBookFactory accountBookFactory;
+    private final DateConverter dateConverter;
+    private final IAccountBook accountBook;
+    private final AccountFilter accountFilter;
+    private final DateFormat dateFormat;
     @Nullable private WizardHandler wizard;
     @Nullable private InputData inputData;
 
-    public ViewControllerImpl(final FeatureModuleContext argContext) {
-        this.prefs              = Helper.INSTANCE.getPreferences();
-        this.localizable        = Helper.INSTANCE.getLocalizable();
-        this.accountBookFactory = AccountBookFactoryImpl.INSTANCE;
+    public ViewControllerImpl(
+            final FeatureModuleContext argContext,
+            final ServiceProvider argServiceProvider,
+            final DateConverter argDateConverter,
+            final IAccountBook argAccountBook,
+            final AccountFilter argAccountFilter,
+            final Settings argSettings,
+            final Preferences argPrefs,
+            final Localizable argLocalizable) {
+        this.settings           = argSettings;
+        this.prefs              = argPrefs;
+        this.localizable        = argLocalizable;
         this.context            = argContext;
-        this.serviceProvider    = new ServiceProvider();
+        this.serviceProvider    = argServiceProvider;
+        this.dateConverter      = argDateConverter;
+        this.accountBook        = argAccountBook;
+        this.accountFilter      = argAccountFilter;
+        this.dateFormat         = settings.getDateFormat();
     }
 
     @Override
@@ -99,7 +119,9 @@ public final class ViewControllerImpl implements ViewController {
                 this.cancel();
                 break;
             case PROCEED:
-                this.proceed();
+                assert this.wizard != null : "@AssumeAssertion(nullness)";
+                this.wizard.refresh(false, Boolean.TRUE);
+                this.proceed(this.wizard.getInputData());
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -122,20 +144,31 @@ public final class ViewControllerImpl implements ViewController {
 
         if (this.wizard == null) {
             final Frame owner = mdGUI.getTopLevelFrame();
-            this.wizard = new WizardHandler(owner, mdGUI, this);
-            this.wizard.addComponentListener(new ComponentDelegateListener(
-                    this.accountBookFactory.createAccountBook(
-                            this.context), this));
+            this.wizard = new WizardHandler(
+                    owner,
+                    mdGUI,
+                    this,
+                    this.localizable,
+                    this.settings);
+            this.wizard.addComponentListener(
+                    new ComponentDelegateListener(
+                        this.accountBook,
+                            this));
         } else if (this.wizard.isVisible()) {
             this.wizard.setVisible(true);
             return;
         }
         this.wizard.pack();
 
-        int accountId = -1;
-        final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
-        if (mainFrame != null && mainFrame.getSelectedAccount() != null) {
-            accountId = mainFrame.getSelectedAccount().getAccountNum();
+        String accountId = this.prefs.getAccountId();
+        if (this.accountBook.getAccountById(accountId) == null) {
+            final MainFrame mainFrame = (MainFrame) mdGUI.getTopLevelFrame();
+            if (mainFrame != null) {
+                Account selectedAccount = mainFrame.getSelectedAccount();
+                if (selectedAccount != null) {
+                    accountId = selectedAccount.getUUID();
+                }
+            }
         }
 
         final InputData newUserData = new InputData(
@@ -145,7 +178,7 @@ public final class ViewControllerImpl implements ViewController {
             accountId);
 
         this.wizard.setInputData(newUserData);
-        this.refreshAccounts(newUserData.getAccountId());
+        this.refreshAccounts(newUserData.getAccountId().orElse(null));
         this.wizard.setLocationRelativeTo(null);
         this.wizard.setVisible(true);
     }
@@ -155,22 +188,18 @@ public final class ViewControllerImpl implements ViewController {
         this.serviceProvider.shutdownNow();
         assert this.wizard != null : "@AssumeAssertion(nullness)";
         if (this.wizard.isLoading()) {
-            this.unlock(null, null);
+            this.unlock();
         } else {
-            assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
         }
     }
 
     @Override
-    public void proceed() {
-        assert this.wizard != null : "@AssumeAssertion(nullness)";
-        this.wizard.refresh(false, Boolean.TRUE);
-
-        final InputData newInputData = this.wizard.getInputData();
-        LOG.config(newInputData.toString());
-        Validator<InputData> inputValidator = new InputDataValidator();
-        ValidationResult result = inputValidator.validate(newInputData);
+    public void proceed(final InputData argInputData) {
+        LOG.config(argInputData.toString());
+        Validator<InputData> inputValidator = new InputDataValidator(
+                this.localizable);
+        ValidationResult result = inputValidator.validate(argInputData);
         if (result.hasErrors()) {
             this.unlock(
                     result.getErrors().get(0).formattedText(),
@@ -178,16 +207,12 @@ public final class ViewControllerImpl implements ViewController {
             return;
         }
 
-        this.inputData = newInputData;
-        final IAccountBook accountBook = this.accountBookFactory.createAccountBook(this.context);
-        assert accountBook != null : "@AssumeAssertion(nullness)";
+        this.inputData = argInputData;
 
-        final String username = newInputData.getUsername();
-        final char[] password = newInputData.getPassword(false);
-        final String signature = newInputData.getSignature();
-        assert username != null : "@AssumeAssertion(nullness)";
-        assert password != null : "@AssumeAssertion(nullness)";
-        assert signature != null : "@AssumeAssertion(nullness)";
+        final String username = argInputData.getUsername().orElseThrow(AssertionError::new);
+        final char[] password = argInputData.getPassword(false).orElseThrow(AssertionError::new);
+        final String signature = argInputData.getSignature().orElseThrow(AssertionError::new);
+        final String accountId = argInputData.getAccountId().orElse(null);
 
         this.serviceProvider.callCheckCurrencyService(
                 username,
@@ -195,12 +220,20 @@ public final class ViewControllerImpl implements ViewController {
                 signature,
                 new CheckCurrencyRequestHandler(
                     this,
-                    accountBook,
-                    newInputData.getAccountId()));
+                    this.accountBook,
+                    accountId,
+                    this.localizable));
     }
 
     @Override
-    public void unlock(@Nullable final String text, @Nullable final Object key) {
+    public void unlock() {
+        this.inputData = null;
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
+        this.wizard.refresh(false, Boolean.FALSE);
+    }
+
+    @Override
+    public void unlock(final String text, final Object key) {
         this.inputData = null;
         assert this.wizard != null : "@AssumeAssertion(nullness)";
         this.wizard.updateValidation(text, key);
@@ -213,16 +246,23 @@ public final class ViewControllerImpl implements ViewController {
             final CurrencyCodeType currencyCode,
             final List<CurrencyCodeType> currencyCodes) {
 
-        if (currencyCodes.size() > 1 && !this.prefs.hasUsedCombination(
-                this.inputData.getAccountId(),
-                this.inputData.getUsername())) {
+        final Optional<String> accountId = this.inputData.getAccountId();
+        if (currencyCodes.size() > 1
+                && accountId.isPresent()
+                && !this.prefs.hasUsedCombination(
+                    accountId.get(),
+                    this.inputData.getUsername().orElseThrow(AssertionError::new))) {
 
             final String message =
                     this.localizable.getQuestionMessageMultipleCurrencies(
                             currencyCode.name(),
-                            currencyCodes.toArray());
-            final Object confirmationLabel = new JLabel(message);
-            final Image image = Helper.INSTANCE.getSettings().getIconImage();
+                            currencyCodes
+                                    .stream()
+                                    .map(CurrencyCodeType::getValue)
+                                    .collect(Collectors.toList()));
+            final JLabel confirmationLabel = new JLabel(message);
+            confirmationLabel.setLabelFor(null);
+            final Image image = this.settings.getIconImage();
             final Icon icon = new ImageIcon(image);
             final Object[] options = {
                     this.localizable.getLabelContinueButton(),
@@ -240,11 +280,11 @@ public final class ViewControllerImpl implements ViewController {
                     options[0]);
 
             if (choice == JOptionPane.OK_OPTION) {
-                LOG.info(String.format("Continue"));
+                LOG.info("Continue");
                 this.importTransactions(currencyType, currencyCode);
             } else {
-                LOG.info(String.format("Cancel"));
-                this.unlock(null, null);
+                LOG.info("Cancel");
+                this.unlock();
             }
         } else {
             this.importTransactions(currencyType, currencyCode);
@@ -258,11 +298,14 @@ public final class ViewControllerImpl implements ViewController {
 
         TransactionSearchIterator iter = new TransactionSearchIterator(
                 this,
-                this.accountBookFactory.createAccountBook(this.context),
+                this.accountBook,
                 this.serviceProvider,
                 this.inputData,
                 currencyType,
-                currencyCode);
+                currencyCode,
+                this.settings.getErrorCodeSearchWarning(),
+                this.dateFormat,
+                this.localizable);
         iter.callTransactionSearchService();
     }
 
@@ -270,7 +313,7 @@ public final class ViewControllerImpl implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> onlineTxns,
             final Date currentStartDate,
-            @Nullable final Account account,
+            final Account account,
             @Nullable final String errorCode) {
 
         final InputData input = this.inputData;
@@ -283,7 +326,7 @@ public final class ViewControllerImpl implements ViewController {
                     Util.convertIntDateToLong(
                             onlineTxns.get(0).getDatePostedInt()),
                             Calendar.DATE);
-            final BoundedRangeModel model = DateConverter.getBoundedRangeModel(
+            final BoundedRangeModel model = this.dateConverter.getBoundedRangeModel(
                     input.getStartDate(),
                     endDate,
                     currentStartDate);
@@ -291,13 +334,14 @@ public final class ViewControllerImpl implements ViewController {
             this.wizard.setBoundedRangeModel(model);
         }
         if (errorCode == null) {
-            final int accountId = account.getAccountNum();
-            this.prefs.setUsername(accountId, input.getUsername());
-            this.prefs.setPassword(accountId, input.getPassword(true));
-            this.prefs.setSignature(accountId, input.getSignature());
+            final String accountId = account.getUUID();
+            this.prefs.setUsername(accountId, input.getUsername().orElseThrow(AssertionError::new));
+            this.prefs.setPassword(accountId, input.getPassword(true).orElseThrow(AssertionError::new));
+            this.prefs.setSignature(accountId, input.getSignature().orElseThrow(AssertionError::new));
+            this.prefs.setAccountId(accountId);
             this.prefs.assignBankingFI(accountId);
 
-            this.unlock(null, null);
+            this.unlock();
             assert this.wizard != null : "@AssumeAssertion(nullness)";
             this.wizard.setVisible(false);
 
@@ -310,38 +354,23 @@ public final class ViewControllerImpl implements ViewController {
     }
 
     @Override
-    public void showHelp() {
+    public void showHelp() throws MalformedURLException {
         this.context.showURL(this.localizable.getUrlHelp().toExternalForm());
         this.cancel();
     }
 
     @Override
-    public void refreshAccounts(final int accountId) {
+    public void refreshAccounts(final String accountId) {
         LOG.config("Refreshing accounts");
-        final IAccountBook accountBook =
-                this.accountBookFactory.createAccountBook(this.context);
-        assert accountBook != null : "@AssumeAssertion(nullness)";
-        final AccountListModel accountModel = new AccountListModel(
-                accountBook.getRootAccount());
-        accountModel.setShowBankAccounts(true);
-        accountModel.setShowCreditCardAccounts(true);
-        accountModel.setShowInvestAccounts(true);
-        accountModel.setShowAssetAccounts(true);
-        accountModel.setShowLiabilityAccounts(true);
-        accountModel.setShowLoanAccounts(true);
-        final Account selectedAccount = accountBook.getAccountByNum(accountId);
-        if (selectedAccount != null
-                && accountModel.isAccountViewable(selectedAccount)) {
-            accountModel.setSelectedAccount(selectedAccount);
-        }
-        final WizardHandler wizardHandler = this.wizard;
-        assert wizardHandler != null : "@AssumeAssertion(nullness)";
-        wizardHandler.setAccounts(accountModel);
-        wizardHandler.invalidate();
-        wizardHandler.validate();
+        Account account = this.accountBook.getAccountById(accountId);
+        this.accountFilter.setSelectedAccount(account);
+        assert this.wizard != null : "@AssumeAssertion(nullness)";
+        this.wizard.setAccounts(this.accountFilter.getComboBoxModel());
+        this.wizard.invalidate();
+        this.wizard.validate();
     }
 
-    void setInputData(final InputData argInputData) {
+    void setInputData(@Nonnull final InputData argInputData) {
         this.inputData = argInputData;
     }
 

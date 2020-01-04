@@ -1,9 +1,12 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.apps.md.controller;
 
+import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
+
+import java.util.Optional;
 
 /**
  * @author Florian J. Breunig
@@ -17,9 +20,9 @@ public final class StubAccountBookFactory implements IAccountBookFactory {
     }
 
     @Override
-    public StubAccountBook createAccountBook(
+    public Optional<IAccountBook> createAccountBook(
             final FeatureModuleContext context) {
-        return this.accountBook;
+        return Optional.ofNullable(this.accountBook);
     }
 
 }

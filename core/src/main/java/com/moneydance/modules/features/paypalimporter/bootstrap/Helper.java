@@ -1,11 +1,13 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
-package com.moneydance.modules.features.paypalimporter.util;
+package com.moneydance.modules.features.paypalimporter.bootstrap;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
-import com.moneydance.modules.features.paypalimporter.model.AccountBookFactoryImpl;
-import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
+import com.moneydance.modules.features.paypalimporter.CoreComponent;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.moneydance.modules.features.paypalimporter.util.Preferences;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -16,7 +18,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.LogManager;
 
-import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -45,38 +46,29 @@ public enum Helper {
     private static final String DISPATCH_WINDOW_CLOSING_ACTION_MAP_KEY =
             "com.spodding.tackline.dispatch:WINDOW_CLOSING";
 
-    private final transient HelperObservable observable;
-    private final transient Settings settings;
-    @Nullable private transient Preferences prefs;
-    @Nullable private transient Localizable localizable;
+    private final HelperObservable observable;
+    private CoreComponent coreComponent;
 
     Helper() {
         this.observable = new HelperObservable();
-        this.settings   = new Settings();
-        this.prefs      = new Preferences(AccountBookFactoryImpl.INSTANCE);
     }
 
-    public Settings getSettings() {
-        return this.settings;
+    public FeatureModuleContext getContext() {
+        return this.coreComponent.context();
     }
 
-    public void setPreferences(final IAccountBookFactory accountBookFactory) {
-        this.prefs = new Preferences(accountBookFactory);
+    void init(final CoreComponent argCoreComponent) {
+        synchronized (Helper.class) {
+            this.coreComponent = argCoreComponent;
+        }
     }
 
     public Preferences getPreferences() {
-        return this.prefs;
+        return this.coreComponent.preferences();
     }
 
     public Localizable getLocalizable() {
-        synchronized (Helper.class) {
-            if (this.localizable == null) {
-                this.localizable = new Localizable(
-                        this.settings.getLocalizableResource(),
-                        this.prefs.getLocale());
-            }
-        }
-        return this.localizable;
+        return this.coreComponent.localizable();
     }
 
     public void addObserver(final Observer observer) {
@@ -91,20 +83,12 @@ public enum Helper {
         this.observable.notifyObservers(arg);
     }
 
-    public void setContext(final FeatureModuleContext context) {
-        this.prefs.setContext(context);
-    }
-
-    public static void loadLoggerConfiguration() {
+    public static void loadLoggerConfiguration(final Settings settings) {
         try {
             InputStream inputStream = getInputStreamFromResource(
-                    Helper.INSTANCE.getSettings()
-                    .getLoggingPropertiesResource());
+                    settings.getLoggingPropertiesResource());
             LogManager.getLogManager().readConfiguration(inputStream);
-
-        } catch (SecurityException e) {
-            e.printStackTrace(System.err);
-        } catch (IOException e) {
+        } catch (SecurityException | IOException e) {
             e.printStackTrace(System.err);
         }
     }
@@ -113,7 +97,7 @@ public enum Helper {
             final String resource) {
         ClassLoader cloader = Helper.class.getClassLoader();
         InputStream inputStream = cloader.getResourceAsStream(resource);
-        Validate.notNull(inputStream, "Resource %s was not found.",  resource);
+        Validate.notNull(inputStream, "Resource %s was not found.", resource);
         return inputStream;
     }
 

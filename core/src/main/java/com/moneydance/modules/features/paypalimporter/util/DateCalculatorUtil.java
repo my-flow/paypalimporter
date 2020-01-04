@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
@@ -11,12 +11,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Florian J. Breunig
  */
-public final class DateCalculator {
+public final class DateCalculatorUtil {
 
     /**
      * Restrictive constructor.
      */
-    private DateCalculator() {
+    private DateCalculatorUtil() {
         // Prevents this class from being instantiated from the outside.
     }
 

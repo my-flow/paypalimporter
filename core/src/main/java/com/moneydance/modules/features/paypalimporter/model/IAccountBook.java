@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
@@ -17,7 +17,7 @@ public interface IAccountBook {
 
     OnlineInfo getOnlineInfo();
 
-    Account getAccountByNum(final int accountId);
+    Account getAccountById(String accountId);
 
     AccountBook getWrappedOriginal();
 
@@ -25,10 +25,10 @@ public interface IAccountBook {
 
     Account getRootAccount();
 
-    boolean logRemovedItem(final MoneydanceSyncableItem removedItem);
+    boolean logRemovedItem(MoneydanceSyncableItem removedItem);
 
-    void addAccountListener(final AccountListener accountListener);
+    void addAccountListener(AccountListener accountListener);
 
-    void removeAccountListener(final AccountListener accountListener);
+    void removeAccountListener(AccountListener accountListener);
 
 }

@@ -1,11 +1,12 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import net.jcip.annotations.Immutable;
 
@@ -42,15 +43,15 @@ public final class ServiceResult<V> {
         this.errorMessage = argErrorMessage;
     }
 
-    @Nullable public List<V> getResults() {
-        return this.results;
+    public Optional<List<V>> getResults() {
+        return Optional.ofNullable(this.results);
     }
 
-    @Nullable public String getErrorCode() {
-        return this.errorCode;
+    public Optional<String> getErrorCode() {
+        return Optional.ofNullable(this.errorCode);
     }
 
-    @Nullable public String getErrorMessage() {
-        return this.errorMessage;
+    public Optional<String> getErrorMessage() {
+        return Optional.ofNullable(this.errorMessage);
     }
 }

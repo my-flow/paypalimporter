@@ -1,13 +1,14 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
-import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapper;
+import com.moneydance.modules.features.paypalimporter.domain.CurrencyMapperUtil;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.util.List;
 
@@ -22,15 +23,17 @@ final class CheckCurrencyRequestHandler
 extends AbstractRequestHandler<CurrencyCodeType> {
 
     private final IAccountBook accountBook;
-    private final int accountNum;
+    private final String accountId;
 
     CheckCurrencyRequestHandler(
             final ViewController argViewController,
             final IAccountBook argAccountBook,
-            final int argAccountNum) {
-        super(argViewController);
+            final String argAccountId,
+            final Localizable argLocalizable) {
+        super(argViewController,
+                argLocalizable);
         this.accountBook = argAccountBook;
-        this.accountNum = argAccountNum;
+        this.accountId = argAccountId;
     }
 
 
@@ -38,17 +41,15 @@ extends AbstractRequestHandler<CurrencyCodeType> {
     public void serviceCallSucceeded(
             final ServiceResult<CurrencyCodeType> serviceResult) {
 
-        List<CurrencyCodeType> currencyCodes = serviceResult.getResults();
-        assert currencyCodes != null : "@AssumeAssertion(nullness)";
-
-        Account useAccount = this.accountBook.getAccountByNum(this.accountNum);
+        final List<CurrencyCodeType> currencyCodes = serviceResult.getResults().orElseThrow(AssertionError::new);
+        Account useAccount = this.accountBook.getAccountById(this.accountId);
 
         // 1. determine the currency of the Moneydance account
         CurrencyType currencyType;
         if (useAccount == null) {
             // no Moneydance account was found, so create a new Moneydance
             // account later with the first currency of the PayPal account.
-            currencyType = CurrencyMapper.getCurrencyTypeFromCurrencyCode(
+            currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                     currencyCodes.get(0),
                     this.accountBook.getCurrencies(),
                     this.accountBook);
@@ -59,7 +60,7 @@ extends AbstractRequestHandler<CurrencyCodeType> {
 
         // 2. determine the currency of the PayPal account
         CurrencyCodeType currencyCode =
-                CurrencyMapper.getCurrencyCodeFromCurrencyType(
+                CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                         currencyType,
                         currencyCodes);
         this.getViewController().currencyChecked(

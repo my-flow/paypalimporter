@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-# Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+# Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 set -o nounset
 set -o errexit

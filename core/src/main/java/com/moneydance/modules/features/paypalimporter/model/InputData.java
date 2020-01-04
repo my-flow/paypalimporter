@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
@@ -9,6 +9,7 @@ import com.moneydance.apps.md.controller.Util;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -26,12 +27,12 @@ public final class InputData {
     @Nullable private final String username;
     @SuppressWarnings("nullness") private final char[] password;
     @Nullable private final String signature;
-    private final int accountId;
+    private final String accountId;
     private final int startDateInt;
     private final int endDateInt;
 
     public InputData() {
-        this(null,  null,  null,  -1);
+        this(null,  null,  null,  null);
     }
 
     @SuppressWarnings("nullness")
@@ -39,7 +40,7 @@ public final class InputData {
             @Nullable final String argUsername,
             @Nullable final char[] argPassword,
             @Nullable final String argSignature,
-            final int argAccountId) {
+            final String argAccountId) {
 
         this(argUsername, argPassword, argSignature, argAccountId, null);
     }
@@ -49,7 +50,7 @@ public final class InputData {
             @Nullable final String argUsername,
             @Nullable final char[] argPassword,
             @Nullable final String argSignature,
-            final int argAccountId,
+            final String argAccountId,
             @Nullable final DateRange argDateRange) {
 
         this.username = argUsername;
@@ -69,17 +70,16 @@ public final class InputData {
         }
     }
 
-    @Nullable public String getUsername() {
-        return this.username;
+    public Optional<String> getUsername() {
+        return Optional.ofNullable(this.username);
     }
 
-    @SuppressWarnings("nullness")
-    public char[] getPassword(final boolean clear) {
-        char[] result;
+    public Optional<char[]> getPassword(final boolean clear) {
+        Optional<char[]> result;
         if (this.password == null) {
-            result = null;
+            result = Optional.empty();
         } else {
-            result = Arrays.copyOf(this.password, this.password.length);
+            result = Optional.of(Arrays.copyOf(this.password, this.password.length));
             if (clear) {
                 Arrays.fill(this.password, '\0');
             }
@@ -87,12 +87,12 @@ public final class InputData {
         return result;
     }
 
-    @Nullable public String getSignature() {
-        return this.signature;
+    public Optional<String> getSignature() {
+        return Optional.ofNullable(this.signature);
     }
 
-    public int getAccountId() {
-        return this.accountId;
+    public Optional<String> getAccountId() {
+        return Optional.ofNullable(this.accountId);
     }
 
     public Date getStartDate() {
@@ -107,11 +107,11 @@ public final class InputData {
                 Calendar.DATE);
     }
 
-    @Nullable public DateRange getDateRange() {
+    public Optional<DateRange> getDateRange() {
         if (this.startDateInt >= 0 && this.endDateInt >= 0) {
-            return new DateRange(this.startDateInt, this.endDateInt);
+            return Optional.of(new DateRange(this.startDateInt, this.endDateInt));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

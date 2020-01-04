@@ -1,9 +1,8 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -34,17 +33,9 @@ public final class LogFormatter extends Formatter {
 
         if (record.getThrown() != null) {
             StringWriter stringWriter = new StringWriter();
-            PrintWriter printWriter = new PrintWriter(stringWriter);
-            try {
+            try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
                 record.getThrown().printStackTrace(printWriter);
-                stringBuilder.append(stringWriter.toString());
-            } finally {
-                printWriter.close();
-                try {
-                    stringWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                stringBuilder.append(stringWriter);
             }
         }
 

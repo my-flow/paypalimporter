@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -7,6 +7,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.OnlineTxn;
 
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Observer;
@@ -15,6 +16,7 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 import javax.annotation.Nullable;
 
+import com.moneydance.modules.features.paypalimporter.model.InputData;
 /**
  * Controller interface, strategy pattern.
  *
@@ -34,18 +36,22 @@ public interface ViewController extends Observer {
 
     /**
      * Continue to the next step of the import process.
+     * @param inputData user input to proceed with
      */
-    void proceed();
+    void proceed(InputData inputData);
+
+    /**
+     * Unlock the input fields of the view.
+     */
+    void unlock();
 
     /**
      * Unlock the input fields of the view.
      *
-     * @param text error message to be displayed (can be null)
-     * @param key identifier of the related input field (can be null)
+     * @param text error message to be displayed
+     * @param key identifier of the related input field
      */
-    void unlock(
-            @Nullable final String text,
-            @Nullable final Object key);
+    void unlock(String text, Object key);
 
     /**
      * This hook is called after a service call has checked the available
@@ -58,9 +64,9 @@ public interface ViewController extends Observer {
      * required to display this information to the user later.
      */
     void currencyChecked(
-            final CurrencyType currencyType,
-            final CurrencyCodeType currencyCode,
-            final List<CurrencyCodeType> currencyCodes);
+            CurrencyType currencyType,
+            CurrencyCodeType currencyCode,
+            List<CurrencyCodeType> currencyCodes);
 
     /**
      * This hook is called after a service call has fetched a batch of or all
@@ -72,20 +78,20 @@ public interface ViewController extends Observer {
      * @param errorCode Error from PayPal that might come with the transactions.
      */
     void transactionsImported(
-            final List<OnlineTxn> onlineTxns,
-            final Date argStartDate,
-            @Nullable final Account account,
-            @Nullable final String errorCode);
+            List<OnlineTxn> onlineTxns,
+            Date argStartDate,
+            @Nullable Account account,
+            @Nullable String errorCode);
 
     /**
      * Show instructions to the user how to find the credentials.
      */
-    void showHelp();
+    void showHelp() throws MalformedURLException;
 
     /**
      * Notify the view to refresh the list of accounts.
      *
      * @param selectedAccountId Preselected account in the combobox.
      */
-    void refreshAccounts(final int selectedAccountId);
+    void refreshAccounts(String selectedAccountId);
 }

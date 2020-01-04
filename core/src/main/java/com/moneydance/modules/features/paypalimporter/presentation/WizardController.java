@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -9,7 +9,8 @@ import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.model.InputDataValidator;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -17,8 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,9 +52,15 @@ implements ActionListener, WindowListener {
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings({"initialization", "deprecation"})
-    protected WizardController(@Nullable final Frame owner, final MoneydanceGUI mdGUI) {
-        super(owner, mdGUI,
-                Helper.INSTANCE.getLocalizable().getResourceBundle());
+    protected WizardController(
+            @Nullable final Frame owner,
+            final MoneydanceGUI mdGUI,
+            final ResourceBundle resourceBundle,
+            final Settings settings) {
+        super(owner,
+                mdGUI,
+                resourceBundle,
+                settings);
 
         // preset ESC close operation
         Helper.installEscapeCloseOperation(this);
@@ -73,25 +81,14 @@ implements ActionListener, WindowListener {
         this.getRootPane().setDefaultButton(this.btnProceed);
 
         // register listeners
-        final ActionListener refreshListener = new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                WizardController.this.refresh(false, null);
-            }
-        };
+        final ActionListener refreshListener = event ->
+                this.refresh(false, null);
         this.rdBtnExistingAcct.addActionListener(refreshListener);
         this.rdBtnNewAcct.addActionListener(refreshListener);
 
         try {
-            final PropertyChangeListener propertyChangeListener =
-                    new PropertyChangeListener() {
-                @Override
-                @SuppressWarnings("nullness")
-                public void propertyChange(
-                        final PropertyChangeEvent propertyChangeEvent) {
-                    refreshListener.actionPerformed(null);
-                }
-            };
+            final PropertyChangeListener propertyChangeListener = propertyChangeEvent ->
+                refreshListener.actionPerformed(null);
             this.dateRanger.addPropertyChangeListener(propertyChangeListener);
         } catch (NoSuchMethodError e) {
             // ignore exception in older versions of Moneydance
@@ -118,22 +115,18 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("nullness")
     public final void setInputData(final InputData inputData) {
-        this.txtUsername.setText(inputData.getUsername());
+        this.txtUsername.setText(inputData.getUsername().orElse(null));
 
-        String password = null;
-        if (inputData.getPassword(false) != null) {
-            password = String.valueOf(inputData.getPassword(true));
-        }
-        this.txtPassword.setText(password);
+        AtomicReference<String> password = new AtomicReference<>(null);
+        inputData.getPassword(true).ifPresent(pass -> password.set(String.valueOf(pass)));
+        this.txtPassword.setText(password.get());
 
-        this.txtSignature.setText(inputData.getSignature());
+        this.txtSignature.setText(inputData.getSignature().orElse(null));
 
-        if (inputData.getDateRange() != null) {
-            this.dateRanger.setStartDate(
-                    inputData.getDateRange().getStartDateInt());
-            this.dateRanger.setEndDate(
-                    inputData.getDateRange().getEndDateInt());
-        }
+        inputData.getDateRange().ifPresent(dateRange -> {
+                this.dateRanger.setStartDate(dateRange.getStartDateInt());
+                this.dateRanger.setEndDate(dateRange.getEndDateInt());
+        });
 
         // preset focus
         if (StringUtils.isEmpty(this.txtUsername.getText())) {
@@ -174,7 +167,7 @@ implements ActionListener, WindowListener {
         if (loading == null) {
             isLoading = this.isLoading();
         } else {
-            isLoading = loading.booleanValue();
+            isLoading = loading;
         }
         final ComboBoxModel<Account> accountModel =
                 this.comboBoxAccts.getModel();
@@ -215,48 +208,47 @@ implements ActionListener, WindowListener {
     }
 
     /**
-     * @param text error message to be displayed (can be null)
-     * @param key identifier of the related input field (can be null)
+     * @param text error message to be displayed
+     * @param key identifier of the related input field
      */
     @SuppressWarnings("nullness")
     public final void updateValidation(
-            @Nullable final String text,
-            @Nullable final Object key) {
+            final String text,
+            final Object key) {
         this.refresh(false, Boolean.FALSE);
 
-        if (InputDataValidator.MessageKey.USERNAME.equals(key)) {
+        if (key == InputDataValidator.MessageKey.USERNAME) {
             this.txtUsername.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.PASSWORD.equals(key)) {
+        if (key == InputDataValidator.MessageKey.PASSWORD) {
             this.txtPassword.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.SIGNATURE.equals(key)) {
+        if (key == InputDataValidator.MessageKey.SIGNATURE) {
             this.txtSignature.requestFocus();
         }
 
-        if (InputDataValidator.MessageKey.DATERANGE.equals(key)) {
+        if (key == InputDataValidator.MessageKey.DATERANGE) {
             this.dateRanger.getEndField().requestFocus();
         }
 
-        if (text != null) {
-            ValidationComponentUtils
-            .updateComponentTreeMandatoryAndBlankBackground(this.jpanel);
+        ValidationComponentUtils
+        .updateComponentTreeMandatoryAndBlankBackground(this.jpanel);
 
-            final Component parentComponent;
-            if (this.isVisible()) {
-                parentComponent = this;
-            } else {
-                parentComponent = null;
-            }
-            final Object errorLabel = new JLabel(text);
-            JOptionPane.showMessageDialog(
-                    parentComponent,
-                    errorLabel,
-                    null, // no title
-                    JOptionPane.ERROR_MESSAGE);
+        final Component parentComponent;
+        if (this.isVisible()) {
+            parentComponent = this;
+        } else {
+            parentComponent = null;
         }
+        final JLabel errorLabel = new JLabel(text);
+        errorLabel.setLabelFor(null);
+        JOptionPane.showMessageDialog(
+                parentComponent,
+                errorLabel,
+                null, // no title
+                JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

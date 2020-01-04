@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.apps.md.controller;
 
@@ -7,7 +7,6 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.AccountHelper;
 import com.infinitekind.moneydance.model.OnlineInfo;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.util.StreamTable;
 
 import java.util.logging.Level;
@@ -34,21 +33,12 @@ public final class StubContextFactory {
     public StubContextFactory() {
         this.featureModule = null;
         this.context = initContext(null, null);
-        Helper.INSTANCE.setContext(this.context);
-    }
-
-    public StubContextFactory(final OnlineInfo onlineInfo) {
-        Validate.notNull(onlineInfo, "online info must not be null");
-        this.featureModule = null;
-        this.context = initContext(null, onlineInfo);
-        Helper.INSTANCE.setContext(this.context);
     }
 
     public StubContextFactory(final FeatureModule argFeatureModule) {
         Validate.notNull(argFeatureModule, "feature module must not be null");
         this.featureModule = argFeatureModule;
         this.context = initContext(argFeatureModule, null);
-        Helper.INSTANCE.setContext(this.context);
     }
 
     private static StubContext initContext(
