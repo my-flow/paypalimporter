@@ -2,31 +2,40 @@ apply plugin: 'application'
 
 dependencies {
     compile project(':core')
+    annotationProcessor "com.google.dagger:dagger-compiler:2.22.1"
 
-    runtime('org.slf4j:slf4j-simple:1.7.25')
+    runtime('org.slf4j:slf4j-simple:1.7.26')
     runtime('com.syncthemall:dropbox-java-sdk:1.5.3.2')
 
     testCompile('junit:junit:4.12')
 
-    testRuntime('org.jmockit:jmockit-coverage:1.23')
-    testRuntime('org.slf4j:slf4j-simple:1.7.25')
+    testRuntime('org.slf4j:slf4j-simple:1.7.26')
 }
 
 mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
 
 test {
-    doFirst {
-        String jMockit = project.configurations.testRuntime.find {
-            it.name.startsWith("jmockit-coverage")
+    jacocoTestReport {
+        sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
+        classDirectories.from project(':core').sourceSets.main.output
+
+        afterEvaluate {
+            classDirectories.from classDirectories.files.collect {
+                fileTree(dir: it,
+                        include: 'com/moneydance/modules/features/paypalimporter/**',
+                        exclude: [
+                                '**/*Mock.class',
+                                '**/Mock*.class',
+                                '**/ConsoleRunner*.class',
+                                '**/*_MembersInjector.class',
+                                '**/Dagger*Component.class', // covers component implementations
+                                '**/Dagger*Component$Builder.class', // covers component builders
+                                '**/*_*Factory.class',
+                                '**/*Module.class',
+                        ])
+            }
         }
-        jvmArgs "-javaagent:${jMockit}"
-        systemProperty 'coverage-srcDirs', project(':core').projectDir
-        systemProperty 'coverage-classes', 'com.moneydance.modules.features.paypalimporter.*'
-        systemProperty 'coverage-excludes', '*AllTests|*Stub|*Mock*|*ConsoleRunner*|*Test'
-        systemProperty 'coverage-metrics', 'all'
-        systemProperty 'coverage-outputDir', "${project.docsDir}/coverage-report"
     }
-    include 'com/moneydance/modules/features/paypalimporter/AllTests.*'
 }
 
 task genKeys(type: JavaExec) {

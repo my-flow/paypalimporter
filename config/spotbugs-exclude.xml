@@ -1,0 +1,17 @@
+<FindBugsFilter>
+    <Match>
+        <Or>
+            <Class name="~.*Factory"/>
+            <Class name="~.*Dagger.*Component.*"/>
+        </Or>
+    </Match>
+    <Match>
+        <Or>
+            <Bug pattern="EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS"/>
+            <Bug pattern="FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY"/>
+            <Bug pattern="FII_USE_METHOD_REFERENCE"/>
+            <Bug pattern="IMC_IMMATURE_CLASS_PRINTSTACKTRACE"/>
+            <Bug pattern="S508C_SET_COMP_COLOR"/>
+        </Or>
+    </Match>
+</FindBugsFilter>

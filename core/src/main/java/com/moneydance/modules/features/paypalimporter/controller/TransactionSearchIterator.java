@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -11,17 +11,17 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
+import java.net.MalformedURLException;
+import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Set;
-
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
@@ -34,9 +34,9 @@ import javax.annotation.Nullable;
  * the date bounds and calling the transaction search service. It aggregates
  * the results and imports the transactions all at once.
  *
- * The PayPal API delivers not more 100 transactions per service calls. If there
- * are more than 100 transactions available, the PayPal API will return the
- * newest 100 transactions together with a search warning.
+ * The PayPal API delivers not more than 100 transactions per service calls.
+ * If there are more than 100 transactions available, the PayPal API will
+ * return the newest 100 transactions together with a search warning.
  *
  * This class issues consecutive service calls. It starts with the newest 100
  * transactions and calls the PayPal API repeatedly. It moves the date bounds
@@ -69,6 +69,7 @@ final class TransactionSearchIterator implements ViewController {
     requestHandler;
     private final Set<OnlineTxn> resultSet;
     private final String errorCodeSearchWarning;
+    private final Localizable localizable;
 
     @SuppressWarnings("initialization")
     TransactionSearchIterator(
@@ -77,7 +78,10 @@ final class TransactionSearchIterator implements ViewController {
             final ServiceProvider argServiceProvider,
             final InputData argInputData,
             final CurrencyType argCurrencyType,
-            final CurrencyCodeType argCurrencyCode) {
+            final CurrencyCodeType argCurrencyCode,
+            final String argErrorCodeSearchWarning,
+            final DateFormat argDateFormat,
+            final Localizable argLocalizable) {
 
         this.viewController = argViewController;
         this.accountBook = argIAccountBook;
@@ -88,10 +92,13 @@ final class TransactionSearchIterator implements ViewController {
 
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
-                this.accountBook);
-        this.resultSet = new LinkedHashSet<OnlineTxn>();
-        this.errorCodeSearchWarning =
-                Helper.INSTANCE.getSettings().getErrorCodeSearchWarning();
+                this.accountBook,
+                argInputData.getAccountId().orElseThrow(AssertionError::new),
+                argDateFormat,
+                argLocalizable);
+        this.resultSet = new LinkedHashSet<>();
+        this.errorCodeSearchWarning = argErrorCodeSearchWarning;
+        this.localizable = argLocalizable;
     }
 
     /**
@@ -105,7 +112,7 @@ final class TransactionSearchIterator implements ViewController {
     public void transactionsImported(
             final List<OnlineTxn> argOnlineTxns,
             final Date argStartDate,
-            @Nullable final Account argAccount,
+            final Account argAccount,
             @Nullable final String errorCode) {
 
         this.resultSet.addAll(argOnlineTxns); // aggregate all results
@@ -127,22 +134,27 @@ final class TransactionSearchIterator implements ViewController {
 
             account = findOrCreateAccount(
                     this.accountBook,
-                    this.inputData.getAccountId(),
+                    this.inputData.getAccountId().orElseThrow(AssertionError::new),
                     this.currencyType);
             final OnlineTxnList txnList = account.getDownloadedTxns();
 
             // import all transactions in reverse order,
             // i.e. from oldest to newest
             final Iterator<OnlineTxn> iter =
-                new LinkedList<OnlineTxn>(this.resultSet).descendingIterator();
+                new LinkedList<>(this.resultSet).descendingIterator();
             while (iter.hasNext()) {
                 txnList.addNewTxn(iter.next());
             }
         }
 
         this.viewController.transactionsImported(
-                new LinkedList<OnlineTxn>(this.resultSet), argStartDate,
+                new LinkedList<>(this.resultSet), argStartDate,
                 account, errorCode);
+    }
+
+    @Override
+    public void unlock() {
+        this.viewController.unlock();
     }
 
     @Override
@@ -155,50 +167,40 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     /**
-     * @param endDate The adapted end date which must be an ealier date than
+     * @param endDate The adapted end date which must be an earlier date than
      * the previous end date.
      */
     @SuppressWarnings("nullness")
     private void callTransactionSearchService(final Date endDate) {
 
         this.serviceProvider.callTransactionSearchService(
-                this.inputData.getUsername(),
-                this.inputData.getPassword(false),
-                this.inputData.getSignature(),
+                this.inputData.getUsername().orElseThrow(AssertionError::new),
+                this.inputData.getPassword(false).orElseThrow(AssertionError::new),
+                this.inputData.getSignature().orElseThrow(AssertionError::new),
                 this.inputData.getStartDate(),
                 endDate,
                 this.currencyCode,
                 this.requestHandler);
     }
 
-    private static Account findOrCreateAccount(
-            final IAccountBook accountBook,
-            final int accountId,
-            final CurrencyType currencyType) {
+    private Account findOrCreateAccount(
+            final IAccountBook argAccountBook,
+            final String argAccountId,
+            final CurrencyType argCurrencyType) {
 
-        Account account = accountBook.getAccountByNum(accountId);
+        Account account = argAccountBook.getAccountById(argAccountId);
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
-            try {
-                account = Account.makeAccount(
-                        accountBook.getWrappedOriginal(),
-                        Account.AccountType.BANK,
-                        accountBook.getRootAccount());
-                account.setAccountName(
-                        Helper.INSTANCE.getLocalizable().getNameNewAccount());
-                account.setCurrencyType(currencyType);
-                account.setParameter(
-                        KEY_ACCOUNT_URL,
-                        Helper.INSTANCE.getLocalizable().getUrlNewAccount());
-            } catch (Exception e) {
-                final String message = e.getMessage();
-                if (message != null) {
-                    LOG.log(Level.WARNING, message, e);
-                }
-                throw new IllegalStateException(
-                        "Could not create account", e);
-            }
+            account = Account.makeAccount(
+                    argAccountBook.getWrappedOriginal(),
+                    Account.AccountType.BANK,
+                    argAccountBook.getRootAccount());
+            account.setAccountName(this.localizable.getNameNewAccount());
+            account.setCurrencyType(argCurrencyType);
+            account.setParameter(
+                    KEY_ACCOUNT_URL,
+                    this.localizable.getUrlNewAccount());
         }
         return account;
     }
@@ -219,8 +221,8 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void proceed() {
-        this.viewController.proceed();
+    public void proceed(final InputData argInputData) {
+        this.viewController.proceed(argInputData);
     }
 
     @Override
@@ -232,12 +234,12 @@ final class TransactionSearchIterator implements ViewController {
     }
 
     @Override
-    public void showHelp() {
+    public void showHelp() throws MalformedURLException {
         this.viewController.showHelp();
     }
 
     @Override
-    public void refreshAccounts(final int accountId) {
+    public void refreshAccounts(final String accountId) {
         this.viewController.refreshAccounts(accountId);
     }
 }

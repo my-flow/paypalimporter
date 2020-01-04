@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
@@ -22,10 +22,10 @@ public final class AccountBookTest {
     private IAccountBook accountBook;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         this.accountBook = AccountBookFactoryImpl.INSTANCE.createAccountBook(
-                factory.getContext());
+                factory.getContext()).orElseThrow(AssertionError::new);
     }
 
     @Test
@@ -34,8 +34,8 @@ public final class AccountBookTest {
     }
 
     @Test
-    public void testGetAccountByNum() {
-        assertThat(this.accountBook.getAccountByNum(0), nullValue());
+    public void testGetAccountById() {
+        assertThat(this.accountBook.getAccountById("123-123"), nullValue());
     }
 
     @Test

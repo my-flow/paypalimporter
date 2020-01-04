@@ -1,14 +1,15 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
+import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -40,16 +41,22 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
     private static final BigDecimal MULTIPLIER = BigDecimal.valueOf(100);
 
+    private final Account account;
     private final OnlineTxnList txnList;
     private final DateFormat dateFormat;
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
-            final IAccountBook accountBook) {
+            final IAccountBook accountBook,
+            final String argAccountId,
+            final DateFormat argDateFormat,
+            final Localizable argLocalizable) {
 
-        super(argViewController);
+        super(argViewController,
+                argLocalizable);
+        this.account = accountBook.getAccountById(argAccountId);
         this.txnList = accountBook.getRootAccount().getDownloadedTxns();
-        this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        this.dateFormat = argDateFormat;
     }
 
     @Override
@@ -58,11 +65,10 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             serviceResult) {
 
         final List<PaymentTransactionSearchResultType> txns =
-                serviceResult.getResults();
-        assert txns != null : "@AssumeAssertion(nullness)";
+                serviceResult.getResults().orElseThrow(AssertionError::new);
 
         final List<OnlineTxn> resultList =
-                new ArrayList<OnlineTxn>(txns.size());
+                new ArrayList<>(txns.size());
         long startDateLong = Long.MAX_VALUE;
 
         for (PaymentTransactionSearchResultType result : txns) {
@@ -84,8 +90,8 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         this.getViewController().transactionsImported(
                 resultList,
                 new Date(startDateLong),
-                null,
-                serviceResult.getErrorCode());
+                this.account,
+                serviceResult.getErrorCode().orElse(null));
     }
 
     private OnlineTxn createNewOnlineTxn(

@@ -1,10 +1,9 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
-import com.moneydance.modules.features.paypalimporter.util.DateCalculator;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.DateCalculatorUtil;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -21,14 +20,13 @@ import org.apache.commons.lang3.Validate;
  */
 public final class DateConverter {
 
-    /**
-     * Restrictive constructor.
-     */
-    private DateConverter() {
-        // Prevents this class from being instantiated from the outside.
+    private final Date minDate;
+
+    DateConverter(final Date argMinDate) {
+        this.minDate = argMinDate;
     }
 
-    public static BoundedRangeModel getBoundedRangeModel(
+    public BoundedRangeModel getBoundedRangeModel(
             final Date startDate,
             final Date endDate,
             final Date valueDate) {
@@ -39,13 +37,13 @@ public final class DateConverter {
                 valueDate);
 
         final TimeUnit timeUnit = TimeUnit.SECONDS;
-        final int value = safeLongToInt(DateCalculator.getDateDiff(
-                getValidDate(valueDate),
-                getValidDate(endDate),
+        final int value = safeLongToInt(DateCalculatorUtil.getDateDiff(
+                this.getValidDate(valueDate),
+                this.getValidDate(endDate),
                 timeUnit));
-        final int max = safeLongToInt(DateCalculator.getDateDiff(
-                getValidDate(startDate),
-                getValidDate(endDate),
+        final int max = safeLongToInt(DateCalculatorUtil.getDateDiff(
+                this.getValidDate(startDate),
+                this.getValidDate(endDate),
                 timeUnit));
         return new DefaultBoundedRangeModel(
                 value,
@@ -54,10 +52,10 @@ public final class DateConverter {
                 max);
     }
 
-    public static Date getValidDate(final Date date) {
-        return DateCalculator.max(
+    public Date getValidDate(final Date date) {
+        return DateCalculatorUtil.max(
                 date,
-                Helper.INSTANCE.getSettings().getMinDate());
+                this.minDate);
     }
 
     private static int safeLongToInt(final long longValue) {

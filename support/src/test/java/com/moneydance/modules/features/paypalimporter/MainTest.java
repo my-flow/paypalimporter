@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter;
 
@@ -10,17 +10,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.moneydance.apps.md.controller.StubContextFactory;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 /**
  * @author Florian J. Breunig
  */
 public final class MainTest {
 
+    private Settings settings;
     private Main main;
 
     @Before
     public void setUp() {
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.settings = supportComponent.settings();
+
         this.main = new Main();
         final StubContextFactory factory = new StubContextFactory(this.main);
         factory.init();
@@ -45,12 +50,6 @@ public final class MainTest {
     @Test
     public void testInvokeString() {
         this.main.invoke("");
-        this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
-        this.main.invoke(Helper.INSTANCE.getSettings().getStartWizardSuffix());
-    }
-
-    @Test
-    public void testUpdate() {
-        this.main.update(null, null);
+        this.main.invoke(this.settings.getStartWizardSuffix());
     }
 }

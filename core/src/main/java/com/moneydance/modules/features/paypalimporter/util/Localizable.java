@@ -1,18 +1,19 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import javax.annotation.Nullable;
 
@@ -67,12 +68,8 @@ public final class Localizable {
     /**
      * @return the URL that is displayed if the user needs help.
      */
-    public URL getUrlHelp() {
-        try {
-            return new URL(this.resourceBundle.getString("url_help"));
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("Could not parse help URL", e);
-        }
+    public URL getUrlHelp() throws MalformedURLException {
+        return new URL(this.resourceBundle.getString("url_help"));
     }
 
     /**
@@ -80,17 +77,17 @@ public final class Localizable {
      * @param currencies All currencies that were found for the PayPal account.
      * @return the question when multiple currencies are available
      */
-    public String getQuestionMessageMultipleCurrencies(
+    @Nullable public String getQuestionMessageMultipleCurrencies(
             final String currency,
-            final Object[] currencies) {
+            final List<String> currencies) {
         final String templateString = this.resourceBundle.getString(
                 "question_message_multiple_currencies");
 
         Map<String, String> valuesMap =
-                new ConcurrentHashMap<String, String>(2);
+                new ConcurrentHashMap<>(2);
         valuesMap.put("currency", currency);
-        valuesMap.put("currencies", StringUtils.join(currencies, ", "));
-        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+        valuesMap.put("currencies", String.join(", ", currencies));
+        StringSubstitutor sub = new StringSubstitutor(valuesMap);
 
         return sub.replace(templateString);
     }
@@ -100,12 +97,12 @@ public final class Localizable {
      * @return the user-friendly error message for a given error code or null
      *  if none is found
      */
-    @Nullable public String getTranslatedErrorMessage(@Nullable final String errorCode) {
+    public Optional<String> getTranslatedErrorMessage(@Nullable final String errorCode) {
         try {
             final String key = String.format("error_message_%s", errorCode);
-            return this.resourceBundle.getString(key);
+            return Optional.of(this.resourceBundle.getString(key));
         } catch (MissingResourceException e) {
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -139,17 +136,17 @@ public final class Localizable {
     }
 
     /**
-     * @param errorMessage Orginal error message that should be displayed
+     * @param errorMessage Original error message that should be displayed
      * @return the error message when service call failed
      */
-    public String getErrorMessageServiceCallFailed(final String errorMessage) {
+    @Nullable public String getErrorMessageServiceCallFailed(final String errorMessage) {
         final String templateString = this.resourceBundle.getString(
                 "error_message_service_call_failed");
 
         Map<String, String> valuesMap =
-                new ConcurrentHashMap<String, String>(1);
+                new ConcurrentHashMap<>(1);
         valuesMap.put("error.message", errorMessage);
-        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+        StringSubstitutor sub = new StringSubstitutor(valuesMap);
 
         return sub.replace(templateString);
     }

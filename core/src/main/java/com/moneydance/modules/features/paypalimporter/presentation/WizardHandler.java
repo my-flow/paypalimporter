@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -11,6 +11,8 @@ import java.util.Observer;
 import com.infinitekind.moneydance.model.Account;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
+import com.moneydance.modules.features.paypalimporter.util.Localizable;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
 import javax.annotation.Nullable;
 
@@ -42,8 +44,13 @@ public final class WizardHandler extends WizardController {
     public WizardHandler(
             @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
-            final Observer argObserver) {
-        super(owner, mdGUI);
+            final Observer argObserver,
+            final Localizable localizable,
+            final Settings settings) {
+        super(owner,
+                mdGUI,
+                localizable.getResourceBundle(),
+                settings);
         this.observer = argObserver;
         this.inputData = new InputData();
     }
@@ -55,11 +62,11 @@ public final class WizardHandler extends WizardController {
             this.observer.update(null, ExecutedAction.SHOW_HELP);
         } else if (actionEvent.getSource().equals(this.btnProceed)) {
 
-            int accountId = -1;
+            String accountId = null;
             if (this.rdBtnExistingAcct.isSelected()) {
                 final Account account = (Account)
                         this.comboBoxAccts.getSelectedItem();
-                accountId = account.getAccountNum();
+                accountId = account.getUUID();
             }
 
             this.inputData = new InputData(

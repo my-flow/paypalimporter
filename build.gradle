@@ -1,30 +1,43 @@
+import java.text.SimpleDateFormat
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration
+
 buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'net.sf.proguard:proguard-gradle:6.0.2'
+        classpath 'net.sf.proguard:proguard-gradle:6.1.0'
+        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
     }
 }
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'net.ltgt.apt'
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
-    apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'findbugs'
+    apply plugin: 'com.github.spotbugs'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.sonarqube'
 
-    sourceCompatibility = 1.7
+    sourceCompatibility = 1.8
 
     ext {
         privkeyid = '99'
         privkeyfile = "$rootDir/config/priv_key"
         pubkeyfile = "$rootDir/config/pub_key"
-        mxtfile = "${project(':core').distsDir}/${rootProject.name}.mxt"
+        mxtfile = "${project(':core').buildDir}/${project(':core').distsDirName}/${rootProject.name}-v${getConfigValueForKey("module_build")}.mxt"
     }
 
     repositories {
@@ -32,22 +45,28 @@ subprojects {
         flatDir dirs: "$rootDir/lib"
     }
 
-    findbugs {
+    spotbugs {
+        toolVersion = "3.1.12"
         effort = "max"
         reportLevel = "medium"
+        excludeFilter file("$rootDir/config/spotbugs-exclude.xml")
     }
 
-    tasks.withType(FindBugs) {
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
         reports {
             xml.enabled = false
             html.enabled = true
         }
     }
 
+    jacoco {
+        toolVersion = "0.8.3"
+    }
+
     task checkstyleHtml(dependsOn: checkstyleMain) {
         if (checkstyleMain.reports.xml.destination.exists()) {
             ant.xslt(in: checkstyleMain.reports.xml.destination,
-                    style: file("$rootDir/config/checkstyle-noframes-sorted.xsl"),
+                    style: file("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl"),
                     out: new File(checkstyleMain.reports.xml.destination.parent as String, 'main.html'))
         }
     }
@@ -55,12 +74,35 @@ subprojects {
     checkstyleMain.finalizedBy checkstyleHtml
 
     pmd {
+        toolVersion = "6.14.0"
         sourceSets = [sourceSets.main]
-        ruleSetFiles = files('config/ruleSet.xml')
+        ruleSets = []
+        ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.host.url", "https://sonarcloud.io"
+            property "sonar.organization", "${rootProject.name}"
+        }
     }
 }
 
 task createLibs(type: Exec) {
     description 'Generates patched libraries from trusted source'
     commandLine 'sh', 'config/create_libs.sh'
+}
+
+String getCurrentTimestamp() {
+    Date today = new Date()
+    SimpleDateFormat df = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
+    return df.format(today)
+}
+
+String getConfigValueForKey(String key) {
+    file("${project(':core').projectDir}/src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict").withInputStream {
+        final Configuration config = new PropertiesConfiguration();
+        config.load(it);
+        return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "");
+    }
 }

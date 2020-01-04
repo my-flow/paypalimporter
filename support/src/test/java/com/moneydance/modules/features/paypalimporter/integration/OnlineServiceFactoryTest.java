@@ -1,9 +1,8 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -13,15 +12,15 @@ import com.infinitekind.moneydance.model.StubOnlineInfo;
 import com.moneydance.apps.md.controller.StubAccountBook;
 import com.moneydance.apps.md.controller.StubContext;
 import com.moneydance.apps.md.controller.StubContextFactory;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,37 +29,32 @@ import org.junit.Test;
 public final class OnlineServiceFactoryTest {
 
     private static final String KEY_SERVICE_TYPE = "type";
+    private OnlineServiceFactory onlineServiceFactory;
+    private String serviceType;
 
-    @Test
-    public void testConstructorIsPrivate()
-            throws
-            NoSuchMethodException,
-            InstantiationException,
-            IllegalAccessException,
-            InvocationTargetException {
-
-        Constructor<OnlineServiceFactory> constructor =
-                OnlineServiceFactory.class.getDeclaredConstructor();
-        assertThat(Modifier.isPrivate(constructor.getModifiers()), is(true));
-        constructor.setAccessible(true);
-        constructor.newInstance();
+    @Before
+    public void setUp() {
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.onlineServiceFactory = new OnlineServiceFactory(supportComponent.settings());
+        this.serviceType = supportComponent.settings().getServiceType();
     }
 
     @Test
     public void testGetService() {
         IAccountBook accountBook = new StubContextFactory().getContext().getAccountBook();
-        PayPalOnlineService service = OnlineServiceFactory.createService(accountBook);
+        PayPalOnlineService service = this.onlineServiceFactory.createService(accountBook);
         assertThat(service, notNullValue());
-        assertThat(OnlineServiceFactory.createService(accountBook), not(service));
+        assertThat(this.onlineServiceFactory.createService(accountBook), not(service));
     }
 
     @Test
     public void testRemoveServiceEmpty() {
         IAccountBook accountBook = new StubContextFactory().getContext().getAccountBook();
-        PayPalOnlineService service = OnlineServiceFactory.createService(accountBook);
+        PayPalOnlineService service = this.onlineServiceFactory.createService(accountBook);
         assertThat(service, notNullValue());
-        OnlineServiceFactory.removeService(accountBook);
-        assertThat(OnlineServiceFactory.createService(accountBook), not(service));
+        this.onlineServiceFactory.removeService(accountBook);
+        assertThat(this.onlineServiceFactory.createService(accountBook), not(service));
     }
 
     @Test
@@ -74,7 +68,7 @@ public final class OnlineServiceFactoryTest {
             {
                 this.put(
                     KEY_SERVICE_TYPE,
-                    Helper.INSTANCE.getSettings().getServiceType());
+                        OnlineServiceFactoryTest.this.serviceType);
             }
         });
         StubOnlineInfo onlineInfo = new StubOnlineInfo(
@@ -83,12 +77,12 @@ public final class OnlineServiceFactoryTest {
         IAccountBook accountBook = new StubAccountBook(
                 context.getCurrentAccountBook(), onlineInfo);
 
-        PayPalOnlineService service = OnlineServiceFactory.createService(
+        PayPalOnlineService service = this.onlineServiceFactory.createService(
                 accountBook);
         assertThat(service, notNullValue());
-        OnlineServiceFactory.removeService(accountBook);
+        this.onlineServiceFactory.removeService(accountBook);
         assertThat(
-                OnlineServiceFactory.createService(accountBook),
+                this.onlineServiceFactory.createService(accountBook),
                 not(service));
     }
 }

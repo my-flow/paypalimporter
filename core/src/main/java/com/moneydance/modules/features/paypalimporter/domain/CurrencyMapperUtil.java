@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.domain;
 
@@ -22,18 +22,18 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
  *
  * @author Florian J. Breunig
  */
-public final class CurrencyMapper {
+public final class CurrencyMapperUtil {
 
     /**
      * Static initialization of class-dependent logger.
      */
     private static final Logger LOG = Logger
-            .getLogger(CurrencyMapper.class.getName());
+            .getLogger(CurrencyMapperUtil.class.getName());
 
     /**
      * Restrictive constructor.
      */
-    private CurrencyMapper() {
+    private CurrencyMapperUtil() {
         // Prevents this class from being instantiated from the outside.
     }
 

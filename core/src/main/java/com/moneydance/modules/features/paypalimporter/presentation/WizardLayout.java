@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -13,8 +13,9 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.Sizes;
 import com.moneydance.apps.md.view.gui.DateRangeChooser;
 import com.moneydance.apps.md.view.gui.MoneydanceGUI;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
+import com.moneydance.modules.features.paypalimporter.util.Settings;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.util.ResourceBundle;
@@ -44,7 +45,6 @@ class WizardLayout extends JDialog {
     private static final long serialVersionUID = 1L;
 
     protected final JPanel jpanel;
-    protected final DateRangeChooser dateRanger;
     protected final JTextField txtUsername;
     protected final AbstractButton btnHelp;
     protected final JPasswordField txtPassword;
@@ -56,6 +56,7 @@ class WizardLayout extends JDialog {
     protected final JButton btnProceed;
     protected final JButton btnCancel;
     protected final JProgressBar progressBar;
+    protected transient DateRangeChooser dateRanger;
 
     /**
      * Create the frame.
@@ -67,7 +68,8 @@ class WizardLayout extends JDialog {
     WizardLayout(
             @Nullable final Frame owner,
             final MoneydanceGUI mdGUI,
-            final ResourceBundle resourceBundle) {
+            final ResourceBundle resourceBundle,
+            final Settings settings) {
         super(owner, false);
         this.dateRanger = new DateRangeChooser(mdGUI);
 
@@ -77,11 +79,11 @@ class WizardLayout extends JDialog {
         this.setTitle(localizer.getString("title_wizard"));
 
         this.txtUsername = new JTextField();
-        this.btnHelp = new HelpButton();
+        this.btnHelp = new HelpButton(settings.getHelpImage());
         this.txtPassword = new JPasswordField();
         this.txtSignature = new JTextField();
         this.rdBtnExistingAcct = new JRadioButton();
-        this.comboBoxAccts = new JComboBox<Account>();
+        this.comboBoxAccts = new JComboBox<>();
         this.rdBtnNewAcct = new JRadioButton();
         this.comboBoxDateRange = this.dateRanger.getChoice();
         this.progressBar = new JProgressBar();
@@ -100,6 +102,10 @@ class WizardLayout extends JDialog {
         this.txtUsername.setToolTipText(null);
         this.txtPassword.setToolTipText(null);
         this.txtSignature.setToolTipText(null);
+
+        Color background = mdGUI.getColors().defaultBackground;
+        this.rdBtnExistingAcct.setBackground(background);
+        this.rdBtnNewAcct.setBackground(background);
 
         MnemonicUtils.configure(
             this.rdBtnExistingAcct,
@@ -123,10 +129,11 @@ class WizardLayout extends JDialog {
 
 
         this.jpanel = FormBuilder.create()
-            .columns(Helper.INSTANCE.getSettings().getColumnSpecs())
-            .rows(Helper.INSTANCE.getSettings().getRowsSpecs())
-            .debug(false)
+            .columns(settings.getColumnSpecs())
+            .rows(settings.getRowsSpecs())
+            .background(background)
             .padding(Paddings.DIALOG)
+            .debug(false)
 
             .add(localizer.getString("label_username"))
                 .labelFor(this.txtUsername).xy(1, 1)

@@ -1,7 +1,9 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
+
+import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -29,11 +31,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  */
 public final class Settings {
 
-    /**
-     * The resource in the JAR file to read the settings from.
-     */
-    private static final String PROPERTIES_RESOURCE = "settings.properties";
-
     private final Configuration config;
     private final Image iconImage;
     private final DateFormat dateFormat;
@@ -41,29 +38,20 @@ public final class Settings {
     private final Image helpImage;
 
     @SuppressWarnings("nullness")
-    Settings() {
-        try {
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    PROPERTIES_RESOURCE);
-
+    Settings(final String resource)
+            throws IOException, ConfigurationException, ParseException {
+            InputStream inputStream = Helper.getInputStreamFromResource(resource);
             final AbstractFileConfiguration abstractFileConfiguration =
                     new PropertiesConfiguration();
             abstractFileConfiguration.load(inputStream);
             this.config = abstractFileConfiguration;
-        } catch (ConfigurationException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
         this.iconImage = getImage(this.config.getString("icon_resource"));
         this.helpImage = getImage(this.config.getString("help_resource"));
         this.dateFormat = new SimpleDateFormat(
                 this.config.getString("date_pattern"),
                 Locale.US);
-        try {
-            this.minDate = this.dateFormat.parse(
-                    this.config.getString("min_date"));
-        } catch (ParseException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
+        this.minDate = this.dateFormat.parse(
+                this.config.getString("min_date"));
     }
 
     /**
@@ -222,13 +210,9 @@ public final class Settings {
         return this.config.getString("rows_specs");
     }
 
-    private static Image getImage(final String resource) {
-        try {
-            InputStream inputStream = Helper.getInputStreamFromResource(
-                    resource);
-            return ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new IllegalStateException(e.getMessage(), e);
-        }
+    private static Image getImage(final String resource) throws IOException {
+        InputStream inputStream = Helper.getInputStreamFromResource(
+                resource);
+        return ImageIO.read(inputStream);
     }
 }

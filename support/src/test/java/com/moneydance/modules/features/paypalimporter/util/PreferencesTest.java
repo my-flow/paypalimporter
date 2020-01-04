@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.util;
 
@@ -8,11 +8,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import com.moneydance.apps.md.controller.StubAccountBookFactory;
-import com.moneydance.apps.md.controller.StubContextFactory;
+import com.infinitekind.moneydance.model.Account;
+import com.moneydance.apps.md.controller.StubAccountBook;
+import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportComponent;
+import com.moneydance.modules.features.paypalimporter.SupportModule;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,30 +24,20 @@ import org.junit.Test;
  */
 public final class PreferencesTest {
 
+    private static final String ACCOUNT_ID = UUID.randomUUID().toString();
+
     private Preferences prefs;
-    private StubContextFactory factory;
+    private StubAccountBook accountBook;
+    private Account account;
 
     @Before
     public void setUp() {
-        this.factory = new StubContextFactory();
-        this.prefs = new Preferences(
-                new StubAccountBookFactory(
-                        this.factory.getContext().getAccountBook()));
-        Helper.INSTANCE.addObserver(new Observer() {
-            @Override
-            public void update(final Observable observable,
-                    final Object updateAll) {
-                PreferencesTest.this.prefs.setContext(
-                        PreferencesTest.this.factory.getContext());
-            }
-        });
-    }
+        SupportModule supportModule = new SupportModule();
+        SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
+        this.prefs = supportComponent.preferences();
 
-    @Test(expected = AssertionError.class)
-    public void testGetUserPreferencesWithoutAccountBook() {
-        Preferences preferences = new Preferences(new StubAccountBookFactory(null));
-        preferences.setContext(this.factory.getContext());
-        preferences.setAllWritablePreferencesToNull();
+        this.account = supportComponent.accountBook().getRootAccount();
+        this.accountBook = (StubAccountBook) supportComponent.accountBook();
     }
 
     @Test
@@ -107,51 +99,63 @@ public final class PreferencesTest {
 
     @Test
     public void testSetBankingFI() {
-        this.prefs.assignBankingFI(this.factory.getContext().getRootAccount()
-                .getSubAccount(0).getAccountNum());
+        this.accountBook.addAccount(this.account);
+        this.prefs.assignBankingFI(this.account.getUUID());
+        this.accountBook.removeAccount(this.account);
     }
 
     @Test
     public void testSetUsername() {
         final String username = "stub username";
-        this.prefs.setUsername(0, username);
-        assertThat(this.prefs.getUsername(-1), equalTo(username));
+        this.prefs.setUsername(ACCOUNT_ID, username);
+        assertThat(this.prefs.getUsername(ACCOUNT_ID), equalTo(username));
     }
 
     @Test
     public void testGetUsername() {
-        this.prefs.getUsername(-1);
+        this.prefs.getUsername(null);
     }
 
     @Test
     public void testSetPassword() {
         final char[] password = {'s', 't', 'u', 'b', ' ',
                 'p', 'a', 's', 's', 'w', 'o', 'r', 'd'};
-        this.prefs.setPassword(0, password);
-        assertThat(String.valueOf(this.prefs.getPassword(0)),
+        this.prefs.setPassword(ACCOUNT_ID, password);
+        assertThat(String.valueOf(this.prefs.getPassword(ACCOUNT_ID)),
                 equalTo(String.valueOf(password)));
     }
 
     @Test
     public void testGetPassword() {
-        this.prefs.getPassword(0);
+        this.prefs.getPassword(ACCOUNT_ID);
     }
 
     @Test
     public void testSetSignature() {
         final String signature = "stub signature";
-        this.prefs.setSignature(0, signature);
-        assertThat(this.prefs.getSignature(0), equalTo(signature));
+        this.prefs.setSignature(ACCOUNT_ID, signature);
+        assertThat(this.prefs.getSignature(ACCOUNT_ID), equalTo(signature));
     }
 
     @Test
     public void testGetSignature() {
-        this.prefs.getSignature(0);
+        this.prefs.getSignature(ACCOUNT_ID);
+    }
+
+    @Test
+    public void testSetAccountId() {
+        this.prefs.setAccountId(ACCOUNT_ID);
+        assertThat(this.prefs.getAccountId(), equalTo(ACCOUNT_ID));
+    }
+
+    @Test
+    public void testGetAccountId() {
+        this.prefs.getAccountId();
     }
 
     @Test
     public void testHasUsedCombination() {
         final String username = "stub username";
-        assertThat(this.prefs.hasUsedCombination(0, username), equalTo(false));
+        assertThat(this.prefs.hasUsedCombination(ACCOUNT_ID, username), equalTo(false));
     }
 }

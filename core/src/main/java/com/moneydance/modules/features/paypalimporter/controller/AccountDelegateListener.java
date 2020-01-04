@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -21,7 +21,7 @@ final class AccountDelegateListener implements AccountListener {
 
     @Override
     public void accountModified(final Account account) {
-        this.viewController.refreshAccounts(-1);
+        this.viewController.refreshAccounts(null);
     }
 
     @Override
@@ -33,13 +33,13 @@ final class AccountDelegateListener implements AccountListener {
     public void accountDeleted(
             final Account parentAccount,
             final Account account) {
-        this.viewController.refreshAccounts(-1);
+        this.viewController.refreshAccounts(null);
     }
 
     @Override
     public void accountAdded(
             final Account parentAccount,
             final Account account) {
-        this.viewController.refreshAccounts(-1);
+        this.viewController.refreshAccounts(null);
     }
 }

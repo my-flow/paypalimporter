@@ -1,10 +1,9 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -60,6 +59,7 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         {AckCodeType.SUCCESS, AckCodeType.SUCCESSWITHWARNING};
 
     private final Localizable localizable;
+    private final DateConverter dateConverter;
     private final PayPalAPIInterfaceServiceService service;
     private final CurrencyCodeType currencyCode;
     private final Date startDate;
@@ -67,19 +67,23 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
     private final Locale errorLocale;
     private final DateFormat dateFormat;
 
-    public TransactionSearchService(
+    TransactionSearchService(
             final PayPalAPIInterfaceServiceService argService,
+            final Localizable argLocalizable,
+            final DateConverter argDateConverter,
             final CurrencyCodeType argCurrencyCode,
             final Date argStartDate,
             final Date argEndDate,
-            final Locale argErrorLocale) {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+            final Locale argErrorLocale,
+            final DateFormat argDateFormat) {
+        this.localizable = argLocalizable;
+        this.dateConverter = argDateConverter;
         this.service = argService;
         this.currencyCode = argCurrencyCode;
         this.startDate = new Date(argStartDate.getTime());
         this.endDate = new Date(argEndDate.getTime());
         this.errorLocale = argErrorLocale;
-        this.dateFormat = Helper.INSTANCE.getSettings().getDateFormat();
+        this.dateFormat = argDateFormat;
     }
 
     @Override
@@ -94,9 +98,9 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         txnType.setCurrencyCode(this.currencyCode);
         txnType.setTransactionClass(TXN_CLASS);
 
-        final Date sDate = DateConverter.getValidDate(this.startDate);
+        final Date sDate = this.dateConverter.getValidDate(this.startDate);
         txnType.setStartDate(this.dateFormat.format(sDate));
-        final Date eDate = DateConverter.getValidDate(this.endDate);
+        final Date eDate = this.dateConverter.getValidDate(this.endDate);
         txnType.setEndDate(this.dateFormat.format(eDate));
 
         txnType.setErrorLanguage(this.errorLocale.toString());
@@ -118,51 +122,21 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
                 results = txnResponse.getPaymentTransactions();
             }
 
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | SocketException e) {
             logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (SocketException e) {
-            logErrorMessage(e);
-            errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (IOException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SSLConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (HttpErrorException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidResponseDataException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (ClientActionRequiredException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (MissingCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (OAuthException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
         } catch (InterruptedException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
-        } catch (ParserConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SAXException e) {
+            Thread.currentThread().interrupt();
+        } catch (IOException | SSLConfigurationException | HttpErrorException | InvalidCredentialException
+                | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException
+                | OAuthException | ParserConfigurationException | SAXException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }
 
-        return new ServiceResult<PaymentTransactionSearchResultType>(
-                results,
-                errorCode,
-                errorMessage);
+        return new ServiceResult<>(results, errorCode, errorMessage);
     }
 
     private static void logErrorMessage(final Exception exception) {

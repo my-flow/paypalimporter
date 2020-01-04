@@ -1,9 +1,8 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -16,13 +15,13 @@ import com.paypal.sdk.exceptions.OAuthException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -58,10 +57,11 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
     private final PayPalAPIInterfaceServiceService service;
     private final Locale errorLocale;
 
-    public CheckCurrencyService(
+    CheckCurrencyService(
             final PayPalAPIInterfaceServiceService argService,
-            final Locale argErrorLocale) {
-        this.localizable = Helper.INSTANCE.getLocalizable();
+            final Locale argErrorLocale,
+            final Localizable argLocalizable) {
+        this.localizable = argLocalizable;
         this.service = argService;
         this.errorLocale = argErrorLocale;
     }
@@ -89,62 +89,30 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
             }
 
             if (Arrays.asList(ACK_CODES).contains(txnResponse.getAck())) {
-                results = new ArrayList<CurrencyCodeType>(txnResponse
-                        .getBalanceHoldings().size());
+                txnResponse.getBalanceHoldings()
+                        .forEach(amount -> LOG.info(String.format("Available currency: %s", amount.getCurrencyID())));
 
-                for (BasicAmountType amount
-                        : txnResponse.getBalanceHoldings()) {
-                    LOG.info(String.format(
-                            "Available currency: %s", amount.getCurrencyID()));
-                    results.add(amount.getCurrencyID());
-                }
+                results = txnResponse.getBalanceHoldings()
+                        .stream()
+                        .map(BasicAmountType::getCurrencyID)
+                        .collect(Collectors.toList());
             }
 
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | SocketException e) {
             logErrorMessage(e);
             errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (SocketException e) {
-            logErrorMessage(e);
-            errorMessage = this.localizable.getErrorMessageConnectionFailed();
-        } catch (IOException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SSLConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (HttpErrorException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (InvalidResponseDataException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (ClientActionRequiredException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (MissingCredentialException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (OAuthException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
         } catch (InterruptedException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
-        } catch (ParserConfigurationException e) {
-            logErrorMessage(e);
-            errorMessage = e.getLocalizedMessage();
-        } catch (SAXException e) {
+            Thread.currentThread().interrupt();
+        } catch (IOException | SSLConfigurationException | InvalidCredentialException | HttpErrorException
+                | InvalidResponseDataException | ClientActionRequiredException | MissingCredentialException
+                | SAXException | OAuthException | ParserConfigurationException e) {
             logErrorMessage(e);
             errorMessage = e.getLocalizedMessage();
         }
 
-        return new ServiceResult<CurrencyCodeType>(
-                results,
-                errorCode,
-                errorMessage);
+        return new ServiceResult<>(results, errorCode, errorMessage);
     }
 
     private static void logErrorMessage(final Exception exception) {

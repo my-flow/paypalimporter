@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2018 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.integration;
 
@@ -7,15 +7,15 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountUtil;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
-import com.moneydance.modules.features.paypalimporter.util.Helper;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -30,9 +30,13 @@ public final class PayPalOnlineService {
             .getLogger(PayPalOnlineService.class.getName());
 
     private final OnlineService onlineService;
+    private final String fiId;
 
-    PayPalOnlineService(final OnlineService argOnlineService) {
+    PayPalOnlineService(
+            final OnlineService argOnlineService,
+            final String argFIId) {
         this.onlineService = argOnlineService;
+        this.fiId = argFIId;
     }
 
     /**
@@ -46,22 +50,19 @@ public final class PayPalOnlineService {
     @SuppressWarnings("nullness")
     public void assignToAccount(
             final IAccountBook accountBook,
-            final int accountId) {
-        final Account account = accountBook.getAccountByNum(accountId);
+            final String accountId) {
+        final Account account = accountBook.getAccountById(accountId);
 
         if (this.onlineService.isSameAs(account.getBankingFI())) {
             return;
         }
 
-        Account nextAccount;
-        for (Iterator<Account> iterator = AccountUtil.getAccountIterator(
-                accountBook.getWrappedOriginal());
-            iterator.hasNext();) {
-            nextAccount = iterator.next();
-            if (this.onlineService.isSameAs(nextAccount.getBankingFI())) {
-                nextAccount.setBankingFI(null);
-            }
-        }
+        Iterable<Account> iterable = () -> AccountUtil.getAccountIterator(accountBook.getWrappedOriginal());
+        StreamSupport
+                .stream(iterable.spliterator(), false)
+                .filter(nextAccount -> this.onlineService.isSameAs(nextAccount.getBankingFI()))
+                .forEach(nextAccount -> nextAccount.setBankingFI(null));
+
         if (account.getBankingFI() == null) {
             // never override a preexisting OFX setting
             account.setBankingFI(this.onlineService);
@@ -69,44 +70,41 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("nullness")
-    public void setUsername(final int accountId, @Nullable final String username) {
+    public void setUsername(final String accountId, @Nullable final String username) {
         this.onlineService.setUserId(
                 buildRealm(accountId),
                 null,
                 username);
-        this.onlineService.setMsgSetSignonRealm(
-                accountId,
-                buildRealm(accountId));
     }
 
     @SuppressWarnings("nullness")
-    public String getUsername(final int accountId) {
+    public String getUsername(final String accountId) {
         String username = this.onlineService.getUserId(
                 buildRealm(accountId),
                 null);
-        final String firstRealm = this.getFirstRealm();
-        if (StringUtils.isBlank(username) && firstRealm != null) {
-            username = this.onlineService.getUserId(firstRealm, null);
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (firstRealm.isPresent() && StringUtils.isBlank(username)) {
+            username = this.onlineService.getUserId(firstRealm.get(), null);
         }
         return username;
     }
 
     @SuppressWarnings("nullness")
-    public void setPassword(final int accountId, @Nullable final char[] password) {
+    public void setPassword(final String accountId, @Nonnull final char[] password) {
         this.onlineService.cacheAuthentication(
                 buildAuthKey(buildRealm(accountId)),
                 String.valueOf(password));
     }
 
     @SuppressWarnings("nullness")
-    public char[] getPassword(final int accountId) {
+    public char[] getPassword(final String accountId) {
         Object authObj = this.onlineService.getCachedAuthentication(
                 buildAuthKey(buildRealm(accountId)));
         char[] result;
-        final String firstRealm = this.getFirstRealm();
-        if (authObj == null && firstRealm != null) {
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (authObj == null && firstRealm.isPresent()) {
             authObj = this.onlineService.getCachedAuthentication(
-                    buildAuthKey(firstRealm));
+                    buildAuthKey(firstRealm.get()));
         }
         if (authObj == null) {
             result = null;
@@ -117,50 +115,62 @@ public final class PayPalOnlineService {
     }
 
     @SuppressWarnings("initialization")
-    public void setSignature(final int accountId, @Nullable final String signature) {
-        this.onlineService.addParameters(new HashMap<String, String>() {
-            private static final long serialVersionUID = 1L;
-            {
-                this.put(buildSignatureKey(buildRealm(accountId)), signature);
-            }
-        });
+    public void setSignature(final String accountId, @Nullable final String signature) {
+        this.onlineService.setParameter(buildSignatureKey(buildRealm(accountId)), signature);
     }
 
     @SuppressWarnings("nullness")
-    public String getSignature(final int accountId) {
+    public String getSignature(final String accountId) {
         String signature = this.onlineService.getParameter(
                 buildSignatureKey(buildRealm(accountId)),
                 null);
-        final String firstRealm = this.getFirstRealm();
-        if (signature == null && firstRealm != null) {
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (signature == null && firstRealm.isPresent()) {
             signature = this.onlineService.getParameter(
-                    buildSignatureKey(firstRealm), null);
+                    buildSignatureKey(firstRealm.get()), null);
         }
         return signature;
     }
 
-    static String buildRealm(final int accountId) {
-        if (accountId >= 0) {
-            return String.format("realm_%d", accountId);
+    public void setAccountId(final String accountId) {
+        this.onlineService.setParameter(buildAccountKey(buildRealm(null)), accountId);
+    }
+
+    public String getAccountId() {
+        String accountId = this.onlineService.getParameter(
+                buildAccountKey(buildRealm(null)),
+                null);
+        final Optional<String> firstRealm = this.getFirstRealm();
+        if (accountId == null && firstRealm.isPresent()) {
+            accountId = this.onlineService.getParameter(
+                    buildAccountKey(firstRealm.get()), null);
+        }
+
+        return accountId;
+    }
+
+    static String buildRealm(final String accountId) {
+        if (accountId != null && (!NumberUtils.isNumber(accountId) || Integer.parseInt(accountId) >= 0)) {
+            return String.format("realm_%s", accountId);
         }
         return OnlineService.DEFAULT_REQ_REALM;
     }
 
-    static String buildSignatureKey(final String realm) {
+    private static String buildSignatureKey(final String realm) {
         return String.format("so_signature_%s", realm);
     }
 
-    @Nullable private String getFirstRealm() {
-        final List<String> realms = this.onlineService.getRealms();
-        if (realms != null && !realms.isEmpty()) {
-            LOG.config(String.format("realms[0]: %s", realms.get(0)));
-            return realms.get(0);
-        }
-        return null;
+    private static String buildAccountKey(final String realm) {
+        return String.format("so_account_%s", realm);
     }
 
-    private static String buildAuthKey(final String realm) {
-        return String.format("%s:%s",
-                Helper.INSTANCE.getSettings().getFIId(), realm);
+    private Optional<String> getFirstRealm() {
+        final Optional<String> realm = this.onlineService.getRealms().stream().findFirst();
+        LOG.config(String.format("realms[0]: %s", realm));
+        return realm;
+    }
+
+    private String buildAuthKey(final String realm) {
+        return String.format("%s:%s", this.fiId, realm);
     }
 }
