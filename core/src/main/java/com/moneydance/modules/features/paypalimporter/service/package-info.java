@@ -1,5 +1,5 @@
 // PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// Copyright (C) 2013-2020 Florian J. Breunig. All rights reserved.
 
 /**
  * Provides service classes to connect to PayPal's Merchant APIs via SOAP.
