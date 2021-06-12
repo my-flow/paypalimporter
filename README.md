@@ -4,7 +4,7 @@ PayPal Importer for Moneydance is an extension for
 [Moneydance](http://www.moneydance.com) that imports transactions from PayPal
 into Moneydance. For more information on where to download and how to install
 the extension please visit the
-[project page](http://my-flow.github.io/paypalimporter/).
+[project page](https://www.my-flow.com/paypalimporter/).
 
 ## Build Prerequisites
 Java Development Kit, version 8
@@ -30,8 +30,8 @@ mock-ups) and the test cases. It depends from the core project.
 
 ## Documentation
 * [Changelog](CHANGELOG.md)
-* [PayPal Importer API](http://my-flow.github.io/paypalimporter/docs/api/)
-* [Coverage Report](http://my-flow.github.io/paypalimporter/docs/coverage-report/)
+* [PayPal Importer API](https://www.my-flow.com/paypalimporter/docs/api/)
+* [Coverage Report](https://www.my-flow.com/paypalimporter/docs/coverage-report/)
 * [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
 
 ## License
