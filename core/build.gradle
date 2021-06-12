@@ -7,8 +7,8 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     compile(':moneydance:1358')
-    compile('com.google.dagger:dagger:2.22.1')
-    annotationProcessor('com.google.dagger:dagger-compiler:2.22.1')
+    compile('com.google.dagger:dagger:2.37')
+    annotationProcessor('com.google.dagger:dagger-compiler:2.37')
     compile(':prompt:')
     compile(':paypal-core-paypalimporter:1.7.2')
     compile('com.paypal.sdk:merchantsdk:2.15.122') {
@@ -20,14 +20,14 @@ dependencies {
     compile('com.jgoodies:jgoodies-validation:2.5.1') {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
-    compile('org.apache.commons:commons-lang3:3.9')
+    compile('org.apache.commons:commons-lang3:3.12.0')
     compile('commons-configuration:commons-configuration:1.10')
-    compile('org.apache.commons:commons-text:1.6')
-    compile('org.slf4j:slf4j-api:1.7.26')
-    compile('org.checkerframework:checker:2.8.1')
+    compile('org.apache.commons:commons-text:1.9')
+    compile('org.slf4j:slf4j-api:1.7.30')
+    compile('org.checkerframework:checker:3.14.0')
     compile('com.google.code.findbugs:jsr305:3.0.2')
 
-    spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.5'
+    spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.7'
 }
 
 jar {
@@ -54,11 +54,11 @@ shadowJar {
 
     dependencies {
         include dependency('javax.inject:javax.inject:1')
-        include dependency('com.google.dagger:dagger:2.22.1')
+        include dependency('com.google.dagger:dagger:2.37')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.9')
-        include dependency('org.apache.commons:commons-text:1.6')
+        include dependency('org.apache.commons:commons-lang3:3.12')
+        include dependency('org.apache.commons:commons-text:1.9')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
@@ -67,8 +67,8 @@ shadowJar {
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
         include dependency(':prompt:')
-        include dependency('org.slf4j:slf4j-api:1.7.26')
-        include dependency('org.slf4j:slf4j-nop:1.7.26')
+        include dependency('org.slf4j:slf4j-api:1.7.30')
+        include dependency('org.slf4j:slf4j-nop:1.7.30')
     }
     relocate 'com.jgoodies', 'com.moneydance.modules.features.paypalimporter.jgoodies'
 }
@@ -95,12 +95,12 @@ javadoc {
     options.docTitle = 'PayPal Importer for Moneydance'
     options.windowTitle = 'PayPal Importer for Moneydance'
     options.links = [
-            'http://download.oracle.com/javase/8/docs/api/',
-            'http://moneydance.com/dev/apidoc/',
+            'https://docs.oracle.com/en/java/javase/11/docs/api/',
+            'https://infinitekind.com/dev/apidoc/',
             'http://www.slf4j.org/apidocs/',
             'https://commons.apache.org/proper/commons-configuration/javadocs/v1.10/apidocs/',
-            'https://commons.apache.org/proper/commons-lang/javadocs/api-3.9/',
-            'https://commons.apache.org/proper/commons-text/javadocs/api-1.6/',
+            'https://commons.apache.org/proper/commons-lang/javadocs/api-release/',
+            'https://commons.apache.org/proper/commons-text/javadocs/api-release/',
             'http://commons.apache.org/logging/apidocs/'
     ]
     options.footer = '<a href="https://github.com/my-flow/paypalimporter">PayPal Importer on GitHub</a>'

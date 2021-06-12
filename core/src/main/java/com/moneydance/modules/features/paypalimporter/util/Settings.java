@@ -40,11 +40,13 @@ public final class Settings {
     @SuppressWarnings("nullness")
     Settings(final String resource)
             throws IOException, ConfigurationException, ParseException {
-            InputStream inputStream = Helper.getInputStreamFromResource(resource);
             final AbstractFileConfiguration abstractFileConfiguration =
                     new PropertiesConfiguration();
-            abstractFileConfiguration.load(inputStream);
-            this.config = abstractFileConfiguration;
+            try (InputStream inputStream =
+                         Helper.getInputStreamFromResource(resource)) {
+                abstractFileConfiguration.load(inputStream);
+            }
+        this.config = abstractFileConfiguration;
         this.iconImage = getImage(this.config.getString("icon_resource"));
         this.helpImage = getImage(this.config.getString("help_resource"));
         this.dateFormat = new SimpleDateFormat(
@@ -211,8 +213,9 @@ public final class Settings {
     }
 
     private static Image getImage(final String resource) throws IOException {
-        InputStream inputStream = Helper.getInputStreamFromResource(
-                resource);
-        return ImageIO.read(inputStream);
+        try (InputStream inputStream = Helper.getInputStreamFromResource(
+                resource)) {
+            return ImageIO.read(inputStream);
+        }
     }
 }

@@ -1,4 +1,4 @@
-# PayPal Importer [![Build Status](https://travis-ci.org/my-flow/paypalimporter.svg?branch=master)](https://travis-ci.org/my-flow/paypalimporter)
+# PayPal Importer [![Build Status](https://travis-ci.org/my-flow/paypalimporter.svg?branch=develop)](https://travis-ci.org/my-flow/paypalimporter)
 
 PayPal Importer for Moneydance is an extension for
 [Moneydance](http://www.moneydance.com) that imports transactions from PayPal
@@ -7,7 +7,7 @@ the extension please visit the
 [project page](https://www.my-flow.com/paypalimporter/).
 
 ## Build Prerequisites
-Java Development Kit, version 8
+Java Development Kit, version 11
 
 ## Building the extension
 1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the
