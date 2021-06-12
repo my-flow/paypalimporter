@@ -9,7 +9,8 @@ import com.infinitekind.moneydance.model.CurrencyUtil;
 import com.moneydance.apps.md.controller.Util;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
-import java.util.Calendar;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,19 +52,18 @@ public final class CurrencyMapperUtil {
                     .getCurrencyByIDString(name);
             if (currencyType == null) {
                 // no existing currency type matches, so create a new one
-               currencyType = CurrencyType.currencyFromFields(
-                     -1,
-                     name,
-                     name,
-                     1.0D,
-                     2,
-                     name,
-                     "",
-                     name,
-                     Util.convertDateToInt(
-                             Calendar.getInstance().getTime()),
-                             CurrencyType.CURRTYPE_CURRENCY,
-                             table);
+                currencyType = CurrencyType.currencyFromFields(
+                        -1,
+                        name,
+                        name,
+                        1.0D,
+                        2,
+                        name,
+                        "",
+                        name,
+                        Util.convertDateToInt(Date.from(Instant.now())),
+                        CurrencyType.CURRTYPE_CURRENCY,
+                        table);
             }
             table.addCurrencyType(currencyType);
         }

@@ -121,9 +121,8 @@ public final class ServiceProviderImpl implements ServiceProvider {
             final char[] password,
             final String signature) {
         final Properties config = new Properties();
-        try {
-            InputStream inputStream =
-                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
+        try (InputStream inputStream =
+                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE)) {
             config.load(inputStream);
         } catch (IllegalArgumentException | IOException e) {
             final String message = e.getMessage();

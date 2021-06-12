@@ -35,6 +35,7 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 /**
  * @author Florian J. Breunig
  */
+@SuppressWarnings("PMD.GodClass")
 public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
     @Nullable private List<BasicAmountType> balanceHoldings;
