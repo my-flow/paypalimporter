@@ -11,7 +11,6 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
         classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'net.sf.proguard:proguard-gradle:6.2.2'
@@ -21,8 +20,7 @@ buildscript {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'net.ltgt.apt'
+    apply plugin: 'java-library'
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
     apply plugin: 'idea'

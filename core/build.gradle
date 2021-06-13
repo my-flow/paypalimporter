@@ -6,31 +6,31 @@ import proguard.gradle.ProGuardTask
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-    compile(':moneydance:1358')
-    compile('com.google.dagger:dagger:2.37')
+    api(':moneydance:1358')
+    api('com.google.dagger:dagger:2.37')
     annotationProcessor('com.google.dagger:dagger-compiler:2.37')
-    compile(':paypal-core-paypalimporter:1.7.2')
-    compile('com.paypal.sdk:merchantsdk:2.15.122') {
+    api(':paypal-core-paypalimporter:1.7.2')
+    api('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
     }
-    compile('net.jcip:jcip-annotations:1.0')
-    compile(':jgoodies-common:1.9.0')
-    compile(':jgoodies-forms:1.10')
-    compile('com.jgoodies:jgoodies-validation:2.5.1') {
+    api('net.jcip:jcip-annotations:1.0')
+    api(':jgoodies-common:1.9.0')
+    api(':jgoodies-forms:1.10')
+    api('com.jgoodies:jgoodies-validation:2.5.1') {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
-    compile('org.apache.commons:commons-lang3:3.12.0')
-    compile('commons-configuration:commons-configuration:1.10')
-    compile('org.apache.commons:commons-text:1.9')
-    compile('org.slf4j:slf4j-api:1.7.30')
-    compile('org.checkerframework:checker:3.14.0')
-    compile('com.google.code.findbugs:jsr305:3.0.2')
+    api('org.apache.commons:commons-lang3:3.12.0')
+    api('commons-configuration:commons-configuration:1.10')
+    api('org.apache.commons:commons-text:1.9')
+    api('org.slf4j:slf4j-api:1.7.30')
+    api('org.checkerframework:checker:3.14.0')
+    api('com.google.code.findbugs:jsr305:3.0.2')
 
     spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.7'
 }
 
 jar {
-    baseName rootProject.name
+    archiveBaseName.set(rootProject.name)
     manifest {
         attributes ((Attributes.Name.IMPLEMENTATION_TITLE.toString()): getConfigValueForKey("module_name"),
                     (Attributes.Name.IMPLEMENTATION_VERSION.toString()): getConfigValueForKey("module_build"),
@@ -46,7 +46,7 @@ assemble.dependsOn shadowJar
 build.dependsOn shadowJar
 
 shadowJar {
-    baseName rootProject.name
+    archiveBaseName.set(rootProject.name)
     from 'NOTICE'
     from 'LICENSE'
     exclude 'META-INF/**/*'
