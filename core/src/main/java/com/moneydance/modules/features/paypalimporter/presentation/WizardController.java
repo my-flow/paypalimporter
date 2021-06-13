@@ -115,13 +115,13 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("nullness")
     public final void setInputData(final InputData inputData) {
-        this.txtUsername.setText(inputData.getUsername().orElse(null));
+        inputData.getUsername().ifPresent(this.txtUsername::setText);
 
         AtomicReference<String> password = new AtomicReference<>(null);
         inputData.getPassword(true).ifPresent(pass -> password.set(String.valueOf(pass)));
         this.txtPassword.setText(password.get());
 
-        this.txtSignature.setText(inputData.getSignature().orElse(null));
+        inputData.getSignature().ifPresent(this.txtSignature::setText);
 
         inputData.getDateRange().ifPresent(dateRange -> {
                 this.dateRanger.setStartDate(dateRange.getStartDateInt());

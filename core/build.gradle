@@ -9,7 +9,6 @@ dependencies {
     compile(':moneydance:1358')
     compile('com.google.dagger:dagger:2.37')
     annotationProcessor('com.google.dagger:dagger-compiler:2.37')
-    compile(':prompt:')
     compile(':paypal-core-paypalimporter:1.7.2')
     compile('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
@@ -66,7 +65,6 @@ shadowJar {
         include dependency('commons-logging:commons-logging:1.2')
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
-        include dependency(':prompt:')
         include dependency('org.slf4j:slf4j-api:1.7.30')
         include dependency('org.slf4j:slf4j-nop:1.7.30')
     }
