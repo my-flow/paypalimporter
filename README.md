@@ -35,5 +35,5 @@ mock-ups) and the test cases. It depends from the core project.
 * [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
 
 ## License
-Copyright (C) 2013-2020 [Florian J. Breunig](http://www.my-flow.com).
+Copyright (C) 2013-2021 [Florian J. Breunig](http://www.my-flow.com).
 All rights reserved.
