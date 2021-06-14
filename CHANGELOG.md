@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project does *not* adhere to Semantic Versioning.
 
-## [Unreleased]
+## [v9] - 2021-06-13
 ### Fixed
 - Crash in Moneydance 2021.1 (3069) when using the new "Default" appearance on macOS ([#15]).
 - Crash when importing into new account.
@@ -93,6 +93,7 @@ and this project does *not* adhere to Semantic Versioning.
 [#4]: https://github.com/my-flow/paypalimporter/issues/4
 [#2]: https://github.com/my-flow/paypalimporter/issues/2
 
+[v9]: https://github.com/my-flow/paypalimporter/compare/v8...v9
 [v8]: https://github.com/my-flow/paypalimporter/compare/v7...v8
 [v7]: https://github.com/my-flow/paypalimporter/compare/v6...v7
 [v6]: https://github.com/my-flow/paypalimporter/compare/v5...v6

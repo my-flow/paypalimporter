@@ -20,7 +20,7 @@ repository.
 
 ## Running the extension
 After the build process has succeeded, the resulting extension file
-`core/build/distributions/paypalimporter.mxt` can be added to Moneydance.
+`core/build/distributions/paypalimporter-v9.mxt` can be added to Moneydance.
 
 ## Project Structure
 The project consists of 2 gradle sub-projects:
