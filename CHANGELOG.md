@@ -7,6 +7,7 @@ and this project does *not* adhere to Semantic Versioning.
 ## [Unreleased]
 ### Fixed
 - Crash in Moneydance 2021.1 (3069) when using the new "Default" appearance on macOS ([#15]).
+- Crash when importing into new account.
 
 
 ## [v8] - 2019-10-07

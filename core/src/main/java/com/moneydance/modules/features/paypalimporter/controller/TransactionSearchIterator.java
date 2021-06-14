@@ -57,8 +57,6 @@ final class TransactionSearchIterator implements ViewController {
     private static final Logger LOG = Logger.getLogger(
             TransactionSearchIterator.class.getName());
 
-    private static final String KEY_ACCOUNT_URL = "account_url";
-
     private final ViewController viewController;
     private final IAccountBook accountBook;
     private final ServiceProvider serviceProvider;
@@ -93,7 +91,7 @@ final class TransactionSearchIterator implements ViewController {
         this.requestHandler = new TransactionSearchRequestHandler(
                 this,
                 this.accountBook,
-                argInputData.getAccountId().orElseThrow(AssertionError::new),
+                argInputData.getAccountId().orElse(null),
                 argDateFormat,
                 argLocalizable);
         this.resultSet = new LinkedHashSet<>();
@@ -134,7 +132,7 @@ final class TransactionSearchIterator implements ViewController {
 
             account = findOrCreateAccount(
                     this.accountBook,
-                    this.inputData.getAccountId().orElseThrow(AssertionError::new),
+                    this.inputData.getAccountId().orElse(null),
                     this.currencyType);
             final OnlineTxnList txnList = account.getDownloadedTxns();
 
@@ -192,14 +190,9 @@ final class TransactionSearchIterator implements ViewController {
         if (account == null) {
             // lazy creation of a Moneydance account if none has been given
             LOG.info("Creating new account");
-            account = Account.makeAccount(
-                    argAccountBook.getWrappedOriginal(),
-                    Account.AccountType.BANK,
-                    argAccountBook.getRootAccount());
-            account.setAccountName(this.localizable.getNameNewAccount());
-            account.setCurrencyType(argCurrencyType);
-            account.setParameter(
-                    KEY_ACCOUNT_URL,
+            account = this.accountBook.createBankAccount(
+                    this.localizable.getNameNewAccount(),
+                    argCurrencyType,
                     this.localizable.getUrlNewAccount());
         }
         return account;

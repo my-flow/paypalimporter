@@ -53,7 +53,7 @@ public final class TransactionSearchIteratorTest {
                 "mock username",
                 password,
                 "mock signature",
-                "mock account ID");
+                this.accountBook.getRootAccount().getUUID());
 
         StubContextFactory factory = new StubContextFactory();
         this.iterator = new TransactionSearchIterator(
