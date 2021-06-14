@@ -4,10 +4,12 @@
 package com.moneydance.modules.features.paypalimporter.model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
@@ -51,6 +53,16 @@ public final class AccountBookTest {
     @Test
     public void testGetRootAccount() {
         assertThat(this.accountBook.getRootAccount(), notNullValue());
+    }
+
+    @Test
+    public void testCreateAccount() {
+        Account account = this.accountBook.createBankAccount(
+                "new account name",
+                null,
+                "account URL");
+        assertThat(account, notNullValue());
+        assertThat(this.accountBook.getAccountById(account.getUUID()), is(account));
     }
 
     @Test

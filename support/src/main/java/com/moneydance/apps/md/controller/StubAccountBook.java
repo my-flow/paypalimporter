@@ -7,6 +7,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.AccountListener;
 import com.infinitekind.moneydance.model.CurrencyTable;
+import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.MoneydanceSyncableItem;
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
@@ -32,15 +33,22 @@ public final class StubAccountBook implements IAccountBook {
             @Nullable final OnlineInfo argOnlineInfo) {
         this.accountBook = argAccountBook;
         this.accountsById = new Hashtable<>();
+        if (argAccountBook != null) {
+            addAccount(argAccountBook.getRootAccount());
+        }
         this.onlineInfo = argOnlineInfo;
     }
 
     public void addAccount(final Account account) {
-        this.accountsById.put(account.getUUID(), account);
+        if (account != null) {
+            this.accountsById.put(account.getUUID(), account);
+        }
     }
 
     public void removeAccount(final Account account) {
-        this.accountsById.remove(account.getUUID());
+        if (account != null) {
+            this.accountsById.remove(account.getUUID());
+        }
     }
 
     @Override
@@ -70,6 +78,22 @@ public final class StubAccountBook implements IAccountBook {
     @Override
     public Account getRootAccount() {
         return this.accountBook.getRootAccount();
+    }
+
+    @Override
+    public Account createBankAccount(
+            final String newAccountName,
+            final CurrencyType argCurrencyType,
+            final String accountURL) {
+        Account account = Account.makeAccount(
+                this.accountBook,
+                Account.AccountType.BANK,
+                this.getRootAccount());
+        account.setAccountName(newAccountName);
+        account.setCurrencyType(argCurrencyType);
+        account.setParameter(KEY_ACCOUNT_URL, accountURL);
+        addAccount(account);
+        return account;
     }
 
     @Override
