@@ -53,6 +53,7 @@
 
     <rule ref="category/java/multithreading.xml">
         <exclude name="AvoidSynchronizedAtMethodLevel" />
+        <exclude name="DoNotUseThreads" />
     </rule>
 
     <rule ref="category/java/performance.xml" />

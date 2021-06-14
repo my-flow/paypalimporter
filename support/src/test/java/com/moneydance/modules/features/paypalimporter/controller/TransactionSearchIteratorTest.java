@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.controller;
 
@@ -53,7 +53,7 @@ public final class TransactionSearchIteratorTest {
                 "mock username",
                 password,
                 "mock signature",
-                "mock account ID");
+                this.accountBook.getRootAccount().getUUID());
 
         StubContextFactory factory = new StubContextFactory();
         this.iterator = new TransactionSearchIterator(

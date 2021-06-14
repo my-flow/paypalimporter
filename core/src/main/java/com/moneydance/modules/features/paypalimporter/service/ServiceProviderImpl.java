@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
@@ -121,9 +121,8 @@ public final class ServiceProviderImpl implements ServiceProvider {
             final char[] password,
             final String signature) {
         final Properties config = new Properties();
-        try {
-            InputStream inputStream =
-                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE);
+        try (InputStream inputStream =
+                    Helper.getInputStreamFromResource(PROPERTIES_RESOURCE)) {
             config.load(inputStream);
         } catch (IllegalArgumentException | IOException e) {
             final String message = e.getMessage();

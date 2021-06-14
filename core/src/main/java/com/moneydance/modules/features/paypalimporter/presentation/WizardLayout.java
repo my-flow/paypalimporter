@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -32,8 +32,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-
-import org.jdesktop.xswingx.PromptSupport;
 
 /**
  * This view class creates the static layout based on JGoodies Forms.
@@ -78,10 +76,11 @@ class WizardLayout extends JDialog {
 
         this.setTitle(localizer.getString("title_wizard"));
 
-        this.txtUsername = new JTextField();
+        this.txtUsername = new PTextField(localizer.getString("hint_username"));
         this.btnHelp = new HelpButton(settings.getHelpImage());
         this.txtPassword = new JPasswordField();
-        this.txtSignature = new JTextField();
+        this.txtPassword.setToolTipText(localizer.getString("hint_password"));
+        this.txtSignature = new PTextField(localizer.getString("hint_signature"));
         this.rdBtnExistingAcct = new JRadioButton();
         this.comboBoxAccts = new JComboBox<>();
         this.rdBtnNewAcct = new JRadioButton();
@@ -89,19 +88,6 @@ class WizardLayout extends JDialog {
         this.progressBar = new JProgressBar();
         this.btnCancel = new JButton();
         this.btnProceed = new JButton();
-
-        PromptSupport.setPrompt(
-            localizer.getString("hint_username"),
-            this.txtUsername);
-        PromptSupport.setPrompt(
-            localizer.getString("hint_password"),
-            this.txtPassword);
-        PromptSupport.setPrompt(
-            localizer.getString("hint_signature"),
-            this.txtSignature);
-        this.txtUsername.setToolTipText(null);
-        this.txtPassword.setToolTipText(null);
-        this.txtSignature.setToolTipText(null);
 
         Color background = mdGUI.getColors().defaultBackground;
         this.rdBtnExistingAcct.setBackground(background);

@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.service;
 
@@ -35,6 +35,7 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 /**
  * @author Florian J. Breunig
  */
+@SuppressWarnings("PMD.GodClass")
 public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
     @Nullable private List<BasicAmountType> balanceHoldings;

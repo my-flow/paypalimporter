@@ -1,8 +1,10 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
+import com.jgoodies.common.internal.ResourceBundleAccessor;
+import com.jgoodies.common.internal.StringResourceAccessor;
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.Validator;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
@@ -19,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class InputDataValidator implements Validator<InputData> {
 
     private final Localizable localizable;
+    private final StringResourceAccessor localizer;
 
     /**
      * @author Florian J. Breunig
@@ -32,6 +35,7 @@ public final class InputDataValidator implements Validator<InputData> {
 
     public InputDataValidator(final Localizable argLocalizable) {
         this.localizable = argLocalizable;
+        this.localizer = new ResourceBundleAccessor(argLocalizable.getResourceBundle());
     }
 
     @Override
@@ -61,9 +65,10 @@ public final class InputDataValidator implements Validator<InputData> {
     }
 
     @SuppressWarnings("nullness")
-    private static boolean isValidUsername(final InputData data) {
+    private boolean isValidUsername(final InputData data) {
         final Optional<String> username = data.getUsername();
-        return username.isPresent() && StringUtils.isNotBlank(username.get());
+        return username.isPresent() && StringUtils.isNotBlank(username.get())
+                && !username.get().equals(this.localizer.getString("hint_username"));
     }
 
     @SuppressWarnings("nullness")
@@ -74,9 +79,10 @@ public final class InputDataValidator implements Validator<InputData> {
     }
 
     @SuppressWarnings("nullness")
-    private static boolean isValidSignature(final InputData data) {
+    private boolean isValidSignature(final InputData data) {
         final Optional<String> signature = data.getSignature();
-        return signature.isPresent() && StringUtils.isNotBlank(signature.get());
+        return signature.isPresent() && StringUtils.isNotBlank(signature.get())
+                && !signature.get().equals(this.localizer.getString("hint_signature"));
     }
 
     private static boolean isValidDateRange(final InputData data) {
