@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.model;
 
@@ -7,6 +7,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.AccountListener;
 import com.infinitekind.moneydance.model.CurrencyTable;
+import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.MoneydanceSyncableItem;
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.apps.md.controller.FeatureModuleContext;
@@ -47,6 +48,23 @@ final class AccountBookImpl implements IAccountBook {
     @Override
     public Account getRootAccount() {
         return this.accountBook.getRootAccount();
+    }
+
+    @Override
+    public Account createBankAccount(
+            final String newAccountName,
+            final CurrencyType argCurrencyType,
+            final String accountURL) {
+        Account account = Account.makeAccount(
+                this.accountBook,
+                Account.AccountType.BANK,
+                this.getRootAccount());
+        account.setAccountName(newAccountName);
+        account.setCurrencyType(argCurrencyType);
+        account.setParameter(KEY_ACCOUNT_URL, accountURL);
+        this.accountBook.registerNewItemWithoutSyncing(account);
+        this.accountBook.logModifiedItem(account);
+        return account;
     }
 
     @Override

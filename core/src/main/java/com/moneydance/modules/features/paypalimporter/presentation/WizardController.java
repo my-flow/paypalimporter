@@ -1,5 +1,5 @@
-// PayPal Importer for Moneydance - http://my-flow.github.io/paypalimporter/
-// Copyright (C) 2013-2019 Florian J. Breunig. All rights reserved.
+// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
+// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 package com.moneydance.modules.features.paypalimporter.presentation;
 
@@ -115,13 +115,13 @@ implements ActionListener, WindowListener {
 
     @SuppressWarnings("nullness")
     public final void setInputData(final InputData inputData) {
-        this.txtUsername.setText(inputData.getUsername().orElse(null));
+        inputData.getUsername().ifPresent(this.txtUsername::setText);
 
         AtomicReference<String> password = new AtomicReference<>(null);
         inputData.getPassword(true).ifPresent(pass -> password.set(String.valueOf(pass)));
         this.txtPassword.setText(password.get());
 
-        this.txtSignature.setText(inputData.getSignature().orElse(null));
+        inputData.getSignature().ifPresent(this.txtSignature::setText);
 
         inputData.getDateRange().ifPresent(dateRange -> {
                 this.dateRanger.setStartDate(dateRange.getStartDateInt());

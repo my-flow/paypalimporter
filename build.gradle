@@ -6,24 +6,21 @@ import org.apache.commons.configuration.PropertiesConfiguration
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'net.sf.proguard:proguard-gradle:6.1.0'
-        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0'
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
+        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
+		classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.1"
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
     }
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'net.ltgt.apt'
+    apply plugin: 'java-library'
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
     apply plugin: 'idea'
@@ -46,21 +43,21 @@ subprojects {
     }
 
     spotbugs {
-        toolVersion = "3.1.12"
         effort = "max"
         reportLevel = "medium"
-        excludeFilter file("$rootDir/config/spotbugs-exclude.xml")
+		excludeFilter = file("$rootDir/config/spotbugs-exclude.xml")
     }
 
-    tasks.withType(com.github.spotbugs.SpotBugsTask) {
-        reports {
-            xml.enabled = false
-            html.enabled = true
-        }
-    }
+	spotbugsMain {
+		reports {
+			html {
+				enabled = true
+			}
+		}
+	}
 
     jacoco {
-        toolVersion = "0.8.3"
+        toolVersion = "0.8.7"
     }
 
     task checkstyleHtml(dependsOn: checkstyleMain) {
@@ -73,8 +70,12 @@ subprojects {
 
     checkstyleMain.finalizedBy checkstyleHtml
 
-    pmd {
-        toolVersion = "6.14.0"
+	checkstyle {
+		toolVersion = "8.43"
+	}
+
+	pmd {
+        toolVersion = "6.35.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
