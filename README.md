@@ -1,4 +1,5 @@
-# PayPal Importer [![Build Status](https://travis-ci.org/my-flow/paypalimporter.svg?branch=develop)](https://travis-ci.org/my-flow/paypalimporter)
+# PayPal Importer
+[![GitHub release](https://img.shields.io/github/v/release/my-flow/paypalimporter)](https://github.com/my-flow/paypalimporter/releases/latest) [![Build Status](https://img.shields.io/travis/my-flow/paypalimporter/develop)](https://app.travis-ci.com/github/my-flow/paypalimporter) [![Quality Gate Status](https://img.shields.io/sonar/tech_debt/paypalimporter:core?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/component_measures?id=paypalimporter%3Acore&metric=sqale_debt_ratio)
 
 PayPal Importer for Moneydance is an extension for
 [Moneydance](http://www.moneydance.com) that imports transactions from PayPal
