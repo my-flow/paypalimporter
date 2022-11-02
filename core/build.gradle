@@ -66,7 +66,7 @@ shadowJar {
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
         include dependency('org.slf4j:slf4j-api:1.7.36')
-        include dependency('org.slf4j:slf4j-nop:1.7.30')
+        include dependency('org.slf4j:slf4j-nop:1.7.36')
     }
     relocate 'com.jgoodies', 'com.moneydance.modules.features.paypalimporter.jgoodies'
 }
