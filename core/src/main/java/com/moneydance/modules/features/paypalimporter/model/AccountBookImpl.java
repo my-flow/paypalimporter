@@ -11,9 +11,6 @@ import com.moneydance.apps.md.controller.FeatureModuleContext;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Florian J. Breunig
- */
 final class AccountBookImpl implements IAccountBook {
 
     private final AccountBook accountBook;

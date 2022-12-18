@@ -13,8 +13,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
  * Callback class that handles currency checks.
- *
- * @author Florian J. Breunig
  */
 final class CheckCurrencyRequestHandler
 extends AbstractRequestHandler<CurrencyCodeType> {

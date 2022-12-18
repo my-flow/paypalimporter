@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 
 /**
  * The main class of the extension, instantiated by Moneydance's class loader.
- *
- * @author Florian J. Breunig
  */
 @SuppressWarnings("nullness")
 public final class Main extends FeatureModule implements Observer {

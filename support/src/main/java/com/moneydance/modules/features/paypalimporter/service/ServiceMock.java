@@ -29,9 +29,6 @@ import urn.ebay.apis.eBLBaseComponents.AckCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-/**
- * @author Florian J. Breunig
- */
 @SuppressWarnings("PMD.GodClass")
 public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 

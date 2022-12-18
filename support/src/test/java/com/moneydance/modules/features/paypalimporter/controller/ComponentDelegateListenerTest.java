@@ -7,9 +7,6 @@ import java.awt.event.ComponentAdapter;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class ComponentDelegateListenerTest {
 
     private ComponentAdapter componentAdapter;

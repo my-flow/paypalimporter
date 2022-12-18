@@ -37,9 +37,6 @@ import urn.ebay.apis.eBLBaseComponents.AckCodeType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class CheckCurrencyServiceTest {
 
     private static final String ERROR_CODE = "mock error code";

@@ -13,9 +13,6 @@ import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubContextFactory {
 
     /**

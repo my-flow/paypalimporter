@@ -7,9 +7,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 import java.util.Date;
 
-/**
- * @author Florian J. Breunig
- */
 public final class ServiceProviderMock implements ServiceProvider {
     @Override
     public void callCheckCurrencyService(

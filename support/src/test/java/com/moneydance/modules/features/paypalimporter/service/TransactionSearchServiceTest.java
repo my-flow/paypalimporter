@@ -41,9 +41,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class TransactionSearchServiceTest {
 
     private static final String ERROR_CODE = "mock error code";

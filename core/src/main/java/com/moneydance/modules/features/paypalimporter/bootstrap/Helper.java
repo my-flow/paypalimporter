@@ -26,8 +26,6 @@ import org.apache.commons.lang3.Validate;
 
 /**
  * This singleton provides public convenience methods.
- *
- * @author Florian J. Breunig
  */
 @SuppressWarnings("nullness")
 public enum Helper {
@@ -114,9 +112,6 @@ public enum Helper {
                 DISPATCH_WINDOW_CLOSING_ACTION_MAP_KEY, dispatchClosing);
     }
 
-    /**
-     * @author Florian J. Breunig
-     */
     private static final class HelperObservable extends Observable {
         @Override
         public synchronized void setChanged() { // increase visibility

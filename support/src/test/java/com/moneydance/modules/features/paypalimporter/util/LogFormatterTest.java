@@ -9,9 +9,6 @@ import java.util.logging.LogRecord;
 
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class LogFormatterTest {
 
     @Test

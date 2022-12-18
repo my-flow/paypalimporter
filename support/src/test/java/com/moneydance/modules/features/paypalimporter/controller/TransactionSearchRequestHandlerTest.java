@@ -12,9 +12,6 @@ import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class TransactionSearchRequestHandlerTest {
 
     private AbstractRequestHandler<PaymentTransactionSearchResultType> handler;

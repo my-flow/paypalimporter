@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import com.infinitekind.moneydance.model.AccountListener;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountDelegateListenerTest {
 
     private AccountListener accountListener;

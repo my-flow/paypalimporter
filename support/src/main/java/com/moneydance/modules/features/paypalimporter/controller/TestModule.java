@@ -5,9 +5,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @author Florian J. Breunig
- */
 @Module
 public final class TestModule {
 

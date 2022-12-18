@@ -5,8 +5,6 @@ import com.infinitekind.moneydance.model.AccountListener;
 
 /**
  * Listener / observer on Moneydance's list of accounts.
- *
- * @author Florian J. Breunig
  */
 final class AccountDelegateListener implements AccountListener {
 

@@ -17,8 +17,6 @@ import javax.annotation.Nullable;
  * application. It serves as a facade abstracting Moneydance's
  * <code>UserPreferences</code> (received from the
  * <code>FeatureModuleContext</code>).
- *
- * @author Florian J. Breunig
  */
 public final class Preferences {
 

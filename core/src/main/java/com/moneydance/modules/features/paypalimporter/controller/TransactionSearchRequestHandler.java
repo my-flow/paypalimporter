@@ -21,8 +21,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
- * @author Florian J. Breunig
- *
  * The handler class converts incoming transactions after a successful service
  * call. The same instance can be used for multiple service calls and returns
  * a cumulative result list of <code>OnlineTxn</code>s.

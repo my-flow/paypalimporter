@@ -13,9 +13,6 @@ import com.moneydance.apps.md.controller.StubContextFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountBookTest {
 
     private IAccountBook accountBook;

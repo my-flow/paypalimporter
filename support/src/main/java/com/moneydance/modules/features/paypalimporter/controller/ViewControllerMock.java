@@ -13,9 +13,6 @@ import com.infinitekind.moneydance.model.OnlineTxn;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Florian J. Breunig
- */
 final class ViewControllerMock implements ViewController {
 
     @Override

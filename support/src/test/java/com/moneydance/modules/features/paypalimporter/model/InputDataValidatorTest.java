@@ -13,9 +13,6 @@ import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 
-/**
- * @author Florian J. Breunig
- */
 public final class InputDataValidatorTest {
 
     private Validator<InputData> validator;

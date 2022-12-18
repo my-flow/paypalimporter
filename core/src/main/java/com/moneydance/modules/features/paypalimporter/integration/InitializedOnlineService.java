@@ -9,8 +9,6 @@ import java.util.Date;
 
 /**
  * Use this class to initialize an <code>OnlineService</code>.
- *
- * @author Florian J. Breunig
  */
 final class InitializedOnlineService extends OnlineService {
 

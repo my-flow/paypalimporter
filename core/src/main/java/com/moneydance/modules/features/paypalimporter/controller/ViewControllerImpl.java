@@ -50,8 +50,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
  * Default implementation of the control flow interface.
- *
- * @author Florian J. Breunig
  */
 public final class ViewControllerImpl implements ViewController {
 

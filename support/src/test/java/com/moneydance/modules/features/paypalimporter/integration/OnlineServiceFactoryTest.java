@@ -20,9 +20,6 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class OnlineServiceFactoryTest {
 
     private static final String KEY_SERVICE_TYPE = "type";

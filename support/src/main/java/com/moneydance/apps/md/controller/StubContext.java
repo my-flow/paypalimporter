@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  * answers to the standard calls. Also, it can be cast safely to
  * <code>com.moneydance.apps.md.controller.Main</code> in order to request the
  * user's preferences.
- *
- * @author Florian J. Breunig
  */
 public final class StubContext extends Main {
 

@@ -17,8 +17,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 /**
  * This utility class contains domain-specific mappings between Moneydance's
  * <code>CurrencyType</code> and PayPal's <code>CurrencyCodeType</code>.
- *
- * @author Florian J. Breunig
  */
 public final class CurrencyMapperUtil {
 

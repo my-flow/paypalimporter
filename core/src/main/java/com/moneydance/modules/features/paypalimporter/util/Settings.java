@@ -23,8 +23,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  * from a settings file in plain text. The settings file cannot be
  * modified at runtime, so the <code>Settings</code> class is effectively
  * immutable.
- *
- * @author Florian J. Breunig
  */
 public final class Settings {
 

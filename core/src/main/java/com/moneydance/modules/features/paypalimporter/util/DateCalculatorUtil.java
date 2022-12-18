@@ -5,8 +5,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class for date calculations.
- *
- * @author Florian J. Breunig
  */
 public final class DateCalculatorUtil {
 

@@ -5,9 +5,6 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
-/**
- * @author Florian J. Breunig
- */
 final class PTextField extends JTextField {
 
     private static final long serialVersionUID = 1L;

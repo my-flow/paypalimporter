@@ -13,8 +13,6 @@ import java.util.logging.Logger;
  * This class is used to run the extension as a stand-alone application from
  * the console or from an IDE. It allows for fast feedback during the
  * development process.
- *
- * @author Florian J. Breunig
  */
 final class ConsoleRunnerHelper {
 

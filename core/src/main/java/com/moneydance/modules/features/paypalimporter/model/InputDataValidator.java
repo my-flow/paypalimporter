@@ -12,17 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @author Florian J. Breunig
- */
 public final class InputDataValidator implements Validator<InputData> {
 
     private final Localizable localizable;
     private final StringResourceAccessor localizer;
 
-    /**
-     * @author Florian J. Breunig
-     */
     public enum MessageKey {
         USERNAME,
         PASSWORD,

@@ -14,9 +14,6 @@ import javax.swing.BoundedRangeModel;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class DateConverterTest {
 
     private DateConverter dateConverter;

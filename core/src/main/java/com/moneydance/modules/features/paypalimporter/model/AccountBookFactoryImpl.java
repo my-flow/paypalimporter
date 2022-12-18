@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author Florian J. Breunig
- */
 public enum AccountBookFactoryImpl implements IAccountBookFactory {
 
     INSTANCE;

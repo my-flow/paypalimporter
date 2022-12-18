@@ -37,8 +37,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * This service fetches all transactions between two given dates.
- *
- * @author Florian J. Breunig
  */
 public final class TransactionSearchService
 implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {

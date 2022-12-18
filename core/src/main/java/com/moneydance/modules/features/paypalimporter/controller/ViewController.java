@@ -16,8 +16,6 @@ import javax.annotation.Nullable;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 /**
  * Controller interface, strategy pattern.
- *
- * @author Florian J. Breunig
  */
 public interface ViewController extends Observer {
 

@@ -12,8 +12,6 @@ import org.apache.commons.lang3.Validate;
 
 /**
  * This utility class contains domain-specific date conversions.
- *
- * @author Florian J. Breunig
  */
 public final class DateConverter {
 

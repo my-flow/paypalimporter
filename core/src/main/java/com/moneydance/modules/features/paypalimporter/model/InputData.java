@@ -16,8 +16,6 @@ import javax.annotation.Nullable;
 
 /**
  * Data model of the user data. Effectively immutable.
- *
- * @author Florian J. Breunig
  */
 public final class InputData {
 
