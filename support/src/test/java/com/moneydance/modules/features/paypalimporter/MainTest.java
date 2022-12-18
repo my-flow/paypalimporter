@@ -9,9 +9,6 @@ import org.junit.Test;
 import com.moneydance.apps.md.controller.StubContextFactory;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 
-/**
- * @author Florian J. Breunig
- */
 public final class MainTest {
 
     private Settings settings;

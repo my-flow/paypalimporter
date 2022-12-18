@@ -8,9 +8,6 @@ import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.MoneydanceSyncableItem;
 import com.infinitekind.moneydance.model.OnlineInfo;
 
-/**
- * @author Florian J. Breunig
- */
 public interface IAccountBook {
 
     String KEY_ACCOUNT_URL = "account_url";

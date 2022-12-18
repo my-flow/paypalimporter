@@ -6,9 +6,6 @@ import com.infinitekind.tiksync.SyncRecord;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubLocalStorage extends LocalStorage {
 
     private static final long serialVersionUID = 1L;

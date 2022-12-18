@@ -13,9 +13,6 @@ import javax.annotation.Nullable;
 import java.util.Hashtable;
 import java.util.Map;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubAccountBook implements IAccountBook {
 
     private final AccountBook accountBook;

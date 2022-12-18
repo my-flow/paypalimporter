@@ -9,9 +9,6 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-/**
- * @author Florian J. Breunig
- */
 @Immutable
 public final class Transaction extends OnlineTxn {
 

@@ -16,9 +16,6 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class PayPalOnlineServiceTest {
 
     private static final String USER_NAME = "mock username";

@@ -17,8 +17,6 @@ import javax.annotation.Nullable;
 /**
  * This i18n class provides language-dependent strings such as labels and
  * messages.
- *
- * @author Florian J. Breunig
  */
 public final class Localizable {
 

@@ -43,8 +43,6 @@ import javax.annotation.Nullable;
  * newest to oldest.
  *
  * Finally the result list gets reversed and attached the Moneydance account.
- *
- * @author Florian J. Breunig
  */
 final class TransactionSearchIterator implements ViewController {
 

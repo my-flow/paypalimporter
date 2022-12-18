@@ -5,9 +5,6 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBookFactory;
 
 import java.util.Optional;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubAccountBookFactory implements IAccountBookFactory {
 
     private final StubAccountBook accountBook;

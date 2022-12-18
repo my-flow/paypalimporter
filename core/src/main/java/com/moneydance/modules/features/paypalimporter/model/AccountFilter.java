@@ -5,9 +5,6 @@ import com.moneydance.apps.md.view.gui.AccountListModel;
 
 import javax.swing.ComboBoxModel;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountFilter {
 
     private final AccountListModel accountListModel;

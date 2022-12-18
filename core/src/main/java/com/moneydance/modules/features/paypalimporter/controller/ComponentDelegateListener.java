@@ -9,8 +9,6 @@ import java.util.logging.Logger;
 
 /**
  * Listener / observer on the main window.
- *
- * @author Florian J. Breunig
  */
 final class ComponentDelegateListener extends ComponentAdapter {
 

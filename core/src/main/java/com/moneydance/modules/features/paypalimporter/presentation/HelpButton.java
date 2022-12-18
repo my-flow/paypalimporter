@@ -7,9 +7,6 @@ import javax.swing.JButton;
 
 import net.jcip.annotations.Immutable;
 
-/**
- * @author Florian J. Breunig
- */
 @Immutable
 final class HelpButton extends JButton {
 

@@ -32,8 +32,6 @@ import javax.swing.WindowConstants;
 
 /**
  * This view class creates the static layout based on JGoodies Forms.
- *
- * @author Florian J. Breunig
  */
 class WizardLayout extends JDialog {
 

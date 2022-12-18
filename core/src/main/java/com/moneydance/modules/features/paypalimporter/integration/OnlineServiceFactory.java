@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 /**
  * Use this factory class in order to access and remove the
  * <code>PayPalOnlineService</code> for a given <code>IAccountBook</code>.
- *
- * @author Florian J. Breunig
  */
 public final class OnlineServiceFactory {
 

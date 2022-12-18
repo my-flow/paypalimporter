@@ -11,9 +11,6 @@ import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 
-/**
- * @author Florian J. Breunig
- */
 public final class HelperTest {
 
     private Settings settings;

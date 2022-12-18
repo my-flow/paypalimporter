@@ -8,9 +8,6 @@ import java.util.logging.LogRecord;
 
 import net.jcip.annotations.Immutable;
 
-/**
- * @author Florian J. Breunig
- */
 @Immutable
 public final class LogFormatter extends Formatter {
 

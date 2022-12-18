@@ -28,8 +28,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * Facade for initiating service calls. Also supports shutdown.
- *
- * @author Florian J. Breunig
  */
 public final class ServiceProviderImpl implements ServiceProvider {
 

@@ -5,9 +5,6 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubOnlineInfo extends OnlineInfo {
 
     private final List<OnlineService> serviceList;

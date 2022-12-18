@@ -18,8 +18,6 @@ import javax.annotation.Nullable;
 /**
  * Decorator class for an <code>OnlineService</code> that saves user name,
  * password, and signature.
- *
- * @author Florian J. Breunig
  */
 public final class PayPalOnlineService {
 

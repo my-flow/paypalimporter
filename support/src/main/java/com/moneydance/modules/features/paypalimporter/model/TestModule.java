@@ -11,9 +11,6 @@ import com.moneydance.apps.md.controller.StubContext;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @author Florian J. Breunig
- */
 @Module
 public final class TestModule {
 

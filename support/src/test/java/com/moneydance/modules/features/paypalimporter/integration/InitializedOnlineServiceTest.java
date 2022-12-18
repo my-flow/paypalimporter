@@ -17,9 +17,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-/**
- * @author Florian J. Breunig
- */
 public final class InitializedOnlineServiceTest {
 
     private AccountBook accountBook;

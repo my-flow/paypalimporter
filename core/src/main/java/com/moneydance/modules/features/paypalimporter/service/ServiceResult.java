@@ -10,7 +10,6 @@ import net.jcip.annotations.Immutable;
 import javax.annotation.Nullable;
 
 /**
- * @author Florian J. Breunig
  * @param <V> The type of result objects which a service returns.
  */
 @Immutable

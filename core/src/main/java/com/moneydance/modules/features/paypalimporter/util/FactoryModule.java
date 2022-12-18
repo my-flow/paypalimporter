@@ -15,9 +15,6 @@ import dagger.Module;
 import dagger.Provides;
 import org.apache.commons.configuration.ConfigurationException;
 
-/**
- * @author Florian J. Breunig
- */
 @Module
 public final class FactoryModule {
 

@@ -7,8 +7,6 @@ import java.util.Date;
 
 /**
  * Facade for initiating service calls. Also supports shutdown.
- *
- * @author Florian J. Breunig
  */
 public interface ServiceProvider {
 

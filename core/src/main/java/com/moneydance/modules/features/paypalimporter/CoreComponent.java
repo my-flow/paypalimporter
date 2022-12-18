@@ -11,9 +11,6 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-/**
- * @author Florian J. Breunig
- */
 @Component(modules = {
         CoreModule.class,
 })

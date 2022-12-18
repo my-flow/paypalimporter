@@ -7,7 +7,6 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 /**
  * Default implementation of the <code>RequestHandler</code> interface.
  *
- * @author Florian J. Breunig
  * @param <V> The type of result objects which the service returns.
  */
 abstract class AbstractRequestHandler<V> implements RequestHandler<V> {

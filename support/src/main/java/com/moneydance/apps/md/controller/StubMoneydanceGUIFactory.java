@@ -4,9 +4,6 @@ import com.moneydance.apps.md.view.gui.MoneydanceGUI;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubMoneydanceGUIFactory {
 
     private final StubContextFactory stubContextFactory;

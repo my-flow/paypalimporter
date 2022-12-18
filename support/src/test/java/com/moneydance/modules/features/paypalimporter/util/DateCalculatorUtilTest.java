@@ -8,9 +8,6 @@ import java.lang.reflect.Modifier;
 
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class DateCalculatorUtilTest {
 
     @Test

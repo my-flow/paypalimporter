@@ -9,9 +9,6 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class ServiceResultTest {
 
     @Test

@@ -7,9 +7,6 @@ import com.moneydance.apps.md.controller.StubContextFactory;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * @author Florian J. Breunig
- */
 @Module(includes = {
         com.moneydance.modules.features.paypalimporter.controller.TestModule.class,
         com.moneydance.modules.features.paypalimporter.domain.FactoryModule.class,

@@ -11,9 +11,6 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountBookFactoryImplTest {
 
     @Test

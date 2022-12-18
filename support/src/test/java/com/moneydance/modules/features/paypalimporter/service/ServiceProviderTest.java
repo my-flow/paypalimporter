@@ -14,9 +14,6 @@ import org.junit.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class ServiceProviderTest {
 
     private ServiceProvider serviceProvider;

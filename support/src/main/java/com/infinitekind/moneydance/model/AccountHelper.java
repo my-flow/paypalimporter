@@ -1,8 +1,5 @@
 package com.infinitekind.moneydance.model;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountHelper {
 
     /**

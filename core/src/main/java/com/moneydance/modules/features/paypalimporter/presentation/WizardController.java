@@ -34,8 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * This controller class adds dynamic behaviour to the static
  * <code>WizardLayout</code> class such as updating and validating.
- *
- * @author Florian J. Breunig
  */
 class WizardController extends WizardLayout
 implements ActionListener, WindowListener {
