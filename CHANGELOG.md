@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project does *not* adhere to Semantic Versioning.
 
+## [Unreleased]
+### Fixed
+- Exclude authorizations when downloading transactions ([#18]).
+
+
 ## [v9] - 2021-06-13
 ### Fixed
 - Crash in Moneydance 2021.1 (3069) when using the new "Default" appearance on macOS ([#15]).
@@ -86,6 +91,7 @@ and this project does *not* adhere to Semantic Versioning.
 - Compatibility with Java 1.3 and later versions.
 
 
+[#18]: https://github.com/my-flow/paypalimporter/issues/18
 [#15]: https://github.com/my-flow/paypalimporter/issues/15
 [#13]: https://github.com/my-flow/paypalimporter/issues/13
 [#9]: https://github.com/my-flow/paypalimporter/issues/9

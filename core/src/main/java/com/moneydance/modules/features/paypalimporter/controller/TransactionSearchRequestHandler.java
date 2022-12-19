@@ -3,6 +3,7 @@ package com.moneydance.modules.features.paypalimporter.controller;
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
+import com.moneydance.modules.features.paypalimporter.filter.NotAuthorizationFilter;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
@@ -13,9 +14,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.Predicate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
@@ -39,6 +42,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
     private final Account account;
     private final OnlineTxnList txnList;
     private final DateFormat dateFormat;
+    private final Predicate<PaymentTransactionSearchResultType> filter;
 
     TransactionSearchRequestHandler(
             final ViewController argViewController,
@@ -52,6 +56,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         this.account = accountBook.getAccountById(argAccountId);
         this.txnList = accountBook.getRootAccount().getDownloadedTxns();
         this.dateFormat = argDateFormat;
+        this.filter = new NotAuthorizationFilter();
     }
 
     @Override
@@ -59,8 +64,11 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
             final ServiceResult<PaymentTransactionSearchResultType>
             serviceResult) {
 
-        final List<PaymentTransactionSearchResultType> txns =
-                serviceResult.getResults().orElseThrow(AssertionError::new);
+        final List<PaymentTransactionSearchResultType> txns = serviceResult
+                .getResults().orElseThrow(AssertionError::new)
+                .stream()
+                .filter(this.filter)
+                .collect(Collectors.toList());
 
         final List<OnlineTxn> resultList =
                 new ArrayList<>(txns.size());
