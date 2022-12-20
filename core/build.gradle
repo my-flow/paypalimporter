@@ -23,7 +23,7 @@ dependencies {
     api('commons-configuration:commons-configuration:1.10')
     api('org.apache.commons:commons-text:1.9')
     api('org.slf4j:slf4j-api:2.0.6')
-    api('org.checkerframework:checker:3.14.0')
+    api('org.checkerframework:checker:3.28.0')
     api('com.google.code.findbugs:jsr305:3.0.2')
 
     spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.7'
