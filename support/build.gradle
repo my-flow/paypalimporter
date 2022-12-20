@@ -4,12 +4,12 @@ dependencies {
     api project(':core')
     annotationProcessor "com.google.dagger:dagger-compiler:2.44.2"
 
-    testRuntimeOnly('org.slf4j:slf4j-simple:1.7.36')
+    testRuntimeOnly('org.slf4j:slf4j-simple:2.0.6')
     testRuntimeOnly('com.syncthemall:dropbox-java-sdk:1.5.3.2')
 
     testImplementation('junit:junit:4.13.2')
 
-    testRuntimeOnly('org.slf4j:slf4j-simple:1.7.36')
+    testRuntimeOnly('org.slf4j:slf4j-simple:2.0.6')
 }
 
 mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
