@@ -2,7 +2,7 @@ apply plugin: 'application'
 
 dependencies {
     api project(':core')
-    annotationProcessor "com.google.dagger:dagger-compiler:2.37"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.44.2"
 
     testRuntimeOnly('org.slf4j:slf4j-simple:1.7.36')
     testRuntimeOnly('com.syncthemall:dropbox-java-sdk:1.5.3.2')
