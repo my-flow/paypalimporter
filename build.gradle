@@ -71,7 +71,7 @@ subprojects {
     checkstyleMain.finalizedBy checkstyleHtml
 
 	checkstyle {
-		toolVersion = "8.43"
+		toolVersion = "8.45.1"
 	}
 
 	pmd {
