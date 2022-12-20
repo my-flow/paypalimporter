@@ -19,4 +19,4 @@ branches:
     - gh-pages
 script:
   - ./gradlew check
-#  - ./gradlew sonarqube -Dsonar.login="${SONAR_TOKEN}"
+  - ./gradlew :core:sonar -Dsonar.login="${SONAR_TOKEN}"

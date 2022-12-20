@@ -15,7 +15,7 @@ buildscript {
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'net.sf.proguard:proguard-gradle:6.2.2'
 		classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.1"
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
     }
 }
 
@@ -81,7 +81,7 @@ subprojects {
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
     }
 
-    sonarqube {
+    sonar {
         properties {
             property "sonar.host.url", "https://sonarcloud.io"
             property "sonar.organization", "${rootProject.name}"
