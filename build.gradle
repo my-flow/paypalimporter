@@ -75,7 +75,7 @@ subprojects {
 	}
 
 	pmd {
-        toolVersion = "6.35.0"
+        toolVersion = "6.52.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")

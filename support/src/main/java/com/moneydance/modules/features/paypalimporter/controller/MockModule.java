@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public final class TestModule {
+public final class MockModule {
 
     @Provides
     @Singleton

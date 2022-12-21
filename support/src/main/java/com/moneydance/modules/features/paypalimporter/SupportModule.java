@@ -8,11 +8,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module(includes = {
-        com.moneydance.modules.features.paypalimporter.controller.TestModule.class,
+        com.moneydance.modules.features.paypalimporter.controller.MockModule.class,
         com.moneydance.modules.features.paypalimporter.domain.FactoryModule.class,
-        com.moneydance.modules.features.paypalimporter.model.TestModule.class,
+        com.moneydance.modules.features.paypalimporter.model.MockModule.class,
         com.moneydance.modules.features.paypalimporter.service.FactoryModule.class,
-        com.moneydance.modules.features.paypalimporter.util.TestModule.class,
+        com.moneydance.modules.features.paypalimporter.util.MockModule.class,
 })
 public final class SupportModule {
 
