@@ -104,7 +104,7 @@ implements ActionListener, WindowListener {
     /**
      * @return true iff the wizard is blocked due to loading.
      */
-    public boolean isLoading() {
+    public final boolean isLoading() {
         return !this.txtUsername.isEnabled();
     }
 
