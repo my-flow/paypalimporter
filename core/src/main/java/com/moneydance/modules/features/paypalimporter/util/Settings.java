@@ -99,7 +99,7 @@ public final class Settings {
      * @return Date format specific to PayPal
      */
     public DateFormat getDateFormat() {
-        return this.dateFormat;
+        return (DateFormat) this.dateFormat.clone();
     }
 
     /**
