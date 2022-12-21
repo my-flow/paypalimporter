@@ -29,7 +29,9 @@ public final class Localizable {
     }
 
     public ResourceBundle getResourceBundle() {
-        return this.resourceBundle;
+        return ResourceBundle.getBundle(
+                this.resourceBundle.getBaseBundleName(),
+                this.resourceBundle.getLocale());
     }
 
     /**
