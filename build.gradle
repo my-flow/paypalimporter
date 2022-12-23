@@ -11,10 +11,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'com.guardsquare:proguard-gradle:7.3.0'
-		classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.5"
+        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
     }
 }
@@ -28,7 +28,9 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'org.sonarqube'
 
-    sourceCompatibility = 1.8
+    tasks.withType(JavaCompile) {
+        options.release = 8
+    }
 
     ext {
         privkeyid = '99'
