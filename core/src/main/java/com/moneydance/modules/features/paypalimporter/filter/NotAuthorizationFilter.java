@@ -14,6 +14,6 @@ public final class NotAuthorizationFilter implements Predicate<PaymentTransactio
 
     @Override
     public boolean test(final PaymentTransactionSearchResultType result) {
-        return Predicate.not(this.authorizationFilter).test(result);
+        return this.authorizationFilter.negate().test(result);
     }
 }
