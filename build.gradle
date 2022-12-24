@@ -53,7 +53,7 @@ subprojects {
 	spotbugsMain {
 		reports {
 			html {
-				enabled = true
+				required = true
 			}
 		}
 	}
@@ -62,15 +62,13 @@ subprojects {
         toolVersion = "0.8.8"
     }
 
-    task checkstyleHtml(dependsOn: checkstyleMain) {
-        if (checkstyleMain.reports.xml.destination.exists()) {
-            ant.xslt(in: checkstyleMain.reports.xml.destination,
-                    style: file("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl"),
-                    out: new File(checkstyleMain.reports.xml.destination.parent as String, 'main.html'))
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.required = false
+            html.required = true
+            html.stylesheet resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
         }
     }
-
-    checkstyleMain.finalizedBy checkstyleHtml
 
 	checkstyle {
 		toolVersion = "10.5.0"
