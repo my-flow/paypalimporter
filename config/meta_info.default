@@ -1,0 +1,8 @@
+{
+  "vendor" = "${VENDOR}"
+  "module_build" = "${MODULE_BUILD}"
+  "minbuild" = "1000"
+  "vendor.url" = "https://www.my-flow.com/paypalimporter/"
+  "module_name" = "PayPal Importer"
+  "desc" = "PayPal Importer imports transactions from PayPal Premier or Business accounts into Moneydance."
+}

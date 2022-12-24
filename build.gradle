@@ -91,7 +91,8 @@ subprojects {
 
 task createLibs(type: Exec) {
     description 'Generates patched libraries from trusted source'
-    commandLine 'sh', 'config/create_libs.sh'
+    executable "sh"
+    args "-c", "scripts/create_libs.sh"
 }
 
 String getCurrentTimestamp() {
