@@ -11,11 +11,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'net.sf.proguard:proguard-gradle:6.2.2'
-		classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.1"
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3'
+        classpath 'com.guardsquare:proguard-gradle:7.3.0'
+        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
     }
 }
 
@@ -28,7 +28,9 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'org.sonarqube'
 
-    sourceCompatibility = 1.8
+    tasks.withType(JavaCompile) {
+        options.release = 8
+    }
 
     ext {
         privkeyid = '99'
@@ -51,37 +53,35 @@ subprojects {
 	spotbugsMain {
 		reports {
 			html {
-				enabled = true
+				required = true
 			}
 		}
 	}
 
     jacoco {
-        toolVersion = "0.8.7"
+        toolVersion = "0.8.8"
     }
 
-    task checkstyleHtml(dependsOn: checkstyleMain) {
-        if (checkstyleMain.reports.xml.destination.exists()) {
-            ant.xslt(in: checkstyleMain.reports.xml.destination,
-                    style: file("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl"),
-                    out: new File(checkstyleMain.reports.xml.destination.parent as String, 'main.html'))
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.required = false
+            html.required = true
+            html.stylesheet resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
         }
     }
 
-    checkstyleMain.finalizedBy checkstyleHtml
-
 	checkstyle {
-		toolVersion = "8.43"
+		toolVersion = "10.5.0"
 	}
 
 	pmd {
-        toolVersion = "6.35.0"
+        toolVersion = "6.52.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
     }
 
-    sonarqube {
+    sonar {
         properties {
             property "sonar.host.url", "https://sonarcloud.io"
             property "sonar.organization", "${rootProject.name}"
@@ -91,7 +91,8 @@ subprojects {
 
 task createLibs(type: Exec) {
     description 'Generates patched libraries from trusted source'
-    commandLine 'sh', 'config/create_libs.sh'
+    executable "sh"
+    args "-c", "scripts/create_libs.sh"
 }
 
 String getCurrentTimestamp() {

@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter;
 
 import com.moneydance.apps.md.controller.FeatureModule;
@@ -14,8 +11,6 @@ import java.util.logging.Logger;
 
 /**
  * The main class of the extension, instantiated by Moneydance's class loader.
- *
- * @author Florian J. Breunig
  */
 @SuppressWarnings("nullness")
 public final class Main extends FeatureModule implements Observer {

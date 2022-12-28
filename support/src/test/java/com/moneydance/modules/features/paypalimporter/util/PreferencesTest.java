@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.anything;
@@ -19,9 +16,6 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class PreferencesTest {
 
     private static final String ACCOUNT_ID = UUID.randomUUID().toString();

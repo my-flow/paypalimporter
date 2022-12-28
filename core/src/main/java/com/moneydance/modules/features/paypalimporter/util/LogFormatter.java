@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.util;
 
 import java.io.PrintWriter;
@@ -11,9 +8,6 @@ import java.util.logging.LogRecord;
 
 import net.jcip.annotations.Immutable;
 
-/**
- * @author Florian J. Breunig
- */
 @Immutable
 public final class LogFormatter extends Formatter {
 

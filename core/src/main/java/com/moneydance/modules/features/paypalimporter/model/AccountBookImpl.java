@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.model;
 
 import com.infinitekind.moneydance.model.Account;
@@ -14,9 +11,6 @@ import com.moneydance.apps.md.controller.FeatureModuleContext;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Florian J. Breunig
- */
 final class AccountBookImpl implements IAccountBook {
 
     private final AccountBook accountBook;

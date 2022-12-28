@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
@@ -40,8 +37,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * This service fetches all transactions between two given dates.
- *
- * @author Florian J. Breunig
  */
 public final class TransactionSearchService
 implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {

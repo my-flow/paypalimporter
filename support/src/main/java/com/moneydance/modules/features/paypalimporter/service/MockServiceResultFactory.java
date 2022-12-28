@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.util.Settings;
@@ -15,9 +12,6 @@ import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class MockServiceResultFactory {
 
     private final Settings settings;

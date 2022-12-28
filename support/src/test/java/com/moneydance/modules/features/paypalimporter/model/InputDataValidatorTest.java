@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.model;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -16,9 +13,6 @@ import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 
-/**
- * @author Florian J. Breunig
- */
 public final class InputDataValidatorTest {
 
     private Validator<InputData> validator;

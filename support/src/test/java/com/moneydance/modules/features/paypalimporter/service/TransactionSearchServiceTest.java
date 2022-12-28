@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -44,9 +41,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
-/**
- * @author Florian J. Breunig
- */
 public final class TransactionSearchServiceTest {
 
     private static final String ERROR_CODE = "mock error code";

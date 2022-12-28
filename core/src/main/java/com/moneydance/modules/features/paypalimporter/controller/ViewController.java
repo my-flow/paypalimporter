@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
@@ -19,8 +16,6 @@ import javax.annotation.Nullable;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
 /**
  * Controller interface, strategy pattern.
- *
- * @author Florian J. Breunig
  */
 public interface ViewController extends Observer {
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-# Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 
 set -o nounset
 set -o errexit
@@ -55,7 +53,7 @@ function cleanup {
 main() {
     check_prerequisites
     clone_repository "git@github.com:paypal/sdk-core-java.git" "v$VERSION" "$TMP_DIR"
-    apply_patch "$PROGDIR/fix_proxies.patch" "$TMP_DIR"
+    apply_patch "$PROGDIR/../config/fix_proxies.patch" "$TMP_DIR"
     generate_jar "$TMP_DIR"
     copy_jar "$TMP_DIR" "$TARGET_DIR/paypal-core-paypalimporter-$VERSION.jar"
 }

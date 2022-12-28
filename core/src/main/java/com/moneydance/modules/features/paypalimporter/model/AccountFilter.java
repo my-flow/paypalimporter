@@ -1,5 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
 package com.moneydance.modules.features.paypalimporter.model;
 
 import com.infinitekind.moneydance.model.Account;
@@ -7,9 +5,6 @@ import com.moneydance.apps.md.view.gui.AccountListModel;
 
 import javax.swing.ComboBoxModel;
 
-/**
- * @author Florian J. Breunig
- */
 public final class AccountFilter {
 
     private final AccountListModel accountListModel;

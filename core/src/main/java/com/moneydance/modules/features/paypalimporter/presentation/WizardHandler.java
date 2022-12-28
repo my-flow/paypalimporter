@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.presentation;
 
 import java.awt.Frame;
@@ -20,8 +17,6 @@ import javax.annotation.Nullable;
  * This reactive class forwards UI events to its observers. The observers can
  * identify the events based on the passed type of <code>ExecutedAction</code>
  * (loose coupling).
- *
- * @author Florian J. Breunig
  */
 public final class WizardHandler extends WizardController {
 
@@ -30,9 +25,6 @@ public final class WizardHandler extends WizardController {
     private final Observer observer;
     private InputData inputData;
 
-    /**
-     * @author Florian J. Breunig
-     */
     public enum ExecutedAction {
         START_WIZARD,
         SHOW_HELP,

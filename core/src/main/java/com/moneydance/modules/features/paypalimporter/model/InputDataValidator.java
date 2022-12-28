@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.model;
 
 import com.jgoodies.common.internal.ResourceBundleAccessor;
@@ -15,17 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @author Florian J. Breunig
- */
 public final class InputDataValidator implements Validator<InputData> {
 
     private final Localizable localizable;
     private final StringResourceAccessor localizer;
 
-    /**
-     * @author Florian J. Breunig
-     */
     public enum MessageKey {
         USERNAME,
         PASSWORD,

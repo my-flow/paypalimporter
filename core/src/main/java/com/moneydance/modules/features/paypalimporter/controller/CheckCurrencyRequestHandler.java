@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.infinitekind.moneydance.model.Account;
@@ -16,8 +13,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
 /**
  * Callback class that handles currency checks.
- *
- * @author Florian J. Breunig
  */
 final class CheckCurrencyRequestHandler
 extends AbstractRequestHandler<CurrencyCodeType> {

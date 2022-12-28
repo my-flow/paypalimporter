@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.util;
 
 import java.net.MalformedURLException;
@@ -20,8 +17,6 @@ import javax.annotation.Nullable;
 /**
  * This i18n class provides language-dependent strings such as labels and
  * messages.
- *
- * @author Florian J. Breunig
  */
 public final class Localizable {
 
@@ -34,7 +29,9 @@ public final class Localizable {
     }
 
     public ResourceBundle getResourceBundle() {
-        return this.resourceBundle;
+        return ResourceBundle.getBundle(
+                this.resourceBundle.getBaseBundleName(),
+                this.resourceBundle.getLocale());
     }
 
     /**

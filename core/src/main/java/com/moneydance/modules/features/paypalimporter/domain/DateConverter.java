@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.domain;
 
 import com.moneydance.modules.features.paypalimporter.util.DateCalculatorUtil;
@@ -15,8 +12,6 @@ import org.apache.commons.lang3.Validate;
 
 /**
  * This utility class contains domain-specific date conversions.
- *
- * @author Florian J. Breunig
  */
 public final class DateConverter {
 
