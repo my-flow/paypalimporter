@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project does *not* adhere to Semantic Versioning.
 
-## [Unreleased]
+## [v10] - 2022-12-27
 ### Fixed
 - Exclude authorizations when downloading transactions ([#18]).
 
@@ -108,3 +108,4 @@ and this project does *not* adhere to Semantic Versioning.
 [v7]: https://github.com/my-flow/paypalimporter/compare/v6...v7
 [v8]: https://github.com/my-flow/paypalimporter/compare/v7...v8
 [v9]: https://github.com/my-flow/paypalimporter/compare/v8...v9
+[v10]: https://github.com/my-flow/paypalimporter/compare/v9...v10
