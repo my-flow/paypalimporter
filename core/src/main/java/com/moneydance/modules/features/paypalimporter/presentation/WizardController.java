@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.presentation;
 
 import com.infinitekind.moneydance.model.Account;
@@ -37,8 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * This controller class adds dynamic behaviour to the static
  * <code>WizardLayout</code> class such as updating and validating.
- *
- * @author Florian J. Breunig
  */
 class WizardController extends WizardLayout
 implements ActionListener, WindowListener {
@@ -109,7 +104,7 @@ implements ActionListener, WindowListener {
     /**
      * @return true iff the wizard is blocked due to loading.
      */
-    public boolean isLoading() {
+    public final boolean isLoading() {
         return !this.txtUsername.isEnabled();
     }
 

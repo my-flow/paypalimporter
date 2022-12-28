@@ -7,8 +7,8 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     api(':moneydance:1358')
-    api('com.google.dagger:dagger:2.37')
-    annotationProcessor('com.google.dagger:dagger-compiler:2.37')
+    api('com.google.dagger:dagger:2.44.2')
+    annotationProcessor('com.google.dagger:dagger-compiler:2.44.2')
     api(':paypal-core-paypalimporter:1.7.2')
     api('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
@@ -21,9 +21,9 @@ dependencies {
     }
     api('org.apache.commons:commons-lang3:3.12.0')
     api('commons-configuration:commons-configuration:1.10')
-    api('org.apache.commons:commons-text:1.9')
-    api('org.slf4j:slf4j-api:1.7.30')
-    api('org.checkerframework:checker:3.14.0')
+    api('org.apache.commons:commons-text:1.10.0')
+    api('org.slf4j:slf4j-api:2.0.6')
+    api('org.checkerframework:checker:3.28.0')
     api('com.google.code.findbugs:jsr305:3.0.2')
 
     spotbugsPlugins 'com.mebigfatguy.sb-contrib:sb-contrib:7.4.7'
@@ -53,11 +53,11 @@ shadowJar {
 
     dependencies {
         include dependency('javax.inject:javax.inject:1')
-        include dependency('com.google.dagger:dagger:2.37')
+        include dependency('com.google.dagger:dagger:2.44.2')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.12')
-        include dependency('org.apache.commons:commons-text:1.9')
+        include dependency('org.apache.commons:commons-lang3:3.12.0')
+        include dependency('org.apache.commons:commons-text:1.10.0')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
@@ -65,8 +65,8 @@ shadowJar {
         include dependency('commons-logging:commons-logging:1.2')
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
-        include dependency('org.slf4j:slf4j-api:1.7.30')
-        include dependency('org.slf4j:slf4j-nop:1.7.30')
+        include dependency('org.slf4j:slf4j-api:2.0.6')
+        include dependency('org.slf4j:slf4j-nop:2.0.6')
     }
     relocate 'com.jgoodies', 'com.moneydance.modules.features.paypalimporter.jgoodies'
 }

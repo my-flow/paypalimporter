@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.util;
 
 import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
@@ -26,8 +23,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  * from a settings file in plain text. The settings file cannot be
  * modified at runtime, so the <code>Settings</code> class is effectively
  * immutable.
- *
- * @author Florian J. Breunig
  */
 public final class Settings {
 
@@ -104,7 +99,7 @@ public final class Settings {
      * @return Date format specific to PayPal
      */
     public DateFormat getDateFormat() {
-        return this.dateFormat;
+        return (DateFormat) this.dateFormat.clone();
     }
 
     /**

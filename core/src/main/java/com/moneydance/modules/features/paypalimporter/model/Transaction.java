@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.model;
 
 import com.infinitekind.moneydance.model.OnlineTxn;
@@ -12,9 +9,6 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-/**
- * @author Florian J. Breunig
- */
 @Immutable
 public final class Transaction extends OnlineTxn {
 

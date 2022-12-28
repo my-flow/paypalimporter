@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.bootstrap;
 
 import com.moneydance.apps.md.controller.FeatureModuleContext;
@@ -29,8 +26,6 @@ import org.apache.commons.lang3.Validate;
 
 /**
  * This singleton provides public convenience methods.
- *
- * @author Florian J. Breunig
  */
 @SuppressWarnings("nullness")
 public enum Helper {
@@ -117,9 +112,6 @@ public enum Helper {
                 DISPATCH_WINDOW_CLOSING_ACTION_MAP_KEY, dispatchClosing);
     }
 
-    /**
-     * @author Florian J. Breunig
-     */
     private static final class HelperObservable extends Observable {
         @Override
         public synchronized void setChanged() { // increase visibility

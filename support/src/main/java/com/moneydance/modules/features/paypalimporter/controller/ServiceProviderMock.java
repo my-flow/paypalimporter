@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.controller;
 
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
@@ -10,9 +7,6 @@ import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 import java.util.Date;
 
-/**
- * @author Florian J. Breunig
- */
 public final class ServiceProviderMock implements ServiceProvider {
     @Override
     public void callCheckCurrencyService(

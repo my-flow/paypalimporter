@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.apps.md.controller;
 
 import com.infinitekind.moneydance.model.LocalStorage;
@@ -9,9 +6,6 @@ import com.infinitekind.tiksync.SyncRecord;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * @author Florian J. Breunig
- */
 public final class StubLocalStorage extends LocalStorage {
 
     private static final long serialVersionUID = 1L;

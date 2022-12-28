@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.apps.md.controller;
 
 import com.infinitekind.moneydance.model.Account;
@@ -19,8 +16,6 @@ import java.util.logging.Logger;
  * answers to the standard calls. Also, it can be cast safely to
  * <code>com.moneydance.apps.md.controller.Main</code> in order to request the
  * user's preferences.
- *
- * @author Florian J. Breunig
  */
 public final class StubContext extends Main {
 

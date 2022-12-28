@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.domain;
 
 import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
@@ -17,9 +14,6 @@ import javax.swing.BoundedRangeModel;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class DateConverterTest {
 
     private DateConverter dateConverter;

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project does *not* adhere to Semantic Versioning.
 
+## [v10] - 2022-12-27
+### Fixed
+- Exclude authorizations when downloading transactions ([#18]).
+
+
 ## [v9] - 2021-06-13
 ### Fixed
 - Crash in Moneydance 2021.1 (3069) when using the new "Default" appearance on macOS ([#15]).
@@ -86,6 +91,7 @@ and this project does *not* adhere to Semantic Versioning.
 - Compatibility with Java 1.3 and later versions.
 
 
+[#18]: https://github.com/my-flow/paypalimporter/issues/18
 [#15]: https://github.com/my-flow/paypalimporter/issues/15
 [#13]: https://github.com/my-flow/paypalimporter/issues/13
 [#9]: https://github.com/my-flow/paypalimporter/issues/9
@@ -93,12 +99,13 @@ and this project does *not* adhere to Semantic Versioning.
 [#4]: https://github.com/my-flow/paypalimporter/issues/4
 [#2]: https://github.com/my-flow/paypalimporter/issues/2
 
-[v9]: https://github.com/my-flow/paypalimporter/compare/v8...v9
-[v8]: https://github.com/my-flow/paypalimporter/compare/v7...v8
-[v7]: https://github.com/my-flow/paypalimporter/compare/v6...v7
-[v6]: https://github.com/my-flow/paypalimporter/compare/v5...v6
-[v5]: https://github.com/my-flow/paypalimporter/compare/v4...v5
-[v4]: https://github.com/my-flow/paypalimporter/compare/v3...v4
-[v3]: https://github.com/my-flow/paypalimporter/compare/v2...v3
-[v2]: https://github.com/my-flow/paypalimporter/compare/v1...v2
 [v1]: https://github.com/my-flow/paypalimporter/commits/v1
+[v2]: https://github.com/my-flow/paypalimporter/compare/v1...v2
+[v3]: https://github.com/my-flow/paypalimporter/compare/v2...v3
+[v4]: https://github.com/my-flow/paypalimporter/compare/v3...v4
+[v5]: https://github.com/my-flow/paypalimporter/compare/v4...v5
+[v6]: https://github.com/my-flow/paypalimporter/compare/v5...v6
+[v7]: https://github.com/my-flow/paypalimporter/compare/v6...v7
+[v8]: https://github.com/my-flow/paypalimporter/compare/v7...v8
+[v9]: https://github.com/my-flow/paypalimporter/compare/v8...v9
+[v10]: https://github.com/my-flow/paypalimporter/compare/v9...v10

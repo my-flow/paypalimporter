@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.domain;
 
 import com.infinitekind.moneydance.model.CurrencyTable;
@@ -20,8 +17,6 @@ import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 /**
  * This utility class contains domain-specific mappings between Moneydance's
  * <code>CurrencyType</code> and PayPal's <code>CurrencyCodeType</code>.
- *
- * @author Florian J. Breunig
  */
 public final class CurrencyMapperUtil {
 

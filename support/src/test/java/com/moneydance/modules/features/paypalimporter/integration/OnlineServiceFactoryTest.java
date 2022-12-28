@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.not;
@@ -23,9 +20,6 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Florian J. Breunig
- */
 public final class OnlineServiceFactoryTest {
 
     private static final String KEY_SERVICE_TYPE = "type";

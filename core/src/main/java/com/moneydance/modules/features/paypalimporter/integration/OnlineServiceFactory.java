@@ -1,6 +1,3 @@
-// PayPal Importer for Moneydance - https://www.my-flow.com/paypalimporter/
-// Copyright (C) 2013-2021 Florian J. Breunig. All rights reserved.
-
 package com.moneydance.modules.features.paypalimporter.integration;
 
 import com.infinitekind.moneydance.model.OnlineInfo;
@@ -16,8 +13,6 @@ import java.util.logging.Logger;
 /**
  * Use this factory class in order to access and remove the
  * <code>PayPalOnlineService</code> for a given <code>IAccountBook</code>.
- *
- * @author Florian J. Breunig
  */
 public final class OnlineServiceFactory {
 
