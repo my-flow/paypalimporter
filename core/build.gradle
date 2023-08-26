@@ -8,7 +8,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 dependencies {
     api(':moneydance:1358')
     api('com.google.dagger:dagger:2.47')
-    annotationProcessor('com.google.dagger:dagger-compiler:2.44.2')
+    annotationProcessor('com.google.dagger:dagger-compiler:2.47')
     api(':paypal-core-paypalimporter:1.7.2')
     api('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
