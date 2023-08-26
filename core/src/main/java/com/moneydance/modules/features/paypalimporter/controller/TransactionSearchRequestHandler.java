@@ -103,7 +103,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
         final String transactionID = result.getTransactionID();
         String grossAmount = "0";
-        CurrencyCodeType currencyID = null;
+        CurrencyCodeType currencyID = CurrencyCodeType.CUSTOMCODE;
         if (result.getGrossAmount() != null) {
             grossAmount = result.getGrossAmount().getValue();
             currencyID = result.getGrossAmount().getCurrencyID();
