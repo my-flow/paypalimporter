@@ -23,22 +23,24 @@ public final class OnlineServiceFactory {
             OnlineServiceFactory.class.getName());
 
     private final Settings settings;
-    private OnlineService initializedOnlineService = null;
+    private OnlineService initializedOnlineService;
 
     public OnlineServiceFactory(final Settings argSettings) {
         this.settings = argSettings;
     }
 
-    public PayPalOnlineService createService(final IAccountBook accountBook) {
+    public PayPalOnlineService createService(
+            final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
-        
-        if(initializedOnlineService == null) {
-            initializedOnlineService = new InitializedOnlineService(accountBook.getWrappedOriginal(),
-                                                                    new StreamTable(),
-                                                                    this.settings,
-                                                                    new Date());
+
+        if (this.initializedOnlineService == null) {
+            this.initializedOnlineService = new InitializedOnlineService(
+                    accountBook.getWrappedOriginal(),
+                    new StreamTable(),
+                    this.settings,
+                    new Date());
         }
-        
+
         OnlineService onlineService = getServiceById(onlineInfo, initializedOnlineService);
 
         if (onlineService == null) {
@@ -54,7 +56,7 @@ public final class OnlineServiceFactory {
 
     public void removeService(final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
-        
+
         for (OnlineService service : onlineInfo.getAllServices()) {
             if (this.settings.getServiceType().equals(service.getServiceType())) {
                 service.clearAuthenticationCache();

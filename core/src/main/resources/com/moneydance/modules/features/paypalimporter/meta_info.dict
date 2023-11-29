@@ -1,6 +1,6 @@
 {
   "vendor" = "Florian J. Breunig"
-  "module_build" = "11"
+  "module_build" = "10"
   "minbuild" = "1000"
   "vendor.url" = "https://www.my-flow.com/paypalimporter/"
   "module_name" = "PayPal Importer"
