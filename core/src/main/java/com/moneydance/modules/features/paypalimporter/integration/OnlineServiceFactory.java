@@ -2,9 +2,9 @@ package com.moneydance.modules.features.paypalimporter.integration;
 
 import com.infinitekind.moneydance.model.OnlineInfo;
 import com.infinitekind.moneydance.model.OnlineService;
+import com.infinitekind.util.StreamTable;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
-import com.moneydance.util.StreamTable;
 
 import javax.annotation.Nullable;
 import java.util.Date;
@@ -23,17 +23,22 @@ public final class OnlineServiceFactory {
             OnlineServiceFactory.class.getName());
 
     private final Settings settings;
-    private final OnlineService initializedOnlineService;
+    private OnlineService initializedOnlineService = null;
 
     public OnlineServiceFactory(final Settings argSettings) {
         this.settings = argSettings;
-        this.initializedOnlineService = createService();
     }
 
-    public PayPalOnlineService createService(
-            final IAccountBook accountBook) {
+    public PayPalOnlineService createService(final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
-
+        
+        if(initializedOnlineService == null) {
+            initializedOnlineService = new InitializedOnlineService(accountBook.getWrappedOriginal(),
+                                                                    new StreamTable(),
+                                                                    this.settings,
+                                                                    new Date());
+        }
+        
         OnlineService onlineService = getServiceById(onlineInfo, initializedOnlineService);
 
         if (onlineService == null) {
@@ -49,7 +54,7 @@ public final class OnlineServiceFactory {
 
     public void removeService(final IAccountBook accountBook) {
         final OnlineInfo onlineInfo = accountBook.getOnlineInfo();
-
+        
         for (OnlineService service : onlineInfo.getAllServices()) {
             if (this.settings.getServiceType().equals(service.getServiceType())) {
                 service.clearAuthenticationCache();
@@ -61,14 +66,6 @@ public final class OnlineServiceFactory {
                 }
             }
         }
-    }
-
-    private OnlineService createService() {
-        return new InitializedOnlineService(
-                null, // temporary account
-                new StreamTable(),
-                this.settings,
-                new Date());
     }
 
     @Nullable private static OnlineService getServiceById(
