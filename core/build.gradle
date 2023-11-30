@@ -62,7 +62,7 @@ shadowJar {
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
         include dependency('com.jgoodies:jgoodies-validation:2.5.1')
-        include dependency('commons-logging:commons-logging:1.2')
+        include dependency('commons-logging:commons-logging:1.3.0')
         include dependency('com.paypal.sdk:merchantsdk:2.15.122')
         include dependency(':paypal-core-paypalimporter:1.7.2')
         include dependency('org.slf4j:slf4j-api:2.0.9')
