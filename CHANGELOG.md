@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project does *not* adhere to Semantic Versioning.
 
+## [v11] - 2023-12-02
+### Fixed
+- Compatibility with Moneydance 2023.3 ([#20]).
+
+
 ## [v10] - 2022-12-27
 ### Fixed
 - Exclude authorizations when downloading transactions ([#18]).
@@ -91,6 +96,7 @@ and this project does *not* adhere to Semantic Versioning.
 - Compatibility with Java 1.3 and later versions.
 
 
+[#20]: https://github.com/my-flow/paypalimporter/pull/20
 [#18]: https://github.com/my-flow/paypalimporter/issues/18
 [#15]: https://github.com/my-flow/paypalimporter/issues/15
 [#13]: https://github.com/my-flow/paypalimporter/issues/13
@@ -109,3 +115,4 @@ and this project does *not* adhere to Semantic Versioning.
 [v8]: https://github.com/my-flow/paypalimporter/compare/v7...v8
 [v9]: https://github.com/my-flow/paypalimporter/compare/v8...v9
 [v10]: https://github.com/my-flow/paypalimporter/compare/v9...v10
+[v11]: https://github.com/my-flow/paypalimporter/compare/v10...v11

@@ -13,8 +13,8 @@ buildscript {
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'com.guardsquare:proguard-gradle:7.3.0'
-        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13'
+        classpath 'com.guardsquare:proguard-gradle:7.4.1'
+        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.2.5'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
     }
 }
@@ -59,7 +59,7 @@ subprojects {
 	}
 
     jacoco {
-        toolVersion = "0.8.8"
+        toolVersion = "0.8.11"
     }
 
     tasks.withType(Checkstyle) {
@@ -71,11 +71,11 @@ subprojects {
     }
 
 	checkstyle {
-		toolVersion = "10.5.0"
+		toolVersion = "10.12.5"
 	}
 
 	pmd {
-        toolVersion = "6.52.0"
+        toolVersion = "6.55.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
         ruleSetFiles = files("$rootDir/config/pmd-ruleSet.xml")
