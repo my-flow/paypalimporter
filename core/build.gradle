@@ -7,7 +7,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     api(':moneydance:1358')
-    api('com.google.dagger:dagger:2.48.1')
+    api('com.google.dagger:dagger:2.49')
     annotationProcessor('com.google.dagger:dagger-compiler:2.48.1')
     api(':paypal-core-paypalimporter:1.7.2')
     api('com.paypal.sdk:merchantsdk:2.15.122') {
@@ -53,7 +53,7 @@ shadowJar {
 
     dependencies {
         include dependency('javax.inject:javax.inject:1')
-        include dependency('com.google.dagger:dagger:2.48.1')
+        include dependency('com.google.dagger:dagger:2.49')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
         include dependency('org.apache.commons:commons-lang3:3.14.0')
