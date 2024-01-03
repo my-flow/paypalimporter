@@ -84,7 +84,7 @@ subprojects {
     sonar {
         properties {
             property "sonar.host.url", "https://sonarcloud.io"
-            property "sonar.organization", "${rootProject.name}"
+            property "sonar.organization", "my-flow"
         }
     }
 }
