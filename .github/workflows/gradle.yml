@@ -1,0 +1,19 @@
+name: Build Gradle project
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-gradle-project:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - uses: gradle/wrapper-validation-action@v1
+    - uses: gradle/gradle-build-action@v2
+    - run: ./gradlew clean check test assemble
+    - run: ./gradlew :core:sonar -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
