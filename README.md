@@ -1,5 +1,5 @@
 # PayPal Importer
-[![GitHub release](https://img.shields.io/github/v/release/my-flow/paypalimporter)](https://github.com/my-flow/paypalimporter/releases/latest) [![Build Status](https://img.shields.io/travis/my-flow/paypalimporter/develop)](https://app.travis-ci.com/github/my-flow/paypalimporter) [![Quality Gate Status](https://img.shields.io/sonar/tech_debt/paypalimporter:core?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/component_measures?id=paypalimporter%3Acore&metric=sqale_debt_ratio)
+[![GitHub release](https://img.shields.io/github/v/release/my-flow/paypalimporter)](https://github.com/my-flow/paypalimporter/releases/latest)
 
 PayPal Importer is a [Moneydance](http://www.moneydance.com) extension that
 imports PayPal transactions into Moneydance. Please see the
@@ -30,7 +30,7 @@ mock-ups) and the test cases. It depends on the core project.
 
 ## Documentation
 * [Changelog](CHANGELOG.md)
-* [SonarCloud](https://sonarcloud.io/organizations/paypalimporter/)
+* [SonarCloud](https://sonarcloud.io/project/overview?id=my-flow_paypalimporter)
 
 ## License
 Copyright (C) [Florian J. Breunig](http://www.my-flow.com).
