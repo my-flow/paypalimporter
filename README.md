@@ -20,7 +20,7 @@ repository.
 
 ## Running the extension
 After the build is finished, the generated MXT file located in the 
-`core/build/distributions/` directory can be added to Moneydance.
+`core/build` directory can be added to Moneydance.
 
 ## Project Structure
 The project consists of 2 gradle sub-projects:

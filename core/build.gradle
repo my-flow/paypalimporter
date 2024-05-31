@@ -71,15 +71,18 @@ shadowJar {
     relocate 'com.jgoodies', 'com.moneydance.modules.features.paypalimporter.jgoodies'
 }
 
-task proguard(type: ProGuardTask, dependsOn: 'shadowJar') {
-    injars  shadowJar.archivePath
+tasks.register('proguard', ProGuardTask) {
+    dependsOn 'shadowJar'
+    injars  shadowJar.archiveFile.get().asFile
     libraryjars configurations.findByName('runtimeClasspath').getFiles()
-    outjars "${project.buildDir}/${project.distsDirName}/proguard-${rootProject.name}.jar"
+    outjars outjar.get().asFile
     configuration 'config/proguard.cfg'
 }
 
-proguard.doLast {
-    new File("${project.buildDir}/${project.distsDirName}/proguard-${rootProject.name}.jar").renameTo mxtfile as String
+tasks.named('proguard').configure {
+    doLast {
+        outjar.get().asFile.renameTo(file(mxtfile))
+    }
 }
 
 shadowJar.finalizedBy proguard
