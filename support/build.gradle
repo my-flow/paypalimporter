@@ -12,7 +12,9 @@ dependencies {
     testRuntimeOnly('org.slf4j:slf4j-simple:2.0.13')
 }
 
-mainClassName = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
+application {
+    mainClass = 'com.moneydance.modules.features.paypalimporter.ConsoleRunner'
+}
 
 test {
     jacocoTestReport {
