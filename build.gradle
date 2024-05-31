@@ -1,5 +1,7 @@
 import java.text.SimpleDateFormat
 
+import com.github.spotbugs.snom.Effort
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration
 
@@ -14,7 +16,7 @@ buildscript {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'com.guardsquare:proguard-gradle:7.5.0'
-        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.2.5'
+        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.0.15'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730'
     }
 }
@@ -45,18 +47,17 @@ subprojects {
     }
 
     spotbugs {
-        effort = "max"
-        reportLevel = "medium"
-		excludeFilter = file("$rootDir/config/spotbugs-exclude.xml")
+        effort = Effort.valueOf('MAX')
+        excludeFilter = file("$rootDir/config/spotbugs-exclude.xml")
     }
 
-	spotbugsMain {
-		reports {
-			html {
-				required = true
-			}
-		}
-	}
+    spotbugsMain {
+        reports {
+            html {
+                required = true
+            }
+        }
+    }
 
     jacoco {
         toolVersion = "0.8.12"
@@ -70,11 +71,11 @@ subprojects {
         }
     }
 
-	checkstyle {
-		toolVersion = "10.17.0"
-	}
+    checkstyle {
+        toolVersion = "10.17.0"
+    }
 
-	pmd {
+    pmd {
         toolVersion = "6.55.0"
         sourceSets = [sourceSets.main]
         ruleSets = []
