@@ -10,7 +10,8 @@ import com.infinitekind.moneydance.model.OnlineInfo;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import javax.annotation.Nullable;
-import java.util.Hashtable;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public final class StubAccountBook implements IAccountBook {
@@ -26,7 +27,7 @@ public final class StubAccountBook implements IAccountBook {
     public StubAccountBook(final AccountBook argAccountBook,
             @Nullable final OnlineInfo argOnlineInfo) {
         this.accountBook = argAccountBook;
-        this.accountsById = new Hashtable<>();
+        this.accountsById = new HashMap<>();
         if (argAccountBook != null) {
             addAccount(argAccountBook.getRootAccount());
         }

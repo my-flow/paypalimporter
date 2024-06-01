@@ -27,7 +27,7 @@ public final class ServiceResult<V> {
             this.results = null;
         } else {
             this.results = Collections.unmodifiableList(
-                    new ArrayList<V>(argResults));
+                    new ArrayList<>(argResults));
         }
         this.errorCode = argErrorCode;
         this.errorMessage = argErrorMessage;

@@ -28,7 +28,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 
 /**
  * This view class creates the static layout based on JGoodies Forms.
@@ -154,7 +153,7 @@ class WizardLayout extends JDialog {
             .build();
 
         this.setContentPane(this.jpanel);
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.pack();
     }
 }

@@ -24,7 +24,7 @@ public final class Transaction extends OnlineTxn {
 
         super(argTxnList, new SyncRecord());
         this.txnList = argTxnList;
-        this.setProtocolType(OnlineTxn.PROTO_TYPE_OFX);
+        this.setProtocolType(PROTO_TYPE_OFX);
         this.setAmount(argAmount);
         this.setTotalAmount(argAmount);
         this.setName(argDescription);
