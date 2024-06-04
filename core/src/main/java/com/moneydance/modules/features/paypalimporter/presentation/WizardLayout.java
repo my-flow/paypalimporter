@@ -109,11 +109,11 @@ class WizardLayout extends JDialog {
 
 
         this.jpanel = FormBuilder.create()
+            .debug(false)
             .columns(settings.getColumnSpecs())
             .rows(settings.getRowsSpecs())
             .background(background)
             .padding(Paddings.DIALOG)
-            .debug(false)
 
             .add(localizer.getString("label_username"))
                 .labelFor(this.txtUsername).xy(1, 1)
