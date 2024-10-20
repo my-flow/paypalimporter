@@ -4,6 +4,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.filter.NotAuthorizationFilter;
+import com.moneydance.modules.features.paypalimporter.filter.NotRemovedTemporaryHoldFilter;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
@@ -56,9 +57,8 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         this.account = accountBook.getAccountById(argAccountId);
         this.txnList = accountBook.getRootAccount().getDownloadedTxns();
         this.dateFormat = argDateFormat;
-        this.filter = new NotAuthorizationFilter();
+        this.filter = new NotAuthorizationFilter().and(new NotRemovedTemporaryHoldFilter());
     }
-
     @Override
     public void serviceCallSucceeded(
             final ServiceResult<PaymentTransactionSearchResultType>
