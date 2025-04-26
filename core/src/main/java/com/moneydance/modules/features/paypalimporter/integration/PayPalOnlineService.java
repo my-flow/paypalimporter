@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

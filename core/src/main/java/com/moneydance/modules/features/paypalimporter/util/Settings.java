@@ -5,6 +5,7 @@ import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,10 +14,9 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.configuration.AbstractFileConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 /**
  * This configuration class accesses all values that are read
@@ -35,13 +35,12 @@ public final class Settings {
     @SuppressWarnings("nullness")
     Settings(final String resource)
             throws IOException, ConfigurationException, ParseException {
-            final AbstractFileConfiguration abstractFileConfiguration =
-                    new PropertiesConfiguration();
-            try (InputStream inputStream =
-                         Helper.getInputStreamFromResource(resource)) {
-                abstractFileConfiguration.load(inputStream);
-            }
-        this.config = abstractFileConfiguration;
+        try (InputStream inputStream = Helper.getInputStreamFromResource(resource)) {
+            // Direct construction and loading via InputStreamReader
+            PropertiesConfiguration propertiesConfig = new PropertiesConfiguration();
+            propertiesConfig.read(new java.io.InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            this.config = propertiesConfig;
+        }
         this.iconImage = getImage(this.config.getString("icon_resource"));
         this.helpImage = getImage(this.config.getString("help_resource"));
         this.dateFormat = new SimpleDateFormat(

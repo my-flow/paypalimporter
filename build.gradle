@@ -2,8 +2,10 @@ import java.text.SimpleDateFormat
 
 import com.github.spotbugs.snom.Effort
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder
+import org.apache.commons.configuration2.builder.fluent.Parameters
 
 buildscript {
     repositories {
@@ -14,7 +16,8 @@ buildscript {
     }
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:8.0.0'
-        classpath 'commons-configuration:commons-configuration:1.10'
+        classpath 'org.apache.commons:commons-configuration2:2.11.0'
+        classpath 'commons-beanutils:commons-beanutils:1.9.4'
         classpath 'com.guardsquare:proguard-gradle:7.7.0'
         classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.1.10'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:6.1.0.5360'
@@ -104,9 +107,11 @@ String getCurrentTimestamp() {
 }
 
 String getConfigValueForKey(String key) {
-    file("${project(':core').projectDir}/src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict").withInputStream {
-        final Configuration config = new PropertiesConfiguration();
-        config.load(it);
-        return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "");
-    }
+    File configFile = file("${project(':core').projectDir}/src/main/resources/com/moneydance/modules/features/paypalimporter/meta_info.dict")
+    Parameters params = new Parameters()
+    FileBasedConfigurationBuilder<PropertiesConfiguration> builder = 
+        new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+            .configure(params.properties().setFile(configFile))
+    Configuration config = builder.getConfiguration()
+    return config.getString("\"" + key + "\"").replaceAll("^\"|\"\$", "")
 }
