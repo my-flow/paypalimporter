@@ -7,7 +7,8 @@ dependencies {
     runtimeOnly('com.syncthemall:dropbox-java-sdk:1.5.3.2')
     runtimeOnly(':com.sun.net.ssl:')
 
-    testImplementation('junit:junit:4.13.2')
+    testImplementation('org.junit.jupiter:junit-jupiter:5.10.2')
+    testImplementation('org.junit.vintage:junit-vintage-engine:5.10.2') // For backward compatibility with JUnit 4 tests
 
     testRuntimeOnly('org.slf4j:slf4j-simple:2.0.17')
 }
@@ -17,6 +18,8 @@ application {
 }
 
 test {
+    useJUnitPlatform()
+    
     jacocoTestReport {
         sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
         classDirectories.from project(':core').sourceSets.main.output
