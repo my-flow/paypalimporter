@@ -17,7 +17,7 @@ buildscript {
     dependencies {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:8.0.0'
         classpath 'org.apache.commons:commons-configuration2:2.11.0'
-        classpath 'commons-beanutils:commons-beanutils:1.9.4'
+        classpath 'commons-beanutils:commons-beanutils:1.10.1'
         classpath 'com.guardsquare:proguard-gradle:7.7.0'
         classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.1.10'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:6.1.0.5360'
