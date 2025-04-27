@@ -11,11 +11,10 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
-        classpath 'gradle.plugin.com.github.johnrengelman:shadow:8.0.0'
         classpath 'org.apache.commons:commons-configuration2:2.11.0'
         classpath 'commons-beanutils:commons-beanutils:1.10.1'
         classpath 'com.guardsquare:proguard-gradle:7.7.0'
@@ -71,7 +70,7 @@ subprojects {
         reports {
             xml.required = false
             html.required = true
-            html.stylesheet resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
+            html.stylesheet = resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
         }
     }
 
@@ -95,7 +94,7 @@ subprojects {
 }
 
 task createLibs(type: Exec) {
-    description 'Generates patched libraries from trusted source'
+    description = 'Generates patched libraries from trusted source'
     executable "sh"
     args "-c", "scripts/create_libs.sh"
 }

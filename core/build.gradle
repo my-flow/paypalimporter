@@ -2,8 +2,9 @@ import java.util.jar.Attributes
 
 import proguard.gradle.ProGuardTask
 
-
-apply plugin: 'com.github.johnrengelman.shadow'
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
 
 dependencies {
     api(':moneydance:1358')
@@ -43,8 +44,12 @@ jar {
     }
 }
 
-assemble.dependsOn shadowJar
-build.dependsOn shadowJar
+tasks.named('assemble').configure {
+    dependsOn 'shadowJar'
+}
+tasks.named('build').configure {
+    dependsOn 'shadowJar'
+}
 
 shadowJar {
     archiveBaseName.set(rootProject.name)

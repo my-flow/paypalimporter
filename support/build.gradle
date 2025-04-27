@@ -17,8 +17,18 @@ application {
     mainClass = 'com.moneydance.modules.features.paypalimporter.ConsoleRunnerHelper'
 }
 
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
+    }
+}
+
 test {
-    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
     
     jacocoTestReport {
         sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
@@ -44,7 +54,7 @@ test {
 }
 
 task genKeys(type: JavaExec) {
-    description 'Generates a passphrase-protected key pair.'
+    description = 'Generates a passphrase-protected key pair.'
     standardInput = System.in
     classpath = files("$rootDir/lib/extadmin.jar")
     mainClass = 'com.moneydance.admin.KeyAdmin'
@@ -52,7 +62,7 @@ task genKeys(type: JavaExec) {
 }
 
 task sign(type: JavaExec) {
-    description 'Signs an MXT file with a private key that must already exist.'
+    description = 'Signs an MXT file with a private key that must already exist.'
     onlyIf {
         new File(privkeyfile as String).exists()
     }
