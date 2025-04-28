@@ -21,7 +21,7 @@ dependencies {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
     api('org.apache.commons:commons-lang3:3.17.0')
-    api('org.apache.commons:commons-configuration2:2.11.0')
+    api('org.apache.commons:commons-configuration2:2.12.0')
     api('commons-beanutils:commons-beanutils:1.10.1')
     api('org.apache.commons:commons-text:1.13.1')
     api('org.slf4j:slf4j-api:2.0.17')
@@ -60,7 +60,7 @@ shadowJar {
     dependencies {
         include dependency('javax.inject:javax.inject:1')
         include dependency('com.google.dagger:dagger:2.56.2')
-        include dependency('org.apache.commons:commons-configuration2:2.11.0')
+        include dependency('org.apache.commons:commons-configuration2:2.12.0')
         include dependency('commons-beanutils:commons-beanutils:1.10.1')
         include dependency('commons-lang:commons-lang:2.6')
         include dependency('org.apache.commons:commons-lang3:3.17.0')
