@@ -165,7 +165,7 @@ public final class ServiceProviderImpl implements ServiceProvider {
             final RequestHandler<V> requestHandler) {
 
         final FutureTask<ServiceResult<V>> task =
-                new FutureTask<ServiceResult<V>>(callable) {
+                new FutureTask<>(callable) {
             @Override
             protected void done() {
                 ServiceResult<V> serviceResult = null;

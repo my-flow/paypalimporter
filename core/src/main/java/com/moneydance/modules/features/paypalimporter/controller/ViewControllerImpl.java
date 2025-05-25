@@ -119,8 +119,7 @@ public final class ViewControllerImpl implements ViewController {
                 this.proceed(this.wizard.getInputData());
                 break;
             default:
-                throw new IllegalArgumentException(
-                        String.format("case %s not defined", observable));
+                LOG.log(Level.SEVERE, String.format("case %s not defined", observable));
             }
         } catch (Throwable t) {
             final String message = t.getMessage();

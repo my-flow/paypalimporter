@@ -10,14 +10,13 @@
 
     <rule ref="category/java/bestpractices.xml">
         <exclude name="GuardLogStatement" />
+        <exclude name="LooseCoupling" />
         <exclude name="UseVarargs" />
     </rule>
 
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor" />
-        <exclude name="AvoidFinalLocalVariable" />
         <exclude name="CommentDefaultAccessModifier" />
-        <exclude name="DefaultPackage" />
         <exclude name="LocalVariableCouldBeFinal" />
         <exclude name="LongVariable" />
         <exclude name="OnlyOneReturn" />
@@ -26,10 +25,10 @@
 
     <rule ref="category/java/design.xml">
         <exclude name="AvoidCatchingGenericException" />
+        <exclude name="CouplingBetweenObjects" />
         <exclude name="CyclomaticComplexity" />
         <exclude name="DataClass" />
         <exclude name="ExcessiveImports" />
-        <exclude name="ExcessiveMethodLength" />
         <exclude name="LawOfDemeter" />
         <exclude name="LoosePackageCoupling" />
         <exclude name="NPathComplexity" />
@@ -45,8 +44,8 @@
     <rule ref="category/java/errorprone.xml" >
         <exclude name="AvoidCatchingThrowable" />
         <exclude name="AvoidDuplicateLiterals" />
+        <exclude name="ConstructorCallsOverridableMethod" />
         <exclude name="NonSerializableClass" />
-        <exclude name="DataflowAnomalyAnalysis" />
         <exclude name="NullAssignment" />
         <exclude name="UseProperClassLoader" />
     </rule>

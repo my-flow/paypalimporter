@@ -3,6 +3,7 @@
 
 # generic files to ignore
 *~
+*.der
 *.lock
 *.DS_Store
 *.swp

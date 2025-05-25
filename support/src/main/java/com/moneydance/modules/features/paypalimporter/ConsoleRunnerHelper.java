@@ -16,6 +16,8 @@ import java.util.logging.Logger;
  */
 final class ConsoleRunnerHelper {
 
+    private static final String DEBUG_ARGUMENT = "-d";
+
     /**
      * Static initialization of class-dependent logger.
      */
@@ -40,7 +42,7 @@ final class ConsoleRunnerHelper {
         Helper.loadLoggerConfiguration(coreComponent.settings());
 
         for (String arg : args) {
-            if ("-d".equals(arg)) {
+            if (DEBUG_ARGUMENT.equals(arg)) {
                 LOG.warning("debugging...");
                 com.moneydance.apps.md.controller.Main.DEBUG = true;
                 continue;
