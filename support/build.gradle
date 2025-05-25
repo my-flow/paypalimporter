@@ -9,7 +9,7 @@ dependencies {
 
     testImplementation('junit:junit:4.13.2')
 
-    testRuntimeOnly('org.slf4j:slf4j-simple:2.0.13')
+    testRuntimeOnly('org.slf4j:slf4j-simple:2.0.17')
 }
 
 application {
