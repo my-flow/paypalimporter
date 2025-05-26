@@ -19,6 +19,16 @@ application {
 
 test {
     useJUnitPlatform()
+
+    // ExtensionLoadingTest loads the packaged extension archive like Moneydance does,
+    // which also provides commons-logging.
+    dependsOn ':core:proguard'
+    doFirst {
+        systemProperty 'paypalimporter.extension', file(project(':core').mxtfile).path
+        systemProperty 'paypalimporter.moneydance', configurations.runtimeClasspath.findAll {
+            it.name.startsWith('moneydance-') || it.name.startsWith('commons-logging-')
+        }.join(File.pathSeparator)
+    }
     
     jacocoTestReport {
         sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
