@@ -1,10 +1,10 @@
 package com.moneydance.modules.features.paypalimporter.model;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.infinitekind.moneydance.model.DateRange;
 import com.jgoodies.validation.ValidationResult;
@@ -17,7 +17,7 @@ public final class InputDataValidatorTest {
 
     private Validator<InputData> validator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();

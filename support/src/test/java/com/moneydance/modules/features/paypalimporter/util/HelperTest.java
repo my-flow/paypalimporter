@@ -1,10 +1,10 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportComponent;
@@ -15,7 +15,7 @@ public final class HelperTest {
 
     private Settings settings;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();

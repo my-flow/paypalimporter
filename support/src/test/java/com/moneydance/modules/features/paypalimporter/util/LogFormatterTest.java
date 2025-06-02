@@ -1,13 +1,13 @@
 package com.moneydance.modules.features.paypalimporter.util;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public final class LogFormatterTest {
 

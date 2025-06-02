@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Observable;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
@@ -32,7 +32,7 @@ public final class TransactionSearchIteratorTest {
     private InputData inputData;
     private TransactionSearchIterator iterator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
@@ -136,7 +136,7 @@ public final class TransactionSearchIteratorTest {
         try {
             this.iterator.showHelp();
         } catch (MalformedURLException e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 

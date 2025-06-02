@@ -4,20 +4,20 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.apps.md.controller.StubContextFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public final class AccountBookTest {
 
     private IAccountBook accountBook;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         StubContextFactory factory = new StubContextFactory();
         this.accountBook = AccountBookFactoryImpl.INSTANCE.createAccountBook(
