@@ -89,10 +89,7 @@ class WizardLayout extends JDialog {
 
         MnemonicUtils.configure(
             this.rdBtnExistingAcct,
-            String.format(
-                "%s%s",
-                mdGUI.getStr("existing_account"),
-                localizer.getString("label_colon")));
+            mdGUI.getStr("existing_account") + localizer.getString("label_colon"));
         MnemonicUtils.configure(
             this.rdBtnNewAcct,
             mdGUI.getStr("new_account"));
@@ -128,9 +125,7 @@ class WizardLayout extends JDialog {
                 .labelFor(this.txtSignature).xy(1, 5)
             .add(this.txtSignature).xyw(3, 5, 11)
 
-            .add(String.format("%s%s",
-                mdGUI.getStr("import_into_acct"),
-                localizer.getString("label_colon")))
+            .add(mdGUI.getStr("import_into_acct") + localizer.getString("label_colon"))
                 .labelFor(this.rdBtnExistingAcct).xy(1, 7)
 
             .add(this.rdBtnExistingAcct).xyw(3, 7, 3)

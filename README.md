@@ -7,7 +7,7 @@ imports PayPal transactions into Moneydance. Please see the
 on where to download and how to install the extension.
 
 ## Build Prerequisites
-Java Development Kit, version 17
+Java Development Kit, version 21
 
 ## Building the extension
 1. `git clone git@github.com:my-flow/paypalimporter.git` creates a copy of the

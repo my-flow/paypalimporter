@@ -28,6 +28,12 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'org.sonarqube'
 
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
     tasks.withType(JavaCompile) {
         options.release = 9
     }

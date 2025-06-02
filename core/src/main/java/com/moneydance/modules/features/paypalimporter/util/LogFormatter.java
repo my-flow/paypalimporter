@@ -16,23 +16,20 @@ public final class LogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {
-        final StringBuilder stringBuilder = new StringBuilder(7);
-
-        stringBuilder.append(new Date(record.getMillis()))
-        .append(' ')
-        .append(record.getLevel().getLocalizedName())
-        .append(": ")
-        .append(this.formatMessage(record))
-        .append(LINE_SEPARATOR);
+        String logEntry = String.format("%s %s: %s%s",
+            new Date(record.getMillis()),
+            record.getLevel().getLocalizedName(),
+            this.formatMessage(record),
+            LINE_SEPARATOR);
 
         if (record.getThrown() != null) {
             StringWriter stringWriter = new StringWriter();
             try (PrintWriter printWriter = new PrintWriter(stringWriter)) {
                 record.getThrown().printStackTrace(printWriter);
-                stringBuilder.append(stringWriter);
+                logEntry += stringWriter.toString();
             }
         }
 
-        return stringBuilder.toString();
+        return logEntry;
     }
 }
