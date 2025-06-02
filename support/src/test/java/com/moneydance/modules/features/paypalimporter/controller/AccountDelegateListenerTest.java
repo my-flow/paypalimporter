@@ -1,7 +1,7 @@
 package com.moneydance.modules.features.paypalimporter.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.infinitekind.moneydance.model.AccountListener;
 
@@ -9,7 +9,7 @@ public final class AccountDelegateListenerTest {
 
     private AccountListener accountListener;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ViewController viewController = new ViewControllerMock();
         this.accountListener = new AccountDelegateListener(viewController);

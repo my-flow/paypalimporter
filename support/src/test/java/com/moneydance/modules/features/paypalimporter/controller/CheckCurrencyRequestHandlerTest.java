@@ -12,8 +12,9 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
@@ -24,7 +25,7 @@ public final class CheckCurrencyRequestHandlerTest {
     private ViewController viewController;
     private Localizable localizable;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
@@ -47,11 +48,11 @@ public final class CheckCurrencyRequestHandlerTest {
         this.handler.serviceCallFinished(result);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testServiceCallSucceededEmptyResult() {
         ServiceResult<CurrencyCodeType> result =
                 this.mockServiceResultFactory.createEmptyServiceResult();
-        this.handler.serviceCallSucceeded(result);
+        assertThrows(RuntimeException.class, () -> this.handler.serviceCallSucceeded(result));
     }
 
     @Test

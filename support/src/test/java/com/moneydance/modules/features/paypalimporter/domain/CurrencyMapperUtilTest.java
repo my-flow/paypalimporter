@@ -1,7 +1,7 @@
 package com.moneydance.modules.features.paypalimporter.domain;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.infinitekind.moneydance.model.CurrencyTable;
 import com.infinitekind.moneydance.model.CurrencyType;
@@ -12,8 +12,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
@@ -21,7 +22,7 @@ public final class CurrencyMapperUtilTest {
 
     private StubContextFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.factory = new StubContextFactory();
     }
@@ -73,11 +74,12 @@ public final class CurrencyMapperUtilTest {
         assertThat(currencyCodeType, is(CurrencyCodeType.USD));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetCurrencyCodeFromCurrencyTypeWhenEmpty() {
-        CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
-                this.factory.getContext().getCurrentAccountBook().getRootAccount().getCurrencyType(),
-                Collections.<CurrencyCodeType>emptyList());
+        assertThrows(IllegalArgumentException.class, () ->
+                CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
+                        this.factory.getContext().getCurrentAccountBook().getRootAccount().getCurrencyType(),
+                        Collections.<CurrencyCodeType>emptyList()));
     }
 
     @Test

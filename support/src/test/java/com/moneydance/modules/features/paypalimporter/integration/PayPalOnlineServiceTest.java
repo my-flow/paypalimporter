@@ -2,7 +2,7 @@ package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.infinitekind.moneydance.model.OnlineService;
 import com.moneydance.apps.md.controller.StubContextFactory;
@@ -13,8 +13,8 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public final class PayPalOnlineServiceTest {
 
@@ -26,7 +26,7 @@ public final class PayPalOnlineServiceTest {
     private PayPalOnlineService service;
     private IAccountBook accountBook;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.accountBook = new StubContextFactory().getContext().getAccountBook();
         SupportModule supportModule = new SupportModule();

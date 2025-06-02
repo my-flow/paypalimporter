@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 
@@ -25,7 +25,7 @@ public final class ViewControllerImplTest {
     private Account account;
     private Settings settings;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();
