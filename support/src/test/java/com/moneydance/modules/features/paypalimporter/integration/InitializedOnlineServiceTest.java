@@ -8,21 +8,21 @@ import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
 import com.moneydance.util.StreamTable;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public final class InitializedOnlineServiceTest {
 
     private AccountBook accountBook;
     private Settings settings;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.accountBook = new StubContextFactory().getContext().getAccountBook().getWrappedOriginal();
 

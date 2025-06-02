@@ -7,8 +7,8 @@ import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.service.MockServiceResultFactory;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
@@ -17,7 +17,7 @@ public final class TransactionSearchRequestHandlerTest {
     private AbstractRequestHandler<PaymentTransactionSearchResultType> handler;
     private MockServiceResultFactory mockServiceResultFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();

@@ -2,12 +2,12 @@ package com.moneydance.modules.features.paypalimporter.model;
 
 import static org.hamcrest.CoreMatchers.is;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.moneydance.apps.md.controller.StubAccountBook;
 import com.moneydance.apps.md.controller.StubContext;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 

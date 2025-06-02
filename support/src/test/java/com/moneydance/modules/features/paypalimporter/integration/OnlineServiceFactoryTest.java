@@ -2,7 +2,7 @@ package com.moneydance.modules.features.paypalimporter.integration;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.infinitekind.moneydance.model.OnlineService;
 import com.infinitekind.moneydance.model.StubOnlineInfo;
@@ -17,8 +17,8 @@ import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public final class OnlineServiceFactoryTest {
 
@@ -26,7 +26,7 @@ public final class OnlineServiceFactoryTest {
     private OnlineServiceFactory onlineServiceFactory;
     private String serviceType;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();

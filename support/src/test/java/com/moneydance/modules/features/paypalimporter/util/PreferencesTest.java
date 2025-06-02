@@ -3,7 +3,7 @@ package com.moneydance.modules.features.paypalimporter.util;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.infinitekind.moneydance.model.Account;
 import com.moneydance.apps.md.controller.StubAccountBook;
@@ -13,8 +13,8 @@ import com.moneydance.modules.features.paypalimporter.SupportModule;
 
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public final class PreferencesTest {
 
@@ -24,7 +24,7 @@ public final class PreferencesTest {
     private StubAccountBook accountBook;
     private Account account;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         SupportModule supportModule = new SupportModule();
         SupportComponent supportComponent = DaggerSupportComponent.builder().supportModule(supportModule).build();

@@ -2,7 +2,7 @@ package com.moneydance.modules.features.paypalimporter.service;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.moneydance.modules.features.paypalimporter.DaggerSupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportComponent;
@@ -27,9 +27,9 @@ import java.util.concurrent.Callable;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
@@ -47,7 +47,7 @@ public final class CheckCurrencyServiceTest {
     private Locale locale;
     private Localizable localizable;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         this.service = new ServiceMock(
                 Helper.getInputStreamFromResource(
@@ -73,7 +73,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), is(Optional.empty()));
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -165,7 +165,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -188,7 +188,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -211,7 +211,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -234,7 +234,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -257,7 +257,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -280,7 +280,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
 
     }
@@ -304,7 +304,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -327,7 +327,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -350,7 +350,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -373,7 +373,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -396,7 +396,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 
@@ -419,7 +419,7 @@ public final class CheckCurrencyServiceTest {
             assertThat(serviceResult, notNullValue());
             assertThat(serviceResult.getErrorMessage(), notNullValue());
         } catch (Exception e) {
-            Assert.fail(e.getMessage());
+            Assertions.fail(e.getMessage());
         }
     }
 }
