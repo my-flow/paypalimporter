@@ -11,7 +11,7 @@ dependencies {
     testImplementation('org.hamcrest:hamcrest:3.0')
     
     // Explicitly add platform dependencies to ensure version alignment
-    testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.13.0')
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.13.1')
     testRuntimeOnly('org.junit.platform:junit-platform-engine:1.13.1')
 
     testRuntimeOnly('org.slf4j:slf4j-simple:2.0.17')
