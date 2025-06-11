@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.BasicAmount;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 public final class MockServiceResultFactory {
 
@@ -50,57 +50,59 @@ public final class MockServiceResultFactory {
     }
 
     public static CurrencyCodeType createCompleteCurrencyCodeType() {
-        return CurrencyCodeType.USD;
+        return CurrencyCodeType.fromValue("USD");
     }
 
     public static CurrencyCodeType createIncompleteCurrencyCodeType() {
-        return CurrencyCodeType.CUSTOMCODE;
+        return CurrencyCodeType.UNKNOWN;
     }
 
     public PaymentTransactionSearchResultType
     createCompletePaymentTransactionSearchResultType() {
 
-        PaymentTransactionSearchResultType resultType =
-                new PaymentTransactionSearchResultType();
-
         DateFormat dateFormat = this.settings.getDateFormat();
-        resultType.setTimestamp(dateFormat.format(new Date()));
+        String timestamp = dateFormat.format(new Date());
 
-        BasicAmountType grossAmount = new BasicAmountType();
-        grossAmount.setValue("0.00");
-        resultType.setGrossAmount(grossAmount);
+        BasicAmount grossAmount = new BasicAmount("0.00", CurrencyCodeType.fromValue("USD"));
 
-        resultType.setPayer("stub payer name");
-
-        return resultType;
+        return new PaymentTransactionSearchResultType(
+                "stub payer name",
+                "stub payer display name",
+                timestamp,
+                "stub transaction id",
+                "stub status",
+                "stub type",
+                grossAmount);
     }
 
     public PaymentTransactionSearchResultType
     createIncompletePaymentTransactionSearchResultType() {
 
-        PaymentTransactionSearchResultType resultType =
-                new PaymentTransactionSearchResultType();
-
         DateFormat dateFormat = this.settings.getDateFormat();
-        resultType.setTimestamp(dateFormat.format(new Date()));
+        String timestamp = dateFormat.format(new Date());
 
-        // gross amount is missing
-
-        // payer property is missing
-
-        return resultType;
+        // gross amount is missing, payer property is missing
+        return new PaymentTransactionSearchResultType(
+                null,
+                null,
+                timestamp,
+                null,
+                null,
+                null,
+                null);
     }
 
     public PaymentTransactionSearchResultType
     createInvalidPaymentTransactionSearchResultType() {
 
-        PaymentTransactionSearchResultType resultType =
-                new PaymentTransactionSearchResultType();
-
         // gross amount is missing
-        resultType.setPayer("stub payer name");
-        resultType.setTimestamp("invalid timestamp");
-
-        return resultType;
+        return new PaymentTransactionSearchResultType(
+                "stub payer name",
+                null,
+                "invalid timestamp",
+                null,
+                null,
+                null,
+                null);
     }
 }

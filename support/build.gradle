@@ -53,22 +53,22 @@ test {
 }
 
 task genKeys(type: JavaExec) {
-    description 'Generates a passphrase-protected key pair.'
+    description = 'Generates a passphrase-protected key pair.'
     standardInput = System.in
     classpath = files("$rootDir/lib/extadmin.jar")
     mainClass = 'com.moneydance.admin.KeyAdmin'
-    args 'genkey', privkeyfile, pubkeyfile
+    args = ['genkey', privkeyfile, pubkeyfile]
 }
 
 task sign(type: JavaExec) {
-    description 'Signs an MXT file with a private key that must already exist.'
+    description = 'Signs an MXT file with a private key that must already exist.'
     onlyIf {
         new File(privkeyfile as String).exists()
     }
     standardInput = System.in
     classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-1358.jar")
     mainClass = 'com.moneydance.admin.KeyAdmin'
-    args 'signextjar', privkeyfile, privkeyid, rootProject.name, mxtfile
+    args = ['signextjar', privkeyfile, privkeyid, rootProject.name, mxtfile]
 }
 
 sign.doLast {

@@ -2,7 +2,7 @@ package com.moneydance.modules.features.paypalimporter.filter;
 
 import java.util.function.Predicate;
 
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 final class RemovedTemporaryHoldFilter implements Predicate<PaymentTransactionSearchResultType> {
 

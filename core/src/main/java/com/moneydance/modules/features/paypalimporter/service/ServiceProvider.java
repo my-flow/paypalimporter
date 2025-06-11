@@ -1,7 +1,7 @@
 package com.moneydance.modules.features.paypalimporter.service;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 import java.util.Date;
 

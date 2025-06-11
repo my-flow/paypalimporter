@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observer;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 import javax.annotation.Nullable;
 

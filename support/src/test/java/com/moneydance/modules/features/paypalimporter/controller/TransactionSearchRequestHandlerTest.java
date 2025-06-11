@@ -10,7 +10,7 @@ import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 public final class TransactionSearchRequestHandlerTest {
 

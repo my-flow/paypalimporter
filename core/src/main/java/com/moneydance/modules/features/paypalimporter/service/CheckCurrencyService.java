@@ -30,7 +30,7 @@ import urn.ebay.api.PayPalAPI.GetBalanceResponseType;
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 /**
  * This service checks the balances of a PayPal account in order to determine
@@ -90,6 +90,7 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
                 results = txnResponse.getBalanceHoldings()
                         .stream()
                         .map(BasicAmountType::getCurrencyID)
+                        .map(this::convertFromPayPalCurrencyCode)
                         .collect(Collectors.toList());
             }
 
@@ -108,6 +109,16 @@ implements Callable<ServiceResult<CurrencyCodeType>> {
         }
 
         return new ServiceResult<>(results, errorCode, errorMessage);
+    }
+
+    private CurrencyCodeType convertFromPayPalCurrencyCode(
+            final urn.ebay.apis.eBLBaseComponents.CurrencyCodeType paypalCurrencyCode) {
+        try {
+            return CurrencyCodeType.fromValue(paypalCurrencyCode.getValue());
+        } catch (IllegalArgumentException e) {
+            LOG.log(Level.WARNING, "Unknown currency code: " + paypalCurrencyCode.getValue(), e);
+            return CurrencyCodeType.UNKNOWN;
+        }
     }
 
     private static void logErrorMessage(final Exception exception) {

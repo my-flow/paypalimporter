@@ -1,6 +1,9 @@
 package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
+import com.moneydance.modules.features.paypalimporter.model.BasicAmount;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.paypal.exception.ClientActionRequiredException;
 import com.paypal.exception.HttpErrorException;
@@ -21,6 +24,7 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -31,9 +35,7 @@ import urn.ebay.api.PayPalAPI.TransactionSearchReq;
 import urn.ebay.api.PayPalAPI.TransactionSearchRequestType;
 import urn.ebay.api.PayPalAPI.TransactionSearchResponseType;
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.PaymentTransactionClassCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * This service fetches all transactions between two given dates.
@@ -90,7 +92,7 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
 
         TransactionSearchRequestType txnType =
                 new TransactionSearchRequestType();
-        txnType.setCurrencyCode(this.currencyCode);
+        txnType.setCurrencyCode(convertToPayPalCurrencyCode(this.currencyCode));
         txnType.setTransactionClass(TXN_CLASS);
 
         final Date sDate = this.dateConverter.getValidDate(this.startDate);
@@ -114,7 +116,9 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
             }
 
             if (Arrays.asList(ACK_CODES).contains(txnResponse.getAck())) {
-                results = txnResponse.getPaymentTransactions();
+                results = txnResponse.getPaymentTransactions().stream()
+                        .map(this::convertPaymentTransaction)
+                        .collect(Collectors.toList());
             }
 
         } catch (UnknownHostException | SocketException e) {
@@ -132,6 +136,46 @@ implements Callable<ServiceResult<PaymentTransactionSearchResultType>> {
         }
 
         return new ServiceResult<>(results, errorCode, errorMessage);
+    }
+
+    private urn.ebay.apis.eBLBaseComponents.CurrencyCodeType convertToPayPalCurrencyCode(
+            final CurrencyCodeType argCurrencyCode) {
+        try {
+            return urn.ebay.apis.eBLBaseComponents.CurrencyCodeType.fromValue(argCurrencyCode.getValue());
+        } catch (IllegalArgumentException e) {
+            LOG.log(Level.WARNING, "Unknown currency code: " + argCurrencyCode.getValue(), e);
+            return urn.ebay.apis.eBLBaseComponents.CurrencyCodeType.CUSTOMCODE;
+        }
+    }
+
+    private PaymentTransactionSearchResultType
+    convertPaymentTransaction(final urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType paypalType) {
+
+        String payer = paypalType.getPayer();
+        String payerDisplayName = paypalType.getPayerDisplayName();
+        String timestamp = paypalType.getTimestamp();
+        String transactionID = paypalType.getTransactionID();
+        String status = paypalType.getStatus();
+        String type = paypalType.getType();
+
+        BasicAmount grossAmount = null;
+        if (paypalType.getGrossAmount() != null) {
+            CurrencyCodeType localCurrencyCode = CurrencyCodeType.UNKNOWN;
+            if (paypalType.getGrossAmount().getCurrencyID() != null) {
+                try {
+                    localCurrencyCode = CurrencyCodeType.fromValue(
+                            paypalType.getGrossAmount().getCurrencyID().getValue());
+                } catch (IllegalArgumentException e) {
+                    LOG.log(Level.WARNING, "Unknown currency code: "
+                            + paypalType.getGrossAmount().getCurrencyID().getValue(), e);
+                    localCurrencyCode = CurrencyCodeType.UNKNOWN;
+                }
+            }
+            grossAmount = new BasicAmount(paypalType.getGrossAmount().getValue(), localCurrencyCode);
+        }
+
+        return new PaymentTransactionSearchResultType(
+                payer, payerDisplayName, timestamp, transactionID, status, type, grossAmount);
     }
 
     private static void logErrorMessage(final Exception exception) {

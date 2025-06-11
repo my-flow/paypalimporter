@@ -16,7 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 public final class CurrencyMapperUtilTest {
 
@@ -39,39 +39,39 @@ public final class CurrencyMapperUtilTest {
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithDefaultTable() {
         CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 CurrencyUtil.createDefaultTable(
                         this.factory.getContext().getCurrentAccountBook(),
-                        CurrencyCodeType.USD.getValue()), null
+                        CurrencyCodeType.fromValue("USD").getValue()), null
                 );
-        assertThat(currencyType.getIDString(), is(CurrencyCodeType.USD.getValue()));
+        assertThat(currencyType.getIDString(), is(CurrencyCodeType.fromValue("USD").getValue()));
     }
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithEmptyCurrencyTable() {
         CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 this.factory.getContext().getAccountBook().getCurrencies(),
                 this.factory.getContext().getAccountBook());
-        assertThat(currencyType.getIDString(), is(CurrencyCodeType.USD.getValue()));
+        assertThat(currencyType.getIDString(), is(CurrencyCodeType.fromValue("USD").getValue()));
     }
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithUnknownCurrencyCode() {
         CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
-                CurrencyCodeType.NIO,
+                CurrencyCodeType.fromValue("MYR"),
                 this.factory.getContext().getAccountBook().getCurrencies(),
                 this.factory.getContext().getAccountBook()
         );
-        assertThat(currencyType.getIDString(), is(CurrencyCodeType.NIO.getValue()));
+        assertThat(currencyType.getIDString(), is(CurrencyCodeType.fromValue("MYR").getValue()));
     }
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithSingleCurrency() {
         CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getRootAccount().getCurrencyType(),
-                Collections.singletonList(CurrencyCodeType.USD));
-        assertThat(currencyCodeType, is(CurrencyCodeType.USD));
+                Collections.singletonList(CurrencyCodeType.fromValue("USD")));
+        assertThat(currencyCodeType, is(CurrencyCodeType.fromValue("USD")));
     }
 
     @Test
@@ -93,15 +93,15 @@ public final class CurrencyMapperUtilTest {
 
         CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 currencyType,
-                Collections.singletonList(CurrencyCodeType.USD));
-        assertThat(currencyCodeType, is(CurrencyCodeType.USD));
+                Collections.singletonList(CurrencyCodeType.fromValue("USD")));
+        assertThat(currencyCodeType, is(CurrencyCodeType.fromValue("USD")));
     }
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithUnsupportedCurrency() {
         CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
                 this.factory.getContext().getRootAccount().getCurrencyType(),
-                Collections.singletonList(CurrencyCodeType.EUR));
-        assertThat(currencyCodeType, is(CurrencyCodeType.EUR));
+                Collections.singletonList(CurrencyCodeType.fromValue("EUR")));
+        assertThat(currencyCodeType, is(CurrencyCodeType.fromValue("EUR")));
     }
 }
