@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +28,7 @@ import urn.ebay.api.PayPalAPI.TransactionSearchResponseType;
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 @SuppressWarnings("PMD.GodClass")
 public final class ServiceMock extends PayPalAPIInterfaceServiceService {
@@ -161,7 +162,9 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
         }
 
         TransactionSearchResponseType response = new TransactionSearchResponseType();
-        response.setPaymentTransactions(this.paymentTransactions);
+        if (this.paymentTransactions != null) {
+            response.setPaymentTransactions(convertToPayPalTransactions(this.paymentTransactions));
+        }
         response.setAck(this.ack);
         response.setErrors(this.errors);
         return response;
@@ -246,5 +249,43 @@ public final class ServiceMock extends PayPalAPIInterfaceServiceService {
 
     public void setSAXException(final SAXException argSaxException) {
         this.saxException = argSaxException;
+    }
+
+    private List<urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType> convertToPayPalTransactions(
+            final List<PaymentTransactionSearchResultType> transactions) {
+        return transactions.stream()
+                .map(this::convertToPayPalTransaction)
+                .collect(Collectors.toList());
+    }
+
+    private urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType convertToPayPalTransaction(
+            final PaymentTransactionSearchResultType transaction) {
+        urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType paypalTransaction =
+                new urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType();
+
+        paypalTransaction.setPayer(transaction.getPayer());
+        paypalTransaction.setPayerDisplayName(transaction.getPayerDisplayName());
+        paypalTransaction.setTimestamp(transaction.getTimestamp());
+        paypalTransaction.setTransactionID(transaction.getTransactionID());
+        paypalTransaction.setStatus(transaction.getStatus());
+        paypalTransaction.setType(transaction.getType());
+
+        if (transaction.getGrossAmount() != null) {
+            BasicAmountType grossAmount = new BasicAmountType();
+            grossAmount.setValue(transaction.getGrossAmount().getValue());
+            if (transaction.getGrossAmount().getCurrencyID() != null) {
+                try {
+                    urn.ebay.apis.eBLBaseComponents.CurrencyCodeType currencyCode =
+                            urn.ebay.apis.eBLBaseComponents.CurrencyCodeType.fromValue(
+                                    transaction.getGrossAmount().getCurrencyID().getValue());
+                    grossAmount.setCurrencyID(currencyCode);
+                } catch (IllegalArgumentException e) {
+                    grossAmount.setCurrencyID(urn.ebay.apis.eBLBaseComponents.CurrencyCodeType.CUSTOMCODE);
+                }
+            }
+            paypalTransaction.setGrossAmount(grossAmount);
+        }
+
+        return paypalTransaction;
     }
 }

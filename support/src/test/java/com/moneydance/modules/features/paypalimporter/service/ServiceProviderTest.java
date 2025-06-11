@@ -12,7 +12,7 @@ import java.util.Calendar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 public final class ServiceProviderTest {
 
@@ -53,7 +53,7 @@ public final class ServiceProviderTest {
                 "mock signature",
                 yesterday.getTime(),
                 tomorrow.getTime(),
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 serviceResult -> assertThat(serviceResult, notNullValue()));
     }
 

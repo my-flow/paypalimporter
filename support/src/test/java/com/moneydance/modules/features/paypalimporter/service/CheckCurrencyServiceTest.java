@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 
 import urn.ebay.apis.CoreComponentTypes.BasicAmountType;
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
 
 public final class CheckCurrencyServiceTest {
@@ -84,7 +84,7 @@ public final class CheckCurrencyServiceTest {
         errorType.setErrorCode(ERROR_CODE);
         errorType.setLongMessage(LONG_MESSAGE);
         this.service.setErrors(Collections.singletonList(errorType));
-        BasicAmountType amountType = new BasicAmountType(CurrencyCodeType.USD, "1.00");
+        BasicAmountType amountType = new BasicAmountType(urn.ebay.apis.eBLBaseComponents.CurrencyCodeType.USD, "1.00");
         this.service.setBalanceHoldings(Collections.singletonList(amountType));
 
         Callable<ServiceResult<CurrencyCodeType>> callable =

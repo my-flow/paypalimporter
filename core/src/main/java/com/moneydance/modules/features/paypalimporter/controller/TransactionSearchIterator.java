@@ -4,8 +4,10 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
 import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 import com.moneydance.modules.features.paypalimporter.model.InputData;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 import com.moneydance.modules.features.paypalimporter.service.RequestHandler;
 import com.moneydance.modules.features.paypalimporter.service.ServiceProvider;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
@@ -20,9 +22,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 import javax.annotation.Nullable;
 

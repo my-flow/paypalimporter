@@ -2,6 +2,8 @@ package com.moneydance.modules.features.paypalimporter.service;
 
 import com.moneydance.modules.features.paypalimporter.domain.DateConverter;
 import com.moneydance.modules.features.paypalimporter.bootstrap.Helper;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
 import com.moneydance.modules.features.paypalimporter.util.Preferences;
 import com.moneydance.modules.features.paypalimporter.util.Settings;
@@ -23,8 +25,6 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 import urn.ebay.api.PayPalAPI.PayPalAPIInterfaceServiceService;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * Facade for initiating service calls. Also supports shutdown.

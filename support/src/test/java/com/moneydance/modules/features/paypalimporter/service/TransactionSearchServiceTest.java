@@ -37,9 +37,9 @@ import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
 import urn.ebay.apis.eBLBaseComponents.AckCodeType;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 import urn.ebay.apis.eBLBaseComponents.ErrorType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 
 public final class TransactionSearchServiceTest {
 
@@ -71,7 +71,7 @@ public final class TransactionSearchServiceTest {
 
         this.localizable = supportComponent.localizable();
         this.dateConverter = supportComponent.dateConverter();
-        this.currencyCode = CurrencyCodeType.USD;
+        this.currencyCode = CurrencyCodeType.fromValue("USD");
 
         Calendar startCal = Calendar.getInstance();
         startCal.add(Calendar.DATE, -1);
@@ -117,7 +117,8 @@ public final class TransactionSearchServiceTest {
         errorType.setErrorCode(ERROR_CODE);
         errorType.setLongMessage(LONG_MESSAGE);
         this.service.setErrors(Collections.singletonList(errorType));
-        PaymentTransactionSearchResultType transaction = new PaymentTransactionSearchResultType();
+        PaymentTransactionSearchResultType transaction = new PaymentTransactionSearchResultType(
+                null, null, null, null, null, null, null);
         this.service.setPaymentTransactions(Collections.singletonList(transaction));
 
         Callable<ServiceResult<PaymentTransactionSearchResultType>> callable =

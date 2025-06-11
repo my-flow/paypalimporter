@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Observable;
 
 import com.moneydance.modules.features.paypalimporter.model.InputData;
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.CurrencyType;
@@ -13,6 +13,7 @@ import com.infinitekind.moneydance.model.OnlineTxn;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 final class ViewControllerMock implements ViewController {
 
     @Override

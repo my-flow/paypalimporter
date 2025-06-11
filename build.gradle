@@ -7,7 +7,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url = "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
@@ -73,7 +73,7 @@ subprojects {
         reports {
             xml.required = false
             html.required = true
-            html.stylesheet resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
+            html.stylesheet = resources.text.fromFile("$rootDir/config/checkstyle/checkstyle-noframes-sorted.xsl")
         }
     }
 
@@ -97,9 +97,9 @@ subprojects {
 }
 
 task createLibs(type: Exec) {
-    description 'Generates patched libraries from trusted source'
-    executable "sh"
-    args "-c", "scripts/create_libs.sh"
+    description = 'Generates patched libraries from trusted source'
+    executable = "sh"
+    args = ["-c", "scripts/create_libs.sh"]
 }
 
 String getCurrentTimestamp() {

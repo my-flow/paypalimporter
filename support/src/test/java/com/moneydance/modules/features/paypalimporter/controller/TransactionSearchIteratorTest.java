@@ -23,8 +23,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
+@SuppressWarnings("deprecation")
 public final class TransactionSearchIteratorTest {
 
     private AccountBook accountBook;
@@ -56,7 +57,7 @@ public final class TransactionSearchIteratorTest {
                 serviceProvider,
                 inputData,
                 this.accountBook.getRootAccount().getCurrencyType(),
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 this.settings.getErrorCodeSearchWarning(),
                 this.settings.getDateFormat(),
                 supportComponent.localizable());

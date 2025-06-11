@@ -46,7 +46,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang3.time.DateUtils;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 /**
  * Default implementation of the control flow interface.
@@ -249,7 +249,7 @@ public final class ViewControllerImpl implements ViewController {
 
             final String message =
                     this.localizable.getQuestionMessageMultipleCurrencies(
-                            currencyCode.name(),
+                            currencyCode.getValue(),
                             currencyCodes
                                     .stream()
                                     .map(CurrencyCodeType::getValue)

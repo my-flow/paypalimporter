@@ -9,7 +9,7 @@ import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.util.List;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 /**
  * Callback class that handles currency checks.

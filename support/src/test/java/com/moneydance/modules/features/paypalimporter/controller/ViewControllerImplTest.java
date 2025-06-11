@@ -15,7 +15,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 public final class ViewControllerImplTest {
 
@@ -63,7 +63,7 @@ public final class ViewControllerImplTest {
     public void testCurrencyCheckedEmpty() {
         this.viewController.currencyChecked(
                 this.account.getCurrencyType(),
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 Collections.emptyList());
     }
 
@@ -84,11 +84,11 @@ public final class ViewControllerImplTest {
         viewControllerImpl.setInputData(this.invalidInputData);
 
         List<CurrencyCodeType> currencyCodes = new LinkedList<>();
-        currencyCodes.add(CurrencyCodeType.USD);
-        currencyCodes.add(CurrencyCodeType.EUR);
+        currencyCodes.add(CurrencyCodeType.fromValue("USD"));
+        currencyCodes.add(CurrencyCodeType.fromValue("EUR"));
         viewControllerImpl.currencyChecked(
                 this.account.getCurrencyType(),
-                CurrencyCodeType.USD,
+                CurrencyCodeType.fromValue("USD"),
                 currencyCodes);
     }
 

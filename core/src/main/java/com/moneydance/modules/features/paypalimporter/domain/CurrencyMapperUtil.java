@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 
 /**
  * This utility class contains domain-specific mappings between Moneydance's
@@ -81,7 +81,7 @@ public final class CurrencyMapperUtil {
                 result = accountCurrency;
             } else {
                 LOG.info(String.format("Account currency %s differs from"
-                        + " PayPal account currencies", accountCurrency));
+                        + " PayPal account currencies", accountCurrency.getValue()));
             }
         } catch (IllegalArgumentException e) {
             // Currency "bananas" is not supported by PayPal ;-)

@@ -5,7 +5,9 @@ import com.infinitekind.moneydance.model.OnlineTxn;
 import com.infinitekind.moneydance.model.OnlineTxnList;
 import com.moneydance.modules.features.paypalimporter.filter.NotAuthorizationFilter;
 import com.moneydance.modules.features.paypalimporter.filter.NotRemovedTemporaryHoldFilter;
+import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
+import com.moneydance.modules.features.paypalimporter.model.PaymentTransactionSearchResultType;
 import com.moneydance.modules.features.paypalimporter.model.Transaction;
 import com.moneydance.modules.features.paypalimporter.service.ServiceResult;
 import com.moneydance.modules.features.paypalimporter.util.Localizable;
@@ -20,9 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import urn.ebay.apis.eBLBaseComponents.CurrencyCodeType;
-import urn.ebay.apis.eBLBaseComponents.PaymentTransactionSearchResultType;
 
 /**
  * The handler class converts incoming transactions after a successful service
@@ -103,7 +102,7 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
 
         final String transactionID = result.getTransactionID();
         String grossAmount = "0";
-        CurrencyCodeType currencyID = CurrencyCodeType.CUSTOMCODE;
+        CurrencyCodeType currencyID = CurrencyCodeType.UNKNOWN;
         if (result.getGrossAmount() != null) {
             grossAmount = result.getGrossAmount().getValue();
             currencyID = result.getGrossAmount().getCurrencyID();
