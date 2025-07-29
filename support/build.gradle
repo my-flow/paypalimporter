@@ -2,7 +2,7 @@ apply plugin: 'application'
 
 dependencies {
     api project(':core')
-    annotationProcessor "com.google.dagger:dagger-compiler:2.56.2"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.57"
 
     runtimeOnly('com.syncthemall:dropbox-java-sdk:1.5.3.2')
     runtimeOnly(':com.sun.net.ssl:')
