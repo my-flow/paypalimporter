@@ -14,7 +14,7 @@ buildscript {
         classpath 'gradle.plugin.com.github.johnrengelman:shadow:8.0.0'
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'com.guardsquare:proguard-gradle:7.7.0'
-        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.2.3'
+        classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.2.4'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:6.2.0.5505'
     }
 }
