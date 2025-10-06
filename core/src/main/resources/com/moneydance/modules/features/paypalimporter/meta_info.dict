@@ -1,7 +1,7 @@
 {
   "vendor" = "Florian J. Breunig"
   "module_build" = "11"
-  "minbuild" = "1000"
+  "minbuild" = "5064"
   "vendor.url" = "https://www.my-flow.com/paypalimporter/"
   "module_name" = "PayPal Importer"
   "desc" = "PayPal Importer imports transactions from PayPal Premier or Business accounts into Moneydance."
