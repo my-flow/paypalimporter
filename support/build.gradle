@@ -9,13 +9,13 @@ dependencies {
 
     testImplementation('org.junit.jupiter:junit-jupiter:5.13.4')
     testImplementation('org.hamcrest:hamcrest:3.0')
-    
+
     // Explicitly add platform dependencies to ensure version alignment
     testRuntimeOnly('org.junit.platform:junit-platform-launcher:1.13.4')
     testRuntimeOnly('org.junit.platform:junit-platform-engine:1.13.4')
 
     testRuntimeOnly('org.slf4j:slf4j-simple:2.0.17')
-    
+
     // Exclude old JUnit 4 that comes transitively from paypal dependencies
     configurations.testRuntimeClasspath {
         exclude group: 'junit', module: 'junit'
@@ -28,7 +28,7 @@ application {
 
 test {
     useJUnitPlatform()
-    
+
     jacocoTestReport {
         sourceDirectories.from project(':core').sourceSets.main.allSource.srcDirs
         classDirectories.from project(':core').sourceSets.main.output
@@ -66,7 +66,7 @@ task sign(type: JavaExec) {
         new File(privkeyfile as String).exists()
     }
     standardInput = System.in
-    classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-1358.jar")
+    classpath = files("$rootDir/lib/extadmin.jar", "$rootDir/lib/moneydance-5253.jar")
     mainClass = 'com.moneydance.admin.KeyAdmin'
     args = ['signextjar', privkeyfile, privkeyid, rootProject.name, mxtfile]
 }

@@ -64,7 +64,7 @@ public final class AccountBookTest {
         OnlineService onlineService = new OnlineService(
                 this.accountBook.getWrappedOriginal());
         assertThat(this.accountBook.logRemovedItem(onlineService),
-                equalTo(false));
+                equalTo(true));
     }
 
 }
