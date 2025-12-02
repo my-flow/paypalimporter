@@ -4,7 +4,7 @@ import com.infinitekind.moneydance.model.Account;
 import com.infinitekind.moneydance.model.AccountBook;
 import com.infinitekind.moneydance.model.AccountHelper;
 import com.infinitekind.moneydance.model.OnlineInfo;
-import com.moneydance.util.StreamTable;
+import com.infinitekind.util.StreamTable;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,14 +41,14 @@ public final class StubContextFactory {
        AccountBook accountBook = AccountBook.fakeAccountBook();
        try {
            accountBook.doInitialLoad(true);
+           accountBook.initializeNewEmptyAccounts("USD");
         } catch (Exception e) {
            final String message = e.getMessage();
            if (message != null) {
                LOG.log(Level.SEVERE, message, e);
            }
        }
-       accountBook.initializeNewEmptyAccounts("USD");
-       accountBook.setLocalStorage(new StubLocalStorage());
+       accountBook.setLocalStorage(new StubLocalStorage(accountBook));
 
        StubAccountBook acctBook;
        if (onlineInfo == null) {
@@ -83,10 +83,11 @@ public final class StubContextFactory {
         LOG.info("Setting up stub context");
         this.featureModule.setup(
                 this.context,
-                null,
+                "paypalimporter",
                 new StreamTable(),
                 null,
-                null);
+                null,
+                false);
     }
 
     public StubContext getContext() {
