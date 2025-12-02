@@ -3,9 +3,10 @@ package com.moneydance.modules.features.paypalimporter.integration;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.infinitekind.moneydance.model.OnlineInfo;
 import com.infinitekind.moneydance.model.OnlineService;
-import com.infinitekind.moneydance.model.StubOnlineInfo;
 import com.moneydance.apps.md.controller.StubAccountBook;
 import com.moneydance.apps.md.controller.StubContext;
 import com.moneydance.apps.md.controller.StubContextFactory;
@@ -14,7 +15,6 @@ import com.moneydance.modules.features.paypalimporter.SupportComponent;
 import com.moneydance.modules.features.paypalimporter.SupportModule;
 import com.moneydance.modules.features.paypalimporter.model.IAccountBook;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -55,8 +55,10 @@ public final class OnlineServiceFactoryTest {
     public void testRemoveExistingServices() {
         final StubContext context = new StubContextFactory().getContext();
 
-        OnlineService onlineService = new OnlineService(
-                context.getCurrentAccountBook());
+        final com.infinitekind.moneydance.model.AccountBook currentAccountBook =
+                context.getCurrentAccountBook();
+        assertNotNull(currentAccountBook, "AccountBook should not be null");
+        OnlineService onlineService = new OnlineService(currentAccountBook);
         onlineService.addParameters(new HashMap<String, String>() {
             private static final long serialVersionUID = 1L;
             {
@@ -65,11 +67,8 @@ public final class OnlineServiceFactoryTest {
                         OnlineServiceFactoryTest.this.serviceType);
             }
         });
-        StubOnlineInfo onlineInfo = new StubOnlineInfo(
-                context.getAccountBook(),
-                Collections.singletonList(onlineService));
-        IAccountBook accountBook = new StubAccountBook(
-                context.getCurrentAccountBook(), onlineInfo);
+        OnlineInfo onlineInfo = new OnlineInfo(currentAccountBook);
+        IAccountBook accountBook = new StubAccountBook(currentAccountBook, onlineInfo);
 
         PayPalOnlineService service = this.onlineServiceFactory.createService(
                 accountBook);

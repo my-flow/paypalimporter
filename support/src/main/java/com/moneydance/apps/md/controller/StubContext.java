@@ -37,7 +37,7 @@ public final class StubContext extends Main {
         this.accountBook = argAccountBook;
         try {
             if (!this.isInitialized()) {
-                this.initializeApp();
+                this.initializeApp(null, null);
             }
         } catch (Error e) {
             final String message = e.getMessage();

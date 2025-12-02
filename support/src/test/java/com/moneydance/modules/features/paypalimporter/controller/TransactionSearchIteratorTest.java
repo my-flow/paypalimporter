@@ -124,11 +124,15 @@ public final class TransactionSearchIteratorTest {
     @Test
     public void testTransactionsImportedNoSearchWarningFilled() {
         final List<OnlineTxn> onlineTxns = new LinkedList<>();
-        onlineTxns.add(this.accountBook.getRootAccount().getDownloadedTxns().newTxn());
+        final com.infinitekind.moneydance.model.Account rootAccount = this.accountBook.getRootAccount();
+        Assertions.assertNotNull(rootAccount, "Root account should not be null");
+        final com.infinitekind.moneydance.model.OnlineTxnList downloadedTxns = rootAccount.getDownloadedTxns();
+        Assertions.assertNotNull(downloadedTxns, "Downloaded transactions should not be null");
+        onlineTxns.add(downloadedTxns.newTxn());
         this.iterator.transactionsImported(
                 onlineTxns,
                 null,
-                this.accountBook.getRootAccount(),
+                rootAccount,
                 null);
     }
 

@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.moneydance.modules.features.paypalimporter.model.CurrencyCodeType;
@@ -38,11 +39,16 @@ public final class CurrencyMapperUtilTest {
 
     @Test
     public void testGetCurrencyTypeFromCurrencyCodeWithDefaultTable() {
+        final com.infinitekind.moneydance.model.AccountBook currentAccountBook =
+                this.factory.getContext().getCurrentAccountBook();
+        assertNotNull(currentAccountBook, "AccountBook should not be null");
+        CurrencyTable defaultTable = CurrencyUtil.createDefaultTable(
+                currentAccountBook,
+                CurrencyCodeType.fromValue("USD").getValue());
+        assertNotNull(defaultTable, "Default currency table should not be null");
         CurrencyType currencyType = CurrencyMapperUtil.getCurrencyTypeFromCurrencyCode(
                 CurrencyCodeType.fromValue("USD"),
-                CurrencyUtil.createDefaultTable(
-                        this.factory.getContext().getCurrentAccountBook(),
-                        CurrencyCodeType.fromValue("USD").getValue()), null
+                defaultTable, null
                 );
         assertThat(currencyType.getIDString(), is(CurrencyCodeType.fromValue("USD").getValue()));
     }
@@ -68,8 +74,13 @@ public final class CurrencyMapperUtilTest {
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithSingleCurrency() {
+        final com.infinitekind.moneydance.model.Account rootAccount =
+                this.factory.getContext().getRootAccount();
+        assertNotNull(rootAccount, "Root account should not be null");
+        CurrencyType currencyType = rootAccount.getCurrencyType();
+        assertNotNull(currencyType, "Currency type should not be null");
         CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
-                this.factory.getContext().getRootAccount().getCurrencyType(),
+                currencyType,
                 Collections.singletonList(CurrencyCodeType.fromValue("USD")));
         assertThat(currencyCodeType, is(CurrencyCodeType.fromValue("USD")));
     }
@@ -84,9 +95,12 @@ public final class CurrencyMapperUtilTest {
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWhenUnknown() {
-        CurrencyType currencyType = new CurrencyType(
-                new CurrencyTable(this.factory.getContext().getCurrentAccountBook())
-        );
+        final com.infinitekind.moneydance.model.AccountBook currentAccountBook =
+                this.factory.getContext().getCurrentAccountBook();
+        assertNotNull(currentAccountBook, "AccountBook should not be null");
+        CurrencyTable currencyTable = new CurrencyTable(currentAccountBook);
+        assertNotNull(currencyTable, "Currency table should not be null");
+        CurrencyType currencyType = new CurrencyType(currencyTable);
         currencyType.setCurrencyType(CurrencyType.Type.CURRENCY);
         currencyType.setName("Banana");
         currencyType.setIDString("BAN");
@@ -99,8 +113,13 @@ public final class CurrencyMapperUtilTest {
 
     @Test
     public void testGetCurrencyCodeFromCurrencyTypeWithUnsupportedCurrency() {
+        final com.infinitekind.moneydance.model.Account rootAccount =
+                this.factory.getContext().getRootAccount();
+        assertNotNull(rootAccount, "Root account should not be null");
+        CurrencyType currencyType = rootAccount.getCurrencyType();
+        assertNotNull(currencyType, "Currency type should not be null");
         CurrencyCodeType currencyCodeType = CurrencyMapperUtil.getCurrencyCodeFromCurrencyType(
-                this.factory.getContext().getRootAccount().getCurrencyType(),
+                currencyType,
                 Collections.singletonList(CurrencyCodeType.fromValue("EUR")));
         assertThat(currencyCodeType, is(CurrencyCodeType.fromValue("EUR")));
     }
