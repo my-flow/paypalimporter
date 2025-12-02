@@ -138,7 +138,10 @@ extends AbstractRequestHandler<PaymentTransactionSearchResultType> {
         final long amount = new BigDecimal(grossAmount).multiply(
                 MULTIPLIER).longValueExact();
 
-        final String description = result.getPayerDisplayName();
+        String description = result.getPayerDisplayName();
+        if (description == null) {
+            description = memo;
+        }
 
         final long date = this.dateFormat.parse(
                 result.getTimestamp()).getTime();

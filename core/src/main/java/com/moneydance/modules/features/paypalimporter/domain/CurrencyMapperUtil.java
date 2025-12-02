@@ -43,7 +43,7 @@ public final class CurrencyMapperUtil {
 
         if (currencyType == null) {
             currencyType = CurrencyUtil.createDefaultTable(
-                    accountBook.getWrappedOriginal(), null)
+                    accountBook.getWrappedOriginal(), "USD")
                     .getCurrencyByIDString(name);
             if (currencyType == null) {
                 // no existing currency type matches, so create a new one

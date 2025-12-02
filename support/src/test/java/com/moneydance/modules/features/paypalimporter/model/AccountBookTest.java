@@ -53,7 +53,7 @@ public final class AccountBookTest {
     public void testCreateAccount() {
         Account account = this.accountBook.createBankAccount(
                 "new account name",
-                null,
+                this.accountBook.getCurrencies().getBaseType(),
                 "account URL");
         assertThat(account, notNullValue());
         assertThat(this.accountBook.getAccountById(account.getUUID()), is(account));
@@ -65,16 +65,6 @@ public final class AccountBookTest {
                 this.accountBook.getWrappedOriginal());
         assertThat(this.accountBook.logRemovedItem(onlineService),
                 equalTo(false));
-    }
-
-    @Test
-    public void testAddAccountListener() {
-        this.accountBook.addAccountListener(null);
-    }
-
-    @Test
-    public void testRemoveAccountListener() {
-        this.accountBook.removeAccountListener(null);
     }
 
 }

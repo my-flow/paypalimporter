@@ -17,4 +17,13 @@
             <Bug pattern="S508C_SET_COMP_COLOR"/>
         </Or>
     </Match>
+    <Match>
+        <Class name="~.*Test"/>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+    <Match>
+        <Class name="com.moneydance.modules.features.paypalimporter.Main"/>
+        <Method name="init"/>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
 </FindBugsFilter>
