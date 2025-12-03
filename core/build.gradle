@@ -3,7 +3,7 @@ import java.util.jar.Attributes
 import proguard.gradle.ProGuardTask
 
 
-apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.gradleup.shadow'
 
 dependencies {
     api(':moneydance:5253')
@@ -44,8 +44,12 @@ jar {
     }
 }
 
-assemble.dependsOn shadowJar
-build.dependsOn shadowJar
+tasks.named('assemble').configure {
+    dependsOn(shadowJar)
+}
+tasks.named('build').configure {
+    dependsOn(shadowJar)
+}
 
 shadowJar {
     archiveBaseName.set(rootProject.name)
@@ -87,7 +91,9 @@ tasks.named('proguard').configure {
     }
 }
 
-shadowJar.finalizedBy proguard
+tasks.named('shadowJar').configure {
+    finalizedBy(proguard)
+}
 
 javadoc {
     options.author = true
