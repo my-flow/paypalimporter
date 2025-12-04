@@ -21,7 +21,7 @@ dependencies {
     api('com.jgoodies:jgoodies-validation:2.5.1') {
         exclude group: 'com.jgoodies', module: 'jgoodies-common'
     }
-    api('org.apache.commons:commons-lang3:3.19.0')
+    api('org.apache.commons:commons-lang3:3.20.0')
     api('commons-configuration:commons-configuration:1.10')
     api('org.apache.commons:commons-text:1.14.0')
     api('org.slf4j:slf4j-api:2.0.17')
@@ -62,7 +62,7 @@ shadowJar {
         include dependency('com.google.dagger:dagger:2.57.2')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
-        include dependency('org.apache.commons:commons-lang3:3.19.0')
+        include dependency('org.apache.commons:commons-lang3:3.20.0')
         include dependency('org.apache.commons:commons-text:1.14.0')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
