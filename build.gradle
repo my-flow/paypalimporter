@@ -13,7 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.gradleup.shadow:shadow-gradle-plugin:8.3.9'
         classpath 'commons-configuration:commons-configuration:1.10'
-        classpath 'com.guardsquare:proguard-gradle:7.7.0'
+        classpath 'com.guardsquare:proguard-gradle:7.8.2'
         classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.4.4'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:7.0.1.6134'
     }
