@@ -23,7 +23,7 @@ dependencies {
     }
     api('org.apache.commons:commons-lang3:3.20.0')
     api('commons-configuration:commons-configuration:1.10')
-    api('org.apache.commons:commons-text:1.14.0')
+    api('org.apache.commons:commons-text:1.15.0')
     api('org.slf4j:slf4j-api:2.0.17')
     api('org.checkerframework:checker:3.51.0')
     api('com.google.code.findbugs:jsr305:3.0.2')
@@ -63,7 +63,7 @@ shadowJar {
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
         include dependency('org.apache.commons:commons-lang3:3.20.0')
-        include dependency('org.apache.commons:commons-text:1.14.0')
+        include dependency('org.apache.commons:commons-text:1.15.0')
         include dependency('net.jcip:jcip-annotations:1.0')
         include dependency(':jgoodies-common:1.9.0')
         include dependency(':jgoodies-forms:1.10')
