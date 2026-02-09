@@ -9,8 +9,8 @@ dependencies {
     api(':moneydance:5253')
     api('org.jetbrains.kotlin:kotlin-stdlib:2.3.0')
     api('com.squareup.okio:okio:3.16.4')
-    api('com.google.dagger:dagger:2.59')
-    annotationProcessor('com.google.dagger:dagger-compiler:2.59')
+    api('com.google.dagger:dagger:2.59.1')
+    annotationProcessor('com.google.dagger:dagger-compiler:2.59.1')
     api(':paypal-core-paypalimporter:1.7.2')
     api('com.paypal.sdk:merchantsdk:2.15.122') {
         exclude group: 'com.paypal.sdk', module: 'paypal-core'
@@ -59,7 +59,7 @@ shadowJar {
 
     dependencies {
         include dependency('javax.inject:javax.inject:1')
-        include dependency('com.google.dagger:dagger:2.59')
+        include dependency('com.google.dagger:dagger:2.59.1')
         include dependency('commons-configuration:commons-configuration:1.10')
         include dependency('commons-lang:commons-lang:2.6')
         include dependency('org.apache.commons:commons-lang3:3.20.0')
