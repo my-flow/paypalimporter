@@ -7,7 +7,7 @@ apply plugin: 'com.gradleup.shadow'
 
 dependencies {
     api(':moneydance:5253')
-    api('org.jetbrains.kotlin:kotlin-stdlib:2.3.0')
+    api('org.jetbrains.kotlin:kotlin-stdlib:2.3.10')
     api('com.squareup.okio:okio:3.16.4')
     api('com.google.dagger:dagger:2.59.1')
     annotationProcessor('com.google.dagger:dagger-compiler:2.59.1')
