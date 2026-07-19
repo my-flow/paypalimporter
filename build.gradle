@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.3.2'
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.4.1'
         classpath 'commons-configuration:commons-configuration:1.10'
         classpath 'com.guardsquare:proguard-gradle:7.8.2'
         classpath 'com.github.spotbugs.snom:spotbugs-gradle-plugin:6.5.0'
