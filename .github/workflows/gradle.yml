@@ -16,4 +16,4 @@ jobs:
     - uses: gradle/actions/wrapper-validation@v6
     - uses: gradle/actions/setup-gradle@v6
     - run: ./gradlew clean check test assemble
-    - run: ./gradlew :core:sonar -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
+    - run: ./gradlew :core:sonar -Dsonar.token="${{ secrets.SONAR_TOKEN }}"
