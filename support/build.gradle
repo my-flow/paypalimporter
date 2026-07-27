@@ -7,7 +7,7 @@ dependencies {
     runtimeOnly('com.syncthemall:dropbox-java-sdk:1.5.3.2')
     runtimeOnly(':com.sun.net.ssl:')
 
-    testImplementation('org.junit.jupiter:junit-jupiter:6.0.3')
+    testImplementation('org.junit.jupiter:junit-jupiter:6.1.2')
     testImplementation('org.hamcrest:hamcrest:3.0')
 
     // Explicitly add platform dependencies to ensure version alignment
