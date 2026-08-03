@@ -13,7 +13,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - uses: gradle/actions/wrapper-validation@v6
-    - uses: gradle/actions/setup-gradle@v6
+    - uses: gradle/actions/wrapper-validation@v6.2.0
+    - uses: gradle/actions/setup-gradle@v6.2.0
     - run: ./gradlew clean check test assemble
     - run: ./gradlew :core:sonar -Dsonar.token="${{ secrets.SONAR_TOKEN }}"
