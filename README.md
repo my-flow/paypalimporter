@@ -3,7 +3,7 @@
 
 PayPal Importer is a [Moneydance](http://www.moneydance.com) extension that
 imports PayPal transactions into Moneydance. Please see the
-[project page](https://www.my-flow.com/paypalimporter/) for more information
+[project page](https://github.com/my-flow/paypalimporter) for more information
 on where to download and how to install the extension.
 
 ## Build Prerequisites

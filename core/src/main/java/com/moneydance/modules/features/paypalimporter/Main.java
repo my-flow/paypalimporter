@@ -20,6 +20,11 @@ public final class Main extends FeatureModule implements Observer {
      */
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
+    /**
+     * From this build the Extensions menu shows one row when the item text equals the extension name.
+     */
+    private static final int SINGLE_ROW_MENU_BUILD = 5500;
+
     private final CoreModule coreModule;
     private final CoreComponent coreComponent;
     private final MainHelper mainHelper;
@@ -42,11 +47,15 @@ public final class Main extends FeatureModule implements Observer {
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
         Localizable localizable = this.coreComponent.localizable();
+        String buttonText = localizable.getLabelButtonText();
+        if (this.getContext().getBuild() >= SINGLE_ROW_MENU_BUILD) {
+            buttonText = this.getName();
+        }
         this.getContext().registerFeature(
                 this,
                 this.coreComponent.settings().getStartWizardSuffix(),
                 null, // buttonImage
-                localizable.getLabelButtonText());
+                buttonText);
     }
 
     @Override
