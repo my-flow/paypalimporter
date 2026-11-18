@@ -2,7 +2,6 @@ package com.moneydance.modules.features.paypalimporter;
 
 import com.moneydance.apps.md.controller.FeatureModule;
 import com.moneydance.modules.features.paypalimporter.bootstrap.MainHelper;
-import com.moneydance.modules.features.paypalimporter.util.Localizable;
 
 import java.awt.Image;
 import java.util.Observable;
@@ -41,12 +40,11 @@ public final class Main extends FeatureModule implements Observer {
 
         // register this module to be invoked via the application toolbar
         LOG.config("Registering toolbar feature");
-        Localizable localizable = this.coreComponent.localizable();
         this.getContext().registerFeature(
                 this,
                 this.coreComponent.settings().getStartWizardSuffix(),
                 null, // buttonImage
-                localizable.getLabelButtonText());
+                this.getName());
     }
 
     @Override
