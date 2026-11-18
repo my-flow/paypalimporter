@@ -35,13 +35,6 @@ public final class Localizable {
     }
 
     /**
-     * @return the text of the main toolbar's button used to invoke the wizard.
-     */
-    public String getLabelButtonText() {
-        return this.resourceBundle.getString("label_button_text");
-    }
-
-    /**
      * @return the name of the "Continue" button.
      */
     public String getLabelContinueButton() {
